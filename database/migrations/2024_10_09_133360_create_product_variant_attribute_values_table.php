@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Attribute_value;
+use App\Models\Product_variant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,14 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('product_variant_attribute_values', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->enum('role', ['user', 'staff', 'admin'])->default('user');
-            $table->rememberToken();
+            $table->foreignIdFor(Product_variant::class)->constrained();
+            $table->foreignIdFor(Attribute_value::class)->constrained();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('product_variant_attribute_values');
     }
 };
