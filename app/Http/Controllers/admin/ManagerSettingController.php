@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Manager_setting;
-use App\Http\Requests\StoreManager_settingRequest;
-use App\Http\Requests\UpdateManager_settingRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ManagerSettingController extends Controller
 {
@@ -27,7 +26,7 @@ class ManagerSettingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreManager_settingRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -35,7 +34,7 @@ class ManagerSettingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Manager_setting $manager_setting)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +42,7 @@ class ManagerSettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Manager_setting $manager_setting)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +50,7 @@ class ManagerSettingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateManager_settingRequest $request, Manager_setting $manager_setting)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +58,7 @@ class ManagerSettingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Manager_setting $manager_setting)
+    public function destroy(string $id)
     {
         //
     }

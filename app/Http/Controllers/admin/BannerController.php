@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Banner;
-use App\Http\Requests\StoreBannerRequest;
-use App\Http\Requests\UpdateBannerRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class BannerController extends Controller
 {
@@ -27,7 +26,7 @@ class BannerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBannerRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -35,7 +34,7 @@ class BannerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Banner $banner)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +42,7 @@ class BannerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Banner $banner)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +50,7 @@ class BannerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBannerRequest $request, Banner $banner)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +58,7 @@ class BannerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Banner $banner)
+    public function destroy(string $id)
     {
         //
     }

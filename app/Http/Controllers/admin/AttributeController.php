@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Attribute;
-use App\Http\Requests\StoreAttributeRequest;
-use App\Http\Requests\UpdateAttributeRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
@@ -27,7 +26,7 @@ class AttributeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAttributeRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -35,7 +34,7 @@ class AttributeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Attribute $attribute)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +42,7 @@ class AttributeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attribute $attribute)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +50,7 @@ class AttributeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAttributeRequest $request, Attribute $attribute)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +58,7 @@ class AttributeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Attribute $attribute)
+    public function destroy(string $id)
     {
         //
     }
