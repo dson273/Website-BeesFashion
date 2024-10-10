@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image')->nullable()->comment('Ảnh danh mục');
             $table->text('description')->comment('Mô tả danh mục');
             $table->tinyInteger('is_active')->default(1)->comment('Trạng thái hoạt động danh mục, mặc định là 1(đã kích hoạt)');
+            $table->foreignId('parent_category_id')->nullable()->comment('Xác định danh mục cha')->constrained('categories');
             $table->timestamps();
         });
     }
