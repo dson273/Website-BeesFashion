@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('type');
+            $table->string('name')->comment('Tên thuộc tính');
+            $table->string('type')->comment('Loại thuộc tính (color, button,...)');
             $table->timestamps();
         });
     }

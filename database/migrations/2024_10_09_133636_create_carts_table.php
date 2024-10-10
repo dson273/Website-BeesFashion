@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity');
-            $table->foreignIdFor(Product_variant::class)->constrained();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->integer('quantity')->comment('Số lượng sản phẩm trong giỏ hàng');
+            $table->foreignIdFor(Product_variant::class)->constrained()->comment('Xác định biến thể được thêm vào giỏ hàng');
+            $table->foreignIdFor(User::class)->constrained()->comment('Xác định người dùng nào đã thêm sản phẩm vào giỏ hàng');
             $table->timestamps();
         });
     }

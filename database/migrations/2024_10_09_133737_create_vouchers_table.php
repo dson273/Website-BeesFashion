@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code');
-            $table->integer('amount');
-            $table->integer('quantity');
-            $table->string('image');
-            $table->enum('type', ['fixed', 'percent', 'free_ship']);
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->integer('minimum_order_value')->nullable();
-            $table->tinyInteger('is_active')->default(1);
+            $table->string('name')->comment('Tên voucher');
+            $table->string('code')->comment('Mã voucher');
+            $table->integer('amount')->comment('Giá trị giảm');
+            $table->integer('quantity')->comment('Số lượng voucher');
+            $table->string('image')->comment('Ảnh voucher');
+            $table->enum('type', ['fixed', 'percent', 'free_ship'])->comment('Loại voucher, ở đây có 3 loại là cố định ví dụ 100k, phần trăm và miễn phí vận chuyển');
+            $table->date('start_date')->nullable()->comment('Thời gian bắt đầu có thể sử dụng được voucher');
+            $table->date('end_date')->nullable()->comment('Thời gian voucher hết hiệu lực');
+            $table->integer('minimum_order_value')->nullable()->comment('Giá tiền tối thiểu của đơn hàng');
+            $table->tinyInteger('is_active')->default(1)->comment('Trạng thái kích hoạt voucher, mặc định là 1(đã kích hoạt)');
             $table->timestamps();
         });
     }

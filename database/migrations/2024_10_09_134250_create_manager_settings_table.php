@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('manager_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('manager_name');
+            $table->string('manager_name')->comment('Tên chức năng quản lý');
             $table->timestamps();
         });
     }

@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('product_vote_files', function (Blueprint $table) {
             $table->id();
-            $table->string('file_name');
-            $table->string('file_type');
-            $table->foreignIdFor(Product_vote::class);
+            $table->string('file_name')->comment('Tên file');
+            $table->string('file_type')->comment('Loại file (có 2 loại là ảnh và video)');
+            $table->foreignIdFor(Product_vote::class)->comment('Xác định đánh giá nào');
             $table->timestamps();
         });
     }

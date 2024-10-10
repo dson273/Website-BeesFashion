@@ -75,4 +75,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(User_manager_setting::class);
     }
+    public function user_bans(){
+        return $this->hasMany(User_ban::class);
+    }
 }

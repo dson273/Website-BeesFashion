@@ -14,13 +14,13 @@ return new class extends Migration
     {
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
-            $table->string('SKU');
-            $table->string('name');
-            $table->string('image')->nullable();
-            $table->string('sale_price')->nullable();
-            $table->integer('stock');
-            $table->foreignIdFor(Product::class)->constrained();
-            $table->tinyInteger('is_active')->default(1);
+            $table->string('SKU')->comment('Mã sản phẩm biến thể');
+            $table->string('name')->comment('Tên sản phẩm biến thể');
+            $table->string('image')->nullable()->comment('Ảnh sản phẩm biến thể');
+            $table->string('sale_price')->nullable()->comment('Giá bán');
+            $table->integer('stock')->comment('Tồn kho');
+            $table->foreignIdFor(Product::class)->constrained()->comment('Xác định biến thể thuộc sản phẩm nào');
+            $table->tinyInteger('is_active')->default(1)->comment('Trạng thái hoạt động, mặc định là 1(đã kích hoạt)');
             $table->timestamps();
         });
     }

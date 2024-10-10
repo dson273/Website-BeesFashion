@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->tinyInteger('is_active')->default(1);
+            $table->string('name')->comment('Tên banner');
+            $table->tinyInteger('is_active')->default(1)->comment('Trạng thái hoạt động, mặc định là 1(đã kích hoạt)');
             $table->timestamps();
         });
     }

@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('product_files', function (Blueprint $table) {
             $table->id();
-            $table->string('file_name');
-            $table->string('file_type');
-            $table->foreignIdFor(Product::class)->constrained();
+            $table->string('file_name')->comment('Tên file');
+            $table->string('file_type')->comment('Loại tệp là gì(image/video)');
+            $table->foreignIdFor(Product::class)->constrained()->comment('Xác định file này thuộc về sản phẩm nào');
             $table->timestamps();
         });
     }

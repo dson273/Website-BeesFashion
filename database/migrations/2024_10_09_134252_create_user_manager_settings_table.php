@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('user_manager_settings', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Manager_setting::class)->constrained();
-            $table->tinyInteger('is_active')->default(1);
+            $table->foreignIdFor(User::class)->constrained()->comment('Xác định người dùng nào được quyền quản lý chức năng này');
+            $table->foreignIdFor(Manager_setting::class)->constrained()->comment('Xác định chức năng nào');
+            $table->tinyInteger(column: 'is_active')->default(1)->comment('Trạng thái kích hoạt, mặc định là 1 (đã được kích hoạt)');
             $table->timestamps();
         });
     }

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained();
-            $table->foreignIdFor(Category::class)->constrained();
+            $table->foreignIdFor(Product::class)->constrained()->comment('Xác định có những sản phẩm nào thuộc danh mục này');
+            $table->foreignIdFor(Category::class)->constrained()->comment('Xác định danh mục nào');
             $table->timestamps();
         });
     }

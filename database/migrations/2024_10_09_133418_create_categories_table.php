@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image')->nullable();
-            $table->text('description');
-            $table->tinyInteger('is_active')->default(1);
+            $table->string('name')->comment('Tên danh mục');
+            $table->string('image')->nullable()->comment('Ảnh danh mục');
+            $table->text('description')->comment('Mô tả danh mục');
+            $table->tinyInteger('is_active')->default(1)->comment('Trạng thái hoạt động danh mục, mặc định là 1(đã kích hoạt)');
             $table->timestamps();
         });
     }

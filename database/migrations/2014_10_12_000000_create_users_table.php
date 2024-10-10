@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->enum('role', ['user', 'staff', 'admin'])->default('user');
+            $table->string('username')->comment('Tên đăng nhập');
+            $table->string('email')->unique()->comment('Email của người dùng');
+            $table->timestamp('email_verified_at')->nullable()->comment('Email đã được xác minh lúc nào');
+            $table->string('password')->comment('Mật khẩu');
+            $table->enum('role', ['member', 'staff', 'admin'])->default('member')
+            ->comment('Vai trò của người dùng, ở đây có 3 vai trò: người dùng, nhân viên và admin, admin lớn nhất');
             $table->rememberToken();
             $table->timestamps();
         });

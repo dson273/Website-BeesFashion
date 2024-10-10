@@ -14,12 +14,12 @@ return new class extends Migration
     {
         Schema::create('user_shipping_addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->string('phone_number')->nullable();
-            $table->text('address')->nullable();
-            $table->string('email')->nullable();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->tinyInteger('is_active')->default(1);
+            $table->string('full_name')->comment('Tên đầy đủ của người dùng ví dụ: Phạm Văn A');
+            $table->string('phone_number')->nullable()->comment('Số điện thoại');
+            $table->text('address')->nullable()->comment('Địa chỉ');
+            $table->string('email')->nullable()->comment('Email');
+            $table->foreignIdFor(User::class)->constrained()->comment('Xác định thông tin này thuộc người dùng nào');
+            $table->tinyInteger('is_active')->default(1)->comment('Trạng thái kích hoạt thông tin này, mặc định là 1(đã kích hoạt)');
             $table->timestamps();
         });
     }

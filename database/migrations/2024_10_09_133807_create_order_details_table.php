@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->string('value_variants');
-            $table->integer('original_price');
-            $table->integer('amount_reduced')->nullable();
-            $table->integer('quantity');
-            $table->foreignIdFor(Order::class)->constrained();
-            $table->foreignIdFor(Product_variant::class)->constrained();
+            $table->string('value_variants')->comment('Giá trị biến thể ví dụ (Xanh-XL)');
+            $table->integer('original_price')->comment('Giá gốc');
+            $table->integer('amount_reduced')->nullable()->comment('Giá đã được giảm');
+            $table->integer('quantity')->comment('Số lượng sản phẩm');
+            $table->foreignIdFor(Order::class)->constrained()->comment('Xác định thuộc đơn hàng nào');
+            $table->foreignIdFor(Product_variant::class)->constrained()->comment('Xác định biến thể nào');
             $table->timestamps();
         });
     }

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('SKU')->unique();
-            $table->string('name');
-            $table->integer('view')->default(0);
-            $table->text('description');
-            $table->tinyInteger('is_active')->default(1);
+            $table->string('SKU')->unique()->comment('Mã sản phẩm');
+            $table->string('name')->comment('Tên sản phẩm');
+            $table->integer('view')->default(0)->comment('Số lượt xem sản phẩm');
+            $table->text('description')->comment('Mô tả sản phẩm');
+            $table->tinyInteger('is_active')->default(1)->comment('Trạng thái hoạt động, mặc định là 1(đã kích hoạt)');
             $table->timestamps();
         });
     }
