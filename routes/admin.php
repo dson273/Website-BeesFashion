@@ -26,6 +26,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
     //Quản lý sản phẩm
     Route::resource('products', ProductController::class);
 });
+//Test laravel-filemanager
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });

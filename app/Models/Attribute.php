@@ -10,12 +10,16 @@ class Attribute extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'type',
+        'attribute_type_id',
         'created_at',
         'updated_at'
     ];
     public function attribute_values()
     {
         return $this->hasMany(Attribute_value::class);
+    }
+    public function attribute_type()
+    {
+        return $this->belongsTo(Attribute_type::class);
     }
 }
