@@ -23,6 +23,10 @@
                     </select>
                 </div>
                 
+                
+
+
+
                 <div class="mt-3 mb-3 value1">
                     <label for="">Giá trị màu sắc</label>
                     <input type="color" name="value" id="v1" class="form-control" id="slug" placeholder="Chọn màu sắc">
