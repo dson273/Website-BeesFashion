@@ -29,6 +29,10 @@ Route::prefix('admin')->as('admin.')->group(function () {
     //Quản lý thuộc tính
     Route::resource('attributes', AttributeController::class);
 
+
+
+
+    
 });
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();
