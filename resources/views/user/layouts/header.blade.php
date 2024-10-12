@@ -16,7 +16,7 @@
             <div class="col-12 p-0">
                 <div class="mobile-fix-option">
                     <ul>
-                        <li> <a href="index.html"><i class="iconsax" data-icon="home-1"></i>Home</a></li>
+                        <li> <a href="{{route('home-shop')}}"><i class="iconsax" data-icon="home-1"></i>Home</a></li>
                         <li><a href="search.html"><i class="iconsax" data-icon="search-normal-2"></i>Search</a></li>
                         <li class="shopping-cart"> <a href="cart.html"><i class="iconsax"
                                     data-icon="shopping-cart"></i>Cart</a></li>
@@ -43,15 +43,16 @@
             <!-- Dektop -->
             <div class="col-12">
                 <div class="main-menu">
-                    <a class="brand-logo" href="index.html"> <img class="img-fluid for-light"
-                            src="{{asset('assets/images/logo/logo-4.png')}}" alt="logo"><img class="img-fluid for-dark"
-                            src="{{asset('assets/images/logo/logo-white-4.png')}}" alt="logo"></a>
+                    <a class="brand-logo" href="{{route('home-shop')}}"> <img class="img-fluid for-light"
+                            src="{{ asset('assets/images/logo/logo-4.png') }}" alt="logo"><img
+                            class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo-white-4.png') }}"
+                            alt="logo"></a>
                     <nav id="main-nav">
                         <ul class="nav-menu sm-horizontal theme-scrollbar" id="sm-horizontal">
                             <li class="mobile-back" id="mobile-back">Back<i class="fa-solid fa-angle-right ps-2"
                                     aria-hidden="true"></i></li>
                             <li>
-                                <a class="nav-link" href="index.html">Home</a>
+                                <a class="nav-link" href="{{route('home-shop')}}">Home</a>
                             </li>
                             <li>
                                 <a class="nav-link" href="product-select.html">Shop</a>
@@ -92,8 +93,7 @@
                     </nav>
 
                     <div class="sub_header">
-                        <div class="toggle-nav" id="toggle-nav"><i
-                                class="fa-solid fa-bars-staggered sidebar-bar"></i>
+                        <div class="toggle-nav" id="toggle-nav"><i class="fa-solid fa-bars-staggered sidebar-bar"></i>
                         </div>
                         <ul class="justify-content-end">
                             <li> <button href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
@@ -101,18 +101,35 @@
                                         data-icon="search-normal-2"></i></button></li>
                             <li> <a href="wishlist.html"><i class="iconsax" data-icon="heart"></i><span
                                         class="cart_qty_cls">2</span></a></li>
-                            <li class="onhover-div">
-                                <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
-                                <div class="onhover-show-div user">
-                                    <ul>
-                                        <li> <a href="login.html">Login </a></li>
-                                        <li> <a href="sign-up.html">Register</a></li>
-                                    </ul>
-                                </div>
-                            </li>
+                            @guest
+                                <li class="onhover-div">
+                                    <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
+                                    <div class="onhover-show-div user">
+                                        <ul>
+                                            @if (Route::has('login'))
+                                            <li> <a href="{{ route('login') }}">Login </a></li>
+                                            @endif
+                                            @if (Route::has('register'))
+                                            <li> <a href="{{ route('register') }}">Register</a></li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </li>
+                                @else
+                                <li class="onhover-div">
+                                    <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
+                                    <div class="onhover-show-div user">
+                                        <ul>
+                                            <li> <a href="{{ route('dashboard') }}">Dashboard </a></li>
+                                            <li> <a href="#" data-bs-toggle="modal"
+                                                data-bs-target="#Confirmation-modal" title="Quick View" tabindex="0">Logout</a></li>
+                                        </ul>
+                                </li>
+                            @endguest
+
                             <li class="onhover-div shopping-cart">
-                                <a class="p-0" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                                    aria-controls="offcanvasRight">
+                                <a class="p-0" href="#" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                     <div class="shoping-prize"><i class="iconsax pe-2" data-icon="basket-2"></i>0
                                         items
                                     </div>

@@ -6,8 +6,8 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="footer-content">
                             <div class="footer-logo"><a href="index.html"> <img class="img-fluid"
-                                        src="{{ asset('assets/images/logo/logo-white-4.png') }}"
-                                        alt="Footer Logo"></a></div>
+                                        src="{{ asset('assets/images/logo/logo-white-4.png') }}" alt="Footer Logo"></a>
+                            </div>
                             <ul>
                                 <li>
                                     <i class="iconsax" data-icon="location"></i>
@@ -116,3 +116,19 @@
         </div>
     </footer>
     <!-- End footer -->
+
+    {{-- Modal logout --}}
+    <div class="modal theme-modal fade confirmation-modal" id="Confirmation-modal" tabindex="-1" role="dialog"
+        aria-modal="true">
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body"> <img class="img-fluid" src="{{asset('assets/images/gif/question.gif')}}" alt="">
+                    <h4>Confirmation</h4>
+                    <p>Are you sure you want to proceed?</p>
+                    <div class="submit-button"> <button class="btn" type="submit" data-bs-dismiss="modal"
+                            aria-label="Close">No</button><a class="btn" href="{{route('logout')}}">Yes</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- End logout --}}
