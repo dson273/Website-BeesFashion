@@ -14,6 +14,11 @@ class AttributeController extends Controller
     {
         return view('admin.attributes.index');
         //
+
+
+
+
+        
     }
 
     /**
