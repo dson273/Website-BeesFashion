@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
     })->name('dashboard');
     //Quản lý danh mục
     Route::resource('categories', CategoryController::class);
+    //Quản lý sản phẩm
+    Route::resource('products', ProductController::class);
+});
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
 });
