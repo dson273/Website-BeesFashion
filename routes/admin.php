@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
-=======
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\AttributeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +26,10 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('categories', CategoryController::class);
     //Quản lý sản phẩm
     Route::resource('products', ProductController::class);
+    //Quản lý thuộc tính
+    Route::resource('attributes', AttributeController::class);
+
 });
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-    \UniSharp\LaravelFilemanager\Lfm::routes();
-});
+// Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+//     \UniSharp\LaravelFilemanager\Lfm::routes();
+// });
