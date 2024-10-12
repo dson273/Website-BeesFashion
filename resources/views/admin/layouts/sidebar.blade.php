@@ -57,6 +57,22 @@
             </div>
         </div>
     </li>
+
+    {{-- Quản lý thuộc tính --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+            aria-expanded="true" aria-controls="collapseThree">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Quản lý thuộc tính</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                <a class="collapse-item" href="{{route('admin.attributes.index')}}">Danh sách</a>
+                <a class="collapse-item" href="{{route('admin.attributes.create')}}">Thêm</a>
+            </div>
+        </div>
+    </li>
     {{-- Quản lý khuyến mãi --}}
     {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSales"
