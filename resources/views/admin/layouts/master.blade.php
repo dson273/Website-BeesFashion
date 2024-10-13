@@ -19,6 +19,10 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('theme/admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+    <!-- Notification library -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
     @yield('style-libs')
 
 </head>
@@ -91,6 +95,36 @@
     <script src="{{ asset('theme/admin/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('theme/admin/js/demo/chart-pie-demo.js') }}"></script>
     <script src="https://kit.fontawesome.com/be9ed8669f.js" crossorigin="anonymous"></script>
+
+    <!-- Notification library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.js.map"></script>
+    <!-- Notification function -->
+    <script>
+        function notification(type, data, title) {
+            $(function() {
+                Command: toastr[type](data, title);
+                toastr.options = {
+                    closeButton: true,
+                    debug: false,
+                    newestOnTop: true,
+                    progressBar: true,
+                    positionClass: "toast-top-right",
+                    preventDuplicates: true,
+                    onclick: null,
+                    showDuration: "300",
+                    hideDuration: "1000",
+                    timeOut: "10000",
+                    extendedTimeOut: "1000",
+                    showEasing: "swing",
+                    hideEasing: "linear",
+                    showMethod: "fadeIn",
+                    hideMethod: "fadeOut",
+                };
+            });
+        };
+        
+    </script>
 
     @yield('script-libs')
 
