@@ -26,21 +26,21 @@
         Interface
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Quản lý danh mục</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Danh sách chức năng:</h6>
-                <a class="collapse-item" href="{{route('admin.categories.index')}}">Danh sách</a>
-                <a class="collapse-item" href="{{route('admin.categories.create')}}">Thêm</a>
-            </div>
+   <!-- Nav Item - Pages Collapse Menu -->
+   <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fas fa-fw fa-cog"></i>
+        <span>Quản lý danh mục</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Danh sách chức năng:</h6>
+            <a class="collapse-item" href="{{route('admin.categories.index')}}">Danh sách</a>
+            <a class="collapse-item" href="{{route('admin.categories.create')}}">Thêm</a>
         </div>
-    </li>
+    </div>
+</li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
@@ -106,8 +106,9 @@
         </div>
     </li> --}}
 
+   
     {{-- Quản lý banner --}}
-    {{-- <li class="nav-item">
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBanners"
             aria-expanded="true" aria-controls="collapseBanners">
             <i class="fas fa-fw fa-wrench"></i>
@@ -116,11 +117,11 @@
         <div id="collapseBanners" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Danh sách chức năng</h6>
-                <a class="collapse-item" href="#">Danh sách</a>
-                <a class="collapse-item" href="#">Thêm</a>
+                <a class="collapse-item" href="{{route('admin.banner.index')}}">Danh sách</a>
+                <a class="collapse-item" href="{{route('admin.banner.create')}}">Thêm</a>
             </div>
         </div>
-    </li> --}}
+    </li>
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" aria-expanded="true"
