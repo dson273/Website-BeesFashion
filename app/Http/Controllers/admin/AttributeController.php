@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use Illuminate\Http\Request;
+use App\Models\AttributeType;
+use App\Http\Controllers\Controller;
 
 class AttributeController extends Controller
 {
@@ -13,15 +15,6 @@ class AttributeController extends Controller
     public function index()
     {
         return view('admin.attributes.index');
-        //
-
-
-
-
-
-        
-
-
     }
 
     /**
@@ -29,9 +22,10 @@ class AttributeController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.attributes.create');
-
+        $listAttributeTypes = AttributeType::query()->get();
+        $listAttributes = Attribute::query()->get();
+        // dd($listAttributeTypes);
+        return view('admin.attributes.create',compact('listAttributeTypes','listAttributes'));
     }
 
     /**
@@ -39,7 +33,15 @@ class AttributeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->isMethod('POST')) {
+            $params = $request->except('_token');
+            // dd($params);
+            // if (condition) {
+            //     # code...
+            // }
+            Attribute::create($params);
+            return redirect()->route('admin.attributes.create')->with('success', 'Thêm loại thuộc tính thành công');
+        }
     }
 
     /**

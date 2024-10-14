@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\admin\AttributeTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('products', ProductController::class);
     //Quản lý thuộc tính
     Route::resource('attributes', AttributeController::class);
+    //Quản lý loại thuộc tính
+    Route::resource('attribute_types', AttributeTypeController::class);
+
 
 
 
