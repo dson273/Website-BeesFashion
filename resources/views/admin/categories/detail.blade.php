@@ -26,12 +26,20 @@
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Danh Mục Sản Phẩm</h6>
+                <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Thêm</a>
+
             </div>
+          
             @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
         @endif
             <div class="card-body">
@@ -58,7 +66,7 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            @foreach ($listCategory as $index => $cate)
+                            @foreach ($childCategories as $index => $cate)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $cate->name }}</td>
@@ -66,7 +74,6 @@
                                     <td>{{ $cate->description }}</td>
                                     <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
-                                        <a href="{{ route('admin.categories.show', $cate->id) }}" class="btn btn-success">Chi tiết</a>
                                         <a href="{{ route('admin.categories.edit', $cate->id) }}" class="btn btn-warning">Sửa</a>
                                         <form action="{{ route('admin.categories.destroy', $cate->id) }}" class="d-inline" method="POST"
                                             onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
