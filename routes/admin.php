@@ -39,6 +39,3 @@ Route::prefix('admin')->as('admin.')->group(function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();
 // });
 
-
-echo(123);
-
