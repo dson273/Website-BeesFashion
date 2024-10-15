@@ -24,19 +24,15 @@ Route::prefix('admin')->as('admin.')->group(function () {
     })->name('dashboard');
     //Quản lý danh mục
     Route::resource('categories', CategoryController::class);
+
     //Quản lý sản phẩm
     Route::resource('products', ProductController::class);
+    Route::get('products/getAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
+
     //Quản lý thuộc tính
     Route::resource('attributes', AttributeController::class);
-
-
-
-
-    
 });
 
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();
 // });
-
-echo(123);
