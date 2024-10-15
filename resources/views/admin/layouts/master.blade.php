@@ -131,7 +131,7 @@
         };
         //Route variable
         var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
-
+        var csrf = "{{ csrf_token() }}";
         //Thông báo cố định
     </script>
 
