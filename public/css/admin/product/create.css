@@ -7,9 +7,57 @@
     border-style: dashed;
 }
 
-#removeAllBtn {
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#removeAllVideosBtn,
+#removeAllImagesBtn {
     text-decoration: underline;
     color: red;
     cursor: pointer;
     display: none;
+}
+
+#atributeSelectForm {
+    width: 200px;
+}
+
+.cspt {
+    cursor: pointer;
+}
+
+.csmv {
+    cursor: move;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#baseProduct {
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    max-height: none;
+    opacity: 1;
+    overflow: hidden;
+}
+
+#baseProduct.hidden {
+    max-height: 0;
+    opacity: 0;
+}
+
+.hoverTextBlack:hover {
+    color: black;
+}
+
+.ss-content {
+    width: 20.1% !important;
+}
+
+.white-space {
+    white-space: nowrap;
 }
