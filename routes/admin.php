@@ -29,7 +29,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     //Quản lý sản phẩm
     Route::resource('products', ProductController::class);
-    Route::get('products/getAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
+    Route::post('products/getAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
 
     //Quản lý thuộc tính
     Route::resource('attributes', AttributeController::class);

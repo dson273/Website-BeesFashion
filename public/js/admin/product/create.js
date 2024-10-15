@@ -230,9 +230,9 @@ $(function () {
 $('#loadAttributeDatas').click(function () {
     $.ajax({
         url: getAllAttributesRoute,
-        type: "GET",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        method: "POST",
+        data: {
+            _token: csrf
         },
         success: function (response) {
             console.log(response);
