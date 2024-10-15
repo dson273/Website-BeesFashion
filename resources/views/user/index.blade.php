@@ -4,79 +4,54 @@
     <!--Container Content -->
     <main>
         <!-- Banner -->
-        <section class="section-space home-section-4">
-            <div class="custom-container container">
-                <div class="row">
-
-
-                    
-                    <div class="col-12">
-                        <div class="home-content">
-                            <p>Create Your Style<span></span></p>
-                            <h2>New Style For</h2>
-                            <h1>Spring & Summer</h1>
-                            <h6>Amet minim mollit non deserunt dolor do amet sint. </h6>
-                            <a class="btn btn_outline" href="product-select.html">
-                                Shop Now
-                            </a>
+        <section class="section-space">
+            <div class="custom-container container ">
+                <!-- Carousel Wrapper -->
+                <div id="bannerCarousel" class="carousel slide " data-bs-ride="carousel">
+                    <div class="carousel-inner ">
+                        <!-- Slide 1 -->
+                        <div class="carousel-item active  ">
+                            <div class="row">
+                                <a href="#">
+                                    <img class="img-fluid" src="{{ asset('assets/images/banner/b-1.jpg') }}" alt="">
+                                </a>
+                            </div>
                         </div>
-                        <div class="product-1">
-                            <div class="product">
-                                <img class="img-fluid" src="{{ asset('assets/images/layout-4/p-1.jpg') }}" alt="">
-                                <div class="product-details">
-                                    <h6>Black Women Top</h6>
-                                    <p>Women's Style</p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                    </ul>
-                                    <h5>$48<del>$68 </del><span>-40%</span></h5>
-                                </div>
+                        <!-- Slide 2 -->
+                        <div class="carousel-item  ">
+                            <div class="row ">
+                                <a href="#">
+                                    <img class="img-fluid" src="{{ asset('assets/images/banner/b-2.jpg') }}" alt="">
+                                </a>
                             </div>
                         </div>
 
-                        <div class="product-2">
-                            <div class="product">
-                                <img class="img-fluid" src="{{ asset('assets/images/layout-4/p-2.png') }}" alt="">
-                                <div class="product-details">
-                                    <div>
-                                        <h6>Pursesess</h6>
-                                        <h5>Best Women Bag</h5>
-                                    </div>
-                                    <span>$65</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="home-images">
-                            <div class="main-images"></div>
-                            <img class="img-fluid" src="{{ asset('assets/images/layout-4/1.png') }}" alt="">
-                        </div>
-                        <div class="home-box-1"> <span> </span></div>
-                        <div class="home-box-2"> <span> </span></div>
-                        <div class="marquee">
-                            <div class="marquee__item">
-                                <h4 class="animation-text">Collection</h4>
-                            </div>
-                            <div class="marquee__item">
-                                <h4 class="animation-text">Collection</h4>
-                            </div>
-                            <div class="marquee__item">
-                                <h4 class="animation-text">Collection</h4>
-                            </div>
-                        </div>
-                        <div class="shape-images"> <img class="img-1 img-fluid"
-                                src="{{ asset('assets/images/layout-4/s-1.png') }}" alt=""><img
-                                class="img-2 img-fluid" src="{{ asset('assets/images/layout-4/s-2.png') }}" alt="">
-                        </div>
                     </div>
+                    <!-- Indicators/dots -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
         </section>
-        <!-- End banner -->
+        <!-- End Banner -->
+
+
+
+
+
 
         <!-- Category -->
         <section class="section-t-space">
@@ -1780,61 +1755,50 @@
         <!-- End seach -->
 
         <!-- <div class="wrapper">
-            <div class="title-box">
-                <img src="{{ asset('assets/images/other-img/cookie.png') }}" alt="">
-                <h3>Cookies Consent</h3>
-            </div>
-            <div class="info">
-                <p>We use cookies to improve our site and your shopping experience. By continuing to browse our site you
-                    accept our cookie policy.
-                </p>
-            </div>
-            <div class="buttons"><button class="button btn btn_outline sm" id="acceptBtn">Accept</button><button
-                    class="button btn btn_black sm">Decline</button></div>
-        </div> -->
-
-        <div class="theme-btns">
-            <button class="btntheme" id="dark-btn">
-                <i class="fa-regular fa-moon"></i>
-                <div class="text">Dark</div>
-            </button>
-            <!-- <button class="btntheme rtlBtnEl" id="rtl-btn">
-                <i class="fa-solid fa-repeat"></i>
-                <div class="rtl">Rtl</div>
-            </button> -->
-        </div>
+                    <div class="title-box">
+                        <img src="{{ asset('assets/images/other-img/cookie.png') }}" alt="">
+                        <h3>Cookies Consent</h3>
+                    </div>
+                    <div class="info">
+                        <p>We use cookies to improve our site and your shopping experience. By continuing to browse our site you
+                            accept our cookie policy.
+                        </p>
+                    </div>
+                    <div class="buttons"><button class="button btn btn_outline sm" id="acceptBtn">Accept</button><button
+                            class="button btn btn_black sm">Decline</button></div>
+                </div> -->
 
         <!-- <div class="modal theme-modal newsletter-modal newsletter-4 fade" id="newsletter" tabindex="-1" role="dialog"
-            aria-modal="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="modal-body p-0">
-                        <div class="news-latter-box">
-                            <div class="row align-items-center">
-                                <div class="col-lg-6">
-                                    <div class="newslwtter-content">
-                                        <h2>Stay Fashionable</h2>
-                                        <span>Stay Informed</span>
-                                        <h4>Subscriber to Our Newsletter!</h4>
-                                        <p>Keep up to date so you don't miss any new updates or goods we reveal.</p>
-                                        <div class="form-floating"><input type="text" placeholder="Enter Your Name.."></div>
-                                        <div class="form-floating"><input type="email" placeholder="Enter Your Email..">
+                    aria-modal="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="modal-body p-0">
+                                <div class="news-latter-box">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-6">
+                                            <div class="newslwtter-content">
+                                                <h2>Stay Fashionable</h2>
+                                                <span>Stay Informed</span>
+                                                <h4>Subscriber to Our Newsletter!</h4>
+                                                <p>Keep up to date so you don't miss any new updates or goods we reveal.</p>
+                                                <div class="form-floating"><input type="text" placeholder="Enter Your Name.."></div>
+                                                <div class="form-floating"><input type="email" placeholder="Enter Your Email..">
+                                                </div>
+                                                <button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
+                                                    aria-label="Close">Submit</button>
+                                            </div>
                                         </div>
-                                        <button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                            aria-label="Close">Submit</button>
+                                        <div class="col-md-6 d-none d-lg-block">
+                                            <div class="newslwtter-img"> <img class="img-fluid"
+                                                    src="{{ asset('assets/images/other-img/news-latter4.png') }}" alt=""></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 d-none d-lg-block">
-                                    <div class="newslwtter-img"> <img class="img-fluid"
-                                            src="{{ asset('assets/images/other-img/news-latter4.png') }}" alt=""></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            </div> -->
+                    </div> -->
     </main>
     <!-- End container content -->
 @endsection
