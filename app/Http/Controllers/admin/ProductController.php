@@ -21,7 +21,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        return redirect()->route('admin.products.index')->with('statusSuccess','Website loaded successfully!');
+        // return view('admin.products.create')->with('statusSuccess','Website loaded successfully!');
     }
 
     /**

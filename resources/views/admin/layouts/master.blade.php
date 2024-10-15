@@ -131,17 +131,8 @@
         };
         //Route variable
         var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
+
         //Thông báo cố định
-        @if(session('statusSuccess'))
-        var message = @json(session('statusSuccess'));
-        notifications('success', message, 'Successfully');
-        @elseif(session('statusError'))
-        var message = @json(session('statusError'));
-        notifications('error', message, 'Error');
-        @elseif(session('statusWarning'))
-        var message = @json(session('statusWarning'));
-        notifications('warning', message, 'Warning');
-        @endif
     </script>
 
     <!-- Slimselect -->
@@ -152,6 +143,19 @@
     </script>
 
     @yield('script-libs')
+
+    <script>
+        @if(session('statusSuccess'))
+        var message = @json(session('statusSuccess'));
+        notification('success', message, 'Successfully');
+        @elseif(session('statusError'))
+        var message = @json(session('statusError'));
+        notification('error', message, 'Error');
+        @elseif(session('statusWarning'))
+        var message = @json(session('statusWarning'));
+        notification('warning', message, 'Warning');
+        @endif
+    </script>
 </body>
 
 </html>
