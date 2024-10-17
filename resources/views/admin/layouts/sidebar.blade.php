@@ -106,7 +106,7 @@
         </div>
     </li> --}}
 
-   
+
     {{-- Quản lý banner --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBanners"
@@ -123,12 +123,20 @@
         </div>
     </li>
 
+    {{-- Quản lý khách hàng --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" aria-expanded="true"
-            aria-controls="collapsePages">
-            <i class="fa-solid fa-house"></i>
-            <span>Trang Chủ</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers"
+            aria-expanded="true" aria-controls="collapseCustomers">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Quản lý khách hàng</span>
         </a>
+        <div id="collapseCustomers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{route('admin.customers.index')}}">Danh sách</a>
+                <a class="collapse-item" href="{{route('admin.customers.create')}}">Thêm</a>
+            </div>
+        </div>
     </li>
 
     {{-- <!-- Divider -->
