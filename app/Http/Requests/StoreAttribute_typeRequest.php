@@ -11,7 +11,7 @@ class StoreAttribute_typeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreAttribute_typeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type_name' => 'required|string|max:255|unique:attribute_types,type_name',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'type_name.required' => 'Loại thuộc tính không được để trống',
+            'type_name.unique' => 'Loại thuộc tính này đã tồn tại',
+            'type_name.max' => 'Loại thuộc tính không được quá 255 ký tự',
         ];
     }
 }
