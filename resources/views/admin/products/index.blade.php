@@ -19,18 +19,18 @@ Danh sách sản phẩm
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Danh sách sản phẩm</h1>
+    <h1 class="h3 mb-2 text-gray-800">List of products</h1>
     <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
         For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
             DataTables documentation</a>.</p> -->
-    <p class="mb-2">Dưới đây là danh sách sản phẩm</p>
+    <p class="mb-2">Below is the product list</p>
     <div class="mb-2 d-flex justify-content-end">
-        <a href="{{route('admin.products.create')}}" class="btn btn-success text-white text-decoration-none"><i class="fas fa-plus"></i> Thêm mới</a>
+        <a href="{{route('admin.products.create')}}" class="btn btn-success text-white text-decoration-none"><i class="fas fa-plus"></i> Create</a>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Dữ liệu tất cả sản phẩm</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Data of all products</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">

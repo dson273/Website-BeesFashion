@@ -23,6 +23,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
+    <!-- Slimselect -->
+    <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
+    </link>
+
+
     @yield('style-libs')
 
 </head>
@@ -102,6 +107,7 @@
     <!-- Notification function -->
     <script>
         function notification(type, data, title) {
+            $(document).ready();
             $(function() {
                 Command: toastr[type](data, title);
                 toastr.options = {
@@ -123,7 +129,17 @@
                 };
             });
         };
+        //Route variable
+        var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
+        var csrf = "{{ csrf_token() }}";
+        //Thông báo cố định
+    </script>
 
+    <!-- Slimselect -->
+    <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js">
+        new SlimSelect({
+            select: '#selectElement'
+        })
     </script>
         @yield('script-libs')
     <script>
@@ -140,6 +156,18 @@
 
     </script>
 
+    <script>
+        @if(session('statusSuccess'))
+        var message = @json(session('statusSuccess'));
+        notification('success', message, 'Successfully');
+        @elseif(session('statusError'))
+        var message = @json(session('statusError'));
+        notification('error', message, 'Error');
+        @elseif(session('statusWarning'))
+        var message = @json(session('statusWarning'));
+        notification('warning', message, 'Warning');
+        @endif
+    </script>
 </body>
 
 </html>

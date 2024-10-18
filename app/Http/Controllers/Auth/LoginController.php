@@ -25,7 +25,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Thông tin xác thực được cung cấp không khớp với hồ sơ của chúng tôi.',
+            'email' => 'The credentials provided do not match our records!',
         ])->onlyInput('email');
     }
     public function logout()
