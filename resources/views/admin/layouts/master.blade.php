@@ -141,8 +141,20 @@
             select: '#selectElement'
         })
     </script>
+        @yield('script-libs')
+    <script>
+            @if(session('statusSuccess'))
+            var message = @json(session('statusSuccess'));
+            notification('success', message, 'Successfully');
+            @elseif(session('statusError'))
+            var message = @json(session('statusError'));
+            notification('error', message, 'Error');
+            @elseif(session('statusWarning'))
+            var message = @json(session('statusWarning'));
+            notification('warning', message, 'warning');
+            @endif
 
-    @yield('script-libs')
+    </script>
 
     <script>
         @if(session('statusSuccess'))

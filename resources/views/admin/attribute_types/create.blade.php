@@ -1,4 +1,3 @@
-@ -0,0 +1,68 @@
 @extends('admin.layouts.master')
 
 @section('title')
@@ -9,13 +8,17 @@
     <div class="row">
         <!-- Phần form thêm mới -->
         <div class="card shadow col-md-4">
-            <h1 class="h5 mt-3 text-center fw-bold">Tạo mới loại thuộc tính</h1>
+            <h1 class="h2 mt-3 text-center fw-bold">Tạo mới loại thuộc tính</h1>
             <div class="card-body">
                 <form action="{{ route('admin.attribute_types.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mt-3 mb-3">
                         <label for="" class="form-label">Loại thuộc tính</label>
-                        <input type="text" name="type_name" class="form-control">
+                        <input type="text" name="type_name"
+                            class="form-control @error('type_name') is-invalid @enderror"value="{{ old('type_name') }}">
+                        @error('type_name')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="mt-3">
                         <button type="submit" class="btn btn-success">Tạo thuộc tính</button>
@@ -41,15 +44,20 @@
                             @foreach ($listAttributeTypes as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td><a href="{{ route('admin.attribute_types.edit', $item->id)}}">{{ $item ->type_name }}</a></td>
+                                    <td><a
+                                            href="{{ route('admin.attribute_types.edit', $item->id) }}">{{ $item->type_name }}</a>
+                                    </td>
                                     <td>
-                                        <a href="{{ route('admin.attribute_types.edit', $item->id) }}" class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
-                                            <form action="{{ route('admin.attribute_types.destroy', $item->id) }}" class="d-inline" method="POST"
-                                                onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                            </form>
+                                        <a href="{{ route('admin.attribute_types.edit', $item->id) }}"
+                                            class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
+                                        <form action="{{ route('admin.attribute_types.destroy', $item->id) }}"
+                                            class="d-inline" method="POST"
+                                            onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"><i
+                                                    class="fa fa-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

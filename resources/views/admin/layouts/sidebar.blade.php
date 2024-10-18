@@ -68,9 +68,11 @@
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Danh sách chức năng:</h6>
-                <a class="collapse-item" href="{{route('admin.attributes.index')}}">Danh sách</a>
+                {{-- <a class="collapse-item" href="{{route('admin.attributes.index')}}">Danh sách</a> --}}
                 <a class="collapse-item" href="{{route('admin.attributes.create')}}">Thêm thuộc tính</a>
                 <a class="collapse-item" href="{{route('admin.attribute_types.create')}}">Thêm loại thuộc tính</a>
+                {{-- <a class="collapse-item" href="{{route('admin.attribute_values.create')}}">Thêm dl thuộc tính</a> --}}
+
 
             </div>
         </div>

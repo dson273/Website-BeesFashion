@@ -11,7 +11,7 @@ class StoreAttributeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,21 @@ class StoreAttributeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255|unique:attributes,name',
+            'attribute_type_id' => 'required|exists:attribute_types,id',
+        ];
+    }
+
+    /**
+     * Get custom messages for validation errors.
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên thuộc tính không được để trống',
+            'name.unique' => 'Tên thuộc tính này đã tồn tại',
+            'attribute_type_id.required' => 'Loại thuộc tính không được để trống',
+            'attribute_type_id.exists' => 'Loại thuộc tính không tồn tại',
         ];
     }
 }

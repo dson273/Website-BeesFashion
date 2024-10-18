@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::create('attribute_values', function (Blueprint $table) {
             $table->id();
-            $table->string('value')->comment('Giá trị thuộc tính');
+            $table->string('name')->comment('Tên giá trị thuộc tính');
+            $table->string('value')->nullable()->comment('');
             $table->foreignIdFor(Attribute::class)->constrained()->comment('Xác định giá trị thuộc tính này thuộc về thuộc tính nào');
             $table->timestamps();
         });

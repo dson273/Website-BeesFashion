@@ -37,6 +37,8 @@ Route::middleware('auth')->group(function () {
 
 });
 //đăng ký
+Route::get('auth/register', [RegisterController::class, 'index'])->name('register');
+// Route::post('auth/register', [RegisterController::class, 'register'])->name('register');
 Route::get('register', [RegisterController::class, 'index'])->name('register');
 Route::post('register', [RegisterController::class, 'register'])->name('register');
 
