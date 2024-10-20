@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Models\User_ban;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
 class CustomerController extends Controller
@@ -13,10 +14,11 @@ class CustomerController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $customers = User::with('defaultShippingAddress')->where('role', 'member')->paginate(10);
-    return view('admin.customers.index', compact('customers'));
-}
+    {
+
+        $customers = User::where('role', 'member')->paginate(10);
+        return view('admin.customers.index', compact('customers'));
+    }
 
 
     /**
@@ -40,8 +42,8 @@ class CustomerController extends Controller
      */
     public function show(string $id)
     {
-        $customer = User::with(['user_bans', 'user_shipping_addresses'])->findOrFail($id);
-        return view('admin.customers.show', compact('customer'));
+        // $customer = User::with('user_shipping_addresses')->findOrFail($id);
+        // return view('admin.customers.show', compact('customer'));
     }
 
     /**
@@ -58,15 +60,31 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|max:255'
+        $customer = User::findOrFail($id);
+        $request->validate(
+            [
+                'full_name' => 'required|string|max:255',
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('users', 'email')->ignore($customer->id),
+                ],
+                'phone' => 'required|regex:/^0\d{9,10}$/',
+                'address' => 'nullable',
+            ],
+            [
+                'phone.regex' => 'Phone numbers start at 0 and have 10 or 11 digits'
+            ]
+        );
+
+        $customer->update([
+            'full_name' => $request->full_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address
         ]);
 
-        $customer = User::findOrFail($id);
-        $customer->update($request->all());
-
-        return redirect()->route('admin.customers.index')->with('success', 'Cập nhật khách hàng thành công.');
+        return redirect()->route('admin.customers.index')->with('statusSuccess', 'Cập nhật khách hàng thành công.');
     }
 
 
@@ -75,7 +93,13 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $customer = User::findOrFail($id);
+        // Kiểm tra xem người dùng có địa chỉ giao hàng không
+    if ($customer->user_shipping_addresses()->exists()) {
+        // Nếu người dùng có địa chỉ giao hàng thì không cho phép xoá
+        return back()->with('statusError', 'Bạn phải xoá địa chỉ ship trước khi xoá khách hàng.');
     }
-
+        $customer->delete();
+        return back()->with('statusSuccess', 'Xoá khách hàng thành công');
+    }
 }

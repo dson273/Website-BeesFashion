@@ -19,7 +19,7 @@ class RegisterController extends Controller
         $data = $request->validate([
             'username' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string','unique:users', 'max:100'],
-            'password' => ['required', 'string', 'min:8', 'confirmed']
+            'password' => ['required', 'string', 'min:6', 'confirmed']
         ]);
         //Tạo user mới
         $user = User::query()->create($data);

@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+{{-- @extends('admin.layouts.master')
 @section('title')
     Danh sách khách hàng
 @endsection
@@ -42,4 +42,4 @@
 
     </div>
     <!-- /.container-fluid -->
-@endsection
+@endsection --}}
