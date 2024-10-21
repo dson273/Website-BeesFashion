@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\AttributeType;
+use App\Models\Attribute_value;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -14,7 +16,7 @@ return new class extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name')->comment('Tên thuộc tính');
-            $table->string('type')->comment('Loại thuộc tính (color, button,...)');
+            $table->foreignIdFor(AttributeType::class)->comment('Loại thuộc tính (color, button,...)');
             $table->timestamps();
         });
     }

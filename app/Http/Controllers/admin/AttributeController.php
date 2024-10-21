@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use Illuminate\Http\Request;
+use App\Models\AttributeType;
+use App\Models\Attribute_value;
+use App\Http\Requests\StoreAttributeRequest;
+use App\Http\Controllers\Controller;
+use League\CommonMark\Extension\Attributes\Node\Attributes;
 
 class AttributeController extends Controller
 {
@@ -13,7 +18,6 @@ class AttributeController extends Controller
     public function index()
     {
         return view('admin.attributes.index');
-        //
     }
 
     /**
@@ -21,17 +25,22 @@ class AttributeController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.attributes.create');
-
+        $listAttributeTypes = AttributeType::query()->get();
+        $listAttribute = Attribute::query()->get();
+        // dd($listAttributeTypes);
+        return view('admin.attributes.create', compact('listAttributeTypes', 'listAttribute'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAttributeRequest $request)
     {
-        //
+        if ($request->isMethod('POST')) {
+            $params = $request->except('_token');
+            Attribute::create($params);
+            return redirect()->route('admin.attributes.create')->with('statusSuccess', 'Thêm loại thuộc tính thành công');
+        }
     }
 
     /**
@@ -48,6 +57,12 @@ class AttributeController extends Controller
     public function edit(string $id)
     {
         //
+        $AttributesID = Attribute::query()->findOrFail($id);
+        $attribute_type = AttributeType::where('id', $AttributesID->attribute_type_id)->first();
+        $type_name = $attribute_type->type_name;
+        $listAttributeTypes = AttributeType::query()->get();
+        $listAttribute = Attribute::query()->get();
+        return view('admin.attributes.edit', compact('listAttribute', 'AttributesID', 'type_name', 'attribute_type', 'listAttributeTypes'));
     }
 
     /**
@@ -55,7 +70,12 @@ class AttributeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if ($request->isMethod('PUT')) {
+            $params = $request->except('_token', '_method');
+            $AttributesID = Attribute::findOrFail($id);
+            $AttributesID->update($params);
+            return redirect()->route('admin.attributes.create')->with('statusSuccess', 'chỉnh sửa loại thuộc tính thành công');
+        }
     }
 
     /**
@@ -64,5 +84,17 @@ class AttributeController extends Controller
     public function destroy(string $id)
     {
         //
+        $attribute = Attribute::findOrFail($id);
+
+        // Kiểm tra xem Attribute có liên kết với bất kỳ Attribute_value nào không
+        if ($attribute->attribute_values()->exists()) {
+            // Nếu có giá trị thuộc tính liên kết, không cho phép xóa
+            return redirect()->back()->with('statusError', 'Không thể xóa thuộc tính vì vẫn còn giá trị thuộc tính liên kết!');
+        }
+
+        // Nếu không có giá trị thuộc tính liên kết, tiến hành xóa
+        $attribute->delete();
+
+        return redirect()->route('admin.attributes.create')->with('statusSuccess', 'Xóa thuộc tính thành công!');
     }
 }

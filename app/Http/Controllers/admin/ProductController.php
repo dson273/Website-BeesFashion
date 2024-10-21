@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -20,6 +21,7 @@ class ProductController extends Controller
      */
     public function create()
     {
+        // return redirect()->route('admin.products.index')->with('statusSuccess','Website loaded successfully!');
         return view('admin.products.create');
     }
 
@@ -28,8 +30,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $img = $request->file('images');
-        dd($img);
+        $images = $request->file('images');
+        $videos = $request->file('videos');
+        dd($videos);
     }
 
     /**
@@ -62,5 +65,15 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function getAllAttributes()
+    {
+        $attributes = Attribute::all();
+        $response = [
+            'status' => 'success',
+            'message' => 'Get data successfully!',
+            'data' => $attributes
+        ];
+        return response()->json($response);
     }
 }

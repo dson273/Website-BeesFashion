@@ -80,6 +80,7 @@
                     </div>
                     <div class="col-xl-9 col-lg-8">
                         <div class="tab-content" id="v-pills-tabContent">
+                            {{-- Dashboard --}}
                             <div class="tab-pane fade show active" id="dashboard" role="tabpanel"
                                 aria-labelledby="dashboard-tab">
                                 <div class="dashboard-right-box">
@@ -194,6 +195,9 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- End dashboard --}}
+
+                            {{-- Notifications --}}
                             <div class="tab-pane fade" id="notifications" role="tabpanel"
                                 aria-labelledby="notifications-tab">
                                 <div class="dashboard-right-box">
@@ -344,6 +348,9 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- End notifications --}}
+
+                            {{-- Whishlist --}}
                             <div class="tab-pane fade" id="wishlist" role="tabpanel" aria-labelledby="wishlist-tab">
                                 <div class="dashboard-right-box">
                                     <div class="wishlist-box ratio1_3">
@@ -799,6 +806,9 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- End whishlist --}}
+
+                            {{-- Order --}}
                             <div class="tab-pane fade" id="order" role="tabpanel" aria-labelledby="order-tab">
                                 <div class="dashboard-right-box">
                                     <div class="order">
@@ -1015,6 +1025,9 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- End Order --}}
+
+                            {{-- Save card --}}
                             <div class="tab-pane fade" id="saved-card" role="tabpanel" aria-labelledby="saved-card-tab">
                                 <div class="dashboard-right-box">
                                     <div class="saved-card">
@@ -1124,6 +1137,9 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- End save card --}}
+
+                            {{-- Address --}}
                             <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                                 <div class="dashboard-right-box">
                                     <div class="address-tab">
@@ -1132,117 +1148,94 @@
                                             <h4>My Address Details</h4>
                                         </div>
                                         <div class="row gy-3">
-                                            <div class="col-xxl-4 col-md-6">
-                                                <div class="address-option"><label for="address-billing-0"> <span
-                                                            class="delivery-address-box"> <span class="form-check">
-                                                                <input class="custom-radio" id="address-billing-0"
-                                                                    type="radio" checked="checked"
-                                                                    name="radio"></span><span
-                                                                class="address-detail"><span class="address"> <span
-                                                                        class="address-title">New Home
-                                                                    </span></span><span class="address"> <span
-                                                                        class="address-home"> <span class="address-tag">
-                                                                            Address:</span>26, Starts
-                                                                        Hollow Colony, Denver, Colorado, United
-                                                                        States</span></span><span class="address"> <span
-                                                                        class="address-home"> <span
-                                                                            class="address-tag">Pin
-                                                                            Code:</span>80014</span></span><span
-                                                                    class="address"> <span class="address-home"> <span
-                                                                            class="address-tag">Phone :</span>+1
-                                                                        5551855359</span></span></span></span><span
-                                                            class="buttons"> <a class="btn btn_black sm" href="#"
-                                                                data-bs-toggle="modal" data-bs-target="#edit-box"
-                                                                title="Quick View" tabindex="0">Edit </a><a
-                                                                class="btn btn_outline sm" href="#"
-                                                                data-bs-toggle="modal" data-bs-target="#bank-card-modal"
-                                                                title="Quick View" tabindex="0">Delete
-                                                            </a></span></label></div>
-                                            </div>
-                                            <div class="col-xxl-4 col-md-6">
-                                                <div class="address-option"><label for="address-billing-3"> <span
-                                                            class="delivery-address-box"> <span class="form-check">
-                                                                <input class="custom-radio" id="address-billing-3"
-                                                                    type="radio" name="radio"></span><span
-                                                                class="address-detail"><span class="address"> <span
-                                                                        class="address-title">IT
-                                                                        Office</span></span><span class="address"> <span
-                                                                        class="address-home"> <span class="address-tag">
-                                                                            Address:</span>55B, Claire Cav Street, San
-                                                                        Jose,
-                                                                        California, United States</span></span><span
-                                                                    class="address"> <span class="address-home"> <span
-                                                                            class="address-tag">Pin
-                                                                            Code:</span>94088</span></span><span
-                                                                    class="address"> <span class="address-home"> <span
-                                                                            class="address-tag">Phone :</span>+1
-                                                                        5551855359</span></span></span></span><span
-                                                            class="buttons"> <a class="btn btn_black sm" href="#"
-                                                                data-bs-toggle="modal" data-bs-target="#edit-box"
-                                                                title="Quick View" tabindex="0">Edit </a><a
-                                                                class="btn btn_outline sm" href="#"
-                                                                data-bs-toggle="modal" data-bs-target="#bank-card-modal"
-                                                                title="Quick View"
-                                                                tabindex="0">Delete</a></span></label></div>
-                                            </div>
-                                            <div class="col-xxl-4 col-md-6">
-                                                <div class="address-option"><label for="address-billing-2"> <span
-                                                            class="delivery-address-box"> <span class="form-check">
-                                                                <input class="custom-radio" id="address-billing-2"
-                                                                    type="radio" name="radio"></span><span
-                                                                class="address-detail"><span class="address"> <span
-                                                                        class="address-title">IT
-                                                                        Office</span></span><span class="address"> <span
-                                                                        class="address-home"> <span class="address-tag">
-                                                                            Address:</span>55B, Claire Cav Street, San
-                                                                        Jose,
-                                                                        California, United States</span></span><span
-                                                                    class="address"> <span class="address-home"> <span
-                                                                            class="address-tag">Pin
-                                                                            Code:</span>94088</span></span><span
-                                                                    class="address"> <span class="address-home"> <span
-                                                                            class="address-tag">Phone :</span>+1
-                                                                        5551855359</span></span></span></span><span
-                                                            class="buttons"> <a class="btn btn_black sm"
-                                                                href="#" data-bs-toggle="modal"
-                                                                data-bs-target="#edit-box" title="Quick View"
-                                                                tabindex="0">Edit </a><a class="btn btn_outline sm"
-                                                                href="#" data-bs-toggle="modal"
-                                                                data-bs-target="#bank-card-modal" title="Quick View"
-                                                                tabindex="0">Delete</a></span></label></div>
-                                            </div>
-                                            <div class="col-xxl-4 col-md-6">
-                                                <div class="address-option"><label for="address-billing-2"> <span
-                                                            class="delivery-address-box"> <span class="form-check">
-                                                                <input class="custom-radio" id="address-billing-2"
-                                                                    type="radio" name="radio"></span><span
-                                                                class="address-detail"><span class="address"> <span
-                                                                        class="address-title">IT
-                                                                        Office</span></span><span class="address"> <span
-                                                                        class="address-home"> <span class="address-tag">
-                                                                            Address:</span>55B, Claire Cav Street, San
-                                                                        Jose,
-                                                                        California, United States</span></span><span
-                                                                    class="address"> <span class="address-home"> <span
-                                                                            class="address-tag">Pin
-                                                                            Code:</span>94088</span></span><span
-                                                                    class="address"> <span class="address-home"> <span
-                                                                            class="address-tag">Phone :</span>+1
-                                                                        5551855359</span></span></span></span><span
-                                                            class="buttons"> <a class="btn btn_black sm"
-                                                                href="#" data-bs-toggle="modal"
-                                                                data-bs-target="#edit-box" title="Quick View"
-                                                                tabindex="0">Edit </a><a class="btn btn_outline sm"
-                                                                href="#" data-bs-toggle="modal"
-                                                                data-bs-target="#bank-card-modal" title="Quick View"
-                                                                tabindex="0">Delete</a></span></label></div>
-                                            </div>
-                                        </div><button class="btn add-address" data-bs-toggle="modal"
+                                            @foreach (auth()->user()->user_shipping_addresses as $shippingAddress)
+                                                <div class="col-xxl-6 col-md-6">
+                                                    <div class="address-option">
+                                                        <label for="address-billing-0">
+                                                            <div class="delivery-address-box">
+                                                                <span class="form-check">
+                                                                    <input class="custom-radio" id="address-billing-0"
+                                                                        type="radio" name="radio"
+                                                                        @if ($shippingAddress->is_active) checked="checked" @endif>
+                                                                </span>
+                                                                <span class="address-detail">
+                                                                    <span class="address">
+
+                                                                        <span class="address-title">Information</span>
+                                                                    </span>
+                                                                    <span class="address">
+                                                                        <span class="address-home">
+                                                                            <span class="address-tag">Full
+                                                                                name:</span>{{ $shippingAddress->full_name }}
+                                                                        </span>
+                                                                    </span>
+                                                                    <span class="address">
+                                                                        <span class="address-home">
+                                                                            <span
+                                                                                class="address-tag">Address:</span>{{ $shippingAddress->address }}
+                                                                        </span>
+                                                                    </span>
+
+                                                                    <span class="address"><span class="address-home">
+                                                                            <span class="address-tag">Phone
+                                                                                :</span>{{ $shippingAddress->phone_number }}</span></span>
+                                                                    <span class="address">
+                                                                        @if ($shippingAddress->is_active)
+                                                                            <span
+                                                                                class="address-home d-flex justify-content-between align-items-center">
+                                                                                <span
+                                                                                    class="custom-status-set-address">Default</span>
+                                                                                <button type="button"
+                                                                                    class="custom-set-address" disabled>Set
+                                                                                    as default</button>
+                                                                            </span>
+                                                                        @else
+                                                                            <span
+                                                                                class="address-home d-flex justify-content-end">
+                                                                                <form
+                                                                                    action="{{ route('dashboard.addresses.set.default', $shippingAddress->id) }}"
+                                                                                    method="POST" class="d-inline">
+                                                                                    @csrf
+                                                                                    <button type="submit"
+                                                                                        class="custom-set-address">Set
+                                                                                        as default</button>
+                                                                                </form>
+                                                                            </span>
+                                                                        @endif
+                                                                    </span>
+                                                                </span>
+
+                                                            </div>
+
+
+                                                            <span class="buttons">
+                                                                <a class="btn btn_black sm" href="#"
+                                                                    data-bs-toggle="modal" data-bs-target="#edit-box"
+                                                                    title="Edit" tabindex="0"
+                                                                    data-id="{{ $shippingAddress->id }}"
+                                                                    data-full-name="{{ $shippingAddress->full_name }}"
+                                                                    data-phone="{{ $shippingAddress->phone_number }}"
+                                                                    data-email="{{ $shippingAddress->email }}"
+                                                                    data-address="{{ $shippingAddress->address }}"
+                                                                    onclick="populateEditModal(this);event.preventDefault();document.getElementById('edit-address-form').action='{{ route('dashboard.editAddress', $shippingAddress->id) }}';$('#edit-box').modal('show');">Edit</a>
+                                                                <a class="btn btn_outline sm" href="#"title="Delete"
+                                                                    tabindex="0"
+                                                                    onclick="event.preventDefault();document.getElementById('delete-address-form').action='{{ route('dashboard.deleteAddress', $shippingAddress->id) }}';$('#delete-address-modal').modal('show');">Delete</a>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <button class="btn add-address" data-bs-toggle="modal"
                                             data-bs-target="#add-address" title="Quick View" tabindex="0">+ Add
                                             Address</button>
                                     </div>
                                 </div>
                             </div>
+                            {{-- End address --}}
+
+                            {{-- Privacy --}}
                             <div class="tab-pane fade" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
                                 <div class="dashboard-right-box">
                                     <div class="privacy-tab">
@@ -1336,6 +1329,7 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- End Privacy --}}
                         </div>
                     </div>
                 </div>
@@ -1436,88 +1430,146 @@
                         class="btn btn_black" href="check-out.html"> Checkout</a></div>
             </div>
         </div>
+
+
+        {{-- Modal Edit address --}}
         <div class="reviews-modal modal theme-modal fade" id="edit-box" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Edit Profile</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
+                        <h4>Edit Address</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <div class="from-group"> <label class="form-label">First Name</label><input
-                                        class="form-control" type="text" name="review[author]"
-                                        placeholder="Enter your name."></div>
-                            </div>
-                            <div class="col-6">
-                                <div class="from-group"> <label class="form-label">Last Name</label><input
-                                        class="form-control" type="text" name="review[author]"
-                                        placeholder="Enter your name."></div>
-                            </div>
-                            <div class="col-6">
-                                <div class="from-group"> <label class="form-label">Email address</label><input
-                                        class="form-control" type="email" placeholder="john.smith@example.com">
+                        <form id="edit-address-form" class="row g-3" action="" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input class="form-control @error('full_name') is-invalid @enderror" type="text"
+                                        name="full_name" placeholder="Enter your name."
+                                        value="{{ old('full_name') }}">
+                                    @error('full_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="from-group"> <label class="form-label">Phone</label><input
-                                        class="form-control" type="number" name="review[author]"
-                                        placeholder="Enter your Number."></div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input class="form-control @error('phone_number') is-invalid @enderror"
+                                        type="number" name="phone_number" placeholder="Enter your Number."
+                                        value="{{ old('phone_number') }}">
+                                    @error('phone_number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email address</label>
+                                    <input class="form-control @error('email') is-invalid @enderror" type="email"
+                                        placeholder="john.smith@example.com" name="email"
+                                        value="{{ old('email') }}">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Address</label>
-                                    <textarea class="form-control" cols="30" rows="5" placeholder="Write your Address..."></textarea>
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                    <textarea class="form-control @error('address') is-invalid @enderror" cols="30" rows="2"
+                                        placeholder="Write your Address..." name="address" value="{{ old('address') }}"></textarea>
+                                    @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            </div><button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                aria-label="Close">Submit</button>
-                        </div>
+                            </div>
+                            <button class="btn btn-submit" type="submit">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+        {{-- End modal --}}
+
+        {{-- Kiểm tra lỗi và mở lại modal addAddress nếu có --}}
+        @if ($errors->any())
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var addAddressModal = new bootstrap.Modal(document.getElementById('add-address'));
+                    addAddressModal.show();
+                });
+            </script>
+        @endif
+        {{-- Modal Add address --}}
         <div class="reviews-modal modal theme-modal fade" id="add-address" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Edit Profile</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
+                        <h4>Add Address</h4>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <div class="from-group"> <label class="form-label">First Name</label><input
-                                        class="form-control" type="text" name="review[author]"
-                                        placeholder="Enter your name."></div>
-                            </div>
-                            <div class="col-6">
-                                <div class="from-group"> <label class="form-label">Last Name</label><input
-                                        class="form-control" type="text" name="review[author]"
-                                        placeholder="Enter your name."></div>
-                            </div>
-                            <div class="col-6">
-                                <div class="from-group"> <label class="form-label">Email address</label><input
-                                        class="form-control" type="email" placeholder="john.smith@example.com">
+                        <form class="row g-3" action="{{ route('dashboard.addAddress') }}" method="POST">
+                            @csrf
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input class="form-control @error('full_name') is-invalid @enderror" type="text"
+                                        name="full_name" placeholder="Enter your name."
+                                        value="{{ old('full_name') }}">
+                                    @error('full_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="from-group"> <label class="form-label">Phone</label><input
-                                        class="form-control" type="number" name="review[author]"
-                                        placeholder="Enter your Number."></div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input class="form-control @error('phone_number') is-invalid @enderror"
+                                        type="number" name="phone_number" placeholder="Enter your Number."
+                                        value="{{ old('phone_number') }}">
+                                    @error('phone_number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email address</label>
+                                    <input class="form-control @error('email') is-invalid @enderror" type="email"
+                                        placeholder="john.smith@example.com" name="email"
+                                        value="{{ old('email') }}">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Address</label>
-                                    <textarea class="form-control" cols="30" rows="5" placeholder="Write your Address..."></textarea>
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                    <textarea class="form-control @error('address') is-invalid @enderror" cols="30" rows="2"
+                                        placeholder="Write your Address..." name="address">{{ old('address') }}</textarea>
+                                    @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            </div><button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                aria-label="Close">Submit</button>
-                        </div>
+                            </div>
+                            <button class="btn btn-submit" type="submit">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+        {{-- End modal --}}
+
+        {{-- Modal edit email --}}
         <div class="reviews-modal modal theme-modal fade" id="edit-email" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1549,6 +1601,9 @@
                 </div>
             </div>
         </div>
+        {{-- End modal --}}
+
+        {{-- Modal edit pass --}}
         <div class="reviews-modal modal theme-modal fade" id="edit-password" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1580,6 +1635,32 @@
                 </div>
             </div>
         </div>
+        {{-- End modal --}}
+
+        {{-- Modal delete address --}}
+        <div class="modal theme-modal fade confirmation-modal" id="delete-address-modal" tabindex="-1"
+            role="dialog" aria-modal="true">
+            <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body"> <img class="img-fluid" src="../assets/images/gif/question.gif"
+                            alt="">
+                        <h4>Are You Sure ?</h4>
+                        <p>The address will be permanently deleted. Are you sure you want to do this?</p>
+                        <div class="submit-button">
+                            <button class="btn" type="submit" data-bs-dismiss="modal"
+                                aria-label="Close">No</button>
+                            <form id="delete-address-form" action="" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn" type="submit" data-bs-dismiss="modal"
+                                    aria-label="Close">Yes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal theme-modal fade confirmation-modal" id="bank-card-modal" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1596,6 +1677,7 @@
                 </div>
             </div>
         </div>
+
         <div class="reviews-modal modal theme-modal fade" id="Reviews-modal" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1650,6 +1732,7 @@
                 </div>
             </div>
         </div>
+
         <div class="reviews-modal modal theme-modal fade" id="edit-bank-card" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1684,6 +1767,7 @@
                 </div>
             </div>
         </div>
+
         <div class="reviews-modal modal theme-modal fade" id="add-bank-card" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1720,202 +1804,59 @@
                 </div>
             </div>
         </div>
-        <div class="offcanvas offcanvas-top search-details" id="offcanvasTop" tabindex="-1"
-            aria-labelledby="offcanvasTopLabel">
-            <div class="offcanvas-header"><button class="btn-close" type="button" data-bs-dismiss="offcanvas"
-                    aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
-            <div class="offcanvas-body theme-scrollbar">
-                <div class="container">
-                    <h3>What are you trying to find?</h3>
-                    <div class="search-box"> <input type="search" name="text" placeholder="I'm looking for…"><i
-                            class="iconsax" data-icon="search-normal-2"></i></div>
-                    <h4>Popular Searches</h4>
-                    <ul class="rapid-search">
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Jeans
-                                Women</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Blazer Women</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Jeans
-                                Men</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Blazer Men</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>T-Shirts Men</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Shoes
-                                Men</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>T-Shirts Women</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Bags</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Sneakers Women</a></li>
-                        <li> <a href="collection-left-sidebar.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Dresses</a></li>
-                    </ul>
-                    <h4>You Might Like</h4>
-                    <div class="row gy-4 ratio_square-2 preemptive-search">
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/1.jpg"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div><a href="product.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$50.00 </p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>4+</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/2.jpg"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div><a href="product.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$95.00 <del>$140.00</del></p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>3+</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/3.jpg"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div><a href="product.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$80.00 <del>$140.00</del></p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>4</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/4.jpg"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div><a href="product.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$90.00 </p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>2+</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/5.jpg"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div><a href="product.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$180.00 <del>$140.00</del></p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>4+</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/6.jpg"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail"><a href="product.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$120.00 </p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4+</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="theme-btns"><button class="btntheme" id="dark-btn"><i class="fa-regular fa-moon"></i>
-                <div class="text">Dark</div>
-            </button>
-            <!-- <button class="btntheme rtlBtnEl" id="rtl-btn"><i class="fa-solid fa-repeat"></i>
-                            <div class="rtl">Rtl</div>
-                        </button> -->
-        </div>
     </main>
     <!-- End container content -->
+@endsection
+
+@section('script-libs')
+<script src="https://esgoo.net/scripts/jquery.js"></script>
+    <script>
+        function populateEditModal(button) {
+            const fullName = button.getAttribute('data-full-name');
+            const phone = button.getAttribute('data-phone');
+            const email = button.getAttribute('data-email');
+            const address = button.getAttribute('data-address');
+
+            // Điền thông tin vào các trường trong modal
+            document.querySelector('input[name="full_name"]').value = fullName;
+            document.querySelector('input[name="phone_number"]').value = phone;
+            document.querySelector('input[name="email"]').value = email;
+            document.querySelector('textarea[name="address"]').value = address;
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lấy tất cả các tab
+            const tabs = document.querySelectorAll('#v-pills-tab button');
+
+            // Lấy tab hiện tại từ URL nếu có
+            const currentTab = new URLSearchParams(window.location.search).get('tab');
+            if (currentTab) {
+                const activeTab = document.querySelector(`[data-bs-target="#${currentTab}"]`);
+                if (activeTab) {
+                    // Bỏ 'active' khỏi tất cả các tab và kích hoạt tab hiện tại
+                    tabs.forEach(tab => tab.classList.remove('active'));
+                    activeTab.classList.add('active');
+                    const tabContent = document.querySelector(`#${currentTab}`);
+                    if (tabContent) {
+                        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show',
+                            'active'));
+                        tabContent.classList.add('show', 'active');
+                    }
+                }
+            }
+
+            // Thêm sự kiện cho mỗi tab để cập nhật URL khi nhấp
+            tabs.forEach(tab => {
+                tab.addEventListener("click", function() {
+                    const target = this.getAttribute("data-bs-target").substring(
+                        1); // Lấy id của tab
+                    const url = new URL(window.location);
+                    url.searchParams.set("tab", target);
+                    window.history.replaceState(null, "", url); // Cập nhật URL
+                });
+            });
+        });
+    </script>
 @endsection

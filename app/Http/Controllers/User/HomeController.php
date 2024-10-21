@@ -20,6 +20,7 @@ class HomeController extends Controller
         $category = Category::all();
         return view('user.index', compact('sliders','category'));
      }
+
     public function dashboard()
     {
         return view('user.dashboard');
