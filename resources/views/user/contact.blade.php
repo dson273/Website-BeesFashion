@@ -8,95 +8,103 @@
                 <div class="custom-container container">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <h4>Login</h4>
+                            <h4>Contact</h4>
                         </div>
                         <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
-                                <li class="breadcrumb-item active"> <a href="#">Login</a></li>
+                                <li class="breadcrumb-item active"> <a href="#">Contact</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="section-b-space pt-0 login-bg-img">
-            <div class="custom-container container login-page">
-                <div class="row align-items-center">
-                    <div class="col-xxl-7 col-6 d-none d-lg-block">
-                        <div class="login-img"> <img class="img-fluid"
-                                src="https://themes.pixelstrap.net/katie/assets/images/login/1.svg" alt=""></div>
+        <section class="section-b-space pt-0">
+            <div class="custom-container container">
+                <div class="contact-main">
+                    <div class="row gy-3">
+                        <div class="col-12">
+                            <div class="title-1 address-content">
+                                <p class="pb-0">Let's Get In Touch<span></span></p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="address-items">
+                                <div class="icon-box"> <i class="iconsax" data-icon="location"></i></div>
+                                <div class="contact-box">
+                                    <h6>Contact Number</h6>
+                                    <p>+91 123 - 456 - 7890</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="address-items">
+                                <div class="icon-box"> <i class="iconsax" data-icon="phone-calling"></i></div>
+                                <div class="contact-box">
+                                    <h6>Email Address</h6>
+                                    <p>katie098@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="address-items">
+                                <div class="icon-box"> <i class="iconsax" data-icon="mail"></i></div>
+                                <div class="contact-box">
+                                    <h6>Other Address</h6>
+                                    <p>ABC Complex, New York USA 123456</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="address-items">
+                                <div class="icon-box"> <i class="iconsax" data-icon="map-1"></i></div>
+                                <div class="contact-box">
+                                    <h6>Bournemouth Office</h6>
+                                    <p>Visitación de la Encina 22</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xxl-4 col-lg-6 mx-auto">
-                        <div class="log-in-box">
-                            <div class="log-in-title">
-                                <h4>Welcome To katie</h4>
-                                <p>Register Your Account</p>
-                            </div>
-                            {{-- Form login --}}
-                            <div class="login-box">
-                                <form class="row g-3" action="{{ route('login') }}" method="POST">
-                                    @csrf
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input class="form-control @error('login') is-invalid @enderror"
-                                                id="floatingInputValue" type="text" name="login" placeholder="Enter Your Email Or Username"
-                                                 value="{{ old('login') }}">
-                                            <label for="floatingInputValue">Enter Your Email Or Username</label>
-                                            {{-- Hiển thị thông báo lỗi --}}
-                                            @error('login')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                </div>
+            </div>
+        </section>
+        <section class="section-b-space pt-0">
+            <div class="custom-container container">
+                <div class="contact-main">
+                    <div class="row align-items-center gy-4">
+                        <div class="col-lg-6 order-lg-1 order-2">
+                            <div class="contact-box">
+                                <h4>Contact Us </h4>
+                                <p>If you've got fantastic products or want to collaborate, reach out to us. </p>
+                                <div class="contact-form">
+                                    <div class="row gy-4">
+                                        <div class="col-12"> <label class="form-label" for="inputEmail4">Full Name
+                                            </label><input class="form-control" id="inputEmail4" type="text" name="text"
+                                                placeholder="Enter Full Name"></div>
+                                        <div class="col-6"><label class="form-label" for="inputEmail5">Email
+                                                Address</label><input class="form-control" id="inputEmail5" type="email"
+                                                name="email" placeholder="Enter Email Address"></div>
+                                        <div class="col-6"><label class="form-label" for="inputEmail6">Phone
+                                                Number</label><input class="form-control" id="inputEmail6" type="number"
+                                                name="number" placeholder="Enter Phone Number"></div>
+                                        <div class="col-12"> <label class="form-label"
+                                                for="inputEmail7">Subject</label><input class="form-control"
+                                                id="inputEmail7" type="text" name="text" placeholder="Enter Subject">
                                         </div>
+                                        <div class="col-12"> <label class="form-label">Message</label><textarea
+                                                class="form-control" id="message" rows="6"
+                                                placeholder="Enter Your Message"></textarea></div>
+                                        <div class="col-12"> <button class="btn btn_black rounded sm" type="submit">
+                                                Send
+                                                Message </button></div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input class="form-control @error('password') is-invalid @enderror"
-                                                id="floatingInputValue1" type="password" name="password"
-                                                placeholder="Password">
-                                            <label for="floatingInputValue1">Enter Your Password</label>
-                                            {{-- Hiển thị thông báo lỗi --}}
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="forgot-box">
-                                            <div>
-                                                <input class="custom-checkbox me-2" id="category1" type="checkbox"
-                                                    name="remember">
-                                                <label for="category1">Remember me</label>
-                                            </div>
-                                            <a href="#">Forgot Password?</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn login btn_black sm" type="submit" data-bs-dismiss="modal"
-                                            aria-label="Close">Log In</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
-
-                            <div class="other-log-in">
-                                <h6>OR</h6>
-                            </div>
-                            <div class="log-in-button">
-                                <ul>
-                                    <li> <a href="https://www.google.com/" target="_blank"> <i
-                                                class="fa-brands fa-google me-2"> </i>Google</a></li>
-                                    <li> <a href="https://www.facebook.com/" target="_blank"><i
-                                                class="fa-brands fa-facebook-f me-2"></i>Facebook </a></li>
-                                </ul>
-                            </div>
-                            <div class="other-log-in"></div>
-                            <div class="sign-up-box">
-                                <p>Don't have an account?</p><a href="{{ route('register') }}">Register</a>
-                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-6 order-lg-2 order-1 offset-xl-1">
+                            <div class="contact-img"> <img class="img-fluid"
+                                    src="https://themes.pixelstrap.net/katie/assets/images/contact/1.svg" alt=""></div>
                         </div>
                     </div>
                 </div>
@@ -113,8 +121,7 @@
                     <li> <a href="#"> <img src="../assets/images/cart/1.jpg" alt=""></a>
                         <div>
                             <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total">105</span></span></p>
+                            <p>Men's Clothing <span>$35</span></p>
                             <div class="btn-containter">
                                 <div class="btn-control"><button class="btn-control__remove"
                                         id="btn-remove">&minus;</button>
@@ -124,14 +131,16 @@
                                         <div id="quantity-next">4</div>
                                     </div><button class="btn-control__add" id="btn-add">+</button>
                                 </div>
+                                <div class="btn-cart">
+                                    <div>$<span class="btn-cart__total" id="total">105</span></div>
+                                </div>
                             </div>
                         </div><i class="iconsax delete-icon" data-icon="trash"></i>
                     </li>
                     <li> <a href="#"> <img src="../assets/images/cart/2.jpg" alt=""></a>
                         <div>
                             <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total1">105</span></span></p>
+                            <p>Men's Clothing <span>$35</span></p>
                             <div class="btn-containter">
                                 <div class="btn-control"><button class="btn-control__remove"
                                         id="btn-remove1">&minus;</button>
@@ -141,14 +150,16 @@
                                         <div id="quantity1-next">4</div>
                                     </div><button class="btn-control__add" id="btn-add1">+</button>
                                 </div>
+                                <div class="btn-cart">
+                                    <div>$<span class="btn-cart__total" id="total1">100</span></div>
+                                </div>
                             </div>
                         </div><i class="iconsax delete-icon" data-icon="trash"></i>
                     </li>
                     <li> <a href="#"> <img src="../assets/images/cart/3.jpg" alt=""></a>
                         <div>
                             <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total2">105</span></span></p>
+                            <p>Men's Clothing <span>$35</span></p>
                             <div class="btn-containter">
                                 <div class="btn-control"><button class="btn-control__remove"
                                         id="btn-remove2">&minus;</button>
@@ -158,14 +169,16 @@
                                         <div id="quantity2-next">4</div>
                                     </div><button class="btn-control__add" id="btn-add2">+</button>
                                 </div>
+                                <div class="btn-cart">
+                                    <div>$<span class="btn-cart__total" id="total2">300</span></div>
+                                </div>
                             </div>
                         </div><i class="iconsax delete-icon" data-icon="trash"></i>
                     </li>
                     <li> <a href="#"> <img src="../assets/images/cart/4.jpg" alt=""></a>
                         <div>
                             <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total3">105</span></span></p>
+                            <p>Men's Clothing <span>$35</span></p>
                             <div class="btn-containter">
                                 <div class="btn-control"><button class="btn-control__remove"
                                         id="btn-remove3">&minus;</button>
@@ -174,6 +187,9 @@
                                         <div id="quantity3-current">3</div>
                                         <div id="quantity3-next">4</div>
                                     </div><button class="btn-control__add" id="btn-add3">+</button>
+                                </div>
+                                <div class="btn-cart">
+                                    <div>$<span class="btn-cart__total" id="total3">200</span></div>
                                 </div>
                             </div>
                         </div><i class="iconsax delete-icon" data-icon="trash"></i>
@@ -238,7 +254,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/1.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/1.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -262,7 +279,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/2.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/2.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -286,7 +304,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/3.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/3.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -310,7 +329,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/4.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/4.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -334,7 +354,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/5.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/5.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -358,7 +379,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/6.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/6.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail"><a href="product.html">

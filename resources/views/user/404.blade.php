@@ -8,96 +8,32 @@
                 <div class="custom-container container">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <h4>Login</h4>
+                            <h4>404</h4>
                         </div>
                         <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
-                                <li class="breadcrumb-item active"> <a href="#">Login</a></li>
+                                <li class="breadcrumb-item active"> <a href="#">404</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="section-b-space pt-0 login-bg-img">
-            <div class="custom-container container login-page">
-                <div class="row align-items-center">
-                    <div class="col-xxl-7 col-6 d-none d-lg-block">
-                        <div class="login-img"> <img class="img-fluid"
-                                src="https://themes.pixelstrap.net/katie/assets/images/login/1.svg" alt=""></div>
-                    </div>
-                    <div class="col-xxl-4 col-lg-6 mx-auto">
-                        <div class="log-in-box">
-                            <div class="log-in-title">
-                                <h4>Welcome To katie</h4>
-                                <p>Register Your Account</p>
-                            </div>
-                            {{-- Form login --}}
-                            <div class="login-box">
-                                <form class="row g-3" action="{{ route('login') }}" method="POST">
-                                    @csrf
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input class="form-control @error('login') is-invalid @enderror"
-                                                id="floatingInputValue" type="text" name="login" placeholder="Enter Your Email Or Username"
-                                                 value="{{ old('login') }}">
-                                            <label for="floatingInputValue">Enter Your Email Or Username</label>
-                                            {{-- Hiển thị thông báo lỗi --}}
-                                            @error('login')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input class="form-control @error('password') is-invalid @enderror"
-                                                id="floatingInputValue1" type="password" name="password"
-                                                placeholder="Password">
-                                            <label for="floatingInputValue1">Enter Your Password</label>
-                                            {{-- Hiển thị thông báo lỗi --}}
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="forgot-box">
-                                            <div>
-                                                <input class="custom-checkbox me-2" id="category1" type="checkbox"
-                                                    name="remember">
-                                                <label for="category1">Remember me</label>
-                                            </div>
-                                            <a href="#">Forgot Password?</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn login btn_black sm" type="submit" data-bs-dismiss="modal"
-                                            aria-label="Close">Log In</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div class="other-log-in">
-                                <h6>OR</h6>
-                            </div>
-                            <div class="log-in-button">
-                                <ul>
-                                    <li> <a href="https://www.google.com/" target="_blank"> <i
-                                                class="fa-brands fa-google me-2"> </i>Google</a></li>
-                                    <li> <a href="https://www.facebook.com/" target="_blank"><i
-                                                class="fa-brands fa-facebook-f me-2"></i>Facebook </a></li>
-                                </ul>
-                            </div>
-                            <div class="other-log-in"></div>
-                            <div class="sign-up-box">
-                                <p>Don't have an account?</p><a href="{{ route('register') }}">Register</a>
-                            </div>
-                        </div>
+        <section class="section-b-space pt-0">
+            <div class="custom-container container error-img">
+                <div class="row g-4">
+                    <div class="col-12 px-0"> <a href="#"><img class="img-fluid"
+                                src="../assets/images/other-img/404.png" alt=""></a></div>
+                    <div class="col-12">
+                        <h2>Page Not Found </h2>
+                        <p>The page you are looking for doesn't exist or an other error occurred. Go back, or head over
+                            to
+                            choose a new direction. </p><a class="btn btn_black rounded" href="index.html">Back Home
+                            Page
+                            <svg>
+                                <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow"></use>
+                            </svg></a>
                     </div>
                 </div>
             </div>
@@ -238,7 +174,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/1.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/1.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -262,7 +199,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/2.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/2.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -286,7 +224,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/3.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/3.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -310,7 +249,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/4.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/4.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -334,7 +274,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/5.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/5.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -358,7 +299,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/6.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/6.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail"><a href="product.html">

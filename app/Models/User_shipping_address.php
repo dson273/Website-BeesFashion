@@ -12,7 +12,6 @@ class User_shipping_address extends Model
         'full_name',
         'phone_number',
         'address',
-        'email',
         'user_id',
         'is_active',
         'created_at',

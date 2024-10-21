@@ -7,95 +7,206 @@
             <div class="heading-banner">
                 <div class="custom-container container">
                     <div class="row align-items-center">
-                        <div class="col-sm-6">
-                            <h4>Login</h4>
+                        <div class="col-6">
+                            <h4>Order Tracking</h4>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
-                                <li class="breadcrumb-item active"> <a href="#">Login</a></li>
+                                <li class="breadcrumb-item active"> <a href="#">Order Tracking</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="section-b-space pt-0 login-bg-img">
-            <div class="custom-container container login-page">
-                <div class="row align-items-center">
-                    <div class="col-xxl-7 col-6 d-none d-lg-block">
-                        <div class="login-img"> <img class="img-fluid"
-                                src="https://themes.pixelstrap.net/katie/assets/images/login/1.svg" alt=""></div>
+        <section class="section-b-space pt-0">
+            <div class="custom-container container order-tracking">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="order-table">
+                            <div class="table-responsive theme-scrollbar">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Order Date </th>
+                                            <th>Location</th>
+                                            <th>Employee</th>
+                                            <th>Delivery Date </th>
+                                            <th>Courier</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>Jan 13, 2024</td>
+                                            <td>26, Starts Hollow Colony Denver Colorado United States 80014</td>
+                                            <td>JCartherin Forres</td>
+                                            <td>Jan 25, 2024</td>
+                                            <td> <a href="#"><img class="img-fluid"
+                                                        src="../assets/images/other-img/brand-logo.png" alt="">DHL
+                                                    Express</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xxl-4 col-lg-6 mx-auto">
-                        <div class="log-in-box">
-                            <div class="log-in-title">
-                                <h4>Welcome To katie</h4>
-                                <p>Register Your Account</p>
+                    <div class="col-lg-5">
+                        <div class="tracking-box">
+                            <div class="sidebar-title">
+                                <div class="loader-line"></div>
+                                <h4>Order Progress/Status</h4>
                             </div>
-                            {{-- Form login --}}
-                            <div class="login-box">
-                                <form class="row g-3" action="{{ route('login') }}" method="POST">
-                                    @csrf
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input class="form-control @error('login') is-invalid @enderror"
-                                                id="floatingInputValue" type="text" name="login" placeholder="Enter Your Email Or Username"
-                                                 value="{{ old('login') }}">
-                                            <label for="floatingInputValue">Enter Your Email Or Username</label>
-                                            {{-- Hiển thị thông báo lỗi --}}
-                                            @error('login')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input class="form-control @error('password') is-invalid @enderror"
-                                                id="floatingInputValue1" type="password" name="password"
-                                                placeholder="Password">
-                                            <label for="floatingInputValue1">Enter Your Password</label>
-                                            {{-- Hiển thị thông báo lỗi --}}
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="forgot-box">
-                                            <div>
-                                                <input class="custom-checkbox me-2" id="category1" type="checkbox"
-                                                    name="remember">
-                                                <label for="category1">Remember me</label>
-                                            </div>
-                                            <a href="#">Forgot Password?</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn login btn_black sm" type="submit" data-bs-dismiss="modal"
-                                            aria-label="Close">Log In</button>
-                                    </div>
-                                </form>
+                            <div class="tracking-timeline">
+                                <h4>Timeline</h4>
                             </div>
-
-                            <div class="other-log-in">
-                                <h6>OR</h6>
+                            <ul>
+                                <li>
+                                    <div>
+                                        <h6>Frd 12, MOnday 2024 </h6>
+                                        <p>Order Placed</p>
+                                    </div><span>12:30pm</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <h6>Frd 16, Tuesday 2024 </h6>
+                                        <p>Order Confirmed , waiting ofr Payment </p>
+                                    </div><span>06:30pm</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <h6>Frd 16, Wednesday 2024 </h6>
+                                        <p>Payment Confirmed </p>
+                                    </div><span>12:30pm</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <h6>Frd 20, friday 2024 </h6>
+                                        <p>Product Sent to Wearhouse</p>
+                                    </div><span>12:30pm</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <h6>Frd 25, saturday 2024 </h6>
+                                        <p>Product Picked by delivery man </p>
+                                    </div><span>12:30pm</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <h6>Frd 26, Sunday 2024 </h6>
+                                        <p>Delivering to Customer</p>
+                                    </div><span>12:30pm</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="tracking-box">
+                            <div class="sidebar-title">
+                                <div class="loader-line"></div>
+                                <h4>Live tracking</h4>
                             </div>
-                            <div class="log-in-button">
-                                <ul>
-                                    <li> <a href="https://www.google.com/" target="_blank"> <i
-                                                class="fa-brands fa-google me-2"> </i>Google</a></li>
-                                    <li> <a href="https://www.facebook.com/" target="_blank"><i
-                                                class="fa-brands fa-facebook-f me-2"></i>Facebook </a></li>
-                                </ul>
-                            </div>
-                            <div class="other-log-in"></div>
-                            <div class="sign-up-box">
-                                <p>Don't have an account?</p><a href="{{ route('register') }}">Register</a>
+                            <div class="tracking-map"> <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d139425.02169529037!2d113.88005714479792!3d22.35893607996488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3403fc15915a872d%3A0x98a6ff95fdd9031a!2sSunny%20Bay%20Station!5e0!3m2!1sen!2sin!4v1712578497898!5m2!1sen!2sin"
+                                    width="100%" height="420"></iframe></div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="order-table tracking-table">
+                            <div class="table-responsive theme-scrollbar">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Product Name </th>
+                                            <th>Product Id </th>
+                                            <th>color </th>
+                                            <th>Quantity</th>
+                                            <th>Price </th>
+                                            <th>Total </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>
+                                                <div class="cart-box"> <a href="product.html"> <img
+                                                            src="../assets/images/notification/5.jpg" alt=""></a>
+                                                    <div> <a href="product.html">
+                                                            <h5>Pink T-shirt women</h5>
+                                                        </a>
+                                                        <p>Sold By: <span>Roger Group </span></p>
+                                                        <p>Size: <span>Small</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>#ghtd45</td>
+                                            <td>pink</td>
+                                            <td>01</td>
+                                            <td>$250.00</td>
+                                            <td>$250.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2.</td>
+                                            <td>
+                                                <div class="cart-box"> <a href="product.html"> <img
+                                                            src="../assets/images/notification/6.jpg" alt=""></a>
+                                                    <div> <a href="product.html">
+                                                            <h5>Black Ladies Heel</h5>
+                                                        </a>
+                                                        <p>Sold By: <span>Roger Group </span></p>
+                                                        <p>Size: <span>Small</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>#gft74</td>
+                                            <td>Black</td>
+                                            <td>03</td>
+                                            <td>$30.00</td>
+                                            <td>$90.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3.</td>
+                                            <td>
+                                                <div class="cart-box"> <a href="product.html"> <img
+                                                            src="../assets/images/notification/7.jpg" alt=""></a>
+                                                    <div> <a href="product.html">
+                                                            <h5>French Terrain Red T Shirt</h5>
+                                                        </a>
+                                                        <p>Sold By: <span>Roger Group </span></p>
+                                                        <p>Size: <span>Small</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>#asfd42</td>
+                                            <td>Red</td>
+                                            <td>02</td>
+                                            <td>$50.00</td>
+                                            <td>$100.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4.</td>
+                                            <td>
+                                                <div class="cart-box"> <a href="product.html"> <img
+                                                            src="../assets/images/notification/8.jpg" alt=""></a>
+                                                    <div> <a href="product.html">
+                                                            <h5>Women Green t-shirt</h5>
+                                                        </a>
+                                                        <p>Sold By: <span>Roger Group </span></p>
+                                                        <p>Size: <span>Small</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>#yto451</td>
+                                            <td>Green</td>
+                                            <td>01</td>
+                                            <td>$45.00</td>
+                                            <td>$45.0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -238,7 +349,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/1.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/1.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -262,7 +374,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/2.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/2.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -286,7 +399,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/3.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/3.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -310,7 +424,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/4.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/4.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -334,7 +449,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/5.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/5.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -358,7 +474,8 @@
                             <div class="product-box-6">
                                 <div class="img-wrapper">
                                     <div class="product-image"><a href="product.html"> <img class="bg-img"
-                                                src="../assets/images/product/product-2/blazers/6.jpg" alt="product"></a>
+                                                src="../assets/images/product/product-2/blazers/6.jpg"
+                                                alt="product"></a>
                                     </div>
                                 </div>
                                 <div class="product-detail"><a href="product.html">
@@ -383,3 +500,4 @@
     </main>
     <!-- End container content -->
 @endsection
+
