@@ -10,26 +10,31 @@
                 <div id="bannerCarousel" class="carousel slide " data-bs-ride="carousel">
                     <div class="carousel-inner ">
                         <!-- Slide 1 -->
-                        <div class="carousel-item active  ">
-                            <div class="row">
-                                <a href="#">
-                                    <img class="img-fluid" src="{{ asset('assets/images/banner/b-1.jpg') }}" alt="">
-                                </a>
+                        @foreach ($sliders as $slider)
+                        @foreach ($slider->banner_images as $key => $banner_image)
+                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                <div class="row">
+                                    <a href="#">
+                                        <img src="{{ asset('storage/' . $banner_image->file_name) }}" alt="Banner Image">
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
+                    @endforeach
                         <!-- Slide 2 -->
-                        <div class="carousel-item  ">
+                        {{-- <div class="carousel-item  ">
                             <div class="row ">
                                 <a href="#">
                                     <img class="img-fluid" src="{{ asset('assets/images/banner/b-2.jpg') }}" alt="">
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                     <!-- Indicators/dots -->
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0"
+                            class="active"></button>
                         <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
                     </div>
                     <!-- Carousel Controls -->
@@ -1056,8 +1061,8 @@
                                 <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
                                         tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
                                             data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
-                                        href="compare.html" tabindex="0"><i class="iconsax"
-                                            data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
+                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
                                             data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
                                         data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
                                             data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
@@ -1755,50 +1760,50 @@
         <!-- End seach -->
 
         <!-- <div class="wrapper">
-                    <div class="title-box">
-                        <img src="{{ asset('assets/images/other-img/cookie.png') }}" alt="">
-                        <h3>Cookies Consent</h3>
-                    </div>
-                    <div class="info">
-                        <p>We use cookies to improve our site and your shopping experience. By continuing to browse our site you
-                            accept our cookie policy.
-                        </p>
-                    </div>
-                    <div class="buttons"><button class="button btn btn_outline sm" id="acceptBtn">Accept</button><button
-                            class="button btn btn_black sm">Decline</button></div>
-                </div> -->
+                            <div class="title-box">
+                                <img src="{{ asset('assets/images/other-img/cookie.png') }}" alt="">
+                                <h3>Cookies Consent</h3>
+                            </div>
+                            <div class="info">
+                                <p>We use cookies to improve our site and your shopping experience. By continuing to browse our site you
+                                    accept our cookie policy.
+                                </p>
+                            </div>
+                            <div class="buttons"><button class="button btn btn_outline sm" id="acceptBtn">Accept</button><button
+                                    class="button btn btn_black sm">Decline</button></div>
+                        </div> -->
 
         <!-- <div class="modal theme-modal newsletter-modal newsletter-4 fade" id="newsletter" tabindex="-1" role="dialog"
-                    aria-modal="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                            <div class="modal-body p-0">
-                                <div class="news-latter-box">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-6">
-                                            <div class="newslwtter-content">
-                                                <h2>Stay Fashionable</h2>
-                                                <span>Stay Informed</span>
-                                                <h4>Subscriber to Our Newsletter!</h4>
-                                                <p>Keep up to date so you don't miss any new updates or goods we reveal.</p>
-                                                <div class="form-floating"><input type="text" placeholder="Enter Your Name.."></div>
-                                                <div class="form-floating"><input type="email" placeholder="Enter Your Email..">
+                            aria-modal="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <div class="modal-body p-0">
+                                        <div class="news-latter-box">
+                                            <div class="row align-items-center">
+                                                <div class="col-lg-6">
+                                                    <div class="newslwtter-content">
+                                                        <h2>Stay Fashionable</h2>
+                                                        <span>Stay Informed</span>
+                                                        <h4>Subscriber to Our Newsletter!</h4>
+                                                        <p>Keep up to date so you don't miss any new updates or goods we reveal.</p>
+                                                        <div class="form-floating"><input type="text" placeholder="Enter Your Name.."></div>
+                                                        <div class="form-floating"><input type="email" placeholder="Enter Your Email..">
+                                                        </div>
+                                                        <button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
+                                                            aria-label="Close">Submit</button>
+                                                    </div>
                                                 </div>
-                                                <button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                                    aria-label="Close">Submit</button>
+                                                <div class="col-md-6 d-none d-lg-block">
+                                                    <div class="newslwtter-img"> <img class="img-fluid"
+                                                            src="{{ asset('assets/images/other-img/news-latter4.png') }}" alt=""></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6 d-none d-lg-block">
-                                            <div class="newslwtter-img"> <img class="img-fluid"
-                                                    src="{{ asset('assets/images/other-img/news-latter4.png') }}" alt=""></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    </div> -->
+                            </div> -->
     </main>
     <!-- End container content -->
 @endsection
