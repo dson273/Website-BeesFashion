@@ -7,7 +7,8 @@
 <!-- Start header -->
 <header>
     <div class="top_header">
-        <p>Free Coupe Code: Summer Sale On Selected items Use:<span>NEW 26</span><a href="product-select.html">SHOP NOW</a></p>
+        <p>Free Coupe Code: Summer Sale On Selected items Use:<span>NEW 26</span><a href="product-select.html">SHOP
+                NOW</a></p>
     </div>
     <div class="box-header">
         <div class="custom-container container header-1">
@@ -45,52 +46,87 @@
                 <div class="col-12">
                     <div class="main-menu">
                         <a class="brand-logo" href="{{ route('home-shop') }}"> <img class="img-fluid for-light"
-                                src="{{ asset('assets/images/logo/logo-4.png') }}" alt="logo"><img
-                                class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo-white-4.png') }}"
+                                src="{{ asset('assets/images/logo/logo-Bee.png') }}" alt="logo"><img
+                                class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo-Bee.png') }}"
                                 alt="logo"></a>
+
                         <nav id="main-nav">
+
                             <ul class="nav-menu sm-horizontal theme-scrollbar" id="sm-horizontal">
                                 <li class="mobile-back" id="mobile-back">Back<i class="fa-solid fa-angle-right ps-2"
                                         aria-hidden="true"></i></li>
                                 <li>
                                     <a class="nav-link" href="{{ route('home-shop') }}">Home</a>
                                 </li>
-                                <li>
-                                    <a class="nav-link" href="product-select.html">Shop</a>
-                                </li>
-                                <li>
+                                {{-- <li>
+                                    <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
+                                    </li> --}}
+                                    @foreach ($category as $parentCategory)
+                                    @if ($parentCategory->parent_category_id === null)
+                                        <!-- Kiểm tra nếu là danh mục cha -->
+                                        <li class="has-submenu">
+                                            <a class="nav-link" href="#">{{ $parentCategory->name }}
+                                                @php
+                                                    // Kiểm tra xem có danh mục con hay không
+                                                    $hasChild = $category->contains('parent_category_id', $parentCategory->id);
+                                                @endphp
+                                                @if ($hasChild)
+                                                    <span><i class="fa-solid fa-angle-down"></i></span>
+                                                @endif
+                                            </a>
+                                
+                                            @if ($hasChild) <!-- Chỉ hiển thị ul nếu có danh mục con -->
+                                                <ul class="nav-submenu">
+                                                    <!-- Hiển thị danh mục con nếu có -->
+                                                    @foreach ($category as $childCategory)
+                                                        @if ($childCategory->parent_category_id === $parentCategory->id)
+                                                            <li>
+                                                                <a href="#">{{ $childCategory->name }}</a>
+                                                                <!-- Hiển thị tên danh mục con -->
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                
+                                        </li>
+                                    @endif
+                                @endforeach
+                                
+                                {{-- <li>
                                     <a class="nav-link" href="product-detail.html">Product <span> <i
                                                 class="fa-solid fa-angle-down"></i></span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="#">Page <span> <i
-                                                class="fa-solid fa-angle-down"></i></span></a>
-                                    <ul class="nav-submenu">
-                                        <li> <a href="search.html">Search</a></li>
-                                        <li> <a href="wishlist.html">Wishlist</a></li>
-                                        <li> <a href="faq.html">Faq</a></li>
-                                        <li> <a href="dashboard.html">My Dashboard <span
-                                                    class="badge-sm theme-default">new</span></a></li>
-                                        <li> <a href="order-success.html">Order Success</a></li>
-                                        <li> <a href="order-tracking.html">Order Tracking</a></li>
+                                    </li> --}}
+                                {{-- <li>
+                                        <a class="nav-link" href="#">Page <span> <i
+                                                    class="fa-solid fa-angle-down"></i></span></a>
+                                        <ul class="nav-submenu">
+                                            <li> <a href="search.html">Search</a></li>
+                                            <li> <a href="wishlist.html">Wishlist</a></li>
+                                            <li> <a href="faq.html">Faq</a></li>
+                                            <li> <a href="dashboard.html">My Dashboard <span
+                                                        class="badge-sm theme-default">new</span></a></li>
+                                            <li> <a href="order-success.html">Order Success</a></li>
+                                            <li> <a href="order-tracking.html">Order Tracking</a></li>
 
+                                    </li> --}}
+                                {{-- <li> <a href="check-out.html">Check Out</a></li>
+                                    <li> <a href="about-us.html">About Us</a></li>
+                                    <li> <a href="404.html">404 </a></li>
+                                    <li> <a href="cart.html">cart </a></li>
+                                    <li> <a href="login.html"> Login <span class="badge-sm danger-color animated">Hot
+                                            </span></a></li> --}}
+                                {{-- <li> <a href="forget-password.html"> Forgot Password </a></li>
+                                    <li> <a href="sign-up.html"> Sign Up </a></li> --}}
+                                {{-- </ul>
+                                    </li> --}}
+                                {{-- <li>
+                                    <a class="nav-link" href="blog.html">Blog<span> <i
+                                                class="fa-solid fa-angle-down"></i></span></a>
                                 </li>
-                                <li> <a href="check-out.html">Check Out</a></li>
-                                <li> <a href="about-us.html">About Us</a></li>
-                                <li> <a href="404.html">404 </a></li>
-                                <li> <a href="cart.html">cart </a></li>
-                                <li> <a href="login.html"> Login <span class="badge-sm danger-color animated">Hot
-                                        </span></a></li>
-                                <li> <a href="forget-password.html"> Forgot Password </a></li>
-                                <li> <a href="sign-up.html"> Sign Up </a></li>
+                                <li> <a class="nav-link" href="contact.html">Contact </a></li> --}}
                             </ul>
-                            </li>
-                            <li>
-                                <a class="nav-link" href="blog.html">Blog<span> <i
-                                            class="fa-solid fa-angle-down"></i></span></a>
-                            </li>
-                            <li> <a class="nav-link" href="contact.html">Contact </a></li>
-                            </ul>
+
                         </nav>
 
                         <div class="sub_header">
