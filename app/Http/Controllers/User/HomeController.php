@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Banner;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 
 class HomeController extends Controller
 {
@@ -17,7 +17,12 @@ class HomeController extends Controller
         $sliders  = Banner::where('is_active', 1)
         ->with('banner_images') // Load các hình ảnh liên quan
         ->get();
-        return view('user.index', compact('sliders'));
+       
+        $topProducts = Product::orderBy('view', 'desc')->limit(4)->get();
+        $newProducts = Product::orderBy('created_at', 'desc')->limit(4)->get();
+
+        return view('user.index', compact('sliders','topProducts','newProducts'));
+
      }
 
     public function dashboard()

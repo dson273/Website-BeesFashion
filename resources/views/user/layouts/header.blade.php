@@ -61,6 +61,7 @@
                                 {{-- <li>
                                     <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
                                     </li> --}}
+                                   
                                     @foreach ($category as $parentCategory)
                                     @if ($parentCategory->parent_category_id === null)
                                         <!-- Kiểm tra nếu là danh mục cha -->
