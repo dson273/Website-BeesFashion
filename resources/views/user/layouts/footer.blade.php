@@ -6,7 +6,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="footer-content">
                             <div class="footer-logo"><a href="index.html"> <img class="img-fluid"
-                                        src="{{ asset('assets/images/logo/logo-white-4.png') }}" alt="Footer Logo"></a>
+                                        src="{{ asset('assets/images/logo/logo-Bee-white.png') }}" alt="Footer Logo"></a>
                             </div>
                             <ul>
                                 <li>
