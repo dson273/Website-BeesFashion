@@ -15,7 +15,7 @@
                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                                 <div class="row">
                                     <a href="#">
-                                        <img src="{{ asset('storage/' . $banner_image->file_name) }}" alt="Banner Image">
+                                        <img class="img-fluid" src="{{ asset('storage/' . $banner_image->file_name) }}" alt="Banner Image">
                                     </a>
                                 </div>
                             </div>

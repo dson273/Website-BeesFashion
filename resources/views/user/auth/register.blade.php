@@ -30,7 +30,7 @@
                     <div class="col-xxl-4 col-lg-6 mx-auto">
                         <div class="log-in-box">
                             <div class="log-in-title">
-                                <h4>Welcome To katie</h4>
+                                <h4>Welcome To BeesFashion</h4>
                                 <p>Create New Account</p>
                             </div>
                             {{-- Form register --}}

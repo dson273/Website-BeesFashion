@@ -17,8 +17,7 @@ class HomeController extends Controller
         $sliders  = Banner::where('is_active', 1)
         ->with('banner_images') // Load các hình ảnh liên quan
         ->get();
-        $category = Category::all();
-        return view('user.index', compact('sliders','category'));
+        return view('user.index', compact('sliders'));
      }
 
     public function dashboard()
@@ -26,5 +25,5 @@ class HomeController extends Controller
         return view('user.dashboard');
     }
 
-    
+
 }
