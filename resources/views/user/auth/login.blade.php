@@ -10,12 +10,12 @@
                         <div class="col-sm-6">
                             <h4>Login</h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Login</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <div class="col-xxl-4 col-lg-6 mx-auto">
                         <div class="log-in-box">
                             <div class="log-in-title">
-                                <h4>Welcome To katie</h4>
+                                <h4>Welcome To BeesFashion</h4>
                                 <p>Register Your Account</p>
                             </div>
                             {{-- Form login --}}

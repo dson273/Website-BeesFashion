@@ -11,13 +11,15 @@
                     <div class="carousel-inner ">
                         <!-- Slide 1 -->
                         @foreach ($sliders as $slider)
+
                             {{-- @foreach ($slider->banner_images as $key => $banner_image) --}}
                                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                                     <div class="row">
                                         <a href="#">
-                                            <img src="{{ asset('storage/' . $slider->banner_images->first()->file_name) }}" alt="Banner Image">
+                                            <img class="img-fluid" src="{{ asset('storage/' . $slider->banner_images->first()->file_name) }}" alt="Banner Image">
                                         </a>
                                     </div>
+
                                 </div>
                             {{-- @endforeach --}}
                         @endforeach
