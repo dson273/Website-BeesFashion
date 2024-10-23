@@ -19,8 +19,9 @@
                                         </a>
                                     </div>
                                 </div>
-                            {{-- @endforeach --}}
+                            </div>
                         @endforeach
+                    @endforeach
                         <!-- Slide 2 -->
                         {{-- <div class="carousel-item  ">
                             <div class="row ">

@@ -19,7 +19,6 @@ class HomeController extends Controller
         ->get();
         $topProducts = Product::orderBy('view', 'desc')->limit(4)->get();
         $newProducts = Product::orderBy('created_at', 'desc')->limit(4)->get();
-
         return view('user.index', compact('sliders','topProducts','newProducts'));
      }
 

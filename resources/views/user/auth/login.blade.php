@@ -72,7 +72,7 @@
                                                     name="remember">
                                                 <label for="category1">Remember me</label>
                                             </div>
-                                            <a href="#">Forgot Password?</a>
+                                            <a href="{{route('fotgot-pasword')}}">Forgot Password?</a>
                                         </div>
                                     </div>
                                     <div class="col-12">

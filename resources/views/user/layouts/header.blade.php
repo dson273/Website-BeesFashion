@@ -162,7 +162,7 @@
                                                 <li class="fw-bold">Hello: {{Auth::user()->username}}</li>
                                                 <li> <a href="{{ route('dashboard') }}">Dashboard </a></li>
                                                 <li> <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#Confirmation-modal" title="Quick View"
+                                                        data-bs-target="#modal-logout" title="Logout"
                                                         tabindex="0">Logout</a></li>
                                             </ul>
                                     </li>
