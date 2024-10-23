@@ -17,12 +17,10 @@ class HomeController extends Controller
         $sliders  = Banner::where('is_active', 1)
         ->with('banner_images') // Load các hình ảnh liên quan
         ->get();
-       
         $topProducts = Product::orderBy('view', 'desc')->limit(4)->get();
         $newProducts = Product::orderBy('created_at', 'desc')->limit(4)->get();
 
         return view('user.index', compact('sliders','topProducts','newProducts'));
-
      }
 
     public function dashboard()
