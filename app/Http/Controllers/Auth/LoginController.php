@@ -33,16 +33,18 @@ class LoginController extends Controller
             // Đăng nhập thành công
             $request->session()->regenerate();
 
-            // // Kiểm tra xem người dùng có bị ban không
-            // $bannedUser = User_ban::where('user_id', Auth::id())
-            //                       ->where('is_active', 1) // Kiểm tra trạng thái active
-            //                       ->first();
-            // if ($bannedUser) {
-            //     Auth::logout(); // Đăng xuất người dùng
-            //     return redirect()->back()->withErrors([
-            //         'email' => 'Bạn đã bị khóa! Lý do: ' . $bannedUser->reason,
-            //     ])->withInput();
-            // }
+            // Kiểm tra trạng thái tài khoản có bị banned không
+            if (Auth::user()->status === 'banned') {
+                // Tìm lý do và thời gian ban
+                $bannedUser = User_ban::where('user_id', Auth::id())
+                    ->where('is_active', 1) // Kiểm tra trạng thái ban
+                    ->first();
+                $reason = $bannedUser ? 'Lý do: ' . $bannedUser->reason : 'Không có lý do cụ thể.';
+                Auth::logout(); // Đăng xuất người dùng
+                return redirect()->back()->withErrors([
+                    'login' => 'Tài khoản của bạn đã bị khóa! ' . $reason,
+                ])->withInput();
+            }
 
             // Kiểm tra vai trò của người dùng
             if (Auth::user()->role === 'admin' || Auth::user()->role === 'staff') {
@@ -57,7 +59,6 @@ class LoginController extends Controller
         return back()->withErrors([
             'login' => 'Login information is incorrect!',
         ])->onlyInput('login');
-
     }
     public function logout()
     {
