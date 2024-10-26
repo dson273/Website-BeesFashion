@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name')->comment('Tên thuộc tính');
-            $table->foreignIdFor(AttributeType::class)->comment('Loại thuộc tính (color, button,...)');
+            $table->foreignIdFor(Attribute_type::class)->nullable()->comment('Loại thuộc tính (color, button,...)');
             $table->timestamps();
         });
     }

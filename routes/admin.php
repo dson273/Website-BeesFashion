@@ -43,6 +43,17 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
         })->name('dashboard');
         // Các chức năng staff có thể quản lý
 
+
+    //Quản lý sản phẩm
+    Route::resource('products', ProductController::class);
+    Route::post('products/getAllCategories', action: [ProductController::class, 'getAllCategories'])->name('getAllCategories');
+    Route::post('products/getAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
+    Route::post('products/createNewCategory', action: [ProductController::class, 'createNewCategory'])->name('createNewCategory');
+    Route::post('products/getSkuProduct', action: [ProductController::class, 'getSkuProduct'])->name('getSkuProduct');
+    Route::post('products/getSkuProductVariation', action: [ProductController::class, 'getSkuProductVariation'])->name('getSkuProductVariation');
+    Route::post('products/getAllAttributeValuesById/{id}', action: [ProductController::class, 'getAllAttributeValuesById'])->name('getAllAttributeValuesById');
+    Route::post('products/addNewAttributeValueById/{id}', action: [ProductController::class, 'addNewAttributeValueById'])->name('addNewAttributeValueById');
+      
         //Quản lý danh mục
         Route::middleware(['checkPermission:Quản lý danh mục'])->group(function () {
             Route::resource('categories', CategoryController::class);

@@ -12,6 +12,7 @@ class Product_file extends Model
         'file_name',
         'file_type',
         'product_id',
+        'is_default',
         'created_at',
         'updated_at'
     ];
