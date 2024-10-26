@@ -27,7 +27,11 @@ class AttributeController extends Controller
     {
         $listAttributeTypes = Attribute_type::query()->get();
         $listAttribute = Attribute::query()->get();
-        // dd($listAttributeTypes);
+
+        // dd($listAttribute);
+
+        // $type_name = $listAttributeTypes->type_name;
+
         return view('admin.attributes.create', compact('listAttributeTypes', 'listAttribute'));
     }
 

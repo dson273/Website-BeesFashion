@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ul class="breadcrumb float-end">
-                            <li class="breadcrumb-item"> <a href="{{ route('home-shop') }}">Home</a></li>
+                            <li class="breadcrumb-item"> <a href="{{ route('/') }}">Home</a></li>
                             <li class="breadcrumb-item active"> <a href="">Bộ sản phẩm</a></li>
                         </ul>
                     </div>

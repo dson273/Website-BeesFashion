@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name')->comment('Họ và tên');
+            $table->string('full_name')->comment('Họ và tên')->nullable();
             $table->string('username')->comment('Tên đăng nhập');
             $table->string('email')->unique()->comment('Email của người dùng');
             $table->string('phone')->nullable()->comment('Số điện thoại');
