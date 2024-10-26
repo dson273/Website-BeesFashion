@@ -20,6 +20,6 @@ class Attribute extends Model
     }
     public function attribute_type()
     {
-        return $this->belongsTo(AttributeType::class);
+        return $this->belongsTo(Attribute_type::class);
     }
 }
