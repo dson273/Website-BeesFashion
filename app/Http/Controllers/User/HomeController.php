@@ -36,7 +36,7 @@ class HomeController extends Controller
 
         return view('user.index', compact('sliders', 'topProducts', 'newProducts', 'products'));
     }
-    
+   
 
     public function dashboard()
     {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Attribute;
 use Illuminate\Http\Request;
-use App\Models\AttributeType;
+use App\Models\Attribute_type;
 use App\Models\Attribute_value;
 use App\Http\Requests\Attribute_valueRequest;
 use App\Http\Controllers\Controller;
@@ -67,7 +67,7 @@ class AttributeValueController extends Controller
     {
         // Lấy attribute và các giá trị liên quan từ bảng attribute_values
         $attribute = Attribute::findOrFail($id); // Tìm attribute theo ID
-        $attribute_type = AttributeType::where('id', $attribute->attribute_type_id)->first();
+        $attribute_type = Attribute_type::where('id', $attribute->attribute_type_id)->first();
         $type_name = $attribute_type->type_name;
         // dd($type_name);
         // $values = $attribute->values; // Lấy tất cả các giá trị (attribute_values) của thuộc tính
@@ -83,7 +83,7 @@ class AttributeValueController extends Controller
         $listAttributeValue = Attribute_value::query()->get();
         $attribute_value = Attribute_value::find($id);
         $attribute = Attribute::find($attribute_value->attribute_id);
-        $attribute_type = AttributeType::where('id', $attribute->attribute_type_id)->first();
+        $attribute_type = Attribute_type::where('id', $attribute->attribute_type_id)->first();
         $type_name = $attribute_type->type_name;
         return view('admin.attribute_values.edit', compact('attribute_value', 'type_name', 'attribute', 'attribute_type', 'listAttributeValue'));
     }

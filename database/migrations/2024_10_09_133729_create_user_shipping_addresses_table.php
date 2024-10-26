@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('full_name')->comment('Tên đầy đủ của người dùng ví dụ: Phạm Văn A');
             $table->string('phone_number')->nullable()->comment('Số điện thoại');
             $table->text('address')->nullable()->comment('Địa chỉ');
-            $table->foreignIdFor(User::class)->constrained()->comment('Xác định thông tin này thuộc người dùng nào');
+            $table->foreignIdFor(User::class)->constrained()->comment('Xác định thông tin này thuộc người dùng nào')->onDelete('cascade');
             $table->tinyInteger('is_active')->default(1)->comment('Trạng thái kích hoạt thông tin này, mặc định là 1(đã kích hoạt)');
             $table->timestamps();
         });

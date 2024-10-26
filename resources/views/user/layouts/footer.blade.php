@@ -118,7 +118,7 @@
     <!-- End footer -->
 
     {{-- Modal logout --}}
-    <div class="modal theme-modal fade confirmation-modal" id="Confirmation-modal" tabindex="-1" role="dialog"
+    <div class="modal theme-modal fade confirmation-modal" id="modal-logout" tabindex="-1" role="dialog"
         aria-modal="true">
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">

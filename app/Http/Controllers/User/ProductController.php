@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -15,6 +16,9 @@ class ProductController extends Controller
         //
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -29,6 +33,18 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+
+    public function getProductsByCategories(Request $request)
+    {
+        $categoryIds = explode(',', $request->input('categories'));
+
+        $products = Product::whereHas('product_categories', function($query) use ($categoryIds) {
+            $query->whereIn('category_id', $categoryIds);
+        })->get();
+
+        return response()->json(['listProduct' => $products]);
     }
 
     /**

@@ -14,8 +14,8 @@
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">List staffs</h1>
         <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                                    For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                                        DataTables documentation</a>.</p> -->
+                                        For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
+                                            DataTables documentation</a>.</p> -->
         <p class="mb-2">Below is a list of staffs</p>
         <!-- DataTales Example -->
         <div class="card shadow mb-4 ">
@@ -55,14 +55,28 @@
                             @foreach ($staffs as $key => $staff)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{$staff->full_name ?? 'Đang cập nhật'}}</td>
+                                    <td>{{ $staff->full_name ?? 'Đang cập nhật' }}</td>
                                     <td>{{ $staff->username }}</td>
                                     <td>{{ $staff->email }}</td>
-                                    <td>{{$staff->phone ?? 'Đang cập nhật'}}</td>
-                                    <td>{{$staff->address ?? 'Đang cập nhật'}}</td>
-                                    <td>Đang cập nhật</td>
+                                    <td>{{ $staff->phone ?? 'Đang cập nhật' }}</td>
+                                    <td>{{ $staff->address ?? 'Đang cập nhật' }}</td>
+                                    <td>{!! $staff->status === 'active' ? '<span class="badge text-light bg-success">Hoạt động</span>' : '<span class="badge bg-danger text-light">Locked</span>' !!}</td>
+
                                     <td>
                                         <a class="btn btn-warning btn-sm" href="{{ route('admin.staffs.edit', $staff->id) }}">Edit</a>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.staffs.permission', $staff->id) }}">Mission</a>
+                                        <a class="btn btn-info btn-sm" href="{{ route('admin.staffs.history', $staff->id) }}">History</a>
+                                        <div class="d-flex mt-1">
+                                            @if ($staff->status === 'active')
+                                            <!-- Nút Ban với mở modal -->
+                                            <button class="btn btn-secondary btn-sm mr-1" type="button" onclick="openBanModal('{{ route('admin.staffs.ban', $staff->id) }}')">Ban</button>
+                                        @elseif ($staff->status === 'banned')
+                                            <!-- Nút Unban -->
+                                            <form action="{{ route('admin.staffs.unban', $staff->id) }}" method="POST">
+                                                @csrf
+                                                <button class="btn btn-success btn-sm mr-1" type="submit">Unban</button>
+                                            </form>
+                                        @endif
                                         <form action="{{ route('admin.staffs.destroy', $staff->id) }}" method="POST"
                                             style="display: inline;">
                                             @csrf
@@ -70,6 +84,8 @@
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure?')">Xóa</button>
                                         </form>
+                                        </div>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -79,38 +95,35 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <!-- Modal Khóa Khách Hàng -->
-    <div class="modal fade" id="banModal" tabindex="-1" aria-labelledby="banModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form id="banForm" method="POST">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="banModalLabel">Khóa Khách Hàng</h5>
-                        <button type="button" class="close" data-dismiss="modal"><i
-                                class="fa-solid fa-xmark"></i></button>
-                    </div>
-                    <div class="modal-body">
-                        <label for="type">Loại khóa:</label>
-                        <select name="type" id="type" class="form-select">
-                            <option value="warn">Cảnh cáo</option>
-                            <option value="ban">Khóa</option>
-                        </select>
 
-                        <label for="reason" class="mt-3">Lý do khóa:</label>
-                        <textarea name="reason" id="reason" class="form-control" rows="3" required></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-danger">Xác nhận khóa</button>
-
-                    </div>
-                </form>
+    <!-- Modal Ban-->
+<div class="modal fade" id="banModal" tabindex="-1" role="dialog" aria-labelledby="banModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="banModalLabel">Ban Staff</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form id="banForm" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="banReason">Lý do ban</label>
+                        <textarea class="form-control" id="banReason" name="reason" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-danger">Ban</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+
     <!-- /.container-fluid -->
 @endsection
 @section('script-libs')
@@ -121,15 +134,11 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('theme/admin/js/demo/datatables-demo.js') }}"></script>
     <script>
-        let selectedUserId = null; // Biến toàn cục để lưu ID khách hàng
-
-        function showBanModal(userId) {
-            selectedUserId = userId; // Lưu ID khách hàng
-            // Đặt URL action cho form ban khách hàng
-            document.getElementById('banForm').action = '/admin/customers/ban/' + selectedUserId;
-            // Hiện modal
-            var banModal = new bootstrap.Modal(document.getElementById('banModal'));
-            banModal.show();
+        function openBanModal(banUrl) {
+            // Cập nhật action của form
+            document.getElementById('banForm').action = banUrl;
+            // Hiển thị modal
+            $('#banModal').modal('show');
         }
     </script>
 

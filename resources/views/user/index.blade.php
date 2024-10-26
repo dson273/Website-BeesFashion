@@ -19,20 +19,18 @@
                                                 alt="Banner Image">
                                         </a>
                                     </div>
-
                                 </div>
                             @endforeach
                         @endforeach
-                        <!-- Slide 2 -->
-                        {{-- <div class="carousel-item  ">
+                    </div>
+                    <!-- Slide 2 -->
+                    {{-- <div class="carousel-item  ">
                             <div class="row ">
                                 <a href="#">
                                     <img class="img-fluid" src="{{ asset('assets/images/banner/b-2.jpg') }}" alt="">
                                 </a>
                             </div>
                         </div> --}}
-
-                    </div>
                     <!-- Indicators/dots -->
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0"
@@ -50,6 +48,7 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
+
                 </div>
             </div>
         </section>
@@ -421,7 +420,6 @@
                                                                     @endif
                                                                 </p>
                                                             @endforeach
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -626,7 +624,6 @@
                                                             <a href="product-detail.html">
                                                                 <h6>{{ $item->name }}</h6>
                                                             </a>
-
                                                             @foreach ($item->product_variants as $variant)
                                                                 <p>
                                                                     Giá bán: ${{ $variant->sale_price }}
@@ -635,6 +632,7 @@
                                                                     @endif
                                                                 </p>
                                                             @endforeach
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1839,6 +1837,7 @@
                                                         </div>
                                                     </div>
                                                     </div> -->
+
     </main>
     <!-- End container content -->
 @endsection
