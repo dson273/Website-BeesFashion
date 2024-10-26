@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
-            $table->string('SKU')->comment('Mã sản phẩm biến thể');
+            $table->string('SKU')->unique()->comment('Mã sản phẩm biến thể');
             $table->string('name')->comment('Tên sản phẩm biến thể');
             $table->string('image')->nullable()->comment('Ảnh sản phẩm biến thể');
             $table->string('sale_price')->nullable()->comment('Giá bán');
