@@ -11,6 +11,7 @@ use App\Http\Controllers\user\CollectionController;
 
 
 Route::get('/',[HomeController::class,'index'])->name('/');
+
 //Đăng ký
 Route::get('register', [RegisterController::class, 'index'])->name('register');//Trang đăng ký
 Route::post('register', [RegisterController::class, 'register'])->name('register');//Chức năng đăng ký

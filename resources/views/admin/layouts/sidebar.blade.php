@@ -143,6 +143,21 @@
             </div>
         </div>
     </li>
+ {{-- Quản lý vouchers--}}
+ <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVouchers"
+        aria-expanded="true" aria-controls="collapseVouchers">
+        <i class="fas fa-fw fa-wrench"></i>
+        <span>Quản lý vouchers</span>
+    </a>
+    <div id="collapseVouchers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Danh sách chức năng</h6>
+            <a class="collapse-item" href="{{ route('admin.vouchers.index') }}">Danh sách</a>
+            {{-- <a class="collapse-item" href="{{ route('admin.banner.create') }}">Thêm</a> --}}
+        </div>
+    </div>
+</li>
 
     {{-- <!-- Divider -->
     <hr class="sidebar-divider">
