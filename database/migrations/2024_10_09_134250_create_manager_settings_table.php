@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('manager_settings', function (Blueprint $table) {
             $table->id();
             $table->string('manager_name')->comment('Tên chức năng quản lý');
-            $table->foreignId('parent_manager_setting_id')->nullAble()->comment('Xác định chức năng quản trị cha')->constrained('manager_settings');
+            $table->foreignId('parent_manager_setting_id')->nullable()->comment('Xác định chức năng quản trị cha')->constrained('manager_settings')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -12,7 +12,7 @@
                         </div>
                         {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
-                                <li class="breadcrumb-item"> <a href="{{route('home-shop')}}">Home </a></li>
+                                <li class="breadcrumb-item"> <a href="{{route('/')}}">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Dashboard</a></li>
                             </ul>
                         </div> --}}
@@ -37,7 +37,7 @@
                                     <div class="profile-name">
                                         <h4>{{ Auth::user()->username }}</h4>
                                         <h6>{{ Auth::user()->email }}</h6>
-                                        <span data-bs-toggle="modal" data-bs-target="#edit-box" title="Quick View"
+                                        <span data-bs-toggle="modal" data-bs-target="#edit-profile" title="Quick View"
                                             tabindex="0">Edit Profile</span>
                                     </div>
                                 </div>
@@ -91,7 +91,9 @@
                                             <h4>My Dashboard</h4>
                                         </div>
                                         <div class="dashboard-user-name">
-                                            <h6>Hello, <b>John Doe</b></h6>
+                                            <h6>Hello,
+                                                <b>{{ Auth::user()->full_name ? Auth::user()->full_name : Auth::user()->username }}</b>
+                                            </h6>
                                             <p>My dashboard provides a comprehensive overview of key metrics and data
                                                 relevant to your operations. It offers real-time insights into
                                                 performance,
@@ -154,16 +156,18 @@
                                                     <ul class="profile-information">
                                                         <li>
                                                             <h6>Name :</h6>
-                                                            <p>John Doe</p>
+                                                            <p>{{ Auth::user()->full_name ? Auth::user()->full_name : 'Not updated yet' }}
+                                                            </p>
                                                         </li>
                                                         <li>
                                                             <h6>Phone:</h6>
-                                                            <p>+1 5551855359</p>
+                                                            <p>{{ Auth::user()->phone ? Auth::user()->phone : 'Not updated yet' }}
+                                                            </p>
                                                         </li>
                                                         <li>
                                                             <h6>Address:</h6>
-                                                            <p>26, Starts Hollow Colony Denver, Colorado, United States
-                                                                80014</p>
+                                                            <p>{{ Auth::user()->address ? Auth::user()->address : 'Not updated yet' }}
+                                                            </p>
                                                         </li>
                                                     </ul>
                                                     <div class="sidebar-title">
@@ -173,9 +177,7 @@
                                                     <ul class="profile-information mb-0">
                                                         <li>
                                                             <h6>Email :</h6>
-                                                            <p>john.customer@example.com<span data-bs-toggle="modal"
-                                                                    data-bs-target="#edit-email" title="Quick View"
-                                                                    tabindex="0">Edit</span></p>
+                                                            <p>{{ Auth::user()->email }}</p>
                                                         </li>
                                                         <li>
                                                             <h6>Password :</h6>
@@ -187,7 +189,8 @@
                                                 </div>
                                                 <div class="col-xl-5">
                                                     <div class="profile-image d-none d-xl-block"> <img class="img-fluid"
-                                                            src="../assets/images/other-img/dashboard.png" alt="">
+                                                            src="{{ asset('assets/images/other-img/dashboard.png') }}"
+                                                            alt="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1148,20 +1151,43 @@
                                             <h4>My Address Details</h4>
                                         </div>
                                         <div class="row gy-3">
-                                            @foreach (auth()->user()->user_shipping_addresses as $shippingAddress)
+                                            <div class="col-xxl-6 col-md-6">
+                                                <div class="address-option"><label for="address-billing-0"> <span
+                                                            class="delivery-address-box"> <span class="form-check">
+                                                                <input class="custom-radio" id="address-billing-0"
+                                                                    type="radio" checked="checked"
+                                                                    name="radio"></span><span
+                                                                class="address-detail"><span class="address"> <span
+                                                                        class="address-title">Home
+                                                                    </span></span><span class="address"> <span
+                                                                        class="address-home"> <span class="address-tag">
+                                                                            Full name:</span>{{Auth::user()->full_name}}</span></span><span class="address"> <span
+                                                                        class="address-home"> <span
+                                                                            class="address-tag">Address:</span>{{Auth::user()->address}}</span></span><span
+                                                                    class="address"> <span class="address-home"> <span
+                                                                            class="address-tag">Phone :</span>{{Auth::user()->phone}}</span></span>
+                                                                            <span class="address">
+
+                                                                                <span
+                                                                                    class="address-home d-flex justify-content-between align-items-center">
+                                                                                    <span
+                                                                                        class="custom-status-set-address">Default</span>
+                                                                                </span></span></span>
+                                                                            </label></div>
+                                            </div>
+                                            @foreach (Auth::user()->user_shipping_addresses as $shippingAddress)
                                                 <div class="col-xxl-6 col-md-6">
                                                     <div class="address-option">
                                                         <label for="address-billing-0">
                                                             <div class="delivery-address-box">
                                                                 <span class="form-check">
                                                                     <input class="custom-radio" id="address-billing-0"
-                                                                        type="radio" name="radio"
-                                                                        @if ($shippingAddress->is_active) checked="checked" @endif>
+                                                                        type="radio" name="radio">
                                                                 </span>
                                                                 <span class="address-detail">
                                                                     <span class="address">
 
-                                                                        <span class="address-title">Information</span>
+                                                                        <span class="address-title">Office</span>
                                                                     </span>
                                                                     <span class="address">
                                                                         <span class="address-home">
@@ -1179,7 +1205,7 @@
                                                                     <span class="address"><span class="address-home">
                                                                             <span class="address-tag">Phone
                                                                                 :</span>{{ $shippingAddress->phone_number }}</span></span>
-                                                                    <span class="address">
+                                                                    {{-- <span class="address">
                                                                         @if ($shippingAddress->is_active)
                                                                             <span
                                                                                 class="address-home d-flex justify-content-between align-items-center">
@@ -1202,22 +1228,17 @@
                                                                                 </form>
                                                                             </span>
                                                                         @endif
-                                                                    </span>
+                                                                    </span> --}}
                                                                 </span>
-
                                                             </div>
-
 
                                                             <span class="buttons">
                                                                 <a class="btn btn_black sm" href="#"
-                                                                    data-bs-toggle="modal" data-bs-target="#edit-box"
+                                                                    data-bs-toggle="modal" data-bs-target="#edit-address"
                                                                     title="Edit" tabindex="0"
-                                                                    data-id="{{ $shippingAddress->id }}"
-                                                                    data-full-name="{{ $shippingAddress->full_name }}"
-                                                                    data-phone="{{ $shippingAddress->phone_number }}"
-                                                                    data-email="{{ $shippingAddress->email }}"
-                                                                    data-address="{{ $shippingAddress->address }}"
-                                                                    onclick="populateEditModal(this);event.preventDefault();document.getElementById('edit-address-form').action='{{ route('dashboard.editAddress', $shippingAddress->id) }}';$('#edit-box').modal('show');">Edit</a>
+                                                                    data-id="{{ $shippingAddress->id }}" data-full-name="{{ $shippingAddress->full_name }}"
+                                                                    data-phone="{{ $shippingAddress->phone_number }}" data-address="{{ $shippingAddress->address }}"
+                                                                    onclick="populateEditAddressModal(this);event.preventDefault();document.getElementById('edit-address-form').action='{{ route('dashboard.editAddress', $shippingAddress->id) }}';$('#edit-address').modal('show');">Edit</a>
                                                                 <a class="btn btn_outline sm" href="#"title="Delete"
                                                                     tabindex="0"
                                                                     onclick="event.preventDefault();document.getElementById('delete-address-form').action='{{ route('dashboard.deleteAddress', $shippingAddress->id) }}';$('#delete-address-modal').modal('show');">Delete</a>
@@ -1335,6 +1356,80 @@
                 </div>
             </div>
         </section>
+        {{-- Modal edit profile --}}
+        <div class="reviews-modal modal theme-modal fade" id="edit-profile" tabindex="-1" role="dialog"
+            aria-modal="true">
+            <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Edit Profile</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        <form id="edit-profile-form" class="row g-3" action="{{ route('dashboard.editProfile') }}"
+                            method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input id="full_name" class="form-control @error('full_name') is-invalid @enderror"
+                                        type="text" name="full_name" value="{{ Auth::user()->full_name }}"
+                                        placeholder="Enter your full name.">
+                                    <div class="invalid-feedback">
+                                        @error('full_name')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input id="phone" class="form-control @error('phone') is-invalid @enderror"
+                                        type="number" name="phone" value="{{ Auth::user()->phone }}"
+                                        placeholder="Enter your phone.">
+                                    <div class="invalid-feedback">
+                                        @error('phone')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email address</label>
+                                    <input id="email" class="form-control @error('email') is-invalid @enderror"
+                                        type="email" name="email" value="{{ Auth::user()->email }}"
+                                        placeholder="Enter your email.">
+                                    <div class="invalid-feedback">
+                                        @error('email')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                    <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address"
+                                        placeholder="Enter your address.">{{ Auth::user()->address }}</textarea>
+                                    <div class="invalid-feedback">
+                                        @error('address')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-submit" type="submit">Submit</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- End modal --}}
+
         <div class="offcanvas offcanvas-end shopping-details" id="offcanvasRight" tabindex="-1"
             aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
@@ -1431,9 +1526,8 @@
             </div>
         </div>
 
-
         {{-- Modal Edit address --}}
-        <div class="reviews-modal modal theme-modal fade" id="edit-box" tabindex="-1" role="dialog"
+        <div class="reviews-modal modal theme-modal fade" id="edit-address" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -1456,24 +1550,13 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <label class="form-label">Phone</label>
                                     <input class="form-control @error('phone_number') is-invalid @enderror"
                                         type="number" name="phone_number" placeholder="Enter your Number."
                                         value="{{ old('phone_number') }}">
                                     @error('phone_number')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label class="form-label">Email address</label>
-                                    <input class="form-control @error('email') is-invalid @enderror" type="email"
-                                        placeholder="john.smith@example.com" name="email"
-                                        value="{{ old('email') }}">
-                                    @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1516,7 +1599,8 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
-                        <form class="row g-3" action="{{ route('dashboard.addAddress') }}" method="POST">
+                        <form class="row g-3" action="{{ route('dashboard.addAddress') }}"
+                            method="POST">
                             @csrf
                             <div class="col-12">
                                 <div class="form-group">
@@ -1529,24 +1613,13 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <label class="form-label">Phone</label>
                                     <input class="form-control @error('phone_number') is-invalid @enderror"
                                         type="number" name="phone_number" placeholder="Enter your Number."
                                         value="{{ old('phone_number') }}">
                                     @error('phone_number')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label class="form-label">Email address</label>
-                                    <input class="form-control @error('email') is-invalid @enderror" type="email"
-                                        placeholder="john.smith@example.com" name="email"
-                                        value="{{ old('email') }}">
-                                    @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1563,40 +1636,6 @@
                             </div>
                             <button class="btn btn-submit" type="submit">Submit</button>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- End modal --}}
-
-        {{-- Modal edit email --}}
-        <div class="reviews-modal modal theme-modal fade" id="edit-email" tabindex="-1" role="dialog"
-            aria-modal="true">
-            <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4>Edit Email</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body pt-0">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="from-group"> <label class="form-label">First Name</label><input
-                                        class="form-control" type="text" name="review[author]"
-                                        placeholder="Enter your name."></div>
-                            </div>
-                            <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Email address</label><input
-                                        class="form-control" type="email" placeholder="john.smith@example.com">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Phone</label><input
-                                        class="form-control" type="number" name="review[author]"
-                                        placeholder="Enter your Number."></div>
-                            </div><button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                aria-label="Close">Submit</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1660,7 +1699,9 @@
                 </div>
             </div>
         </div>
+        {{-- End modal --}}
 
+        {{-- Modal bank-card --}}
         <div class="modal theme-modal fade confirmation-modal" id="bank-card-modal" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1677,7 +1718,9 @@
                 </div>
             </div>
         </div>
+        {{-- End modal --}}
 
+        {{-- Modal review --}}
         <div class="reviews-modal modal theme-modal fade" id="Reviews-modal" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1733,6 +1776,7 @@
             </div>
         </div>
 
+        {{-- Modal edit bank --}}
         <div class="reviews-modal modal theme-modal fade" id="edit-bank-card" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1768,6 +1812,7 @@
             </div>
         </div>
 
+        {{-- Modal add bank --}}
         <div class="reviews-modal modal theme-modal fade" id="add-bank-card" tabindex="-1" role="dialog"
             aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -1804,23 +1849,101 @@
                 </div>
             </div>
         </div>
+
     </main>
     <!-- End container content -->
 @endsection
 
 @section('script-libs')
-<script src="https://esgoo.net/scripts/jquery.js"></script>
     <script>
-        function populateEditModal(button) {
+        //Cập nhật profile
+        $(document).ready(function() {
+            $('#edit-profile-form').on('submit', function(event) {
+                event.preventDefault();
+
+                // Lấy dữ liệu từ form
+                let full_name = $('#edit-profile-form').find('input[name="full_name"]').val().trim();
+                let phone = $('#edit-profile-form').find('input[name="phone"]').val().trim();
+                let email = $('#edit-profile-form').find('input[name="email"]').val().trim();
+                let address = $('#edit-profile-form').find('textarea[name="address"]').val().trim();
+                let _token = $('input[name="_token"]').val();
+                let url = $(this).attr('action');
+
+                // Xóa các lỗi cũ
+                $('.invalid-feedback').text('');
+                $('.form-control').removeClass('is-invalid');
+
+                // Gửi AJAX request
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: {
+                        full_name: full_name,
+                        phone: phone,
+                        email: email,
+                        address: address,
+                        _token: _token
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            // Thay đổi dữ liệu trên profile
+                            $('.profile-name h6').text(email);
+                            $('.profile-information li:contains("Name") p').text(response.user
+                                .full_name ||
+                                'Not updated yet');
+                            $('.profile-information li:contains("Phone") p').text(response.user
+                                .phone ||
+                                'Not updated yet');
+                            $('.profile-information li:contains("Address") p').text(response
+                                .user.address ||
+                                'Not updated yet');
+                            $('.profile-information li:contains("Email") p').text(response.user
+                                .email);
+                            $('.dashboard-user-name b').text(response.user.full_name ? response
+                                .user.full_name : response.user.username);
+
+                            // Đóng modal sau khi thành công
+                            $('#edit-profile').modal('hide');
+
+                            // Hiển thị thông báo thành công
+                            toastr.success(response.message, 'Notification!');
+                        }
+                    },
+                    error: function(error) {
+                        // Xử lý lỗi trả về từ server (validation errors)
+                        if (error.responseJSON && error.responseJSON.errors) {
+                            let errors = error.responseJSON.errors;
+                            for (let key in errors) {
+                                let input = $('input[name="' + key + '"]');
+                                let textarea = $('textarea[name="' + key + '"]');
+                                let errMsg = errors[key][0];
+
+                                // Hiển thị thông báo lỗi
+                                if (input.length) {
+                                    input.addClass('is-invalid');
+                                    input.next('.invalid-feedback').text(errMsg);
+                                } else if (textarea.length) {
+                                    textarea.addClass('is-invalid');
+                                    textarea.next('.invalid-feedback').text(errMsg);
+                                }
+                            }
+                        } else {
+                            console.error('Unknown error occurred');
+                        }
+                    }
+                });
+            });
+        });
+
+        function populateEditAddressModal(button) {
             const fullName = button.getAttribute('data-full-name');
             const phone = button.getAttribute('data-phone');
-            const email = button.getAttribute('data-email');
             const address = button.getAttribute('data-address');
 
             // Điền thông tin vào các trường trong modal
             document.querySelector('input[name="full_name"]').value = fullName;
             document.querySelector('input[name="phone_number"]').value = phone;
-            document.querySelector('input[name="email"]').value = email;
             document.querySelector('textarea[name="address"]').value = address;
         }
     </script>

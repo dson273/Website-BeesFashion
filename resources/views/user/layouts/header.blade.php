@@ -17,7 +17,7 @@
                 <div class="col-12 p-0">
                     <div class="mobile-fix-option">
                         <ul>
-                            <li> <a href="{{ route('home-shop') }}"><i class="iconsax" data-icon="home-1"></i>Home</a>
+                            <li> <a href="{{ route('/') }}"><i class="iconsax" data-icon="home-1"></i>Home</a>
                             </li>
                             <li><a href="search.html"><i class="iconsax" data-icon="search-normal-2"></i>Search</a></li>
                             <li class="shopping-cart"> <a href="cart.html"><i class="iconsax"
@@ -45,7 +45,7 @@
                 <!-- Dektop -->
                 <div class="col-12">
                     <div class="main-menu">
-                        <a class="brand-logo" href="{{ route('home-shop') }}"> <img class="img-fluid for-light"
+                        <a class="brand-logo" href="{{ route('/') }}"> <img class="img-fluid for-light"
                                 src="{{ asset('assets/images/logo/logo-Bee.png') }}" alt="logo"><img
                                 class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo-Bee.png') }}"
                                 alt="logo"></a>
@@ -56,11 +56,12 @@
                                 <li class="mobile-back" id="mobile-back">Back<i class="fa-solid fa-angle-right ps-2"
                                         aria-hidden="true"></i></li>
                                 <li>
-                                    <a class="nav-link" href="{{ route('home-shop') }}">Home</a>
+                                    <a class="nav-link" href="{{ route('/') }}">Home</a>
                                 </li>
                                 {{-- <li>
                                     <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
                                     </li> --}}
+                                   
                                     @foreach ($category as $parentCategory)
                                     @if ($parentCategory->parent_category_id === null)
                                         <!-- Kiểm tra nếu là danh mục cha -->
@@ -74,7 +75,7 @@
                                                     <span><i class="fa-solid fa-angle-down"></i></span>
                                                 @endif
                                             </a>
-                                
+
                                             @if ($hasChild) <!-- Chỉ hiển thị ul nếu có danh mục con -->
                                                 <ul class="nav-submenu">
                                                     <!-- Hiển thị danh mục con nếu có -->
@@ -88,11 +89,11 @@
                                                     @endforeach
                                                 </ul>
                                             @endif
-                                
+
                                         </li>
                                     @endif
                                 @endforeach
-                                
+
                                 {{-- <li>
                                     <a class="nav-link" href="product-detail.html">Product <span> <i
                                                 class="fa-solid fa-angle-down"></i></span></a>
@@ -158,9 +159,10 @@
                                         <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
                                         <div class="onhover-show-div user">
                                             <ul>
+                                                <li class="fw-bold">Hello: {{Auth::user()->username}}</li>
                                                 <li> <a href="{{ route('dashboard') }}">Dashboard </a></li>
                                                 <li> <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#Confirmation-modal" title="Quick View"
+                                                        data-bs-target="#modal-logout" title="Logout"
                                                         tabindex="0">Logout</a></li>
                                             </ul>
                                     </li>

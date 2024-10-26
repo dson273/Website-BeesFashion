@@ -25,7 +25,7 @@ class User extends Authenticatable
         'address',
         'password',
         'role',
-        'avatar'
+        'status'
     ];
 
     /**
@@ -81,6 +81,14 @@ class User extends Authenticatable
     }
     public function user_bans(){
         return $this->hasMany(User_ban::class);
+    }
+
+    // Lấy tất cả quyền của người dùng
+    public function permissions()
+    {
+        return $this->belongsToMany(Manager_setting::class, 'user_manager_settings')
+                    ->withPivot('is_active')
+                    ->withTimestamps();
     }
 
     //Địa chỉ giao hàng mặc định

@@ -10,12 +10,12 @@
                         <div class="col-sm-6">
                             <h4>Forgot Password</h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Forgot Password</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

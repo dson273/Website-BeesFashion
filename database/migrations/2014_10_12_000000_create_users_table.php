@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password')->comment('Mật khẩu');
             $table->enum('role', ['member', 'staff', 'admin'])->default('member')
             ->comment('Vai trò của người dùng, ở đây có 3 vai trò: người dùng, nhân viên và admin, admin lớn nhất');
+            $table->enum('status', ['active', 'banned'])->default('active')->comment('Trạng thái của tài khoản');
             $table->rememberToken();
             $table->timestamps();
         });
