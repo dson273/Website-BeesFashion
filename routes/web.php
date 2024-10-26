@@ -25,7 +25,7 @@ Route::post('login', [LoginController::class, 'login'])->name('login');//Chức 
 // Route::get('collection', action: function () {
 //     return view(view: 'user/collection');
 // });
-Route::get('/',[HomeController::class,'index'])->name('home-shop');
+// Route::get('/',[HomeController::class,'index'])->name('home-shop');
 
 Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword');//Trang quên mật khẩu
 
