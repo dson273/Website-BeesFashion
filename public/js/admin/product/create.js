@@ -1268,7 +1268,7 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
                     if (!existingOptionIds.has(item.id.toString())) {
                         var option = document.createElement('option');
                         option.value = item['id'];
-                        option.text = item['value'];
+                        option.text = item['name'];
                         option.className = 'optionSelectAttributeValueAddExisting';
                         selectExistingAttributeValues.appendChild(option);
                     }
@@ -1283,7 +1283,7 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
                 attributeValueDataOptionsMap[attributeId].forEach(function (item) {
                     var option = document.createElement('option');
                     option.value = item['id'];
-                    option.text = item['value'];
+                    option.text = item['name'];
                     option.className = 'optionSelectAttributeValueAddExisting';
                     selectExistingAttributeValues.appendChild(option);
                 });
@@ -1367,7 +1367,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
                 if (!existingOptionIds.has(item.id.toString())) {
                     var option = document.createElement('option');
                     option.value = item['id'];
-                    option.text = item['value'];
+                    option.text = item['name'];
                     option.className = 'optionSelectAttributeValueAddExisting';
                     selectExistingAttributeValues.appendChild(option);
                 }
@@ -1382,7 +1382,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
             attributeValueDataOptionsMap[attributeId].forEach(function (item) {
                 var option = document.createElement('option');
                 option.value = item['id'];
-                option.text = item['value'];
+                option.text = item['name'];
                 option.className = 'optionSelectAttributeValueAddExisting';
                 selectExistingAttributeValues.appendChild(option);
             });
@@ -1410,7 +1410,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
     var newSelectedOptionData = [];
     attributeValueDataOptionsMap[attributeId].forEach(function (item) {
         newSelectedOptionData.push({
-            text: item.value,
+            text: item.name,
             value: item.id
         });
     })

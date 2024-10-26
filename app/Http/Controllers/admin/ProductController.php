@@ -180,7 +180,7 @@ class ProductController extends Controller
                                             ]);
                                         } else {
                                             $newAttributeValue = Attribute_value::create([
-                                                'value' => $attributeItem['attributeValue'],
+                                                'name' => $attributeItem['attributeValue'],
                                                 'attribute_id' => $itemAttributeData['attributeId']
                                             ]);
                                             Product_variant_attribute_value::create([
@@ -195,7 +195,7 @@ class ProductController extends Controller
                                 if (!$checkAttribute) {
                                     $newAttribute = Attribute::create(['name' => $attributeItem['attributeName']]);
                                     $newAttributeValue = Attribute_value::create([
-                                        'value' => $attributeItem['attributeValue'],
+                                        'name' => $attributeItem['attributeValue'],
                                         'attribute_id' => $newAttribute->id
                                     ]);
 
@@ -379,7 +379,7 @@ class ProductController extends Controller
         foreach ($attributeValues as $item) {
             $array = [];
             $array['id'] = $item->id;
-            $array['value'] = $item->value;
+            $array['value'] = $item->name;
             $attributeValuesJson[] = $array;
         }
         $response = [
@@ -392,7 +392,7 @@ class ProductController extends Controller
     public function addNewAttributeValueById(string $id)
     {
         $newAttributeValue = request()->input('new_attribute_value');
-        $checkAttributeValue = Attribute_value::where('attribute_id', $id)->where('value', $newAttributeValue)->first();
+        $checkAttributeValue = Attribute_value::where('attribute_id', $id)->where('name', $newAttributeValue)->first();
         if ($checkAttributeValue) {
             $response = [
                 'status' => 400,
@@ -402,11 +402,11 @@ class ProductController extends Controller
         }
         $newAttributeValueModel = new Attribute_value();
         $newAttributeValueModel->attribute_id = $id;
-        $newAttributeValueModel->value = $newAttributeValue;
+        $newAttributeValueModel->name = $newAttributeValue;
         $newAttributeValueModel->save();
         $array = [];
         $array['id'] = $newAttributeValueModel->id;
-        $array['value'] = $newAttributeValueModel->value;
+        $array['value'] = $newAttributeValueModel->name;
         $response = [
             'status' => 200,
             'message' => 'Add new attribute value successfully!',
