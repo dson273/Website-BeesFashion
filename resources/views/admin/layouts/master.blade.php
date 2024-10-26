@@ -131,19 +131,40 @@
         };
         //Route variable
         var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
+        var getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
+        var createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
+        var storeProductRoute = "{{route('admin.products.store')}}";
+        var getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
+        var getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
+
+        function returnGetAllAttributeValuesByIdRoute(id) {
+            return "{{route('admin.getAllAttributeValuesById',':id')}}".replace(':id', id);
+        }
+
+        function returnAddNewAttributeValueByIdRoute(id) {
+            return "{{route('admin.addNewAttributeValueById',':id')}}".replace(':id', id);
+        }
+
         var csrf = "{{ csrf_token() }}";
         //Thông báo cố định
     </script>
 
-    <!-- Slimselect -->
+    <!-- Slim Select -->
     <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js">
         new SlimSelect({
             select: '#selectElement'
         })
     </script>
 
+    <!-- AnimeJs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.js"></script>
+
+
+    <!-- Link libs -->
     @yield('script-libs')
 
+    <!-- Short notification commands -->
     <script>
         @if(session('statusSuccess'))
         var message = @json(session('statusSuccess'));
