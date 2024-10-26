@@ -20,7 +20,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4 ">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Data of all staffs</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data of all manager-setting</h6>
                 <a href="{{ route('admin.managerSettings.create') }}"
                     class="btn btn-success text-white text-decoration-none"><i class="fas fa-plus"></i> Create</a>
             </div>

@@ -15,7 +15,7 @@ class ManagerSettingController extends Controller
     {
         $managerSettings = Manager_setting::with('children_manager_setting')
         ->whereNull('parent_manager_setting_id')->orderBy('manager_name')->get();
-        return view('admin.manger_settings.index', compact('managerSettings'));
+        return view('admin.managerSettings.index', compact('managerSettings'));
     }
 
     /**
@@ -24,7 +24,7 @@ class ManagerSettingController extends Controller
     public function create()
     {
         $parentSettings = Manager_setting::whereNull('parent_manager_setting_id')->get();
-        return view('admin.manger_settings.create', compact('parentSettings'));
+        return view('admin.managerSettings.create', compact('parentSettings'));
     }
 
     /**
@@ -56,7 +56,7 @@ class ManagerSettingController extends Controller
     {
         $managerSetting = Manager_setting::findOrFail($id);
         $parentSettings = Manager_setting::whereNull('parent_manager_setting_id')->get();
-        return view('admin.manger_settings.edit', compact('managerSetting','parentSettings'));
+        return view('admin.managerSettings.edit', compact('managerSetting','parentSettings'));
     }
 
     /**
