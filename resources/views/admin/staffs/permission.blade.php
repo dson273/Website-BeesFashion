@@ -23,28 +23,53 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($allPermissions as $key => $permission)
+                            @foreach ($allPermissions as $parentKey => $parentPermission)
+                                <!-- Hiển thị chức năng cha -->
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $permission->manager_name }}</td>
+                                    <td>{{ $parentKey + 1 }}</td>
+                                    <td><strong>{{ $parentPermission->manager_name }}</strong></td>
                                     <td>
-                                        @if(in_array($permission->id, $userPermissions))
+                                        @if(in_array($parentPermission->id, $userPermissions))
                                             <span class="text-success">Đã cấp quyền</span>
                                         @else
                                             <span class="text-danger">Chưa cấp quyền</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <form action="{{ route('admin.staffs.permissions.toggle', [$user->id, $permission->id]) }}" method="POST">
+                                        <form action="{{ route('admin.staffs.permissions.toggle', [$user->id, $parentPermission->id]) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-{{ in_array($permission->id, $userPermissions) ? 'danger' : 'success' }} btn-sm">
-                                                {{ in_array($permission->id, $userPermissions) ? 'Xoá quyền' : 'Cấp quyền' }}
+                                            <button type="submit" class="btn btn-{{ in_array($parentPermission->id, $userPermissions) ? 'danger' : 'success' }} btn-sm">
+                                                {{ in_array($parentPermission->id, $userPermissions) ? 'Xoá quyền' : 'Cấp quyền' }}
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
+
+                                <!-- Hiển thị các chức năng con (nếu có) -->
+                                @foreach ($parentPermission->children_manager_setting as $childKey => $childPermission)
+                                    <tr>
+                                        <td>{{ $parentKey + 1 }}.{{ $childKey + 1 }}</td>
+                                        <td style="padding-left: 30px;">- {{ $childPermission->manager_name }}</td>
+                                        <td>
+                                            @if(in_array($childPermission->id, $userPermissions))
+                                                <span class="text-success">Đã cấp quyền</span>
+                                            @else
+                                                <span class="text-danger">Chưa cấp quyền</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('admin.staffs.permissions.toggle', [$user->id, $childPermission->id]) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-{{ in_array($childPermission->id, $userPermissions) ? 'danger' : 'success' }} btn-sm">
+                                                    {{ in_array($childPermission->id, $userPermissions) ? 'Xoá quyền' : 'Cấp quyền' }}
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
                 <div>

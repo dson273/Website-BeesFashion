@@ -24,6 +24,7 @@ class User_manager_setting extends Model
         return $this->belongsTo(Manager_setting::class);
     }
 
+    //Chuyển đổi trạng thái
     public function toggleActive()
     {
         $this->is_active = !$this->is_active; // Đảo trạng thái is_active

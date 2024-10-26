@@ -93,16 +93,33 @@
         </div>
     </li>
 
-    {{-- Quản lý nhân viên --}}
+    {{-- Kiểm tra nếu là admin --}}
     @if (Auth::user()->role === 'admin')
-        {{-- Kiểm tra nếu là admin --}}
+        {{-- Quản lý manager setting --}}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManagers"
+                aria-expanded="true" aria-controls="collapseManagers">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Quản lý chức năng</span>
+            </a>
+            <div id="collapseManagers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Danh sách chức năng</h6>
+                    <a class="collapse-item" href="{{ route('admin.managerSettings.index') }}">Danh sách</a>
+                    <a class="collapse-item" href="{{ route('admin.managerSettings.create') }}">Thêm</a>
+                </div>
+            </div>
+        </li>
+
+        {{-- Quản lý nhân viên --}}
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaffs"
                 aria-expanded="true" aria-controls="collapseStaffs">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Quản lý nhân viên</span>
             </a>
-            <div id="collapseStaffs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapseStaffs" class="collapse" aria-labelledby="headingPages"
+                data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Danh sách chức năng</h6>
                     <a class="collapse-item" href="{{ route('admin.staffs.index') }}">Danh sách</a>

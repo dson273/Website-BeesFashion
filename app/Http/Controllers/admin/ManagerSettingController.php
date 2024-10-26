@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Manager_setting;
 use Illuminate\Http\Request;
 
 class ManagerSettingController extends Controller
@@ -12,7 +13,9 @@ class ManagerSettingController extends Controller
      */
     public function index()
     {
-        //
+        $managerSettings = Manager_setting::with('children_manager_setting')
+        ->whereNull('parent_manager_setting_id')->orderBy('manager_name')->get();
+        return view('admin.manger_settings.index', compact('managerSettings'));
     }
 
     /**
@@ -20,7 +23,8 @@ class ManagerSettingController extends Controller
      */
     public function create()
     {
-        //
+        $parentSettings = Manager_setting::whereNull('parent_manager_setting_id')->get();
+        return view('admin.manger_settings.create', compact('parentSettings'));
     }
 
     /**
@@ -28,7 +32,13 @@ class ManagerSettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request ->validate([
+            'manager_name' => 'required|string|max:255',
+            'parent_manager_setting_id' => 'nullable|exists:manager_settings,id'
+        ]);
+
+        Manager_setting::create($request->all());
+        return redirect()->route('admin.managerSettings.index')->with('statusSuccess','Thêm chức năng thành công');
     }
 
     /**
@@ -44,7 +54,9 @@ class ManagerSettingController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $managerSetting = Manager_setting::findOrFail($id);
+        $parentSettings = Manager_setting::whereNull('parent_manager_setting_id')->get();
+        return view('admin.manger_settings.edit', compact('managerSetting','parentSettings'));
     }
 
     /**
@@ -52,7 +64,14 @@ class ManagerSettingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request ->validate([
+            'manager_name' => 'required|string|max:255',
+            'parent_manager_setting_id' => 'nullable|exists:manager_settings,id'
+        ]);
+
+        $managerSetting = Manager_setting::findOrFail($id);
+        $managerSetting->update($request->all());
+        return redirect()->route('admin.managerSettings.index')->with('statusSuccess','Sửa chức năng thành công');
     }
 
     /**
@@ -60,6 +79,8 @@ class ManagerSettingController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $managerSetting = Manager_setting::findOrFail($id);
+        $managerSetting->delete();
+        return back()->with('statusSuccess','Xoá chức năng thành công');
     }
 }

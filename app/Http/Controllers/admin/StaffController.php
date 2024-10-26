@@ -167,7 +167,9 @@ class StaffController extends Controller
     }
 
     public function permission(User $user){
-        $allPermissions = Manager_setting::all(); // Lấy tất cả các quyền có sẵn
+        $allPermissions = Manager_setting::whereNull('parent_manager_setting_id')
+        ->with('children_manager_setting')
+        ->get(); // Lấy tất cả các quyền có sẵn
         $userPermissions = User_manager_setting::where('user_id', $user->id)
             ->where('is_active', 1) // Lấy các quyền đã cấp cho nhân viên
             ->pluck('manager_setting_id')
@@ -183,7 +185,7 @@ class StaffController extends Controller
             ->first();
 
         if ($userManagerSetting) {
-            // Nếu đã có bản ghi, thì toggle trạng thái
+            // Nếu đã có bản ghi, thì chuyển đổi trạng thái
             $userManagerSetting->toggleActive();
         } else {
             // Nếu chưa có bản ghi, tạo mới với is_active = 1
@@ -194,6 +196,6 @@ class StaffController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Cập nhật phân quyền thành công!');
+        return redirect()->back()->with('statusSuccess', 'Cập nhật phân quyền thành công!');
     }
 }
