@@ -59,7 +59,7 @@
                                     <a class="nav-link" href="product-select.html">Shop</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="product-detail.html">Product <span> <i
+                                    <a class="nav-link" href="{{ route('home-shop') }}">Product <span> <i
                                                 class="fa-solid fa-angle-down"></i></span></a>
                                 </li>
                                 <li>

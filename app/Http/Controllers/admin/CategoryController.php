@@ -34,6 +34,26 @@ class CategoryController extends Controller
         Category::recursive($cate_parent, $parents = 0, $level = 1, $listCate);
         return $listCate;
     }
+
+
+
+    public function getProductsByCategory($id)
+    {
+        // Lấy danh mục theo ID
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        // Lấy tất cả sản phẩm liên quan đến danh mục này thông qua bảng product_categories
+        $products = $category->product_categories()->with('product')->get();
+
+        return response()->json([
+            'category' => $category,
+            'products' => $products,
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      */

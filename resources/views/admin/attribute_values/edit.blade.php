@@ -4,6 +4,9 @@
 @endsection
 @section('content')
     <!-- Phần form thêm mới -->
+    <div class="mb-2 ml-3">
+        <a href="{{route('admin.attribute_values.show',$attribute->id)}}" class="btn btn-dark text-white text-decoration-none"><i class="fas fa-arrow-left"></i> Quay lại</a>
+    </div>
     <div class="card shadow col-md-7 ">
         {{-- <a href="{{ route('admin.attribute_values.show', $attribute_value->id) }}">Về trang thêm</a> --}}
         <h1 class="h3 mt-3 text-center fw-bold">Chỉnh sửa {{ $attribute->name }}</h1>

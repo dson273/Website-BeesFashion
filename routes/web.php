@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\DashboardController;
-use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\user\CollectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +22,18 @@ use App\Http\Controllers\User\HomeController;
 Route::get('/', action: function () {
     return view(view: 'user/index');
 });
-
+// Route::get('collection', action: function () {
+//     return view(view: 'user/collection');
+// });
 Route::get('/',[HomeController::class,'index'])->name('home-shop');
+
+
+
+// web.php hoặc api.php
+Route::get('collection', [CollectionController::class, 'index'])->name('collection');
+// Route::get('api/products', [CollectionController::class, 'getProducts']);
+
+
 
 Route::middleware('auth')->group(function () {
     //Dashboard người dùng

@@ -28,7 +28,7 @@
         </div>
 
         <!-- Phần danh sách -->
-        <div class="col-md-6">
+        <div class=" card shadow  col-md-8">
             <div class="card-body">
                 <h3>Danh sách</h3>
                 <div class="table-responsive">
