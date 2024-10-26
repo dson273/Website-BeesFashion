@@ -2,21 +2,16 @@
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\DashboardController;
-use App\Http\Controllers\User\HomeController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\user\CollectionController;
+
+
 Route::get('/',[HomeController::class,'index'])->name('/');
+
 //Đăng ký
 Route::get('register', [RegisterController::class, 'index'])->name('register');//Trang đăng ký
 Route::post('register', [RegisterController::class, 'register'])->name('register');//Chức năng đăng ký
@@ -24,9 +19,26 @@ Route::post('register', [RegisterController::class, 'register'])->name('register
 Route::get('login', [LoginController::class, 'index'])->name('login');//Trang đăng nhập
 Route::post('login', [LoginController::class, 'login'])->name('login');//Chức năng đăng nhập
 
+
+// Route::get('/', action: function () {
+//     return view(view: 'user/index');
+// });
+// Route::get('collection', action: function () {
+//     return view(view: 'user/collection');
+// });
+// Route::get('/',[HomeController::class,'index'])->name('home-shop');
+
 Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword');//Trang quên mật khẩu
 
 Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
+
+
+
+// web.php hoặc api.php
+Route::get('collection', [CollectionController::class, 'index'])->name('collection');
+// Route::get('api/products', [CollectionController::class, 'getProducts']);
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');//Chức năng đăng xuất

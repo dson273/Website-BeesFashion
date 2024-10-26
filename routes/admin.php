@@ -9,6 +9,9 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\AttributeValueController;
+use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Admin\ManagerSettingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,21 +30,28 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
     //Route cho chỉ dành cho admin
     Route::middleware(['role:admin'])->group(function () {
         // Các chức năng chỉ admin được phép quản lý
-        Route::resource('staffs', StaffController::class); //Quản lý nhân viên
+        //Quản lý nhân viên
+        Route::resource('staffs', StaffController::class);
         Route::post('staffs/ban/{id}', [StaffController::class, 'ban'])->name('staffs.ban'); //Ban nhân viên
         Route::post('staffs/unban/{id}', [StaffController::class, 'unban'])->name('staffs.unban'); //Unban nhân viên
         Route::get('staffs/history/{id}', [StaffController::class, 'history'])->name('staffs.history'); //Lịch sử ban/unban
         Route::get('staffs/permission/{user}', [StaffController::class, 'permission'])->name('staffs.permission'); //Quyền nhân viên
-        // Cập nhật quyền của nhân viên
-        Route::post('staffs/permission/{user}/{managerSetting}/toggle', [StaffController::class, 'togglePermission'])->name('staffs.permissions.toggle');
+        Route::post('staffs/permission/{user}/{managerSetting}/toggle', [StaffController::class, 'togglePermission'])->name('staffs.permissions.toggle'); // Cập nhật quyền của nhân viên
+
+        //Quản lý manager setting
+        Route::resource('managerSettings', ManagerSettingController::class);
     });
-    
+
     // Route cho staff (admin cũng có thể truy cập)
     Route::middleware(['role:staff|admin'])->group(function () {
         Route::get('/', function () {
             return view('admin.dashboard');
         })->name('dashboard');
         // Các chức năng staff có thể quản lý
+
+        //Quản lý vouchers
+        Route::resource('vouchers',VoucherController::class);
+
 
 
     //Quản lý sản phẩm
@@ -56,8 +66,13 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
       
         //Quản lý danh mục
         Route::middleware(['checkPermission:Quản lý danh mục'])->group(function () {
-            Route::resource('categories', CategoryController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::get('categories/product/{id}', [CategoryController::class, 'product'])->name('categories.product');
+        Route::post('categories/updateBestSelling', [CategoryController::class, 'updateBestSelling'])->name('categories.updateBestSelling');
+        Route::delete('categories/{id}/remove', [CategoryController::class, 'remove'])->name('categories.remove');
+
         });
+
 
         //Quản lý sản phẩm
         Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {

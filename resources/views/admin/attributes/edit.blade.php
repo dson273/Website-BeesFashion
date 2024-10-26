@@ -48,9 +48,9 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th style="width: 5%">STT</th>
-                                <th style="width: 75%">Tên</th>
+                                <th style="width: 70%">Tên</th>
                                 <th style="width: 5%">Loại</th>
                                 <th style="width: 20%">Thao tác</th>
                             </tr>
@@ -62,7 +62,11 @@
                                     <td><a
                                             href="{{ route('admin.attribute_values.show', $item->id) }}">{{ $item->name }}</a>
                                     </td>
-                                    <td>{{ $item->attribute_type->type_name }}</td>
+                                    @if ($item->attribute_type)
+                                        <td>{{ $item->attribute_type->type_name }}</td>
+                                        @else 
+                                        <td class="text-center">Chưa có loại</td>
+                                    @endif
                                     <td>
                                         <a href="{{ route('admin.attributes.edit', $item->id) }}" class="btn btn-warning"><i
                                                 class="fa fa-pencil-alt"></i></a>

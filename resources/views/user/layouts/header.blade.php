@@ -63,8 +63,8 @@
                                     </li> --}}
                                    
                                     @foreach ($category as $parentCategory)
-                                    @if ($parentCategory->parent_category_id === null)
-                                        <!-- Kiểm tra nếu là danh mục cha -->
+                                    @if ($parentCategory->parent_category_id === null && $parentCategory->fixed == 1) 
+                                        <!-- Kiểm tra nếu là danh mục cha và có fixed = 1 -->
                                         <li class="has-submenu">
                                             <a class="nav-link" href="#">{{ $parentCategory->name }}
                                                 @php
@@ -75,12 +75,13 @@
                                                     <span><i class="fa-solid fa-angle-down"></i></span>
                                                 @endif
                                             </a>
-
+                                
                                             @if ($hasChild) <!-- Chỉ hiển thị ul nếu có danh mục con -->
                                                 <ul class="nav-submenu">
                                                     <!-- Hiển thị danh mục con nếu có -->
                                                     @foreach ($category as $childCategory)
-                                                        @if ($childCategory->parent_category_id === $parentCategory->id)
+                                                        @if ($childCategory->parent_category_id === $parentCategory->id && $childCategory->fixed == 1) 
+                                                            <!-- Kiểm tra nếu là danh mục con và có fixed = 1 -->
                                                             <li>
                                                                 <a href="#">{{ $childCategory->name }}</a>
                                                                 <!-- Hiển thị tên danh mục con -->
@@ -89,10 +90,10 @@
                                                     @endforeach
                                                 </ul>
                                             @endif
-
                                         </li>
                                     @endif
                                 @endforeach
+                                
 
                                 {{-- <li>
                                     <a class="nav-link" href="product-detail.html">Product <span> <i

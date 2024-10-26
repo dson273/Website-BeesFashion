@@ -55,7 +55,7 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th style="width: 5%">STT</th>
                                 <th style="width: 70%">Tên</th>
                                 <th style="width: 5%">Loại</th>
@@ -69,19 +69,24 @@
                                     <td><a class="text-decoration-none font-weight-bold"
                                             href="{{ route('admin.attribute_values.show', $item->id) }}">{{ $item->name }}</a>
                                     </td>
-                                    <td>{{ $item->attribute_type->type_name }}</td>
-                                    <td>
-                                        <a href="{{ route('admin.attributes.edit', $item->id) }}" class="btn btn-warning">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
-                                        <form action="{{ route('admin.attributes.destroy', $item->id) }}" class="d-inline"
-                                            method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
+                                    
+                                    @if ($item->attribute_type)
+                                        <td>{{ $item->attribute_type->type_name }}</td>
+                                        @else 
+                                        <td class="text-center">Chưa có loại</td>
+                                    @endif
+
+                                    <a href="{{ route('admin.attributes.edit', $item->id) }}" class="btn btn-warning">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                    <form action="{{ route('admin.attributes.destroy', $item->id) }}" class="d-inline"
+                                        method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
                                     </td>
                                 </tr>
                             @endforeach
