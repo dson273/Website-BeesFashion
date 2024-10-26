@@ -10,12 +10,12 @@
                         <div class="col-sm-6">
                             <h4>Login</h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Login</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <div class="col-xxl-4 col-lg-6 mx-auto">
                         <div class="log-in-box">
                             <div class="log-in-title">
-                                <h4>Welcome To katie</h4>
+                                <h4>Welcome To BeesFashion</h4>
                                 <p>Register Your Account</p>
                             </div>
                             {{-- Form login --}}
@@ -39,12 +39,12 @@
                                     @csrf
                                     <div class="col-12">
                                         <div class="form-floating">
-                                            <input class="form-control @error('email') is-invalid @enderror"
-                                                id="floatingInputValue" type="email" name="email"
-                                                placeholder="name@example.com" value="{{ old('email') }}">
-                                            <label for="floatingInputValue">Enter Your Email</label>
+                                            <input class="form-control @error('login') is-invalid @enderror"
+                                                id="floatingInputValue" type="text" name="login" placeholder="Enter Your Email Or Username"
+                                                 value="{{ old('login') }}">
+                                            <label for="floatingInputValue">Enter Your Email Or Username</label>
                                             {{-- Hiển thị thông báo lỗi --}}
-                                            @error('email')
+                                            @error('login')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -72,7 +72,7 @@
                                                     name="remember">
                                                 <label for="category1">Remember me</label>
                                             </div>
-                                            <a href="#">Forgot Password?</a>
+                                            <a href="{{route('fotgot-pasword')}}">Forgot Password?</a>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -379,13 +379,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="theme-btns"><button class="btntheme" id="dark-btn"><i class="fa-regular fa-moon"></i>
-                <div class="text">Dark</div>
-            </button>
-            <!-- <button class="btntheme rtlBtnEl" id="rtl-btn"><i class="fa-solid fa-repeat"></i>
-                        <div class="rtl">Rtl</div>
-                    </button> -->
         </div>
     </main>
     <!-- End container content -->

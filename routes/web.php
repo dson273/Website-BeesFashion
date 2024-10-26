@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\HomeController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,21 +16,25 @@ use App\Http\Controllers\User\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/',[HomeController::class,'index'])->name('/');
+//Đăng ký
+Route::get('register', [RegisterController::class, 'index'])->name('register');//Trang đăng ký
+Route::post('register', [RegisterController::class, 'register'])->name('register');//Chức năng đăng ký
+//Đăng nhập
+Route::get('login', [LoginController::class, 'index'])->name('login');//Trang đăng nhập
+Route::post('login', [LoginController::class, 'login'])->name('login');//Chức năng đăng nhập
 
-Route::get('/', action: function () {
-    return view(view: 'user/index');
-});
+Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword');//Trang quên mật khẩu
 
-Route::get('/',[HomeController::class,'index'])->name('home-shop');
+Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('logout', [LoginController::class, 'logout'])->name('logout');//Chức năng đăng xuất
+    //Dashboard người dùng
+    Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::put('dashboard/edit-profile',[DashboardController::class,'editProfile'])->name('dashboard.editProfile');// Cập nhật thông tin profile
+    Route::post('dashboard/add-address', [DashboardController::class, 'addAddress'])->name('dashboard.addAddress');//Thêm địa chỉ giao hàng
+    Route::put('dashboard/edit-address/{id}',[DashboardController::class,'editAddress'])->name('dashboard.editAddress');// Sửa địa chỉ
+    Route::delete('dashboard/delete-address/{id}',[DashboardController::class,'deleteAddress'])->name('dashboard.deleteAddress');// Xoá địa chỉ
+    // Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
 });
-//đăng ký
-Route::get('auth/register', [RegisterController::class, 'index'])->name('register');
-Route::post('auth/register', [RegisterController::class, 'register'])->name('register');
-
-//Đăng nhập
-Route::get('auth/login', [LoginController::class, 'index'])->name('login');
-Route::post('auth/login', [LoginController::class, 'login'])->name('login');
-Route::get('auth/logout', [LoginController::class, 'logout'])->name('logout');

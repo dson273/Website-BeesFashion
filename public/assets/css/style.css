@@ -299,7 +299,7 @@ select:focus {
 .section-space {
     padding-bottom: calc(10px + 1.125vw)
 }
-    
+
 .section-space,
 .section-t-space,
 section {
@@ -2306,7 +2306,6 @@ header .header-1 .main-menu {
 
 header .header-1 .main-menu .brand-logo {
     line-height: 0;
-    width: 130px
 }
 
 header .header-1 .main-menu .brand-logo img {
@@ -17713,4 +17712,34 @@ body div canvas:first-child {
     height: 70%;
     transition: border .4s cubic-bezier(.165, .84, .44, 1), transform .4s cubic-bezier(.23, 1, .32, 1), opacity .4s cubic-bezier(.165, .84, .44, 1);
     width: 70%
+}
+
+.custom-set-address{
+    border:none;
+    color:rgba(var(--theme-default), 1);
+    background-color: rgba(var(--box-background), 1);
+}
+
+.custom-set-address {
+    transition: text-decoration 0.5s ease, color 0.5s ease;
+}
+.custom-set-address:hover{
+    border:none;
+    color:#c28f51;
+    background-color: rgba(var(--box-background), 1);
+    text-decoration: underline;
+}
+.custom-set-address:disabled{
+    border:none;
+    color: #b1b1b1;
+    background-color: rgba(var(--box-background), 1);
+    cursor: no-drop;
+    text-decoration: none;
+}
+
+.custom-status-set-address{
+    border: 1px solid rgb(234, 20, 20);
+    padding: 1px 4px;
+    color: rgb(234, 20, 20);
+    border-radius: 2px;
 }
