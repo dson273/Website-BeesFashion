@@ -27,36 +27,35 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Danh Mục Sản Phẩm</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Banner trang web</h6>
             </div>
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
+      
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Active</th>
-                                <th>Images</th>
+                                <th>Tên Banner</th>                              
+                                <th>Hình ảnh</th>
+                                <th>Trạng thái</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên Banner</th>                              
+                                <th>Hình ảnh</th>
+                                <th>Trạng thái</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
                         <tbody>
                             @foreach ($banners as $banner)
                                 <tr>
                                     <td>{{ $banner->id }}</td>
                                     <td>{{ $banner->name }}</td>
-                                    <td>{{ $banner->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
                                         @if ($banner->banner_images->isNotEmpty())
                                             @foreach ($banner->banner_images as $banner_image)
@@ -64,23 +63,24 @@
                                                     alt="Banner Image" style="max-width: 100px;">
                                             @endforeach
                                         @else
-                                            <span>No Images</span>
+                                            <span>Không có ảnh</span>
                                         @endif
                                     </td>
+                                    <td>{{ $banner->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
                                         @if($banner->is_active == 1)
-                                        <a href="{{ route('admin.banner.offactive', $banner->id) }}" class="btn btn-danger">Tắt</a>
+                                        <a href="{{ route('admin.banner.offactive', $banner->id) }}" class="btn btn-danger"><i class="fa fa-eye-slash"></i></a>
                                     @else
-                                        <a href="{{ route('admin.banner.onactive', $banner->id) }}" class="btn btn-success">Bật</a>
+                                        <a href="{{ route('admin.banner.onactive', $banner->id) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
                                     @endif
                                         <a href="{{ route('admin.banner.edit', $banner->id) }}"
-                                            class="btn btn-primary">Sửa</a>
+                                            class="btn btn-warning"><i class="fa fa-wrench"></i></a>
                                         <form action="{{ route('admin.banner.destroy', $banner->id) }}" method="POST"
                                             style="display: inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('Are you sure?')">Xóa</button>
+                                                onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>

@@ -12,16 +12,21 @@ class Category extends Model
         'name',
         'image',
         'description',
+        'fixed',
         'is_active',
         'parent_category_id',
         'created_at',
         'updated_at'
     ];
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_categories');
+    }
     public function product_categories()
     {
         return $this->hasMany(Product_category::class);
     }
-
+   
     public static function recursive($cate_parent, $parents = 0, $level = 1, &$listCate)
     {
         if (count($cate_parent) > 0) {

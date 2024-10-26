@@ -11,15 +11,15 @@
             <form action="{{ route('admin.banner.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="name">Banner Name</label>
+                    <label for="name">Tên banner</label>
                     <input type="text" name="name" id="name" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="is_active">Active</label>
+                    <label for="is_active">Trạng thái</label>
                     <select name="is_active" id="is_active" class="form-control">
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
+                        <option value="1">Hiển thị</option>
+                        <option value="0">Ẩn</option>
                     </select>
                 </div>
 
@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Create Banner</button>
+                <button type="submit" class="btn btn-primary">Thêm mới</button>
             </form>
 
         </div>

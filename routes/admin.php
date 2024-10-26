@@ -9,7 +9,9 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\AttributeValueController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\ManagerSettingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,10 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
         })->name('dashboard');
         // Các chức năng staff có thể quản lý
 
+        //Quản lý vouchers
+        Route::resource('vouchers',VoucherController::class);
+
+
 
     //Quản lý sản phẩm
     Route::resource('products', ProductController::class);
@@ -60,8 +66,13 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
       
         //Quản lý danh mục
         Route::middleware(['checkPermission:Quản lý danh mục'])->group(function () {
-            Route::resource('categories', CategoryController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::get('categories/product/{id}', [CategoryController::class, 'product'])->name('categories.product');
+        Route::post('categories/updateBestSelling', [CategoryController::class, 'updateBestSelling'])->name('categories.updateBestSelling');
+        Route::delete('categories/{id}/remove', [CategoryController::class, 'remove'])->name('categories.remove');
+
         });
+
 
         //Quản lý sản phẩm
         Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {

@@ -50,17 +50,14 @@ class BannerController extends Controller
                 }
             }
 
-            return redirect()->route('admin.banner.index')->with('success', 'Thêm thành công');
+            return redirect()->route('admin.banner.index')->with('statusSuccess', 'Thêm thành công');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, string $id)
-    {
-       
-    }
+    public function show(Request $request, string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -136,7 +133,7 @@ class BannerController extends Controller
             // Cập nhật các thông tin khác của banner
             $Ban->update($params);
 
-            return redirect()->route('admin.banner.index')->with('success', 'Cập nhật thành công!');
+            return redirect()->route('admin.banner.index')->with('statusSuccess', 'Cập nhật thành công!');
         }
     }
 
@@ -161,24 +158,38 @@ class BannerController extends Controller
         // Xóa sản phẩm
         $Ban->delete();
 
-        return redirect()->route('admin.banner.index')->with('success', 'Xóa thành công!');
+        return redirect()->route('admin.banner.index')->with('statusSuccess', 'Xóa thành công!');
     }
 
 
     public function onActive($id)
     {
 
-        Banner::where('id',$id)->update(['is_active'=>1]);
+        Banner::where('is_active', 1)->update(['is_active' => 0]);
+
+        // Bật banner được chọn
+        $banner = Banner::find($id);
+        $banner->is_active = 1;
+        $banner->save();
 
 
-        return redirect()->route('admin.banner.index')->with('success', 'Banner đã được bật.');
+        return redirect()->route('admin.banner.index')->with('statusSuccess', 'Banner đã được bật');
     }
 
     public function offActive($id)
     {
 
-       Banner::where('id',$id)->update(['is_active'=>0]);
+        $activeBanner = Banner::where('is_active', 1)->count();
 
-        return redirect()->route('admin.banner.index')->with('success', 'Banner đã được tắt.');
+        // Nếu chỉ còn một banner đang bật và nó là banner cần tắt
+        if ($activeBanner <= 1) {
+            return redirect()->route('admin.banner.index')->with('statusError','Phải có ít nhất một banner đang bật');
+        }
+        // Tắt banner được chọn
+        $banner = Banner::find($id);
+        $banner->is_active = 0;
+        $banner->save();
+
+        return redirect()->route('admin.banner.index')->with('statusSuccess', 'Banner đã được tắt');
     }
 }

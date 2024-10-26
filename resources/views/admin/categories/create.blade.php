@@ -26,8 +26,15 @@
 
                 </div>
                 <div class="mt-3 mb-3">
+                    <label for="" class="form-label">Phân loại</label>
+                    <select name="fixed" class="form-control">
+                        <option value="1" selected>Danh mục thường</option>
+                        <option value="0">Danh mục sản phẩm bán chạy</option>
+                    </select>
+                </div>
+                <div class="mt-3 mb-3">
                     <label for="" class="form-label">Thuộc danh mục</label>
-                    <select name="parent_category_id" class="form-select">
+                    <select name="parent_category_id" class="form-control">
                         <option value="" selected>--Danh mục cha--</option>
                         @foreach ($cate_parent as $key => $value)
                             <option value="{{ $value->id }}">
