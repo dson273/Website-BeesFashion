@@ -12,6 +12,7 @@ class Category extends Model
         'name',
         'image',
         'description',
+        'fixed',
         'is_active',
         'parent_category_id',
         'created_at',
