@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\AttributeType;
+use App\Models\Attribute_type;
 use App\Models\Attribute_value;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
