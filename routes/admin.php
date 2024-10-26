@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\AttributeValueController;
+use App\Http\Controllers\Admin\VoucherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,8 +37,17 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
             return view('admin.dashboard');
         })->name('dashboard');
         // Các chức năng staff có thể quản lý
+
         //Quản lý danh mục
         Route::resource('categories', CategoryController::class);
+        Route::get('categories/product/{id}', [CategoryController::class, 'product'])->name('categories.product');
+        Route::post('categories/updateBestSelling', [CategoryController::class, 'updateBestSelling'])->name('categories.updateBestSelling');
+        Route::delete('categories/{id}/remove', [CategoryController::class, 'remove'])->name('categories.remove');
+
+
+        //Quản lý vouchers
+        Route::resource('vouchers',VoucherController::class);
+
 
         //Quản lý sản phẩm
         Route::resource('products', ProductController::class);
@@ -64,4 +74,3 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();
 // });
-

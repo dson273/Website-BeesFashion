@@ -7,16 +7,7 @@
 @section('content')
     <div class="card shadow mb-4">
         <h1 class="h2 mt-3 text-center text-gray-800 fw-bold"> Chỉnh sửa danh mục </h1>
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+     
         <div class="card-body">
             <form action="{{ route('admin.categories.update', $Cate->id) }}" method="POST" enctype="multipart/form-data">
 
@@ -30,7 +21,7 @@
                 <div class="mt-3 mb-3">
                     <label for="" class="form-label">Ảnh</label>
                     <input type="file" name="image" class="form-control">
-                    <img src="{{ Storage::url($Cate->image) }}" width="150px" alt="">
+                    <img src="{{ asset('storage/uploads/imgcate/' . $Cate->image) }}" width="150px" alt="">
 
                 </div>
                 <div class="mt-3 mb-3">
@@ -39,12 +30,21 @@
 
                 </div>
                 <div class="mt-3 mb-3">
+                    <label for="" class="form-label">Phân loại</label>
+                    <select name="fixed" class="form-control">
+                        <option value="1" {{ $Cate->fixed == '1' ? 'selected' : '' }}>Danh mục thường</option>
+                        <option value="0" {{ $Cate->fixed == '0' ? 'selected' : '' }}>Danh mục sản phẩm bán chạy
+                        </option>
+                    </select>
+                </div>
+                <div class="mt-3 mb-3">
                     <label for="" class="form-label">Thuộc danh mục</label>
-                    <select name="parent_category_id" class="form-select" {{ $Cate->parent_category_id == '' }}>
+                    <select name="parent_category_id" class="form-control" {{ $Cate->parent_category_id == '' }}>
                         <option value="">--Danh mục cha--</option>
                         @foreach ($cate_parent as $key => $value)
                             @if (!in_array($value->id, $sub_parent))
-                                <option value="{{ $value->id }}" {{ $value->id == $Cate->parent_category_id ? 'selected' : '' }}>
+                                <option value="{{ $value->id }}"
+                                    {{ $value->id == $Cate->parent_category_id ? 'selected' : '' }}>
                                     @php
                                         $str = '';
                                         for ($i = 0; $i < $value->level; $i++) {
@@ -58,8 +58,8 @@
                         @endforeach
                     </select>
                 </div>
-                
-                
+
+
                 <div class="mt-3 mb-3">
                     <label for="" class="form-label">Trạng thái</label>
                     <select name="is_active" class="form-control">
