@@ -58,10 +58,43 @@
                                 <li>
                                     <a class="nav-link" href="{{ route('/') }}">Home</a>
                                 </li>
-                                <li>
-                                    <a class="nav-link" href="product-select.html">Shop</a>
-                                </li>
-                                <li>
+                                {{-- <li>
+                                    <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
+                                    </li> --}}
+                                   
+                                    @foreach ($category as $parentCategory)
+                                    @if ($parentCategory->parent_category_id === null)
+                                        <!-- Kiểm tra nếu là danh mục cha -->
+                                        <li class="has-submenu">
+                                            <a class="nav-link" href="#">{{ $parentCategory->name }}
+                                                @php
+                                                    // Kiểm tra xem có danh mục con hay không
+                                                    $hasChild = $category->contains('parent_category_id', $parentCategory->id);
+                                                @endphp
+                                                @if ($hasChild)
+                                                    <span><i class="fa-solid fa-angle-down"></i></span>
+                                                @endif
+                                            </a>
+
+                                            @if ($hasChild) <!-- Chỉ hiển thị ul nếu có danh mục con -->
+                                                <ul class="nav-submenu">
+                                                    <!-- Hiển thị danh mục con nếu có -->
+                                                    @foreach ($category as $childCategory)
+                                                        @if ($childCategory->parent_category_id === $parentCategory->id)
+                                                            <li>
+                                                                <a href="#">{{ $childCategory->name }}</a>
+                                                                <!-- Hiển thị tên danh mục con -->
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+
+                                        </li>
+                                    @endif
+                                @endforeach
+
+                                {{-- <li>
                                     <a class="nav-link" href="product-detail.html">Product <span> <i
                                                 class="fa-solid fa-angle-down"></i></span></a>
                                     </li> --}}
