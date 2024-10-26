@@ -584,7 +584,7 @@ function getAttributeDatas() {
         },
         error: function (xhr) {
             console.error(xhr.responseText);
-            notification('error', 'Không thể lấy được dữ liệu thuộc tính!', 'Error');
+            notification('error', 'Unable to get attribute data!', 'Error');
         }
     })
 }
@@ -2678,7 +2678,7 @@ function createNewProduct(productDatas) {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Có lỗi xảy ra!', 'Error');
+                notification('error', 'Something went wrong!', 'Error');
                 reject();
             }
         });
@@ -2734,7 +2734,7 @@ function checkSkuProductVariation(input) {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Unable to get catalog data!', 'Error');
+                notification('error', 'Unable to get sku data!', 'Error');
                 reject();
             }
         });
