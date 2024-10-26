@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Attribute;
 use Illuminate\Http\Request;
-use App\Models\AttributeType;
+use App\Models\Attribute_type;
 use App\Http\Requests\StoreAttribute_typeRequest;
 use App\Http\Controllers\Controller;
 
@@ -24,7 +24,7 @@ class AttributeTypeController extends Controller
     public function create()
     {
         //
-        $listAttributeTypes = AttributeType::query()->get();
+        $listAttributeTypes = Attribute_type::query()->get();
         return view('admin.attribute_types.create', compact('listAttributeTypes'));
     }
 
@@ -35,7 +35,7 @@ class AttributeTypeController extends Controller
     {
         if ($request->isMethod('POST')) {
             $params = $request->except('_token');
-            AttributeType::create($params);
+            Attribute_type::create($params);
             return redirect()->route('admin.attribute_types.create')->with('success', 'Thêm loại thuộc tính thành công');
         }
     }
@@ -55,8 +55,8 @@ class AttributeTypeController extends Controller
     public function edit(string $id)
     {
         //
-        $listAttributeTypes = AttributeType::query()->get();
-        $AttributeTypes = AttributeType::query()->findOrFail($id);
+        $listAttributeTypes = Attribute_type::query()->get();
+        $AttributeTypes = Attribute_type::query()->findOrFail($id);
         return view('admin.attribute_types.edit', compact('AttributeTypes', 'listAttributeTypes'));
     }
 
@@ -68,7 +68,7 @@ class AttributeTypeController extends Controller
         //
         if ($request->isMethod('PUT')) {
             $params = $request->except('_token', '_method');
-            $AttributeTypes = AttributeType::findOrFail($id);
+            $AttributeTypes = Attribute_type::findOrFail($id);
             $AttributeTypes->update($params);
             return redirect()->route('admin.attribute_types.create')->with('success', 'Thêm loại thuộc tính thành công');
         }
@@ -83,7 +83,7 @@ class AttributeTypeController extends Controller
         // $AttributeTypes->attributes()->delete();
         // $AttributeTypes->delete();
 
-        $AttributeTypes = AttributeType::findOrFail($id);
+        $AttributeTypes = Attribute_type::findOrFail($id);
         // Kiểm tra xem AttributeType có liên kết với bất kỳ Attribute nào không
         if ($AttributeTypes->attributes()->exists()) {
             // Nếu có thuộc tính liên kết, không cho phép xóa

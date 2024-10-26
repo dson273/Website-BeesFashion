@@ -14,6 +14,7 @@ class Product_variant extends Model
         'image',
         'sale_price',
         'stock',
+        'product_id',
         'is_active',
         'created_at',
         'updated_at'

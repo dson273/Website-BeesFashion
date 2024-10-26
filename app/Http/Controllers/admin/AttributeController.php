@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Attribute;
 use Illuminate\Http\Request;
-use App\Models\AttributeType;
+use App\Models\Attribute_type;
 use App\Models\Attribute_value;
 use App\Http\Requests\StoreAttributeRequest;
 use App\Http\Controllers\Controller;
@@ -25,7 +25,7 @@ class AttributeController extends Controller
      */
     public function create()
     {
-        $listAttributeTypes = AttributeType::query()->get();
+        $listAttributeTypes = Attribute_type::query()->get();
         $listAttribute = Attribute::query()->get();
         // dd($listAttributeTypes);
         return view('admin.attributes.create', compact('listAttributeTypes', 'listAttribute'));
@@ -58,9 +58,9 @@ class AttributeController extends Controller
     {
         //
         $AttributesID = Attribute::query()->findOrFail($id);
-        $attribute_type = AttributeType::where('id', $AttributesID->attribute_type_id)->first();
+        $attribute_type = Attribute_type::where('id', $AttributesID->attribute_type_id)->first();
         $type_name = $attribute_type->type_name;
-        $listAttributeTypes = AttributeType::query()->get();
+        $listAttributeTypes = Attribute_type::query()->get();
         $listAttribute = Attribute::query()->get();
         return view('admin.attributes.edit', compact('listAttribute', 'AttributesID', 'type_name', 'attribute_type', 'listAttributeTypes'));
     }
