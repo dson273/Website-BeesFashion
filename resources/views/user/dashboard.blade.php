@@ -1235,14 +1235,13 @@
                                                             </div>
 
                                                             <span class="buttons">
-                                                                <a class="btn btn_black sm" href="#"
-                                                                    data-bs-toggle="modal" data-bs-target="#edit-address"
-                                                                    title="Edit" tabindex="0"
-                                                                    data-id="{{ $shippingAddress->id }}"
-                                                                    data-full-name="{{ $shippingAddress->full_name }}"
-                                                                    data-phone="{{ $shippingAddress->phone_number }}"
+                                                                <a class="btn btn_black sm btn_edit_address"
+                                                                    href="#" data-id="{{ $shippingAddress->id }}"
+                                                                    data-full_name="{{ $shippingAddress->full_name }}"
+                                                                    data-phone_number="{{ $shippingAddress->phone_number }}"
                                                                     data-address="{{ $shippingAddress->address }}"
-                                                                    onclick="populateEditAddressModal(this);event.preventDefault();document.getElementById('edit-address-form').action='{{ route('dashboard.editAddress', $shippingAddress->id) }}';$('#edit-address').modal('show');">Edit</a>
+                                                                    data-bs-toggle="modal" data-bs-target="#edit-address"
+                                                                    title="Edit" tabindex="0">Edit</a>
                                                                 <a class="btn btn_outline sm" href="#"title="Delete"
                                                                     tabindex="0"
                                                                     onclick="event.preventDefault();document.getElementById('delete-address-form').action='{{ route('dashboard.deleteAddress', $shippingAddress->id) }}';$('#delete-address-modal').modal('show');">Delete</a>
@@ -1486,15 +1485,6 @@
         </div>
         {{-- End modal --}}
 
-        {{-- Kiểm tra lỗi và mở lại modal addAddress nếu có
-        @if ($errors->any())
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    var addAddressModal = new bootstrap.Modal(document.getElementById('add-address'));
-                    addAddressModal.show();
-                });
-            </script>
-        @endif --}}
         {{-- Modal Add address --}}
         <div class="reviews-modal modal theme-modal fade" id="add-address" tabindex="-1" role="dialog"
             aria-modal="true">
@@ -1506,7 +1496,8 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
-                        <form class="row g-3" action="{{ route('dashboard.addAddress') }}" method="POST">
+                        <form id="add-address-form" class="row g-3" action="{{ route('dashboard.addAddress') }}"
+                            method="POST">
                             @csrf
                             <div class="col-12">
                                 <div class="form-group">
@@ -1784,149 +1775,7 @@
 @endsection
 
 @section('script-libs')
-    <script>
-        //Cập nhật profile
-        $(document).ready(function() {
-            $('#edit-profile-form').on('submit', function(event) {
-                event.preventDefault();
-
-                // Lấy dữ liệu từ form
-                let full_name = $('#edit-profile-form').find('input[name="full_name"]').val().trim();
-                let phone = $('#edit-profile-form').find('input[name="phone"]').val().trim();
-                let email = $('#edit-profile-form').find('input[name="email"]').val().trim();
-                let address = $('#edit-profile-form').find('textarea[name="address"]').val().trim();
-                let _token = $('input[name="_token"]').val();
-                let url = $(this).attr('action');
-
-                // Xóa các lỗi cũ
-                $('.invalid-feedback').text('');
-                $('.form-control').removeClass('is-invalid');
-
-                // Gửi AJAX request
-                $.ajax({
-                    url: url,
-                    type: 'PUT',
-                    data: {
-                        full_name: full_name,
-                        phone: phone,
-                        email: email,
-                        address: address,
-                        _token: _token
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            // Thay đổi dữ liệu trên profile
-                            $('.profile-name h6').text(email);
-                            $('.profile-information li:contains("Name") p').text(response.data
-                                .full_name || 'Not updated yet');
-                            $('.profile-information li:contains("Phone") p').text(response.data
-                                .phone || 'Not updated yet');
-                            $('.profile-information li:contains("Address") p').text(response
-                                .data.address || 'Not updated yet');
-                            $('.profile-information li:contains("Email") p').text(response.data
-                                .email);
-                            $('.dashboard-user-name b').text(response.data.full_name ? response
-                                .data.full_name : response.data.username);
-
-                            // Đóng modal sau khi thành công
-                            $('#edit-profile').modal('hide');
-                            // Hiển thị thông báo thành công
-                            notification('success', response.message, 'Notification!');
-                            // Xóa dữ liệu trong các ô input
-                            $('#edit-profile-form')[0].reset();
-                        }
-                    },
-                    error: function(error) {
-                        // Xử lý lỗi trả về từ server (validation errors)
-                        if (error.responseJSON && error.responseJSON.errors) {
-                            let errors = error.responseJSON.errors;
-                            for (let key in errors) {
-                                let input = $('input[name="' + key + '"]');
-                                let textarea = $('textarea[name="' + key + '"]');
-                                let errMsg = errors[key][0];
-
-                                // Hiển thị thông báo lỗi
-                                if (input.length) {
-                                    input.addClass('is-invalid');
-                                    input.next('.invalid-feedback').text(errMsg);
-                                } else if (textarea.length) {
-                                    textarea.addClass('is-invalid');
-                                    textarea.next('.invalid-feedback').text(errMsg);
-                                }
-                            }
-                        } else {
-                            console.error('Unknown error occurred');
-                        }
-                    }
-                });
-            });
-        });
-
-        //Edit password
-        $(document).ready(function() {
-            $('#edit-password-form').on('submit', function(e) {
-                e.preventDefault();
-                // Lấy dữ liệu từ form
-                let current_password = $('#edit-password-form').find('input[name="current_password"]').val()
-                    .trim();
-                let new_password = $('#edit-password-form').find('input[name="new_password"]').val().trim();
-                let new_password_confirmation = $('#edit-password-form').find(
-                    'input[name="new_password_confirmation"]').val().trim();
-                let _token = $('input[name="_token"]').val();
-                let url = $(this).attr('action');
-
-                // Xóa các lỗi cũ
-                $('.invalid-feedback').text('');
-                $('.form-control').removeClass('is-invalid');
-                $.ajax({
-                    url: url,
-                    type: 'PUT',
-                    data: {
-                        current_password: current_password,
-                        new_password: new_password,
-                        new_password_confirmation: new_password_confirmation,
-                        _token: _token
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        // Đóng modal sau khi thành công
-                        $('#edit-password').modal('hide');
-                        // Hiển thị thông báo thành công
-                        notification('success', response.message, 'Notification!');
-                        // Xóa dữ liệu trong các ô input
-                        $('#edit-password-form')[0].reset();
-                    },
-                    error: function(error) {
-                        // Xử lý lỗi trả về từ server (validation errors)
-                        if (error.responseJSON && error.responseJSON.errors) {
-                            let errors = error.responseJSON.errors;
-                            for (let key in errors) {
-                                let input = $('input[name="' + key + '"]');
-                                let errMsg = errors[key][0];
-
-                                // Tìm phần tử chứa thông báo lỗi và đặt thông báo lỗi vào đó
-                                let feedbackElement = input.siblings('.invalid-feedback');
-                                if (feedbackElement.length) {
-                                    feedbackElement.text(errMsg);
-                                } else {
-                                    // Nếu không tìm thấy phần tử invalid-feedback, tạo mới
-                                    input.after('<div class="invalid-feedback">' + errMsg +
-                                        '</div>');
-                                }
-
-                                input.addClass('is-invalid');
-                            }
-                            notification('error', error.responseJSON.errors, 'Notification!');
-                        } else {
-                            console.error('Unknown error occurred');
-                        }
-                    }
-                })
-            })
-        });
-    </script>
-
+    <script src="{{ asset('js/user/dashboard.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Lấy tất cả các tab
