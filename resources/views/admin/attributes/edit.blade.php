@@ -25,8 +25,9 @@
                             @else
                                 <option value="" >Chọn loại thuộc tính</option>
                                 @foreach ($listAttributeTypes as $item)
-                                    <option value="{{ $item->id }}">
-                                        {{  $item->type_name }}
+                                    <option value="{{ $item->id }}"
+                                        {{ old('attribute_type_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->type_name }}
                                     </option>
                                 @endforeach
                             @endif
