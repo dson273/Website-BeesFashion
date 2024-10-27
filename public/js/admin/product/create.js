@@ -1217,6 +1217,8 @@ function getAttributeValueDatas(id, attributeId) {
                         attributeValueDataOptionsMap[attributeId].push(item);
                     }
                 })
+                // console.log(attributeValueDataOptionsMap);
+
                 //resolve(): Được gọi khi tác vụ bất đồng bộ hoàn tất thành công. Khi gọi resolve(),
                 // promise chuyển sang trạng thái fulfilled, và bất kỳ logic nào được đính kèm với .then() sẽ được thực thi.
                 resolve();
@@ -1266,9 +1268,12 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
                 attributeValueDataOptionsMap[attributeId].forEach(function (item) {
                     // Nếu id của giá trị thuộc tính chưa có trong tập hợp existingOptionIds thì tạo và thêm option mới
                     if (!existingOptionIds.has(item.id.toString())) {
+                        console.log(item['id']);
+                        console.log(item['value']);
+
                         var option = document.createElement('option');
                         option.value = item['id'];
-                        option.text = item['name'];
+                        option.text = item['value'];
                         option.className = 'optionSelectAttributeValueAddExisting';
                         selectExistingAttributeValues.appendChild(option);
                     }
@@ -1283,7 +1288,7 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
                 attributeValueDataOptionsMap[attributeId].forEach(function (item) {
                     var option = document.createElement('option');
                     option.value = item['id'];
-                    option.text = item['name'];
+                    option.text = item['value'];
                     option.className = 'optionSelectAttributeValueAddExisting';
                     selectExistingAttributeValues.appendChild(option);
                 });
@@ -1367,7 +1372,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
                 if (!existingOptionIds.has(item.id.toString())) {
                     var option = document.createElement('option');
                     option.value = item['id'];
-                    option.text = item['name'];
+                    option.text = item['value'];
                     option.className = 'optionSelectAttributeValueAddExisting';
                     selectExistingAttributeValues.appendChild(option);
                 }
@@ -1382,7 +1387,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
             attributeValueDataOptionsMap[attributeId].forEach(function (item) {
                 var option = document.createElement('option');
                 option.value = item['id'];
-                option.text = item['name'];
+                option.text = item['value'];
                 option.className = 'optionSelectAttributeValueAddExisting';
                 selectExistingAttributeValues.appendChild(option);
             });
@@ -1410,7 +1415,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
     var newSelectedOptionData = [];
     attributeValueDataOptionsMap[attributeId].forEach(function (item) {
         newSelectedOptionData.push({
-            text: item.name,
+            text: item.value,
             value: item.id
         });
     })
@@ -1725,7 +1730,7 @@ $('#generateVariations').click(function () {
 
                     var labelSku = document.createElement('label');
                     labelSku.className = 'badge text-left';
-                    labelSku.textContent = 'SKU';
+                    labelSku.textContent = 'SKU (Có thể bỏ trống để tạo tự động)';
 
                     var inputSku = document.createElement('input');
                     inputSku.type = 'text';
@@ -1838,10 +1843,15 @@ $('#generateVariations').click(function () {
                     notification('success', 'Generate variations successfully!', 'Successfully!');
                 }
                 if (totalVariations == 1) {
-                    $('.notificationQuantityVariations').text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
                 } else {
-                    $('.notificationQuantityVariations').text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
                 }
+                // if (totalVariations == 1) {
+                //     $('.notificationQuantityVariations').text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                // } else {
+                //     $('.notificationQuantityVariations').text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                // }
                 controlVariationsSelect.removeClass('hidden');
                 deleteAllVariations.removeClass('hidden');
                 checkVariationsStatus.removeClass('hidden');
@@ -1856,7 +1866,8 @@ $('#generateVariations').click(function () {
             }
         }
     } else {
-        notification('warning', 'You need to add attribute(s)!', 'Warning!');
+        notification('warning', 'Bạn cần thêm ít nhất một thuộc tính!', 'Warning!');
+        // notification('warning', 'You need to add attribute(s)!', 'Warning!');
     }
 })
 //-----------------------------------------Pagination-----------------------------------------
@@ -1945,19 +1956,26 @@ $(document).on('click', '.variationItem select', function (event) {
 //----------------------Ngăn không cho cú click áp dụng vào phần tử cha khi click vào nút xóa-----------------------
 $(document).on('click', '.variationItem .removeVariationItemBtn', function (event) {
     event.stopPropagation();
-    var confirmRemove = confirm('Are you sure you want to remove this variation?');
+    var confirmRemove = confirm('Bạn có chắc chắn muốn xóa biến thể này không?');
+    // var confirmRemove = confirm('Are you sure you want to remove this variation?');
     if (confirmRemove) {
         var variationItemOfThisElement = $(this).closest('.variationItem');
         variationItemOfThisElement.remove();
         var variationItems = $('.variationItem');
         var totalVariations = variationItems.length;
         if (totalVariations > 0) {
-
+            //Vietnamese version
             if (totalVariations == 1) {
-                notificationQuantityVariations.text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                notificationQuantityVariations.text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
             } else {
-                notificationQuantityVariations.text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                notificationQuantityVariations.text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
             }
+            //English version
+            // if (totalVariations == 1) {
+            //     notificationQuantityVariations.text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+            // } else {
+            //     notificationQuantityVariations.text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+            // }
 
             //Cập nhật lại số thứ tự
             variationItems.each(function (index) {
@@ -2121,7 +2139,7 @@ $(document).on('click', '#addManually', function () {
 
                 var labelSku = document.createElement('label');
                 labelSku.className = 'badge text-left';
-                labelSku.textContent = 'SKU';
+                labelSku.textContent = 'SKU (Có thể bỏ trống để tạo tự động)';
 
                 var inputSku = document.createElement('input');
                 inputSku.type = 'text';
@@ -2228,10 +2246,15 @@ $(document).on('click', '#addManually', function () {
                 $('.notificationNoVariationsYet').addClass('hidden');
                 totalVariations = $('.variationItem').length;
                 if (totalVariations == 1) {
-                    $('.notificationQuantityVariations').text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
                 } else {
-                    $('.notificationQuantityVariations').text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
                 }
+                // if (totalVariations == 1) {
+                //     $('.notificationQuantityVariations').text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                // } else {
+                //     $('.notificationQuantityVariations').text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
+                // }
                 controlVariationsSelect.removeClass('hidden');
                 deleteAllVariations.removeClass('hidden');
                 checkVariationsStatus.removeClass('hidden');
@@ -2239,7 +2262,8 @@ $(document).on('click', '#addManually', function () {
                 saveVariations.addClass('disabledButton');
                 saveVariationsStatus = false;
             } else {
-                notification('warning', 'Maximum number of variants that can be created has been reached!', 'Has reached its maximum!')
+                notification('warning', 'Đã đạt đến số lượng biến thể tối đa có thể tạo ra!', 'Has reached its maximum!')
+                // notification('warning', 'Maximum number of variants that can be created has been reached!', 'Has reached its maximum!')
             }
         } catch (error) {
             console.error('Error:', error);
@@ -2247,7 +2271,8 @@ $(document).on('click', '#addManually', function () {
             $('.container-spinner').addClass('hidden');
         }
     } else {
-        notification('warning', 'You need to add attribute(s)!', 'Warning!');
+        notification('warning', 'Bạn cần thêm ít nhất một thuộc tính!', 'Warning!');
+        // notification('warning', 'You need to add attribute(s)!', 'Warning!');
     }
 })
 //-------------------------------------------Delete all variations-------------------------------------------
@@ -2267,7 +2292,8 @@ $(document).on('click', '.deleteAllVariations', function () {
             saveVariations.addClass('hidden disabledButton');
             saveVariationsStatus = false;
             pagination();
-            notification('success', 'Remove all variations successfully!', 'Successfully!');
+            notification('success', 'Đã xóa tất cả biến thể thành công!', 'Successfully!');
+            // notification('success', 'Remove all variations successfully!', 'Successfully!');
         }
     } catch (error) {
         console.error('Error:', error);
@@ -2285,7 +2311,8 @@ function previewVariationImage(input) {
             const file = input.files[0];
 
             if (file.size > maxSizeBytes) {
-                notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error');
+                notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn!`, 'Error');
+                // notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error');
                 input.value = ''; // Reset input nếu ảnh quá lớn
                 return;
             }
@@ -2319,9 +2346,11 @@ function previewVariationImage(input) {
                         divPreviewVariationImage.appendChild(iRemoveVariationImage);
                     }
                     reader.readAsDataURL(file);
-                    notification('success', 'Image uploaded successfully', 'Successfully');
+                    notification('success', 'Đã tải ảnh lên thành công!', 'Successfully');
+                    // notification('success', 'Image uploaded successfully', 'Successfully');
                 } else {
-                    notification('warning', 'Image already exists', 'Warning');
+                    notification('warning', 'Ảnh đã tồn tại (đã được tải lên)', 'Warning');
+                    // notification('warning', 'Image already exists', 'Warning');
                 }
             } else {
                 reader.onload = function (e) {
@@ -2345,7 +2374,8 @@ function previewVariationImage(input) {
                     divPreviewVariationImage.appendChild(iRemoveVariationImage);
                 }
                 reader.readAsDataURL(file);
-                notification('success', 'Image uploaded successfully', 'Successfully');
+                notification('success', 'Đã tải ảnh lên thành công!', 'Successfully');
+                // notification('success', 'Image uploaded successfully', 'Successfully');
             }
         }
     } catch (error) {
@@ -2388,13 +2418,27 @@ $(document).on('change', '.importPriceInput', function () {
         if (salePrice.val()) {
             if (salePrice.val() >= $(this).val()) {
                 $(this).val(parseFloat(salePrice.val()) + 1);
-                notification('warning', 'Please enter greater than sale price!', 'Warning!');
+                notification('warning', 'Vui lòng nhập giá nhập lớn hơn giá bán!', 'Warning!');
+                // notification('warning', 'Please enter greater than sale price!', 'Warning!');
             }
         }
     } else {
         if (salePrice.val()) {
             salePrice.val('');
         }
+    }
+    var count = 0;
+    $('.variationItem').each(function () {
+        var value = $(this).find('.importPriceInput').val();
+        if (!value) {
+            count++;
+        }
+    })
+    if (count != 0) {
+        $('.notificationQuantityVariations').removeClass('hidden');
+        $('.notificationQuantityVariations').text(count + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
+    } else {
+        $('.notificationQuantityVariations').addClass('hidden');
     }
 })
 $(document).on('change', '.salePriceInput', function () {
@@ -2404,11 +2448,13 @@ $(document).on('change', '.salePriceInput', function () {
         if (importPrice) {
             if (parseFloat(importPrice) <= parseFloat($(this).val())) {
                 $(this).val(importPrice - 1);
-                notification('warning', 'Please enter less than import price!', 'Warning!');
+                notification('warning', 'Vui nhập giá bán nhỏ hơn giá nhập!', 'Warning!');
+                // notification('warning', 'Please enter less than import price!', 'Warning!');
             }
         } else {
             $(this).val('');
-            notification('warning', 'You need enter import price first!', 'Warning!');
+            notification('warning', 'Bạn cần nhập giá nhập trước!', 'Warning!');
+            // notification('warning', 'You need enter import price first!', 'Warning!');
         }
     }
 })
@@ -2425,7 +2471,8 @@ $(document).on('change', '.skuInput', function () {
         if ($(this).val() == valueInput && thisElement[0] !== this) {
             var index = $(this).closest('.variationItem').find('strong').text();
             thisElement.val('');
-            notification('warning', 'Duplicate value with variation ' + index, 'Warning!');
+            notification('warning', 'Trùng lặp giá trị với biến thể ' + index, 'Warning!');
+            // notification('warning', 'Duplicate value with variation ' + index, 'Warning!');
         }
     })
 })
@@ -2438,7 +2485,8 @@ function addValues(messageInput, classInput, message, forAll) {
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
             if (!Number(value)) {
-                notification('error', 'Please enter number!', 'Error!');
+                notification('error', 'Vui lòng nhập số!', 'Error!');
+                // notification('error', 'Please enter number!', 'Error!');
             } else {
                 $(classInput).each(function () {
                     if (forAll == false) {
@@ -2449,6 +2497,9 @@ function addValues(messageInput, classInput, message, forAll) {
                         $(this).val(value);
                     }
                 })
+                if (classInput == '.importPriceInput') {
+                    $('.notificationQuantityVariations').addClass('hidden');
+                }
                 notification('success', message, 'Successfully!');
             }
         }
@@ -2459,26 +2510,45 @@ function addValues(messageInput, classInput, message, forAll) {
     }
 }
 $(document).on('change', '.controlVariationsSelect', function () {
+    //Vietnamese version
     if ($(this).val() == 1) {
-        addValues('Enter import prices for all variations that do not have prices yet', '.importPriceInput', 'Add import prices for all variations that do not have prices yet successfully!', false);
+        addValues('Nhập "giá nhập" cho tất cả các biến thể chưa có giá nhập', '.importPriceInput', 'Thêm giá nhập cho tất cả các biến thể chưa có giá nhập thành công!', false);
     } else if ($(this).val() == 2) {
-        addValues('Enter sale prices for all variations that do not have prices yet', '.salePriceInput', 'Add sale prices for all variations that do not have prices yet successfully!', false);
+        addValues('Nhập "giá bán" cho tất cả các biến thể chưa có giá bán', '.salePriceInput', 'Thêm giá bán cho tất cả các biến thể chưa có giá bán thành công!', false);
     } else if ($(this).val() == 3) {
-        addValues('Enter prices for all variations that do not have prices yet', '.stockInput', 'Add stocks for all variations that do not have stocks yet successfully!', false);
+        addValues('Nhập "số lượng" cho tất cả các biến thể chưa có số lượng', '.stockInput', 'Thêm số lượng cho tất cả các biến thể chưa có số lượng thành công!', false);
     } else if ($(this).val() == 4) {
-        addValues('Enter import prices for all variations', '.importPriceInput', 'Add import prices for all variations successfully!', true);
+        addValues('Nhập "giá nhập" cho tất cả các biến thể', '.importPriceInput', 'Thêm giá nhập cho tất cả các biến thể thành công!', true);
     } else if ($(this).val() == 5) {
-        addValues('Enter sale prices for all variations', '.salePriceInput', 'Add sale prices for all variations successfully!', true);
+        addValues('Nhập "giá bán" cho tất cả các biến thể', '.salePriceInput', 'Thêm giá bán cho tất cả các biến thể thành công!', true);
     } else if ($(this).val() == 6) {
-        addValues('Enter prices for all variations', '.stockInput', 'Add stocks for all variations that do not have stocks yet successfully!', true);
+        addValues('Nhập "số lượng" cho tất cả các biến thể', '.stockInput', 'Thêm số lượng cho tất cả các biến thể thành công!', true);
     }
+    //English version
+    // if ($(this).val() == 1) {
+    //     addValues('Enter import prices for all variations that do not have prices yet', '.importPriceInput', 'Add import prices for all variations that do not have prices yet successfully!', false);
+    // } else if ($(this).val() == 2) {
+    //     addValues('Enter sale prices for all variations that do not have prices yet', '.salePriceInput', 'Add sale prices for all variations that do not have prices yet successfully!', false);
+    // } else if ($(this).val() == 3) {
+    //     addValues('Enter prices for all variations that do not have prices yet', '.stockInput', 'Add stocks for all variations that do not have stocks yet successfully!', false);
+    // } else if ($(this).val() == 4) {
+    //     addValues('Enter import prices for all variations', '.importPriceInput', 'Add import prices for all variations successfully!', true);
+    // } else if ($(this).val() == 5) {
+    //     addValues('Enter sale prices for all variations', '.salePriceInput', 'Add sale prices for all variations successfully!', true);
+    // } else if ($(this).val() == 6) {
+    //     addValues('Enter prices for all variations', '.stockInput', 'Add stocks for all variations that do not have stocks yet successfully!', true);
+    // }
 })
 
 //------------------------------Check all variations---------------------------------
 $(document).on('click', '.checkVariationsStatus', function () {
+    saveVariations.addClass('disabledButton');
+    saveVariationsStatus = false;
     var variationsIndex = [];
     var check = true;
     var checkSelectAttribute = false;
+    var checkImportAndSalePrice = true;
+    var importSaleVariationsIndex = [];
     $('.container-spinner').removeClass('hidden');
     try {
         $('.variationItem').each(function () {
@@ -2496,24 +2566,46 @@ $(document).on('click', '.checkVariationsStatus', function () {
             }
             var index = $(this).find('strong').text();
             var imageInput = $(this).find('.variationImageInput').val();
-            var skuInput = $(this).find('.skuInput').val();
             var importPriceInput = $(this).find('.importPriceInput').val();
             var salePriceInput = $(this).find('.salePriceInput').val();
+            if (!Number(importPriceInput) && importPriceInput != '') {
+                notification('error', 'Giá nhập của biến thể ' + index + ' phải là số!');
+                check = false;
+                return false;
+            }
+            if (!Number(salePriceInput) && salePriceInput != '') {
+                notification('error', 'Giá bán của biến thể ' + index + ' phải là số!');
+                check = false;
+                return false;
+            }
+            if (salePriceInput != '' && Number(salePriceInput) > Number(importPriceInput)) {
+                checkImportAndSalePrice = false;
+                importSaleVariationsIndex.push(index);
+            }
             var stockInput = $(this).find('.stockInput').val();
-            if (imageInput && skuInput && importPriceInput && salePriceInput && stockInput) {
-                saveVariations.removeClass('disabledButton');
-                saveVariationsStatus = true;
-            } else {
+
+            if (!imageInput || !importPriceInput || !stockInput) {
                 check = false;
                 variationsIndex.push(index);
             }
         })
         if (!checkSelectAttribute) {
-            notification('warning', 'Please select attribute from select of variations!', 'Warning!');
+            notification('warning', 'Vui lòng chọn ít nhất 1 thuộc tính từ thẻ select của biến thể', 'Warning!');
+            // notification('warning', 'Please select attribute from select of variations!', 'Warning!');
         } else if (!check && variationsIndex.length > 0) {
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
-            notification('warning', 'Variations ' + variationsIndex.join(', ') + ' cannot be left blank', 'Warning!');
+            notification('warning', 'Biến thể ' + variationsIndex.join(', ') + ' không được để trống thông tin!', 'Warning!');
+            // notification('warning', 'Variations ' + variationsIndex.join(', ') + ' cannot be left blank!', 'Warning!');
+        } else if (!checkImportAndSalePrice) {
+            notification('error', 'Giá nhập của biến thể ' + importSaleVariationsIndex.join(', ') + ' phải lớn hơn giá bán!');
+        }
+        if (check && checkImportAndSalePrice) {
+            saveVariations.removeClass('disabledButton');
+            saveVariationsStatus = true;
+        }else{
+            saveVariations.addClass('disabledButton');
+            saveVariationsStatus = false;
         }
     } catch (error) {
         console.error('Error:', error);
@@ -2544,7 +2636,7 @@ $(document).on('click', '.saveVariations', function () {
                     }
                     variationData.variationAttributeData.push(variationValue);
                     if (index > 0 && $(this).val() != '') {
-                        name += ' - ';
+                        name += '-';
                     }
                     var selectedText = $(this).find('option:selected').text();
                     if ($(this).val() != '') {
@@ -2561,8 +2653,9 @@ $(document).on('click', '.saveVariations', function () {
                 const image = $(this).find('.variationImageInput')[0];
                 variationData.image_data = image.files[0];
 
-                const sku = $(this).find('.skuInput');
-                variationData.sku = sku.val();
+                var sku = $(this).find('.skuInput');
+                sku = sku.val() ? sku.val() : '';
+                variationData.sku = sku;
 
                 const importPrice = $(this).find('.importPriceInput');
                 variationData.import_price = importPrice.val();
@@ -2800,7 +2893,7 @@ $(document).on('click', '#publishBtn', async function () {
     });
 
     // Kiểm tra biến thể sản phẩm
-    if (!variationDataHasBeenSaved.length && !saveVariationsStatus) {
+    if (!variationDataHasBeenSaved.length || !saveVariationsStatus) {
         checkDatas = false;
         notification('warning', "Add at least one variation if you haven't already. If you make any changes to the variation, click the save variations button.", 'Warning!');
     }
