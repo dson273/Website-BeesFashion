@@ -33,7 +33,8 @@
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <!-- Notification library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
     @yield('css-libs')
 </head>
@@ -67,25 +68,49 @@
     <script src="{{ asset('assets/js/theme-setting.js') }}"></script><!-- Theme js-->
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Notification library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.js.map"></script>
+
+    <!-- Notification function -->
     <script>
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000", // Thời gian hiển thị
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
+        function notification(type, data, title) {
+            $(document).ready();
+            $(function() {
+                Command: toastr[type](data, title);
+                toastr.options = {
+                    closeButton: true,
+                    debug: false,
+                    newestOnTop: true,
+                    progressBar: true,
+                    positionClass: "toast-top-right",
+                    preventDuplicates: true,
+                    onclick: null,
+                    showDuration: "300",
+                    hideDuration: "1000",
+                    timeOut: "10000", // Thời gian hiển thị
+                    extendedTimeOut: "1000",
+                    showEasing: "swing",
+                    hideEasing: "linear",
+                    showMethod: "fadeIn",
+                    hideMethod: "fadeOut",
+                };
+            });
         };
+    </script>
+
+    <!-- Short notification commands -->
+    <script>
+        @if (session('statusSuccess'))
+            var message = @json(session('statusSuccess'));
+            notification('success', message, 'Successfully');
+        @elseif (session('statusError'))
+            var message = @json(session('statusError'));
+            notification('error', message, 'Error');
+        @elseif (session('statusWarning'))
+            var message = @json(session('statusWarning'));
+            notification('warning', message, 'warning');
+        @endif
     </script>
     @yield('script-libs')
 </body>

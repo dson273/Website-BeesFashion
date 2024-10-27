@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User_shipping_address;
-
+use Illuminate\Support\Facades\Hash;
 
 class DashboardController extends Controller
 {
@@ -42,7 +42,35 @@ class DashboardController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Updated personal information successfully!',
-            'user' => $user // Trả về đối tượng người dùng đã được cập nhật
+            'data' => $user // Trả về đối tượng người dùng đã được cập nhật
+        ]);
+    }
+
+    public function editPassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|confirmed|min:6',
+        ], [
+            'current_password.require' => 'Please enter current password.',
+            'new_password.required' => 'Please enter a new password.',
+            'new_password.min' => 'The new password must have at least 6 characters.',
+            'new_password.confirmed' => 'Confirm passwords do not match.',
+        ]);
+
+        $user = Auth::user();
+
+        // Kiểm tra mật khẩu hiện tại có khớp không
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['errors' => 'Current password is incorrect.'], 400);
+        }
+        // Cập nhật mật khẩu mới
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password updated successfully.'
         ]);
     }
 
@@ -65,7 +93,7 @@ class DashboardController extends Controller
             'is_active' => 0, // Mặc định là 0
         ]);
 
-        return redirect()->back()->with('success', 'Địa chỉ giao hàng đã được thêm thành công.');
+        return redirect()->back()->with('statusSuccess', 'Địa chỉ giao hàng đã được thêm thành công.');
     }
 
     public function editAddress(Request $request, $id)
