@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 
 class VoucherController extends Controller
@@ -28,7 +29,24 @@ class VoucherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->isMethod('POST')) {
+            $params = $request->except('_token');
+            if ($request->hasFile('image')) {
+                // Lấy tên ảnh
+                $imageName = $request->file('image')->getClientOriginalName();
+                // Lưu ảnh vào thư mục 'uploads/imgcate'
+                $request->file('image')->storeAs('uploads/imageVouchers', $imageName, 'public');
+                // Lưu chỉ tên ảnh vào params
+                $params['image'] = $imageName;
+            } else {
+                $params['image'] = null;
+            }
+
+            $params['is_active'] = $request->has('is_active') ? 1 : 0;
+            Voucher::create($params);
+
+            return back()->with('statusSuccess', 'Thêm danh mục thành công');
+        }
     }
 
     /**

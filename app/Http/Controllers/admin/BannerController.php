@@ -34,6 +34,7 @@ class BannerController extends Controller
     {
         if ($request->isMethod('POST')) {
             $params = $request->except('_token');
+            $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $Ban = Banner::query()->create($params);
             $banID = $Ban->id;
 
@@ -128,6 +129,7 @@ class BannerController extends Controller
                     ]);
                 }
             }
+            $params['is_active'] = $request->has('is_active') ? 1 : 0;
             // }
 
             // Cập nhật các thông tin khác của banner

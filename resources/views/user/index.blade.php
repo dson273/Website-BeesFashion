@@ -156,17 +156,21 @@
                                     <div class="tab-pane fade show active" id="features-products" role="tabpanel"
                                         tabindex="0">
                                         <div class="row g-4">
-                                            @foreach ($products as $item)
+                                            @foreach ($products as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
                                                             <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
-                                                            <div class="product-image"><a href="product-detail.html"> <img
-                                                                        class="bg-img"
-                                                                        src="{{ asset('assets/images/product/product-4/1.jpg') }}"
-                                                                        alt="product"></a></div>
+                                                            <div class="product-image"><a href="product-detail.html">
+
+                                                                    @foreach ($product->product_files as $file)
+                                                                        <img src="{{ Storage::url('upload/products/images/' . $file->file_name) }}"
+                                                                            alt="Product Image" width="200">
+                                                                    @endforeach
+
+                                                                </a></div>
                                                             <div class="cart-info-icon"> <a class="wishlist-icon"
                                                                     href="javascript:void(0)" tabindex="0"><i
                                                                         class="iconsax" data-icon="heart"
@@ -195,18 +199,13 @@
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
                                                             <a href="product-detail.html">
-                                                                <h6>{{ $item->name }}</h6>
+                                                                <h6>{{ $product->name }}</h6>
                                                             </a>
 
 
-                                                            @foreach ($item->product_variants as $variant)
-                                                                <p>
-                                                                    Giá bán: ${{ $variant->sale_price }}
-                                                                    @if ($variant->import_histories->isNotEmpty())
-                                                                        <del>${{ $variant->import_histories[0]->import_price }}</del>
-                                                                    @endif
-                                                                </p>
-                                                            @endforeach
+                                                            <p>
+                                                                Giá bán: ${{ $product->priceRange }}
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -411,15 +410,11 @@
                                                             <a href="product-detail.html">
                                                                 <h6>{{ $product->name }}</h6>
                                                             </a>
-                                                            @foreach ($product->product_variants as $variant)
-                                                                <p>
-                                                                    Giá bán: ${{ $variant->sale_price }}
-                                                                    @if ($variant->import_histories->isNotEmpty())
-                                                                        <del>Giá nhập:
-                                                                            ${{ $variant->import_histories[0]->import_price }}</del>
-                                                                    @endif
-                                                                </p>
-                                                            @endforeach
+
+                                                            <p>
+                                                                Giá bán: ${{ $product->priceRange }}
+                                                            </p>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -583,7 +578,7 @@
                                     <!-- Sản phẩm mới -->
                                     <div class="tab-pane fade" id="seller-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
-                                            @foreach ($newProducts as $item)
+                                            @foreach ($newProducts as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
@@ -622,16 +617,11 @@
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
                                                             <a href="product-detail.html">
-                                                                <h6>{{ $item->name }}</h6>
+                                                                <h6>{{ $product->name }}</h6>
                                                             </a>
-                                                            @foreach ($item->product_variants as $variant)
-                                                                <p>
-                                                                    Giá bán: ${{ $variant->sale_price }}
-                                                                    @if ($variant->import_histories->isNotEmpty())
-                                                                        <del>${{ $variant->import_histories[0]->import_price }}</del>
-                                                                    @endif
-                                                                </p>
-                                                            @endforeach
+                                                            <p>
+                                                                Giá bán: ${{ $product->priceRange }}
+                                                            </p>
 
                                                         </div>
                                                     </div>
@@ -1429,8 +1419,8 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
-
+        </div>
+        <!-- End seach -->
     </main>
     <!-- End container content -->
 @endsection
