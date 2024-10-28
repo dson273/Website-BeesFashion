@@ -1421,6 +1421,7 @@
             </div>
         </div>
         <!-- End seach -->
+    </div> --}}
     </main>
     <!-- End container content -->
 @endsection
