@@ -5,6 +5,12 @@
 @endsection
 
 @section('content')
+<div class="card-body">
+    <div class="mb-3">
+        <a href="{{ route('admin.banner.index') }}" class="btn btn-dark text-white text-decoration-none">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
     <div class="card shadow mb-4">
         <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Thêm banner trang web</h1>
         <div class="card-body">
@@ -16,13 +22,7 @@
                     <input type="text" name="name" id="name" value="{{ $Ban->name }}" class="form-control">
                 </div>
 
-                <div class="form-group">
-                    <label for="is_active">Trạng thái</label>
-                    <select name="is_active" class="form-control">
-                        <option value="1" {{ $Ban->is_active == '1' ? 'selected' : '' }}>Hiển Thị</option>
-                        <option value="0" {{ $Ban->is_active == '0' ? 'selected' : '' }}>Ẩn</option>
-                    </select>
-                </div>
+               
 
                 <div class="form-group">
                     <div class="mb-3">
@@ -53,12 +53,17 @@
                         </table>
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label for="is_active" class="form-label">Kích Hoạt</label>
+                    <input type="checkbox" name="is_active" value="1" {{ $Ban->is_active ? 'checked' : '' }}>
 
-                <button type="submit" class="btn btn-primary">Tạo mới banner</button>
+                </div>
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
             </form>
 
         </div>
     </div>
+</div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var rowCount = 1;

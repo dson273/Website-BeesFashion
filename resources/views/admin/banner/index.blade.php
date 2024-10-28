@@ -26,10 +26,11 @@
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Banner trang web</h6>
+                <a href="{{ route('admin.banner.create') }}" class="btn btn-success text-white text-decoration-none"><i
+                        class="fas fa-plus"></i> Thêm mới banner</a>
             </div>
-      
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
