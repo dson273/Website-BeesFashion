@@ -73,7 +73,7 @@ class CategoryController extends Controller
                 // Lấy tên ảnh
                 $imageName = $request->file('image')->getClientOriginalName();
                 // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/imgcate', $imageName, 'public');
+                $request->file('image')->storeAs('uploads/imageCategory', $imageName, 'public');
                 // Lưu chỉ tên ảnh vào params
                 $params['image'] = $imageName;
             } else {
@@ -96,7 +96,7 @@ class CategoryController extends Controller
         $htmlOption = $this->getCategory($parentId = '');
         // Lấy tất cả danh mục con có parent_category_id bằng ID của danh mục cha
         $childCategories = $this->getAllChildCategories($parentCategory->id);
-        return view('admin.categories.detail', compact('parentCategory', 'childCategories', 'cate_parent','htmlOption'));
+        return view('admin.categories.detail', compact('parentCategory', 'childCategories', 'cate_parent', 'htmlOption'));
     }
 
 
