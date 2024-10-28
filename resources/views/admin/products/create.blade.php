@@ -203,17 +203,23 @@ Tạo mới sản phẩm
                             <div>
                                 <p class="notificationQuantityVariations mr-5"></p>
                             </div>
-                            <div class="d-flex flex-column align-items-end">
+                            <div class="d-flex flex-column align-items-end w-25">
                                 <select name="" id="" class="form-control controlVariationsSelect bg-primary btn-sm text-white hidden">
                                     <option value="">Control</option>
-                                    <option value="1" class="addImportPriceForVariationsNoHaveValue">Add import prices for all (no have value)</option>
+                                    <option value="1" class="addImportPriceForVariationsNoHaveValue">Nhập "giá nhập" cho tất cả các biến thể chưa có giá nhập</option>
+                                    <option value="2" class="addSalePriceForVariationsNoHaveValue">Nhập "giá bán" cho tất cả các biến thể chưa có giá bán</option>
+                                    <option value="3" class="addStockForVariationsNoHaveValue">Nhập "số lượng" cho tất cả các biến thể chưa có số lượng</option>
+                                    <option value="4" class="addImportPriceAllForVariations">Nhập "giá nhập" cho tất cả các biến thể</option>
+                                    <option value="5" class="addSalePriceForAllVariations">Nhập "giá bán" cho tất cả các biến thể</option>
+                                    <option value="6" class="addStockForAllVariations">Nhập "số lượng" cho tất cả các biến thể</option>
+                                    <!-- English version -->
+                                    <!-- <option value="1" class="addImportPriceForVariationsNoHaveValue">Add import prices for all (no have value)</option>
                                     <option value="2" class="addSalePriceForVariationsNoHaveValue">Add sale prices for all (no have value)</option>
                                     <option value="3" class="addStockForVariationsNoHaveValue">Add stock for all (no have value)</option>
                                     <option value="4" class="addImportPriceAllForVariations">Add import prices for all</option>
                                     <option value="5" class="addSalePriceForAllVariations">Add sale prices for all</option>
-                                    <option value="6" class="addStockForAllVariations">Add stock for all</option>
+                                    <option value="6" class="addStockForAllVariations">Add stock for all</option> -->
                                 </select>
-                                <span class="btn btn-primary btn-sm addPriceForAllVariations hidden no-wrap">Add price</span>
                                 <span class="btn btn-danger btn-sm mt-2 white-space deleteAllVariations hidden">Delete all variations</span>
                             </div>
                         </div>

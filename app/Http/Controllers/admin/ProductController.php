@@ -125,6 +125,7 @@ class ProductController extends Controller
                 foreach ($variations as $index => $item) {
                     $skuVariation = $request->input("variations.$index.sku");
                     $nameVariation = $request->input("variations.$index.name");
+                    $skuVariation = $skuVariation != '' ? $skuVariation : $newProduct->SKU . '-' . $nameVariation;
                     $importPriceVariation = $request->input("variations.$index.import_price");
                     $salePriceVariation = $request->input("variations.$index.sale_price");
                     $stockVariation = $request->input("variations.$index.stock");
