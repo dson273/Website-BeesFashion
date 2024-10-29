@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\AttributeValueController;
+use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\ManagerSettingController;
 
@@ -89,6 +90,11 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
             Route::resource('attribute_values', AttributeValueController::class);
         });
 
+        //quản lý thương thiệu(brand)
+        Route::middleware(['checkPermission:Quản lý thuộc tính'])->group(function () {
+            Route::resource('brands', BrandController::class);
+        });
+
         //Quản lý banner
         Route::middleware(['checkPermission:Quản lý banner'])->group(function () {
             Route::resource('banner', BannerController::class);
@@ -106,3 +112,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();
 // });
+Route::resource('attributes', AttributeController::class);
+            //Quản lý loại thuộc tính
+            Route::resource('attribute_types', AttributeTypeController::class);
+            //Quản lý dữ liệu thuộc tính
+            Route::resource('attribute_values', AttributeValueController::class);
