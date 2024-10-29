@@ -73,7 +73,7 @@ class CategoryController extends Controller
                 // Lấy tên ảnh
                 $imageName = $request->file('image')->getClientOriginalName();
                 // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/imageCategory', $imageName, 'public');
+                $request->file('image')->storeAs('uploads/categories/images', $imageName, 'public');
                 // Lưu chỉ tên ảnh vào params
                 $params['image'] = $imageName;
             } else {
@@ -146,7 +146,7 @@ class CategoryController extends Controller
 
                 $name = $request->file('image')->getClientOriginalName();
                 // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/imageCategory', $name, 'public');
+                $request->file('image')->storeAs('uploads/categories/images', $name, 'public');
 
                 $params['image'] = $name;
             } else {

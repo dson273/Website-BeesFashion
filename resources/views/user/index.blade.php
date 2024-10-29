@@ -15,7 +15,8 @@
                                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                                     <div class="row">
                                         <a href="#">
-                                            <img class="img-fluid" src="{{ asset('storage/' . $banner_image->file_name) }}"
+                                            <img class="img-fluid"
+                                                src="{{ asset('storage/uploads/banners/images/id_' . $slider->id . '/' . $banner_image->file_name) }}"
                                                 alt="Banner Image">
                                         </a>
                                     </div>
@@ -166,7 +167,7 @@
                                                             <div class="product-image"><a href="product-detail.html">
 
                                                                     @foreach ($product->product_files as $file)
-                                                                        <img src="{{ Storage::url('upload/products/images/' . $file->file_name) }}"
+                                                                        <img src="{{ asset('upload/products/images/' . $file->file_name) }}"
                                                                             alt="Product Image" width="200">
                                                                     @endforeach
 
