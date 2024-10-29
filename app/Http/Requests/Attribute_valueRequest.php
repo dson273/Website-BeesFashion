@@ -23,7 +23,7 @@ class Attribute_valueRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'value' => 'required|string|max:255',
+            'value' => 'string|max:255',
             'attribute_id' => 'required|exists:attributes,id', // Kiểm tra attribute_id phải tồn tại
         ];
     }

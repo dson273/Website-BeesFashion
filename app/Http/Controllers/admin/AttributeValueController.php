@@ -39,11 +39,24 @@ class AttributeValueController extends Controller
     public function store(Attribute_valueRequest $request)
     {
         // Lấy dữ liệu từ request
+        $attribute = Attribute::find($request->attribute_id);
+
+        if ($attribute) {
+            $query = Attribute_value::where('attribute_id', $request->attribute_id);
+
+            // Kiểm tra nếu loại thuộc tính là 'color' thì tìm theo 'value', ngược lại tìm theo 'name'
+            if ($attribute->attribute_type->type_name == 'color') {
+                $existingAttributeValue = $query->where('value', $request->value)->first();
+            } else {
+                $existingAttributeValue = $query->where('name', $request->value)->first();
+            }
+        }
+
+
         $params = $request->except('_token');
         // Kiểm tra xem đã tồn tại giá trị nào có cùng attribute_id và value hay chưa
-        $existingAttributeValue = Attribute_value::where('attribute_id', $request->attribute_id)
-            ->where('value', $request->value)
-            ->first();
+
+
 
         // Nếu đã tồn tại, trả về thông báo lỗi
         if ($existingAttributeValue) {
