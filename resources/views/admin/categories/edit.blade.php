@@ -27,7 +27,7 @@
                     <div class="mt-3 mb-3">
                         <label for="" class="form-label">Ảnh</label>
                         <input type="file" name="image" class="form-control">
-                        <img src="{{ asset('storage/uploads/imgcate/' . $Cate->image) }}" width="150px" alt="">
+                        <img src="{{ asset('storage/uploads/categories/images/' . $Cate->image) }}" width="150px" alt="">
 
                     </div>
                     <div class="mt-3 mb-3">

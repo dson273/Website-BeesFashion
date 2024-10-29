@@ -58,14 +58,12 @@
                                     <td>{{ $banner->id }}</td>
                                     <td>{{ $banner->name }}</td>
                                     <td>
-                                        @if ($banner->banner_images->isNotEmpty())
+                                       
                                             @foreach ($banner->banner_images as $banner_image)
-                                                <img src="{{ asset('storage/' . $banner_image->file_name) }}"
+                                                <img src="{{ asset('storage/uploads/banners/images/id_' . $banner->id . '/' . $banner_image->file_name) }}"
                                                     alt="Banner Image" style="max-width: 100px;">
                                             @endforeach
-                                        @else
-                                            <span>Không có ảnh</span>
-                                        @endif
+                                      
                                     </td>
                                     <td>{{ $banner->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>

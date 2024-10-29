@@ -35,7 +35,7 @@ class VoucherController extends Controller
                 // Lấy tên ảnh
                 $imageName = $request->file('image')->getClientOriginalName();
                 // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/imageVouchers', $imageName, 'public');
+                $request->file('image')->storeAs('uploads/vouchers/images', $imageName, 'public');
                 // Lưu chỉ tên ảnh vào params
                 $params['image'] = $imageName;
             } else {
