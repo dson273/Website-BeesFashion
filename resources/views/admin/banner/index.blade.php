@@ -26,10 +26,11 @@
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Banner trang web</h6>
+                <a href="{{ route('admin.banner.create') }}" class="btn btn-success text-white text-decoration-none"><i
+                        class="fas fa-plus"></i> Thêm mới banner</a>
             </div>
-      
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -57,14 +58,12 @@
                                     <td>{{ $banner->id }}</td>
                                     <td>{{ $banner->name }}</td>
                                     <td>
-                                        @if ($banner->banner_images->isNotEmpty())
+                                       
                                             @foreach ($banner->banner_images as $banner_image)
-                                                <img src="{{ asset('storage/' . $banner_image->file_name) }}"
+                                                <img src="{{ asset('storage/uploads/banners/images/id_' . $banner->id . '/' . $banner_image->file_name) }}"
                                                     alt="Banner Image" style="max-width: 100px;">
                                             @endforeach
-                                        @else
-                                            <span>Không có ảnh</span>
-                                        @endif
+                                      
                                     </td>
                                     <td>{{ $banner->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>

@@ -5,37 +5,38 @@
 @endsection
 
 @section('content')
-    <div class="card shadow mb-4">
-        <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Thêm banner trang web</h1>
-        <div class="card-body">
-            <form action="{{ route('admin.banner.update', $Ban->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="name">Tên Banner</label>
-                    <input type="text" name="name" id="name" value="{{ $Ban->name }}" class="form-control">
-                </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <a href="{{ route('admin.banner.index') }}" class="btn btn-dark text-white text-decoration-none">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+        <div class="card shadow mb-4">
+            <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Thêm banner trang web</h1>
+            <div class="card-body">
+                <form action="{{ route('admin.banner.update', $Ban->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="name">Tên Banner</label>
+                        <input type="text" name="name" id="name" value="{{ $Ban->name }}"
+                            class="form-control">
+                    </div>
 
-                <div class="form-group">
-                    <label for="is_active">Trạng thái</label>
-                    <select name="is_active" class="form-control">
-                        <option value="1" {{ $Ban->is_active == '1' ? 'selected' : '' }}>Hiển Thị</option>
-                        <option value="0" {{ $Ban->is_active == '0' ? 'selected' : '' }}>Ẩn</option>
-                    </select>
-                </div>
 
-                <div class="form-group">
-                    <div class="mb-3">
-                        <label for="" class="form-label">Album ảnh:</label>
-                        <a id="add-row"><i class="fa fa-plus text-muted fs-18 rounded-2 border ms-3"
-                                style="cursor: pointer;"></i></a>
-                        <table class="table align-middle table-nowrap mb-0">
-                            <tbody id="image-table-body">
-                                @foreach ($Ban->banner_images as $index => $image)
+
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Album ảnh:</label>
+                            <a id="add-row"><i class="fa fa-plus text-muted fs-18 rounded-2 border ms-3"
+                                    style="cursor: pointer;"></i></a>
+                            <table class="table align-middle table-nowrap mb-0">
+                                <tbody id="image-table-body">
+                                    @foreach ($Ban->banner_images as $index => $image)
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <img class="me-3" id="preview_{{ $index }}"
-                                                    src="{{ Storage::url($image->file_name) }}" alt="Hình ảnh sản phẩm"
+                                                    src="{{ Storage::url('uploads//banners/images/id_' . $Ban->id . '/' . $image->file_name) }}" alt="Hình ảnh sản phẩm"
                                                     style="width: 50px;">
                                                 <input type="file" id="hinh_anh" class="form-control"
                                                     name="file_name[{{ $image->id }}]"
@@ -49,14 +50,19 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                    <div class="mb-3">
+                        <label for="is_active" class="form-label">Kích Hoạt</label>
+                        <input type="checkbox" name="is_active" value="1" {{ $Ban->is_active ? 'checked' : '' }}>
 
-                <button type="submit" class="btn btn-primary">Tạo mới banner</button>
-            </form>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                </form>
 
+            </div>
         </div>
     </div>
     <script>

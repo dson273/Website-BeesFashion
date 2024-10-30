@@ -15,7 +15,8 @@
                                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                                     <div class="row">
                                         <a href="#">
-                                            <img class="img-fluid" src="{{ asset('storage/' . $banner_image->file_name) }}"
+                                            <img class="img-fluid"
+                                                src="{{ asset('storage/uploads/banners/images/id_' . $slider->id . '/' . $banner_image->file_name) }}"
                                                 alt="Banner Image">
                                         </a>
                                     </div>
@@ -156,17 +157,21 @@
                                     <div class="tab-pane fade show active" id="features-products" role="tabpanel"
                                         tabindex="0">
                                         <div class="row g-4">
-                                            @foreach ($products as $item)
+                                            @foreach ($products as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
                                                             <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
-                                                            <div class="product-image"><a href="product-detail.html"> <img
-                                                                        class="bg-img"
-                                                                        src="{{ asset('assets/images/product/product-4/1.jpg') }}"
-                                                                        alt="product"></a></div>
+                                                            <div class="product-image"><a href="product-detail.html">
+
+                                                                    @foreach ($product->product_files as $file)
+                                                                        <img src="{{ asset('upload/products/images/' . $file->file_name) }}"
+                                                                            alt="Product Image" width="200">
+                                                                    @endforeach
+
+                                                                </a></div>
                                                             <div class="cart-info-icon"> <a class="wishlist-icon"
                                                                     href="javascript:void(0)" tabindex="0"><i
                                                                         class="iconsax" data-icon="heart"
@@ -195,18 +200,13 @@
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
                                                             <a href="product-detail.html">
-                                                                <h6>{{ $item->name }}</h6>
+                                                                <h6>{{ $product->name }}</h6>
                                                             </a>
 
 
-                                                            @foreach ($item->product_variants as $variant)
-                                                                <p>
-                                                                    Giá bán: ${{ $variant->sale_price }}
-                                                                    @if ($variant->import_histories->isNotEmpty())
-                                                                        <del>${{ $variant->import_histories[0]->import_price }}</del>
-                                                                    @endif
-                                                                </p>
-                                                            @endforeach
+                                                            <p>
+                                                                Giá bán: ${{ $product->priceRange }}
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -411,15 +411,11 @@
                                                             <a href="product-detail.html">
                                                                 <h6>{{ $product->name }}</h6>
                                                             </a>
-                                                            @foreach ($product->product_variants as $variant)
-                                                                <p>
-                                                                    Giá bán: ${{ $variant->sale_price }}
-                                                                    @if ($variant->import_histories->isNotEmpty())
-                                                                        <del>Giá nhập:
-                                                                            ${{ $variant->import_histories[0]->import_price }}</del>
-                                                                    @endif
-                                                                </p>
-                                                            @endforeach
+
+                                                            <p>
+                                                                Giá bán: ${{ $product->priceRange }}
+                                                            </p>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -583,7 +579,7 @@
                                     <!-- Sản phẩm mới -->
                                     <div class="tab-pane fade" id="seller-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
-                                            @foreach ($newProducts as $item)
+                                            @foreach ($newProducts as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
@@ -622,16 +618,11 @@
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
                                                             <a href="product-detail.html">
-                                                                <h6>{{ $item->name }}</h6>
+                                                                <h6>{{ $product->name }}</h6>
                                                             </a>
-                                                            @foreach ($item->product_variants as $variant)
-                                                                <p>
-                                                                    Giá bán: ${{ $variant->sale_price }}
-                                                                    @if ($variant->import_histories->isNotEmpty())
-                                                                        <del>${{ $variant->import_histories[0]->import_price }}</del>
-                                                                    @endif
-                                                                </p>
-                                                            @endforeach
+                                                            <p>
+                                                                Giá bán: ${{ $product->priceRange }}
+                                                            </p>
 
                                                         </div>
                                                     </div>
@@ -1144,12 +1135,12 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="blog-main">
-                                <div class="blog-box ratio3_2"><a class="blog-img" href="blog-details.html"><img
-                                            class="bg-img" src="{{ asset('assets/images/blog/layout-4/1.jpg') }}"
-                                            alt=""></a></div>
+                                <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
+                                            src="{{ asset('assets/images/blog/layout-4/1.jpg') }}" alt=""></a>
+                                </div>
                                 <div class="blog-txt">
                                     <p>By: Admin / 26th aug 2020</p>
-                                    <a href="blog-details.html">
+                                    <a href="#">
                                         <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                     </a>
                                     <div class="link-hover-anim underline">
@@ -1175,12 +1166,11 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="blog-details.html"><img
-                                        class="bg-img" src="{{ asset('assets/images/blog/layout-4/2.jpg') }}"
-                                        alt=""></a></div>
+                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
+                                        src="{{ asset('assets/images/blog/layout-4/2.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="blog-details.html">
+                                <a href="#">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
@@ -1205,12 +1195,11 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio3_2"><a class="blog-img" href="blog-details.html"><img
-                                        class="bg-img" src="{{ asset('assets/images/blog/layout-4/3.jpg') }}"
-                                        alt=""></a></div>
+                            <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
+                                        src="{{ asset('assets/images/blog/layout-4/3.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="blog-details.html">
+                                <a href="#">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
@@ -1235,12 +1224,11 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="blog-details.html"><img
-                                        class="bg-img" src="{{ asset('assets/images/blog/layout-4/4.jpg') }}"
-                                        alt=""></a></div>
+                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
+                                        src="{{ asset('assets/images/blog/layout-4/4.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="blog-details.html">
+                                <a href="#">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
@@ -1275,22 +1263,22 @@
             <div class="custom-container container">
                 <div class="swiper logo-slider">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"><a href="product-select.html"> <img
-                                    src="{{ asset('assets/images/logos/1.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="product-select.html"> <img
-                                    src="{{ asset('assets/images/logos/2.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="product-select.html"> <img
-                                    src="{{ asset('assets/images/logos/3.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="product-select.html"> <img
-                                    src="{{ asset('assets/images/logos/4.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="product-select.html"> <img
-                                    src="{{ asset('assets/images/logos/5.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="product-select.html"> <img
-                                    src="{{ asset('assets/images/logos/6.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="product-select.html"> <img
-                                    src="{{ asset('assets/images/logos/7.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="product-select.html"> <img
-                                    src="{{ asset('assets/images/logos/3.png') }}" alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/1.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/2.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/3.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/4.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/5.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/6.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/7.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/3.png') }}"
+                                    alt="logo"></a></div>
                     </div>
                 </div>
             </div>
@@ -1383,406 +1371,49 @@
         </div>
         <!-- End model quikview -->
 
-        <!-- Modal add cart -->
-        <div class="modal theme-modal fade cart-modal" id="addtocart" tabindex="-1" role="dialog" aria-modal="true">
+
+        {{-- <div class="wrapper">
+            <div class="title-box">
+                <img src="{{ asset('assets/images/other-img/cookie.png') }}" alt="">
+                <h3>Cookies Consent</h3>
+            </div>
+            <div class="info">
+                <p>We use cookies to improve our site and your shopping experience. By continuing to browse our site you
+                    accept our cookie policy.
+                </p>
+            </div>
+            <div class="buttons"><button class="button btn btn_outline sm" id="acceptBtn">Accept</button><button
+                    class="button btn btn_black sm">Decline</button></div>
+        </div> --}}
+
+        {{-- Modal thu thập thông tin --}}
+        {{-- <div class="modal theme-modal newsletter-modal newsletter-4 fade" id="newsletter" tabindex="-1" role="dialog"
+            aria-modal="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div class="modal-body modal1">
-                        <div class="custom-container container">
-                            <div class="row">
-                                <div class="col-12 px-0">
-                                    <div class="modal-bg addtocart">
-                                        <button class="btn-close" type="button" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                        <div class="d-flex">
-                                            <a href="#"><img class="img-fluid blur-up lazyload pro-img"
-                                                    src="{{ asset('assets/images/modal/0.jpg') }}" alt=""></a>
-                                            <div class="add-card-content align-self-center text-center">
-                                                <a href="#">
-                                                    <h6><i class="fa-solid fa-check"> </i>Item <span>men full
-                                                            sleeves</span><span> successfully added to your Cart</span>
-                                                    </h6>
-                                                </a>
-                                                <div class="buttons"><a class="view-cart btn btn-solid"
-                                                        href="cart.html">Your cart</a><a class="checkout btn btn-solid"
-                                                        href="check-out.html">Check
-                                                        out</a><a class="continue btn btn-solid"
-                                                        href="index.html">Continue shopping</a></div>
-                                                <div class="upsell_payment"><img class="img-fluid blur-up lazyload"
-                                                        src="{{ asset('assets/images/payment_cart.png') }}"
-                                                        alt=""></div>
-                                            </div>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-body p-0">
+                        <div class="news-latter-box">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6">
+                                    <div class="newslwtter-content">
+                                        <h2>Stay Fashionable</h2>
+                                        <span>Stay Informed</span>
+                                        <h4>Subscriber to Our Newsletter!</h4>
+                                        <p>Keep up to date so you don't miss any new updates or goods we reveal.</p>
+                                        <div class="form-floating"><input type="text" placeholder="Enter Your Name..">
                                         </div>
+                                        <div class="form-floating"><input type="email"
+                                                placeholder="Enter Your Email..">
+                                        </div>
+                                        <button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
+                                            aria-label="Close">Submit</button>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="product-upsell">
-                                        <h5>Products Loved by Our Customers</h5>
-                                        <svg>
-                                            <use
-                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#main-line">
-                                            </use>
-                                        </svg>
+                                <div class="col-md-6 d-none d-lg-block">
+                                    <div class="newslwtter-img"> <img class="img-fluid"
+                                            src="{{ asset('assets/images/other-img/news-latter4.png') }}" alt="">
                                     </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card-img">
-                                        <img src="{{ asset('assets/images/modal/1.jpg') }}" alt="user">
-                                        <a href="#">
-                                            <h6>Woven Jacket</h6>
-                                            <p>$25</p>
-                                        </a>
-                                    </div>
-                                    <div class="card-img">
-                                        <img src="{{ asset('assets/images/modal/2.jpg') }}" alt="user">
-                                        <a href="#">
-                                            <h6>Printed Dresses</h6>
-                                            <p>$25</p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card-img">
-                                        <img src="{{ asset('assets/images/modal/3.jpg') }}" alt="user">
-                                        <a href="#">
-                                            <h6>Woven Jacket</h6>
-                                            <p>$25</p>
-                                        </a>
-                                    </div>
-                                    <div class="card-img">
-                                        <img src="{{ asset('assets/images/modal/4.jpg') }}" alt="user">
-                                        <a href="#">
-                                            <h6>Printed Dresses</h6>
-                                            <p>$25</p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card-img">
-                                        <img src="{{ asset('assets/images/modal/5.jpg') }}" alt="user">
-                                        <a href="#">
-                                            <h6>Woven Jacket</h6>
-                                            <p>$25</p>
-                                        </a>
-                                    </div>
-                                    <div class="card-img">
-                                        <img src="{{ asset('assets/images/modal/6.jpg') }}" alt="user">
-                                        <a href="#">
-                                            <h6>Printed Dresses</h6>
-                                            <p>$25</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End modal add cart -->
-
-        <!-- Modal cart right -->
-        <div class="offcanvas offcanvas-end shopping-details" id="offcanvasRight" tabindex="-1"
-            aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-                <h4 class="offcanvas-title" id="offcanvasRightLabel">Shopping Cart</h4>
-                <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body theme-scrollbar">
-                <ul class="offcanvas-cart">
-                    <li>
-                        <a href="#"> <img src="{{ asset('assets/images/cart/1.jpg') }}" alt=""></a>
-                        <div>
-                            <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total">105</span></span></p>
-                            <div class="btn-containter">
-                                <div class="btn-control">
-                                    <button class="btn-control__remove" id="btn-remove">&minus;</button>
-                                    <div class="btn-control__quantity">
-                                        <div id="quantity-previous">2</div>
-                                        <div id="quantity-current">3</div>
-                                        <div id="quantity-next">4</div>
-                                    </div>
-                                    <button class="btn-control__add" id="btn-add">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <i class="iconsax delete-icon" data-icon="trash"></i>
-                    </li>
-                    <li>
-                        <a href="#"> <img src="{{ asset('assets/images/cart/2.jpg') }}" alt=""></a>
-                        <div>
-                            <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total1">105</span></span></p>
-                            <div class="btn-containter">
-                                <div class="btn-control">
-                                    <button class="btn-control__remove" id="btn-remove1">&minus;</button>
-                                    <div class="btn-control__quantity">
-                                        <div id="quantity1-previous">2</div>
-                                        <div id="quantity1-current">3</div>
-                                        <div id="quantity1-next">4</div>
-                                    </div>
-                                    <button class="btn-control__add" id="btn-add1">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <i class="iconsax delete-icon" data-icon="trash"></i>
-                    </li>
-                    <li>
-                        <a href="#"> <img src="{{ asset('assets/images/cart/3.jpg') }}" alt=""></a>
-                        <div>
-                            <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total2">105</span></span></p>
-                            <div class="btn-containter">
-                                <div class="btn-control">
-                                    <button class="btn-control__remove" id="btn-remove2">&minus;</button>
-                                    <div class="btn-control__quantity">
-                                        <div id="quantity2-previous">2</div>
-                                        <div id="quantity2-current">3</div>
-                                        <div id="quantity2-next">4</div>
-                                    </div>
-                                    <button class="btn-control__add" id="btn-add2">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <i class="iconsax delete-icon" data-icon="trash"></i>
-                    </li>
-                    <li>
-                        <a href="#"> <img src="{{ asset('assets/images/cart/4.jpg') }}" alt=""></a>
-                        <div>
-                            <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total3">105</span></span></p>
-                            <div class="btn-containter">
-                                <div class="btn-control">
-                                    <button class="btn-control__remove" id="btn-remove3">&minus;</button>
-                                    <div class="btn-control__quantity">
-                                        <div id="quantity3-previous">2</div>
-                                        <div id="quantity3-current">3</div>
-                                        <div id="quantity3-next">4</div>
-                                    </div>
-                                    <button class="btn-control__add" id="btn-add3">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <i class="iconsax delete-icon" data-icon="trash"></i>
-                    </li>
-                </ul>
-            </div>
-            <div class="offcanvas-footer">
-                <p>Spend <span>$ 14.81 </span>more and enjoy <span>FREE SHIPPING!</span></p>
-                <div class="footer-range-slider">
-                    <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="46"
-                        aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated theme-default"
-                            style="width: 46%"></div>
-                    </div>
-                </div>
-                <div class="price-box">
-                    <h6>Total :</h6>
-                    <p>$ 49.59 USD</p>
-                </div>
-                <div class="cart-button"> <a class="btn btn_outline" href="cart.html"> View Cart</a><a
-                        class="btn btn_black" href="check-out.html"> Checkout</a></div>
-            </div>
-        </div>
-        <!-- End modal cart right -->
-
-        <!-- Seach -->
-        <div class="offcanvas offcanvas-top search-details" id="offcanvasTop" tabindex="-1"
-            aria-labelledby="offcanvasTopLabel">
-            <div class="offcanvas-header"><button class="btn-close" type="button" data-bs-dismiss="offcanvas"
-                    aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
-            <div class="offcanvas-body theme-scrollbar">
-                <div class="container">
-                    <h3>What are you trying to find?</h3>
-                    <div class="search-box"> <input type="search" name="text" placeholder="I'm looking for…"><i
-                            class="iconsax" data-icon="search-normal-2"></i>
-                    </div>
-                    <h4>Popular Searches</h4>
-                    <ul class="rapid-search">
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Jeans
-                                Women</a>
-                        </li>
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Blazer
-                                Women</a></li>
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Jeans
-                                Men</a>
-                        </li>
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Blazer
-                                Men</a>
-                        </li>
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>T-Shirts
-                                Men</a></li>
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Shoes
-                                Men</a>
-                        </li>
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>T-Shirts
-                                Women</a></li>
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Bags</a>
-                        </li>
-                        <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Sneakers
-                                Women</a></li>
-                        <li> <a href="product-select.html"><i class="iconsax"
-                                    data-icon="search-normal-2"></i>Dresses</a>
-                        </li>
-                    </ul>
-                    <h4>You Might Like</h4>
-                    <div class="row gy-4 ratio_square-2 preemptive-search">
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                                src="{{ asset('assets/images/product/product-2/blazers/1.jpg') }}"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div>
-                                        <a href="product-detail.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$50.00 </p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>4+</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                                src="{{ asset('assets/images/product/product-2/blazers/2.jpg') }}"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div>
-                                        <a href="product-detail.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$95.00 <del>$140.00</del></p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>3+</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                                src="{{ asset('assets/images/product/product-2/blazers/3.jpg') }}"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div>
-                                        <a href="product-detail.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$80.00 <del>$140.00</del></p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>4</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                                src="{{ asset('assets/images/product/product-2/blazers/4.jpg') }}"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div>
-                                        <a href="product-detail.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$90.00 </p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>2+</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                                src="{{ asset('assets/images/product/product-2/blazers/5.jpg') }}"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <div>
-                                        <a href="product-detail.html">
-                                            <h6> Women's Stylish Top</h6>
-                                        </a>
-                                        <p>$180.00 <del>$140.00</del></p>
-                                        <ul class="rating">
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star"></i></li>
-                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            <li><i class="fa-regular fa-star"></i></li>
-                                            <li>4+</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-sm-4 col-6">
-                            <div class="product-box-6">
-                                <div class="img-wrapper">
-                                    <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                                src="{{ asset('assets/images/product/product-2/blazers/6.jpg') }}"
-                                                alt="product"></a>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$120.00 </p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4+</li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -1791,53 +1422,7 @@
             </div>
         </div>
         <!-- End seach -->
-
-        <!-- <div class="wrapper">
-                                                    <div class="title-box">
-                                                        <img src="{{ asset('assets/images/other-img/cookie.png') }}" alt="">
-                                                        <h3>Cookies Consent</h3>
-                                                    </div>
-                                                    <div class="info">
-                                                        <p>We use cookies to improve our site and your shopping experience. By continuing to browse our site you
-                                                            accept our cookie policy.
-                                                        </p>
-                                                    </div>
-                                                    <div class="buttons"><button class="button btn btn_outline sm" id="acceptBtn">Accept</button><button
-                                                            class="button btn btn_black sm">Decline</button></div>
-                                                </div> -->
-
-        <!-- <div class="modal theme-modal newsletter-modal newsletter-4 fade" id="newsletter" tabindex="-1" role="dialog"
-                                                    aria-modal="true">
-                                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            <div class="modal-body p-0">
-                                                                <div class="news-latter-box">
-                                                                    <div class="row align-items-center">
-                                                                        <div class="col-lg-6">
-                                                                            <div class="newslwtter-content">
-                                                                                <h2>Stay Fashionable</h2>
-                                                                                <span>Stay Informed</span>
-                                                                                <h4>Subscriber to Our Newsletter!</h4>
-                                                                                <p>Keep up to date so you don't miss any new updates or goods we reveal.</p>
-                                                                                <div class="form-floating"><input type="text" placeholder="Enter Your Name.."></div>
-                                                                                <div class="form-floating"><input type="email" placeholder="Enter Your Email..">
-                                                                                </div>
-                                                                                <button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                                                                    aria-label="Close">Submit</button>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-6 d-none d-lg-block">
-                                                                            <div class="newslwtter-img"> <img class="img-fluid"
-                                                                                    src="{{ asset('assets/images/other-img/news-latter4.png') }}" alt=""></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </div> -->
-
+    </div> --}}
     </main>
     <!-- End container content -->
 @endsection

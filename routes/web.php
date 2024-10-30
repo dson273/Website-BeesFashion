@@ -17,7 +17,9 @@ Route::post('register', [RegisterController::class, 'register'])->name('register
 //Đăng nhập
 Route::get('login', [LoginController::class, 'index'])->name('login');//Trang đăng nhập
 Route::post('login', [LoginController::class, 'login'])->name('login');//Chức năng đăng nhập
-
+//Quên mật khẩu
+Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword');//Trang quên mật khẩu
+Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
 
 // Route::get('/', action: function () {
 //     return view(view: 'user/index');
@@ -26,11 +28,6 @@ Route::post('login', [LoginController::class, 'login'])->name('login');//Chức 
 //     return view(view: 'user/collection');
 // });
 // Route::get('/',[HomeController::class,'index'])->name('home-shop');
-
-Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword');//Trang quên mật khẩu
-
-Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
-
 
 
 // web.php hoặc api.php
@@ -44,6 +41,7 @@ Route::middleware('auth')->group(function () {
     //Dashboard người dùng
     Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::put('dashboard/edit-profile',[DashboardController::class,'editProfile'])->name('dashboard.editProfile');// Cập nhật thông tin profile
+    Route::put('dashboard/edit-password',[DashboardController::class,'editPassword'])->name('dashboard.editPassword');// Edit password
     Route::post('dashboard/add-address', [DashboardController::class, 'addAddress'])->name('dashboard.addAddress');//Thêm địa chỉ giao hàng
     Route::put('dashboard/edit-address/{id}',[DashboardController::class,'editAddress'])->name('dashboard.editAddress');// Sửa địa chỉ
     Route::delete('dashboard/delete-address/{id}',[DashboardController::class,'deleteAddress'])->name('dashboard.deleteAddress');// Xoá địa chỉ
