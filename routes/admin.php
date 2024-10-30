@@ -26,9 +26,9 @@ use App\Http\Controllers\Admin\ManagerSettingController;
 
 
 
-Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->as('admin.')->group(function () {
     //Route cho chỉ dành cho admin
-    Route::middleware(['role:admin'])->group(function () {
+    // Route::middleware(['role:admin'])->group(function () {
         // Các chức năng chỉ admin được phép quản lý
         //Quản lý nhân viên
         Route::resource('staffs', StaffController::class);
@@ -40,10 +40,10 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
         //Quản lý manager setting
         Route::resource('managerSettings', ManagerSettingController::class);
-    });
+    // });
 
     // Route cho staff (admin cũng có thể truy cập)
-    Route::middleware(['role:staff|admin'])->group(function () {
+    // Route::middleware(['role:staff|admin'])->group(function () {
         Route::get('/', function () {
             return view('admin.dashboard');
         })->name('dashboard');
@@ -57,8 +57,10 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
     //Quản lý sản phẩm
     Route::resource('products', ProductController::class);
     Route::post('products/getAllCategories', action: [ProductController::class, 'getAllCategories'])->name('getAllCategories');
-    Route::post('products/getAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
     Route::post('products/createNewCategory', action: [ProductController::class, 'createNewCategory'])->name('createNewCategory');
+    Route::post('products/getAllBrands', action: [ProductController::class, 'getAllBrands'])->name('getAllBrands');
+    Route::post('products/createNewBrand', action: [ProductController::class, 'createNewBrand'])->name('createNewBrand');
+    Route::post('products/getAllAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
     Route::post('products/getSkuProduct', action: [ProductController::class, 'getSkuProduct'])->name('getSkuProduct');
     Route::post('products/getSkuProductVariation', action: [ProductController::class, 'getSkuProductVariation'])->name('getSkuProductVariation');
     Route::post('products/getAllAttributeValuesById/{id}', action: [ProductController::class, 'getAllAttributeValuesById'])->name('getAllAttributeValuesById');
@@ -75,33 +77,33 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
 
         //Quản lý sản phẩm
-        Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {
+        // Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {
             Route::resource('products', ProductController::class);
             Route::post('products/getAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
-        });
+        // });
 
         //Quản lý thuộc tính
-        Route::middleware(['checkPermission:Quản lý thuộc tính'])->group(function () {
+        // Route::middleware(['checkPermission:Quản lý thuộc tính'])->group(function () {
             Route::resource('attributes', AttributeController::class);
             //Quản lý loại thuộc tính
             Route::resource('attribute_types', AttributeTypeController::class);
             //Quản lý dữ liệu thuộc tính
             Route::resource('attribute_values', AttributeValueController::class);
-        });
+        // });
 
         //Quản lý banner
-        Route::middleware(['checkPermission:Quản lý banner'])->group(function () {
+        // Route::middleware(['checkPermission:Quản lý banner'])->group(function () {
             Route::resource('banner', BannerController::class);
             Route::get('banner/onactive/{id}', [BannerController::class, 'onActive'])->name('banner.onactive');
             Route::get('banner/offactive/{id}', [BannerController::class, 'offActive'])->name('banner.offactive');
-        });
+        // });
 
         //Quản lý khách hàng
-        Route::middleware(['checkPermission:Quản lý khách hàng'])->group(function () {
+        // Route::middleware(['checkPermission:Quản lý khách hàng'])->group(function () {
             Route::resource('customers', CustomerController::class);
-        });
+        // });
     });
-});
+// });
 
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();

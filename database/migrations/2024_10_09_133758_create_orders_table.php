@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('shipping_voucher')->default(0)->comment('Số tiền vận chuyện được giảm');
             $table->integer('voucher')->default(0)->comment('Số tiền được giảm từ voucher');
             $table->integer('total_payment')->comment('Tổng tiền thanh toán cuối cùng');
-            $table->foreignIdFor(User::class)->constrained()->comment('Xác định người dùng nào đã đặt hàng');
-            $table->foreignIdFor(User_shipping_address::class)->constrained()->comment('Xác định địa chỉ nào mà người dùng chọn để đặt hàng');
+            $table->foreignIdFor(User::class)->comment('Xác định người dùng nào đã đặt hàng')->constrained();
+            $table->foreignIdFor(User_shipping_address::class)->comment('Xác định địa chỉ nào mà người dùng chọn để đặt hàng')->constrained();
             $table->timestamps();
         });
     }

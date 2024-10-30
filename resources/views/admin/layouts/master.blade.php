@@ -132,7 +132,9 @@
         //Route variable
         var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
         var getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
+        var getAllBrandsRoute = "{{route('admin.getAllBrands')}}";
         var createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
+        var createNewBrandRoute = "{{route('admin.createNewBrand')}}";
         var storeProductRoute = "{{route('admin.products.store')}}";
         var getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
         var getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
@@ -167,17 +169,16 @@
     <!-- Short notification commands -->
 
     <script>
-            @if(session('statusSuccess'))
-            var message = @json(session('statusSuccess'));
-            notification('success', message, 'Successfully');
-            @elseif(session('statusError'))
-            var message = @json(session('statusError'));
-            notification('error', message, 'Error');
-            @elseif(session('statusWarning'))
-            var message = @json(session('statusWarning'));
-            notification('warning', message, 'warning');
-            @endif
-
+        @if(session('statusSuccess'))
+        var message = @json(session('statusSuccess'));
+        notification('success', message, 'Successfully');
+        @elseif(session('statusError'))
+        var message = @json(session('statusError'));
+        notification('error', message, 'Error');
+        @elseif(session('statusWarning'))
+        var message = @json(session('statusWarning'));
+        notification('warning', message, 'warning');
+        @endif
     </script>
 </body>
 

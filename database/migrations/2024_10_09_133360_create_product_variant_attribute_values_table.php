@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('product_variant_attribute_values', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product_variant::class)->constrained()->comment('Khóa ngoại, thuộc về biến thể nào');
-            $table->foreignIdFor(Attribute_value::class)->constrained()->comment('Xác định biến thể này có những thuộc tính nào');
+            $table->foreignIdFor(Product_variant::class)->comment('Khóa ngoại, thuộc về biến thể nào')->constrained();
+            $table->foreignIdFor(Attribute_value::class)->comment('Xác định biến thể này có những thuộc tính nào')->constrained();
             $table->timestamps();
         });
     }
