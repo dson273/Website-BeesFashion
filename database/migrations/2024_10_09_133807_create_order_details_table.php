@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer('original_price')->comment('Giá gốc');
             $table->integer('amount_reduced')->nullable()->comment('Giá đã được giảm');
             $table->integer('quantity')->comment('Số lượng sản phẩm');
-            $table->foreignIdFor(Order::class)->constrained()->comment('Xác định thuộc đơn hàng nào');
-            $table->foreignIdFor(Product_variant::class)->constrained()->comment('Xác định biến thể nào');
+            $table->foreignIdFor(Order::class)->comment('Xác định thuộc đơn hàng nào')->constrained();
+            $table->foreignIdFor(Product_variant::class)->comment('Xác định biến thể nào')->constrained();
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Attribute_type;
 use App\Models\Attribute_value;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Import_history;
 use App\Models\Product;
@@ -25,7 +26,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('admin.products.index');
+        $listProducts = Product::all();
+        $listProducts = $listProducts ? $listProducts : '';
+        return view('admin.products.index', compact('listProducts'));
     }
 
     /**
@@ -49,20 +52,23 @@ class ProductController extends Controller
             $description = $baseInformation['description'] ?? null;
             $status = $baseInformation['status'] ?? null;
             $status = $status ? 1 : 0;
+            $brandId = $request->input('brandId');
+
             if ($sku && $name && $description) {
                 $newProduct = Product::create([
                     'SKU' => $sku,
                     'name' => $name,
                     'description' => $description,
+                    'brand_id' => $brandId ? $brandId : null,
                     'is_active' => $status
                 ]);
                 if ($request->hasFile('mainImage')) {
                     $mainImage = $request->file('mainImage');
-                    $mainImagePath = $mainImage->store('upload/products/images');
-
-                    if ($mainImagePath) {
+                    $mainImageNameHashed = $mainImage->hashName();
+                    $mainImage->move(public_path('uploads/products/images/'), $mainImageNameHashed);
+                    if ($mainImage) {
                         Product_file::create([
-                            'file_name' => basename($mainImagePath),
+                            'file_name' => $mainImageNameHashed,
                             'file_type' => 'image',
                             'is_default' => 1,
                             'product_id' => $newProduct->id
@@ -73,8 +79,9 @@ class ProductController extends Controller
                 $imagesPaths = [];
                 if ($request->hasFile('images')) {
                     foreach ($request->file('images') as $image) {
-                        $imagePath = $image->store('upload/products/images');
-                        $imagesPaths[] = basename($imagePath);
+                        $imageHashed = $image->hashName();
+                        $image->move(public_path('uploads/products/images/'), $imageHashed);
+                        $imagesPaths[] = $imageHashed;
                     }
                 }
                 if (!empty($imagesPaths)) {
@@ -90,8 +97,9 @@ class ProductController extends Controller
                 $videosPaths = [];
                 if ($request->hasFile('videos')) {
                     foreach ($request->file('videos') as $video) {
-                        $videoPath = $video->store('upload/products/videos');
-                        $videosPaths[] = basename($videoPath);
+                        $videoHashed = $video->hashName();
+                        $video->move(public_path('uploads/products/videos/'), $videoHashed);
+                        $videosPaths[] = $videoHashed;
                     }
                 }
                 if (!empty($videosPaths)) {
@@ -126,23 +134,26 @@ class ProductController extends Controller
                     $skuVariation = $request->input("variations.$index.sku");
                     $nameVariation = $request->input("variations.$index.name");
                     $skuVariation = $skuVariation != '' ? $skuVariation : $newProduct->SKU . '-' . $nameVariation;
-                    $importPriceVariation = $request->input("variations.$index.import_price");
+                    $actualImportPriceVariation = $request->input("variations.$index.actual_import_price");
+                    $displayImportPriceVariation = $request->input("variations.$index.display_import_price");
                     $salePriceVariation = $request->input("variations.$index.sale_price");
                     $stockVariation = $request->input("variations.$index.stock");
                     $activeVariation = $request->input("variations.$index.active") ? 1 : 0;
 
                     // Kiểm tra và lưu ảnh biến thể nếu tồn tại
-                    $imageVariationPath = null;
+                    $imageNameHashed = null;
                     if ($request->hasFile("variations.$index.image_data")) {
                         $imageVariation = $request->file("variations.$index.image_data");
-                        $imageVariationPath = $imageVariation->store('upload/products/images');
+                        $imageNameHashed = $imageVariation->hashName();
+                        $imageVariation->move(public_path('uploads/products/images/'), $imageNameHashed);
                     }
 
                     // Tạo mới Product_variant
                     $newProductVariation = Product_variant::create([
                         'SKU' => $skuVariation,
                         'name' => $nameVariation,
-                        'image' => $imageVariationPath ? basename($imageVariationPath) : null,
+                        'image' => $imageNameHashed,
+                        'display_import_price' => $displayImportPriceVariation,
                         'sale_price' => $salePriceVariation,
                         'stock' => $stockVariation,
                         'product_id' => $newProduct->id,
@@ -152,7 +163,7 @@ class ProductController extends Controller
                     // Thêm vào bảng Import_history
                     Import_history::create([
                         'quantity' => $stockVariation,
-                        'import_price' => $importPriceVariation,
+                        'actual_import_price' => $actualImportPriceVariation,
                         'product_variant_id' => $newProductVariation->id
                     ]);
 
@@ -266,7 +277,7 @@ class ProductController extends Controller
         $all_categories = Category::where('is_active', 1)->get();
         $categories_tree = $this->buildCategoryTree($all_categories);
         $response = [
-            'status' => 'Successfully',
+            'status' => 200,
             'message' => 'Get data successfully!',
             'data' => $categories_tree
         ];
@@ -303,6 +314,60 @@ class ProductController extends Controller
         }
 
         // Trả về JSON response
+        return response()->json($response);
+    }
+    public function getAllBrands()
+    {
+        $all_brands = Brand::where('is_active', 1)->get();
+        if ($all_brands) {
+            $form = [];
+            foreach ($all_brands as $brand) {
+                $item = [];
+                $item['id'] = $brand->id;
+                $item['name'] = $brand->name;
+                $form[] = $item;
+            }
+            $response = [
+                'status' => 200,
+                'message' => 'Get data successfully!',
+                'data' => $form
+            ];
+        } else {
+            $response = [
+                'status' => 400,
+                'message' => 'Unable get data!'
+            ];
+        }
+        return response()->json($response);
+    }
+    public function createNewBrand()
+    {
+        $brand_name = request()->input('brand_name');
+        $response = '';
+        if ($brand_name) {
+            $check_brand_name = Brand::where('name', $brand_name)->first();
+            if ($check_brand_name) {
+                $response = [
+                    'status' => 409,
+                    'message' => 'Brand name is already existing!'
+                ];
+                return response()->json($response);
+            }
+            $newBrand = Brand::create([
+                'name' => $brand_name
+            ]);
+            if ($newBrand) {
+                $response = [
+                    'status' => 200,
+                    'message' => 'Create new brand successfully!',
+                ];
+            } else {
+                $response = [
+                    'status' => 400,
+                    'message' => 'Unable create new brand!'
+                ];
+            }
+        }
         return response()->json($response);
     }
     public function getSkuProduct()

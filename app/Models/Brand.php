@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Brand extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'name',
         'image',
-        'is_active',
+        'is_active'
     ];
     public function products()
     {

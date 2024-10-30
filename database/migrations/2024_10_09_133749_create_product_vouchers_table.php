@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('product_vouchers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained()->comment('Xác định sản phẩm nào được áp dụng voucher này');
-            $table->foreignIdFor(Voucher::class)->constrained()->comment('Xác định voucher nào được sản phẩm áp dụng');
+            $table->foreignIdFor(Product::class)->comment('Xác định sản phẩm nào được áp dụng voucher này')->constrained();
+            $table->foreignIdFor(Voucher::class)->comment('Xác định voucher nào được sản phẩm áp dụng')->constrained();
             $table->timestamps();
         });
     }
