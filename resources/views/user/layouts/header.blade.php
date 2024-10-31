@@ -1,9 +1,3 @@
-<div class="tap-top">
-    <div><i class="fa-solid fa-angle-up"></i></div>
-</div>
-<!-- <span class="cursor"><span class="cursor-move-inner"><span class="cursor-inner"></span></span><span
-        class="cursor-move-outer"><span class="cursor-outer"></span></span>
-</span> -->
 <!-- Start header -->
 <header>
     <div class="top_header">
@@ -19,11 +13,11 @@
                         <ul>
                             <li> <a href="{{ route('/') }}"><i class="iconsax" data-icon="home-1"></i>Home</a>
                             </li>
-                            <li><a href="search.html"><i class="iconsax" data-icon="search-normal-2"></i>Search</a></li>
-                            <li class="shopping-cart"> <a href="cart.html"><i class="iconsax"
+                            <li><a href="#"><i class="iconsax" data-icon="search-normal-2"></i>Search</a></li>
+                            <li class="shopping-cart"> <a href="#"><i class="iconsax"
                                         data-icon="shopping-cart"></i>Cart</a></li>
-                            <li><a href="wishlist.html"><i class="iconsax" data-icon="heart"></i>My Wish</a></li>
-                            <li> <a href="dashboard.html"><i class="iconsax" data-icon="user-2"></i>Account</a></li>
+                            <li><a href="#"><i class="iconsax" data-icon="heart"></i>My Wish</a></li>
+                            <li> <a href="#"><i class="iconsax" data-icon="user-2"></i>Account</a></li>
                         </ul>
                     </div>
 
@@ -116,7 +110,7 @@
                                 <li> <button href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
                                         aria-controls="offcanvasTop"><i class="iconsax"
                                             data-icon="search-normal-2"></i></button></li>
-                                <li> <a href="wishlist.html"><i class="iconsax" data-icon="heart"></i><span
+                                <li> <a href="#"><i class="iconsax" data-icon="heart"></i><span
                                             class="cart_qty_cls">2</span></a></li>
                                 @guest
                                     <li class="onhover-div">

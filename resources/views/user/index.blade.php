@@ -164,7 +164,7 @@
                                                             <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
-                                                            <div class="product-image"><a href="product-detail.html">
+                                                            <div class="product-image"><a href="{{route('product.detail', $product)}}">
 
                                                                     @foreach ($product->product_files as $file)
                                                                         <img src="{{ asset('upload/products/images/' . $file->file_name) }}"
@@ -199,7 +199,7 @@
                                                                 </ul>
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
-                                                            <a href="product-detail.html">
+                                                            <a href="{{route('product.detail', $product)}}">
                                                                 <h6>{{ $product->name }}</h6>
                                                             </a>
 
@@ -217,7 +217,7 @@
                                                         <div class="label-block"><img
                                                                 src="{{ asset('assets/images/product/2.png') }}"
                                                                 alt="lable"><span>on <br>Sale!</span></div>
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/2.jpg') }}"
                                                                     alt="product"></a></div>
@@ -247,7 +247,7 @@
                                                             </ul>
                                                             <span>3.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Dennis Lingo Men Casual Shirt</h6>
                                                         </a>
                                                         <p>$120.00<del>$140.00</del></p>
@@ -257,7 +257,7 @@
                                             <div class="col-xxl-3 col-md-4 col-6">
                                                 <div class="product-box">
                                                     <div class="img-wrapper">
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/3.jpg') }}"
                                                                     alt="product"></a></div>
@@ -318,7 +318,7 @@
                                                             </ul>
                                                             <span>2.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Beautiful Lycra Solid Women's High Zipper </h6>
                                                         </a>
                                                         <p>$1300 <del>$140.00</del></p>
@@ -328,7 +328,7 @@
                                             <div class="col-xxl-3 col-md-4 col-6">
                                                 <div class="product-box">
                                                     <div class="img-wrapper">
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/4.jpg') }}"
                                                                     alt="product"></a></div>
@@ -358,7 +358,7 @@
                                                             </ul>
                                                             <span>3.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Dennis Lingo Men Casual Shirt</h6>
                                                         </a>
                                                         <p>$120.00<del>$140.00</del></p>
@@ -377,7 +377,7 @@
                                                             <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
-                                                            <div class="product-image"><a href="product-detail.html"> <img
+                                                            <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                         class="bg-img"
                                                                         src="{{ asset('assets/images/product/product-4/17.jpg') }}"
                                                                         alt="product"></a></div>
@@ -408,7 +408,7 @@
                                                                 </ul>
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
-                                                            <a href="product-detail.html">
+                                                            <a href="{{route('product.detail', $product)}}">
                                                                 <h6>{{ $product->name }}</h6>
                                                             </a>
 
@@ -426,7 +426,7 @@
                                                         <div class="label-block"><img
                                                                 src="{{ asset('assets/images/product/2.png') }}"
                                                                 alt="lable"><span>on <br>Sale!</span></div>
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/18.jpg') }}"
                                                                     alt="product"></a></div>
@@ -456,7 +456,7 @@
                                                             </ul>
                                                             <span>3.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Dennis Lingo Men Casual Shirt</h6>
                                                         </a>
                                                         <p>$120.00<del>$140.00</del></p>
@@ -466,7 +466,7 @@
                                             <div class="col-xxl-3 col-md-4 col-6">
                                                 <div class="product-box">
                                                     <div class="img-wrapper">
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/19.jpg') }}"
                                                                     alt="product"></a></div>
@@ -527,7 +527,7 @@
                                                             </ul>
                                                             <span>2.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Beautiful Lycra Solid Women's High Zipper </h6>
                                                         </a>
                                                         <p>$1300 <del>$140.00</del></p>
@@ -537,7 +537,7 @@
                                             <div class="col-xxl-3 col-md-4 col-6">
                                                 <div class="product-box">
                                                     <div class="img-wrapper">
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/20.jpg') }}"
                                                                     alt="product"></a></div>
@@ -567,7 +567,7 @@
                                                             </ul>
                                                             <span>3.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Dennis Lingo Men Casual Shirt</h6>
                                                         </a>
                                                         <p>$120.00<del>$140.00</del></p>
@@ -586,7 +586,7 @@
                                                             <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
-                                                            <div class="product-image"><a href="product-detail.html"> <img
+                                                            <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                         class="bg-img"
                                                                         src="{{ asset('assets/images/product/product-4/17.jpg') }}"
                                                                         alt="product"></a></div>
@@ -617,7 +617,7 @@
                                                                 </ul>
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
-                                                            <a href="product-detail.html">
+                                                            <a href="{{route('product.detail', $product)}}">
                                                                 <h6>{{ $product->name }}</h6>
                                                             </a>
                                                             <p>
@@ -634,7 +634,7 @@
                                                         <div class="label-block"><img
                                                                 src="{{ asset('assets/images/product/2.png') }}"
                                                                 alt="lable"><span>on <br>Sale!</span></div>
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/18.jpg') }}"
                                                                     alt="product"></a></div>
@@ -664,7 +664,7 @@
                                                             </ul>
                                                             <span>3.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Dennis Lingo Men Casual Shirt</h6>
                                                         </a>
                                                         <p>$120.00<del>$140.00</del></p>
@@ -674,7 +674,7 @@
                                             <div class="col-xxl-3 col-md-4 col-6">
                                                 <div class="product-box">
                                                     <div class="img-wrapper">
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/19.jpg') }}"
                                                                     alt="product"></a></div>
@@ -735,7 +735,7 @@
                                                             </ul>
                                                             <span>2.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Beautiful Lycra Solid Women's High Zipper </h6>
                                                         </a>
                                                         <p>$1300 <del>$140.00</del></p>
@@ -745,7 +745,7 @@
                                             <div class="col-xxl-3 col-md-4 col-6">
                                                 <div class="product-box">
                                                     <div class="img-wrapper">
-                                                        <div class="product-image"><a href="product-detail.html"> <img
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
                                                                     class="bg-img"
                                                                     src="{{ asset('assets/images/product/product-4/20.jpg') }}"
                                                                     alt="product"></a></div>
@@ -775,7 +775,7 @@
                                                             </ul>
                                                             <span>3.5 <i class="fa-solid fa-star"></i></span>
                                                         </div>
-                                                        <a href="product-detail.html">
+                                                        <a href="{{route('product.detail', $product)}}">
                                                             <h6>Dennis Lingo Men Casual Shirt</h6>
                                                         </a>
                                                         <p>$120.00<del>$140.00</del></p>
@@ -1360,7 +1360,7 @@
                                                 type="button"><i class="fa-solid fa-plus"></i></button></div>
                                     </div>
                                     <div class="product-buttons"><a class="btn btn-solid" href="cart.html">Add to
-                                            cart</a><a class="btn btn-solid" href="product-detail.html">View
+                                            cart</a><a class="btn btn-solid" href="{{route('product.detail', $product)}}">View
                                             detail</a></div>
                                 </div>
                             </div>

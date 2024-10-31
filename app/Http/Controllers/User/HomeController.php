@@ -14,6 +14,7 @@ class HomeController extends Controller
      * Display a listing of the resource.
      */
 
+     //Trang chủ
     public function index()
     {
 
@@ -57,9 +58,14 @@ class HomeController extends Controller
         return view('user.index', compact('sliders', 'topProducts', 'newProducts', 'products'));
     }
 
-
+    //Trang dashboard người dùng
     public function dashboard()
     {
         return view('user.dashboard');
+    }
+
+    //Trang chi tiết sản phẩm
+    public function product_detail(Product $product){
+        return view('user.product-detail', compact('product'));
     }
 }

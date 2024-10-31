@@ -61,21 +61,20 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::post('products/getSkuProductVariation', action: [ProductController::class, 'getSkuProductVariation'])->name('getSkuProductVariation');
     Route::post('products/getAllAttributeValuesById/{id}', action: [ProductController::class, 'getAllAttributeValuesById'])->name('getAllAttributeValuesById');
     Route::post('products/addNewAttributeValueById/{id}', action: [ProductController::class, 'addNewAttributeValueById'])->name('addNewAttributeValueById');
-      
 
         //Quản lý danh mục
-        Route::middleware(['checkPermission:Quản lý danh mục'])->group(function () {
+        // Route::middleware(['checkPermission:Quản lý danh mục'])->group(function () {
             Route::resource('categories', CategoryController::class);
             Route::get('categories/product/{id}', [CategoryController::class, 'product'])->name('categories.product');
             Route::post('categories/updateBestSelling', [CategoryController::class, 'updateBestSelling'])->name('categories.updateBestSelling');
             Route::delete('categories/{id}/remove', [CategoryController::class, 'remove'])->name('categories.remove');
-        });
+        // });
 
 
         //Quản lý sản phẩm
         // Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {
-            Route::resource('products', ProductController::class);
-            Route::post('products/getAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
+            
+  
         // });
 
         //Quản lý thuộc tính
@@ -88,9 +87,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
         // });
 
         //quản lý thương thiệu(brand)
-        Route::middleware(['checkPermission:Quản lý thuộc tính'])->group(function () {
+        // Route::middleware(['checkPermission:Quản lý thuộc tính'])->group(function () {
             Route::resource('brands', BrandController::class);
-        });
+        // });
 
         //Quản lý banner
         // Route::middleware(['checkPermission:Quản lý banner'])->group(function () {
@@ -100,11 +99,11 @@ Route::prefix('admin')->as('admin.')->group(function () {
         // });
 
         //Quản lý vouchers
-        Route::middleware(['checkPermission:Quản lý vouchers'])->group(function () {
+        // Route::middleware(['checkPermission:Quản lý vouchers'])->group(function () {
             Route::resource('vouchers', VoucherController::class);
             Route::get('vouchers/onactive/{id}', [VoucherController::class, 'onActive'])->name('vouchers.onactive');
             Route::get('vouchers/offactive/{id}', [VoucherController::class, 'offActive'])->name('vouchers.offactive');
-        });
+        // });
 
         //Quản lý khách hàng
         // Route::middleware(['checkPermission:Quản lý khách hàng'])->group(function () {
@@ -117,7 +116,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();
 // });
 Route::resource('attributes', AttributeController::class);
+
 //Quản lý loại thuộc tính
 Route::resource('attribute_types', AttributeTypeController::class);
 //Quản lý dữ liệu thuộc tính
 Route::resource('attribute_values', AttributeValueController::class);
+

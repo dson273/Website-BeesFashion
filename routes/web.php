@@ -11,6 +11,8 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
 Route::get('/',[HomeController::class,'index'])->name('/');
+//Trang chi tiết sản phẩm
+Route::get('product/{product}', [HomeController::class, 'product_detail'])->name('product.detail');
 
 //Đăng ký
 Route::get('register', [RegisterController::class, 'index'])->name('register');//Trang đăng ký
