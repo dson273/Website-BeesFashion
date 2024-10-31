@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\user\CollectionController;
+use App\Http\Controllers\user\FilterProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//lấy toàn bộ sản phẩm
+Route::get('products/all', [FilterProductController::class, 'getAllProducts']);
+//lọc theo danh mục
 
-Route::get('products', [CollectionController::class, 'getProducts']);
-Route::get('/categories/products', [ProductController::class, 'getProductsByCategories']);
+//hiển thị sản phẩm sau khi lọc
+Route::get('products/filter', [FilterProductController::class, 'filterProduct']);
+
+
 
 
