@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\user\CollectionController;
+use App\Http\Controllers\user\FilterProductController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
 Route::get('/',[HomeController::class,'index'])->name('/');
@@ -30,8 +31,15 @@ Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPasswor
 // Route::get('/',[HomeController::class,'index'])->name('home-shop');
 
 
+Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword');//Trang quên mật khẩu
+
+Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
+
+
+//filterProduct
+Route::get('product', [FilterProductController::class, 'index']);
+
 // web.php hoặc api.php
-Route::get('collection', [CollectionController::class, 'index'])->name('collection');
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
 
 
