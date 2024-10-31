@@ -33,17 +33,22 @@
                     Thêm vouchers mới
                 </button>
             </div>
-           
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên danh mục</th>
-                                <th>Hình Ảnh</th>
-                                <th>Mô tả danh mục</th>
-                                <th>Phân loại danh mục</th>
+                                <th>Tên Voucher</th>
+                                <th>Mã Voucher</th>
+                                <th>Ảnh Voucher</th>
+                                <th>Giá Trị Giảm</th>
+                                <th>Số Lượng</th>
+                                <th>Loại Voucher</th>
+                                <th>Giá Tối Thiểu Đơn Hàng</th>
+                                <th>Ngày Bắt Đầu</th>
+                                <th>Ngày Hết Hạn</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
@@ -51,41 +56,61 @@
                         <tfoot>
                             <tr>
                                 <th>#</th>
-                                <th>Tên danh mục</th>
-                                <th>Hình Ảnh</th>
-                                <th>Mô tả danh mục</th>
-                                <th>Phân loại danh mục</th>
+                                <th>Tên Voucher</th>
+                                <th>Mã Voucher</th>
+                                <th>Ảnh Voucher</th>
+                                <th>Giá Trị Giảm</th>
+                                <th>Số Lượng</th>
+                                <th>Loại Voucher</th>
+                                <th>Giá Tối Thiểu Đơn Hàng</th>
+                                <th>Ngày Bắt Đầu</th>
+                                <th>Ngày Hết Hạn</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            {{-- @foreach ($listCategory as $index => $cate)
+                            @foreach ($listVouchers as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $cate->name }}</td>
-                                    <td><img src="{{ asset('storage/uploads/imgcate/' . $cate->image) }}" width="150px" alt=""></td>
-                                    <td>{{ $cate->description }}</td>
-                                    <td>{{ $cate->fixed == 1 ? 'Danh mục thường' : 'Sản phẩm bán chạy' }}</td>
-                                    <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->code }}</td>
+                                    <td><img src="{{ asset('storage/uploads/vouchers/images/' . $item->image) }}"
+                                            width="100px" alt=""></td>
+                                    <td>{{ $item->amount }}</td>
+                                    <td>{{ $item->quantity }}</td>
                                     <td>
-                                        @if ($cate->fixed == 1)
-                                            <a href="{{ route('admin.categories.show', $cate->id) }}"
-                                                class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                        @if ($item->type === 'fixed')
+                                            Cố định
+                                        @elseif ($item->type === 'percent')
+                                            Phần trăm
+                                        @elseif ($item->type === 'free_ship')
+                                            Miễn phí vận chuyển
                                         @else
-                                            <a href="{{ route('admin.categories.product', $cate->id) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                            Không xác định
                                         @endif
-                                        <a href="{{ route('admin.categories.edit', $cate->id) }}"
-                                            class="btn btn-warning"><i class="fa fa-wrench"></i></a>
-                                        <form action="{{ route('admin.categories.destroy', $cate->id) }}" class="d-inline"
+                                    </td>
+                                    <td>{{ $item->minimum_order_value }}</td>
+                                    <td>{{ $item->start_date }}</td>
+                                    <td>{{ $item->end_date }}</td>
+                                    <td>{{ $item->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
+                                    <td>
+                                        <a href="{{ route($item->is_active ? 'admin.vouchers.offactive' : 'admin.vouchers.onactive', $item->id) }}"
+                                            class="btn {{ $item->is_active ? 'btn-danger' : 'btn-success' }}">
+                                            <i class="fa {{ $item->is_active ? 'fa-eye-slash' : 'fa-eye' }}"></i>
+                                        </a>
+                                        <a href="{{ route('admin.vouchers.edit', $item->id) }}" class="btn btn-warning"><i
+                                                class="fa fa-wrench"></i></a>
+                                        <form action="{{ route('admin.vouchers.destroy', $item->id) }}" class="d-inline"
                                             method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" ><i class="fa fa-trash"></i></button>
+                                            <button type="submit" class="btn btn-danger"><i
+                                                    class="fa fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
