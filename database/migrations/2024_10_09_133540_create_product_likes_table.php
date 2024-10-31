@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('product_likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->comment('Thuộc người dùng nào (người dùng nào like)');
-            $table->foreignIdFor(Product::class)->constrained()->comment('Xác định sản phẩm được like');
+            $table->foreignIdFor(User::class)->comment('Thuộc người dùng nào (người dùng nào like)')->constrained();
+            $table->foreignIdFor(Product::class)->comment('Xác định sản phẩm được like')->constrained();
             $table->timestamps();
         });
     }

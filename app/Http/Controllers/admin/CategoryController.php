@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
+use App\Components\Recusive;
 
 class CategoryController extends Controller
 {
+    private $category;
+
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,37 +33,35 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $cate_parent = $this->getCategoriesProduct();
-        return view('admin.categories.create', compact('cate_parent'));
+        $htmlOption = $this->getCategory($parentId = '');
+        return view('admin.categories.create', compact('htmlOption'));
     }
 
-    public function getCategoriesProduct()
+    public function getCategory($parentId)
     {
-        $cate_parent = Category::where('is_active', 1)->get();
-        $listCate = [];
-        Category::recursive($cate_parent, $parents = 0, $level = 1, $listCate);
-        return $listCate;
+        $data = $this->category->all();
+        $recusive = new Recusive($data);
+        $htmlOption = $recusive->categoryRecursive($parentId);
+
+        return $htmlOption;
     }
 
+    // public function getProductsByCategory($id)
+    // {
+    //     // Lấy danh mục theo ID
+    //     $category = Category::find($id);
 
+    //     if (!$category) {
+    //         return response()->json(['message' => 'Category not found'], 404);
+    //     }
+    //     // Lấy tất cả sản phẩm liên quan đến danh mục này thông qua bảng product_categories
+    //     $products = $category->product_categories()->with('product')->get();
 
-    public function getProductsByCategory($id)
-    {
-        // Lấy danh mục theo ID
-        $category = Category::find($id);
-
-        if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404);
-        }
-
-        // Lấy tất cả sản phẩm liên quan đến danh mục này thông qua bảng product_categories
-        $products = $category->product_categories()->with('product')->get();
-
-        return response()->json([
-            'category' => $category,
-            'products' => $products,
-        ]);
-    }
+    //     return response()->json([
+    //         'category' => $category,
+    //         'products' => $products,
+    //     ]);
+    // }
     /**
      * Store a newly created resource in storage.
      */
@@ -68,12 +73,13 @@ class CategoryController extends Controller
                 // Lấy tên ảnh
                 $imageName = $request->file('image')->getClientOriginalName();
                 // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/imgcate', $imageName, 'public');
+                $request->file('image')->storeAs('uploads/categories/images', $imageName, 'public');
                 // Lưu chỉ tên ảnh vào params
                 $params['image'] = $imageName;
             } else {
                 $params['image'] = null;
             }
+            $params['is_active'] = $request->has('is_active') ? 1 : 0;
             Category::create($params);
 
             return back()->with('statusSuccess', 'Thêm danh mục thành công');
@@ -85,23 +91,43 @@ class CategoryController extends Controller
      */
     public function show(String $id)
     {
-        $cate_parent = $this->getCategoriesProduct();
+        $cate_parent = Category::where('is_active', 1)->get();
         $parentCategory = Category::findOrFail($id);
-
+        $htmlOption = $this->getCategory($parentId = '');
         // Lấy tất cả danh mục con có parent_category_id bằng ID của danh mục cha
-        $childCategories = Category::where('parent_category_id', $parentCategory->id)->get();
-        return view('admin.categories.detail', compact('parentCategory', 'childCategories','cate_parent'));
+        $childCategories = $this->getAllChildCategories($parentCategory->id);
+        return view('admin.categories.detail', compact('parentCategory', 'childCategories', 'cate_parent', 'htmlOption'));
     }
 
+
+    private function getAllChildCategories($parentId)
+    {
+        // Lấy danh sách các danh mục con trực tiếp
+        $childCategories = Category::where('parent_category_id', $parentId)->get();
+
+        // Biến lưu trữ tất cả các danh mục con
+        $allCategories = collect($childCategories);
+
+        // Duyệt qua từng danh mục con và lấy thêm các danh mục cháu của nó
+        foreach ($childCategories as $child) {
+            $allCategories = $allCategories->merge($this->getAllChildCategories($child->id));
+        }
+
+        return $allCategories;
+    }
     /**
      * Show the form for editing the specified resource.
      */
+
+
     public function edit(string $id)
     {
-        $cate_parent = $this->getCategoriesProduct();
-        $sub_parent = Category::where('parent_category_id', $id)->pluck('id')->toArray();
-        $Cate = Category::query()->findOrFail($id);
-        return view('admin.categories.edit', compact('Cate', 'cate_parent', 'sub_parent'));
+        // $cate_parent = Category::where('is_active', 1)->get();
+        // $sub_parent = Category::where('parent_category_id', $id)->pluck('id')->toArray();
+        $Cate = $this->category->find($id);
+        $htmlOption = $this->getCategory($Cate->parent_category_id);
+
+        return view('admin.categories.edit', compact('htmlOption', 'Cate'));
     }
 
     /**
@@ -120,12 +146,13 @@ class CategoryController extends Controller
 
                 $name = $request->file('image')->getClientOriginalName();
                 // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/imgcate', $name, 'public');
+                $request->file('image')->storeAs('uploads/categories/images', $name, 'public');
 
                 $params['image'] = $name;
             } else {
                 $params['image'] = $Cate->image;
             }
+            $params['is_active'] = $request->has('is_active') ? 1 : 0;
 
             $Cate->update($params);
 
@@ -164,7 +191,7 @@ class CategoryController extends Controller
         $allProducts = Product::where('is_active', 1)->get();
 
         $bestSellingProductIds = $bestSellingProducts->pluck('id')->toArray();
-        return view('admin.categories.topproduct', compact('allProducts', 'bestSellingCategory', 'bestSellingProducts','bestSellingProductIds'));
+        return view('admin.categories.topproduct', compact('allProducts', 'bestSellingCategory', 'bestSellingProducts', 'bestSellingProductIds'));
     }
 
     public function updateBestSelling(Request $request)

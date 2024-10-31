@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('favorite_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->comment('Xác định người dùng nào yêu thích sản phẩm');
-            $table->foreignIdFor(Product::class)->constrained()->comment('Xác định sản phẩm nào được người dùng yêu thích');
+            $table->foreignIdFor(User::class)->comment('Xác định người dùng nào yêu thích sản phẩm')->constrained();
+            $table->foreignIdFor(Product::class)->comment('Xác định sản phẩm nào được người dùng yêu thích')->constrained();
             $table->timestamps();
         });
     }

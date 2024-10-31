@@ -1161,19 +1161,21 @@
                                                                         class="address-title">Home
                                                                     </span></span><span class="address"> <span
                                                                         class="address-home"> <span class="address-tag">
-                                                                            Full name:</span>{{Auth::user()->full_name}}</span></span><span class="address"> <span
-                                                                        class="address-home"> <span
-                                                                            class="address-tag">Address:</span>{{Auth::user()->address}}</span></span><span
+                                                                            Full
+                                                                            name:</span>{{ Auth::user()->full_name }}</span></span><span
                                                                     class="address"> <span class="address-home"> <span
-                                                                            class="address-tag">Phone :</span>{{Auth::user()->phone}}</span></span>
-                                                                            <span class="address">
+                                                                            class="address-tag">Address:</span>{{ Auth::user()->address }}</span></span><span
+                                                                    class="address"> <span class="address-home"> <span
+                                                                            class="address-tag">Phone
+                                                                            :</span>{{ Auth::user()->phone }}</span></span>
+                                                                <span class="address">
 
-                                                                                <span
-                                                                                    class="address-home d-flex justify-content-between align-items-center">
-                                                                                    <span
-                                                                                        class="custom-status-set-address">Default</span>
-                                                                                </span></span></span>
-                                                                            </label></div>
+                                                                    <span
+                                                                        class="address-home d-flex justify-content-between align-items-center">
+                                                                        <span
+                                                                            class="custom-status-set-address">Default</span>
+                                                                    </span></span></span>
+                                                    </label></div>
                                             </div>
                                             @foreach (Auth::user()->user_shipping_addresses as $shippingAddress)
                                                 <div class="col-xxl-6 col-md-6">
@@ -1233,12 +1235,13 @@
                                                             </div>
 
                                                             <span class="buttons">
-                                                                <a class="btn btn_black sm" href="#"
+                                                                <a class="btn btn_black sm btn_edit_address"
+                                                                    href="#" data-id="{{ $shippingAddress->id }}"
+                                                                    data-full_name="{{ $shippingAddress->full_name }}"
+                                                                    data-phone_number="{{ $shippingAddress->phone_number }}"
+                                                                    data-address="{{ $shippingAddress->address }}"
                                                                     data-bs-toggle="modal" data-bs-target="#edit-address"
-                                                                    title="Edit" tabindex="0"
-                                                                    data-id="{{ $shippingAddress->id }}" data-full-name="{{ $shippingAddress->full_name }}"
-                                                                    data-phone="{{ $shippingAddress->phone_number }}" data-address="{{ $shippingAddress->address }}"
-                                                                    onclick="populateEditAddressModal(this);event.preventDefault();document.getElementById('edit-address-form').action='{{ route('dashboard.editAddress', $shippingAddress->id) }}';$('#edit-address').modal('show');">Edit</a>
+                                                                    title="Edit" tabindex="0">Edit</a>
                                                                 <a class="btn btn_outline sm" href="#"title="Delete"
                                                                     tabindex="0"
                                                                     onclick="event.preventDefault();document.getElementById('delete-address-form').action='{{ route('dashboard.deleteAddress', $shippingAddress->id) }}';$('#delete-address-modal').modal('show');">Delete</a>
@@ -1423,108 +1426,11 @@
                             </div>
                             <button class="btn btn-submit" type="submit">Submit</button>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
         {{-- End modal --}}
-
-        <div class="offcanvas offcanvas-end shopping-details" id="offcanvasRight" tabindex="-1"
-            aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-                <h4 class="offcanvas-title" id="offcanvasRightLabel">Shopping Cart</h4><button class="btn-close"
-                    type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body theme-scrollbar">
-                <ul class="offcanvas-cart">
-                    <li> <a href="#"> <img src="../assets/images/cart/1.jpg" alt=""></a>
-                        <div>
-                            <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total">105</span></span></p>
-                            <div class="btn-containter">
-                                <div class="btn-control"><button class="btn-control__remove"
-                                        id="btn-remove">&minus;</button>
-                                    <div class="btn-control__quantity">
-                                        <div id="quantity-previous">2</div>
-                                        <div id="quantity-current">3</div>
-                                        <div id="quantity-next">4</div>
-                                    </div><button class="btn-control__add" id="btn-add">+</button>
-                                </div>
-                            </div>
-                        </div><i class="iconsax delete-icon" data-icon="trash"></i>
-                    </li>
-                    <li> <a href="#"> <img src="../assets/images/cart/2.jpg" alt=""></a>
-                        <div>
-                            <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total1">105</span></span></p>
-                            <div class="btn-containter">
-                                <div class="btn-control"><button class="btn-control__remove"
-                                        id="btn-remove1">&minus;</button>
-                                    <div class="btn-control__quantity">
-                                        <div id="quantity1-previous">2</div>
-                                        <div id="quantity1-current">3</div>
-                                        <div id="quantity1-next">4</div>
-                                    </div><button class="btn-control__add" id="btn-add1">+</button>
-                                </div>
-                            </div>
-                        </div><i class="iconsax delete-icon" data-icon="trash"></i>
-                    </li>
-                    <li> <a href="#"> <img src="../assets/images/cart/3.jpg" alt=""></a>
-                        <div>
-                            <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total2">105</span></span></p>
-                            <div class="btn-containter">
-                                <div class="btn-control"><button class="btn-control__remove"
-                                        id="btn-remove2">&minus;</button>
-                                    <div class="btn-control__quantity">
-                                        <div id="quantity2-previous">2</div>
-                                        <div id="quantity2-current">3</div>
-                                        <div id="quantity2-next">4</div>
-                                    </div><button class="btn-control__add" id="btn-add2">+</button>
-                                </div>
-                            </div>
-                        </div><i class="iconsax delete-icon" data-icon="trash"></i>
-                    </li>
-                    <li> <a href="#"> <img src="../assets/images/cart/4.jpg" alt=""></a>
-                        <div>
-                            <h6 class="mb-0">Shirts Men's Clothing</h6>
-                            <p>$35<del>$40</del><span class="btn-cart">$<span class="btn-cart__total"
-                                        id="total3">105</span></span></p>
-                            <div class="btn-containter">
-                                <div class="btn-control"><button class="btn-control__remove"
-                                        id="btn-remove3">&minus;</button>
-                                    <div class="btn-control__quantity">
-                                        <div id="quantity3-previous">2</div>
-                                        <div id="quantity3-current">3</div>
-                                        <div id="quantity3-next">4</div>
-                                    </div><button class="btn-control__add" id="btn-add3">+</button>
-                                </div>
-                            </div>
-                        </div><i class="iconsax delete-icon" data-icon="trash"></i>
-                    </li>
-                </ul>
-            </div>
-            <div class="offcanvas-footer">
-                <p>Spend <span>$ 14.81 </span>more and enjoy <span>FREE SHIPPING!</span></p>
-                <div class="footer-range-slider">
-                    <div class="progress" role="progressbar" aria-label="Animated striped example"
-                        aria-valuenow="46" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated theme-default"
-                            style="width: 46%"></div>
-                    </div>
-                </div>
-                <div class="price-box">
-                    <h6>Total :</h6>
-                    <p>$ 49.59 USD</p>
-                </div>
-                <div class="cart-button"> <a class="btn btn_outline" href="cart.html"> View Cart</a><a
-                        class="btn btn_black" href="check-out.html"> Checkout</a></div>
-            </div>
-        </div>
 
         {{-- Modal Edit address --}}
         <div class="reviews-modal modal theme-modal fade" id="edit-address" tabindex="-1" role="dialog"
@@ -1579,15 +1485,6 @@
         </div>
         {{-- End modal --}}
 
-        {{-- Kiểm tra lỗi và mở lại modal addAddress nếu có --}}
-        @if ($errors->any())
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    var addAddressModal = new bootstrap.Modal(document.getElementById('add-address'));
-                    addAddressModal.show();
-                });
-            </script>
-        @endif
         {{-- Modal Add address --}}
         <div class="reviews-modal modal theme-modal fade" id="add-address" tabindex="-1" role="dialog"
             aria-modal="true">
@@ -1599,7 +1496,7 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
-                        <form class="row g-3" action="{{ route('dashboard.addAddress') }}"
+                        <form id="add-address-form" class="row g-3" action="{{ route('dashboard.addAddress') }}"
                             method="POST">
                             @csrf
                             <div class="col-12">
@@ -1652,24 +1549,47 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Current Password</label><input
-                                        class="form-control" type="password" name="review[author]"
-                                        placeholder="Enter Current Password."></div>
+                        <form id="edit-password-form" action="{{ route('dashboard.editPassword') }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="from-group">
+                                        <label class="form-label">Current Password</label>
+                                        <input class="form-control @error('current_password') is-invalid @enderror"
+                                            type="password" name="current_password" id="current_password"
+                                            placeholder="Enter Current Password.">
+                                        @error('current_password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                </div>
+                                <div class="col-12">
+                                    <div class="from-group">
+                                        <label class="form-label">New password</label>
+                                        <input class="form-control @error('new_password') is-invalid @enderror"
+                                            type="password" id="new_password" name="new_password"
+                                            placeholder="Enter New password.">
+                                        @error('new_password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="from-group">
+                                        <label class="form-label">Confirm password</label>
+                                        <input
+                                            class="form-control @error('new_password_confirmation') is-invalid @enderror"
+                                            type="password" name="new_password_confirmation"
+                                            id="new_password_confirmation" placeholder="Enter Confirm password">
+                                        @error('new_password_confirmation')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div><button class="btn btn-submit" type="submit">Submit</button>
                             </div>
-                            <div class="col-12">
-                                <div class="from-group"> <label class="form-label">New password</label><input
-                                        class="form-control" type="password" name="review[author]"
-                                        placeholder="Enter New password."></div>
-                            </div>
-                            <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Confirm password</label><input
-                                        class="form-control" type="password" name="review[author]"
-                                        placeholder="Enter Confirm password"></div>
-                            </div><button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                aria-label="Close">Submit</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1855,99 +1775,7 @@
 @endsection
 
 @section('script-libs')
-    <script>
-        //Cập nhật profile
-        $(document).ready(function() {
-            $('#edit-profile-form').on('submit', function(event) {
-                event.preventDefault();
-
-                // Lấy dữ liệu từ form
-                let full_name = $('#edit-profile-form').find('input[name="full_name"]').val().trim();
-                let phone = $('#edit-profile-form').find('input[name="phone"]').val().trim();
-                let email = $('#edit-profile-form').find('input[name="email"]').val().trim();
-                let address = $('#edit-profile-form').find('textarea[name="address"]').val().trim();
-                let _token = $('input[name="_token"]').val();
-                let url = $(this).attr('action');
-
-                // Xóa các lỗi cũ
-                $('.invalid-feedback').text('');
-                $('.form-control').removeClass('is-invalid');
-
-                // Gửi AJAX request
-                $.ajax({
-                    url: url,
-                    type: 'PUT',
-                    data: {
-                        full_name: full_name,
-                        phone: phone,
-                        email: email,
-                        address: address,
-                        _token: _token
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            // Thay đổi dữ liệu trên profile
-                            $('.profile-name h6').text(email);
-                            $('.profile-information li:contains("Name") p').text(response.user
-                                .full_name ||
-                                'Not updated yet');
-                            $('.profile-information li:contains("Phone") p').text(response.user
-                                .phone ||
-                                'Not updated yet');
-                            $('.profile-information li:contains("Address") p').text(response
-                                .user.address ||
-                                'Not updated yet');
-                            $('.profile-information li:contains("Email") p').text(response.user
-                                .email);
-                            $('.dashboard-user-name b').text(response.user.full_name ? response
-                                .user.full_name : response.user.username);
-
-                            // Đóng modal sau khi thành công
-                            $('#edit-profile').modal('hide');
-
-                            // Hiển thị thông báo thành công
-                            toastr.success(response.message, 'Notification!');
-                        }
-                    },
-                    error: function(error) {
-                        // Xử lý lỗi trả về từ server (validation errors)
-                        if (error.responseJSON && error.responseJSON.errors) {
-                            let errors = error.responseJSON.errors;
-                            for (let key in errors) {
-                                let input = $('input[name="' + key + '"]');
-                                let textarea = $('textarea[name="' + key + '"]');
-                                let errMsg = errors[key][0];
-
-                                // Hiển thị thông báo lỗi
-                                if (input.length) {
-                                    input.addClass('is-invalid');
-                                    input.next('.invalid-feedback').text(errMsg);
-                                } else if (textarea.length) {
-                                    textarea.addClass('is-invalid');
-                                    textarea.next('.invalid-feedback').text(errMsg);
-                                }
-                            }
-                        } else {
-                            console.error('Unknown error occurred');
-                        }
-                    }
-                });
-            });
-        });
-
-        function populateEditAddressModal(button) {
-            const fullName = button.getAttribute('data-full-name');
-            const phone = button.getAttribute('data-phone');
-            const address = button.getAttribute('data-address');
-
-            // Điền thông tin vào các trường trong modal
-            document.querySelector('input[name="full_name"]').value = fullName;
-            document.querySelector('input[name="phone_number"]').value = phone;
-            document.querySelector('textarea[name="address"]').value = address;
-        }
-    </script>
-
+    <script src="{{ asset('js/user/dashboard.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Lấy tất cả các tab

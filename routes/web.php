@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\user\CollectionController;
@@ -19,7 +18,9 @@ Route::post('register', [RegisterController::class, 'register'])->name('register
 //Đăng nhập
 Route::get('login', [LoginController::class, 'index'])->name('login');//Trang đăng nhập
 Route::post('login', [LoginController::class, 'login'])->name('login');//Chức năng đăng nhập
-
+//Quên mật khẩu
+Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword');//Trang quên mật khẩu
+Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
 
 // Route::get('/', action: function () {
 //     return view(view: 'user/index');
@@ -29,6 +30,7 @@ Route::post('login', [LoginController::class, 'login'])->name('login');//Chức 
 // });
 // Route::get('/',[HomeController::class,'index'])->name('home-shop');
 
+
 Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword');//Trang quên mật khẩu
 
 Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
@@ -36,6 +38,7 @@ Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPasswor
 
 //filterProduct
 Route::get('product', [FilterProductController::class, 'index']);
+
 // web.php hoặc api.php
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
 
@@ -46,6 +49,7 @@ Route::middleware('auth')->group(function () {
     //Dashboard người dùng
     Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::put('dashboard/edit-profile',[DashboardController::class,'editProfile'])->name('dashboard.editProfile');// Cập nhật thông tin profile
+    Route::put('dashboard/edit-password',[DashboardController::class,'editPassword'])->name('dashboard.editPassword');// Edit password
     Route::post('dashboard/add-address', [DashboardController::class, 'addAddress'])->name('dashboard.addAddress');//Thêm địa chỉ giao hàng
     Route::put('dashboard/edit-address/{id}',[DashboardController::class,'editAddress'])->name('dashboard.editAddress');// Sửa địa chỉ
     Route::delete('dashboard/delete-address/{id}',[DashboardController::class,'deleteAddress'])->name('dashboard.deleteAddress');// Xoá địa chỉ

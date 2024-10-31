@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('banner_images', function (Blueprint $table) {//Mỗi banner có nhiều ảnh, nên bảng này lưu trữ những ảnh đó
             $table->id();
             $table->string('file_name')->comment('Tên file');
-            $table->foreignIdFor(Banner::class)->constrained()->comment('Xác định những ảnh này thuộc banner nào');
+            $table->foreignIdFor(Banner::class)->comment('Xác định những ảnh này thuộc banner nào')->constrained();
             $table->timestamps();
         });
     }

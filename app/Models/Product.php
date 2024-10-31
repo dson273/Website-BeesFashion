@@ -14,12 +14,17 @@ class Product extends Model
         'view',
         'description',
         'is_active',
+        'brand_id',
         'created_at',
         'updated_at'
     ];
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'product_categories');
+    }
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
     public function product_variants()
     {

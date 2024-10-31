@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->comment('Tên giá trị thuộc tính');
             $table->string('value')->nullable()->comment('');
-            $table->foreignIdFor(Attribute::class)->constrained()->comment('Xác định giá trị thuộc tính này thuộc về thuộc tính nào');
+            $table->foreignIdFor(Attribute::class)->comment('Xác định giá trị thuộc tính này thuộc về thuộc tính nào')->constrained();
             $table->timestamps();
         });
     }

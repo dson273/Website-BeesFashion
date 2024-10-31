@@ -61,39 +61,16 @@
                                 {{-- <li>
                                     <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
                                     </li> --}}
-                                   
-                                    @foreach ($category as $parentCategory)
-                                    @if ($parentCategory->parent_category_id === null && $parentCategory->fixed == 1) 
-                                        <!-- Kiểm tra nếu là danh mục cha và có fixed = 1 -->
-                                        <li class="has-submenu">
-                                            <a class="nav-link" href="#">{{ $parentCategory->name }}
-                                                @php
-                                                    // Kiểm tra xem có danh mục con hay không
-                                                    $hasChild = $category->contains('parent_category_id', $parentCategory->id);
-                                                @endphp
-                                                @if ($hasChild)
-                                                    <span><i class="fa-solid fa-angle-down"></i></span>
-                                                @endif
-                                            </a>
-                                
-                                            @if ($hasChild) <!-- Chỉ hiển thị ul nếu có danh mục con -->
-                                                <ul class="nav-submenu">
-                                                    <!-- Hiển thị danh mục con nếu có -->
-                                                    @foreach ($category as $childCategory)
-                                                        @if ($childCategory->parent_category_id === $parentCategory->id && $childCategory->fixed == 1) 
-                                                            <!-- Kiểm tra nếu là danh mục con và có fixed = 1 -->
-                                                            <li>
-                                                                <a href="#">{{ $childCategory->name }}</a>
-                                                                <!-- Hiển thị tên danh mục con -->
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ul>
-                                            @endif
-                                        </li>
-                                    @endif
+
+                                @foreach ($categoryLimit as $parentCategory)
+                                    <li class="has-submenu">
+                                        <a class="nav-link" href="#">{{ $parentCategory->name }}
+                                            <i class="fa-solid fa-angle-down"></i>
+                                        </a>
+                                      @include('user.layouts.child_menu',['parentCategory' => $parentCategory])
+                                    </li>
                                 @endforeach
-                                
+
 
                                 {{-- <li>
                                     <a class="nav-link" href="product-detail.html">Product <span> <i
@@ -160,11 +137,10 @@
                                         <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
                                         <div class="onhover-show-div user">
                                             <ul>
-                                                <li class="fw-bold">Hello: {{Auth::user()->username}}</li>
+                                                <li class="fw-bold">Hello: {{ Auth::user()->username }}</li>
                                                 <li> <a href="{{ route('dashboard') }}">Dashboard </a></li>
-                                                <li> <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#modal-logout" title="Logout"
-                                                        tabindex="0">Logout</a></li>
+                                                <li> <a href="#" data-bs-toggle="modal" data-bs-target="#modal-logout"
+                                                        title="Logout" tabindex="0">Logout</a></li>
                                             </ul>
                                     </li>
                                 @endguest

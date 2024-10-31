@@ -12,9 +12,7 @@
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('theme/admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('theme/admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
@@ -26,7 +24,6 @@
     <!-- Slimselect -->
     <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
     </link>
-
 
     @yield('style-libs')
 
@@ -130,19 +127,23 @@
             });
         };
         //Route variable
+
         var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
         var getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
+        var getAllBrandsRoute = "{{route('admin.getAllBrands')}}";
         var createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
+        var createNewBrandRoute = "{{route('admin.createNewBrand')}}";
         var storeProductRoute = "{{route('admin.products.store')}}";
         var getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
         var getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
 
+
         function returnGetAllAttributeValuesByIdRoute(id) {
-            return "{{route('admin.getAllAttributeValuesById',':id')}}".replace(':id', id);
+            return "{{ route('admin.getAllAttributeValuesById', ':id') }}".replace(':id', id);
         }
 
         function returnAddNewAttributeValueByIdRoute(id) {
-            return "{{route('admin.addNewAttributeValueById',':id')}}".replace(':id', id);
+            return "{{ route('admin.addNewAttributeValueById', ':id') }}".replace(':id', id);
         }
 
         var csrf = "{{ csrf_token() }}";
@@ -167,17 +168,18 @@
     <!-- Short notification commands -->
 
     <script>
-            @if(session('statusSuccess'))
-            var message = @json(session('statusSuccess'));
-            notification('success', message, 'Successfully');
-            @elseif(session('statusError'))
-            var message = @json(session('statusError'));
-            notification('error', message, 'Error');
-            @elseif(session('statusWarning'))
-            var message = @json(session('statusWarning'));
-            notification('warning', message, 'warning');
-            @endif
 
+        @if(session('statusSuccess'))
+        var message = @json(session('statusSuccess'));
+        notification('success', message, 'Successfully');
+        @elseif(session('statusError'))
+        var message = @json(session('statusError'));
+        notification('error', message, 'Error');
+        @elseif(session('statusWarning'))
+        var message = @json(session('statusWarning'));
+        notification('warning', message, 'warning');
+
+        @endif
     </script>
 </body>
 

@@ -26,8 +26,10 @@
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Danh Mục Sản Phẩm</h6>
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách danh mục</h6>
+                <a href="{{ route('admin.categories.create') }}" class="btn btn-success text-white text-decoration-none"><i
+                        class="fas fa-plus"></i> Thêm mới danh mục</a>
             </div>
            
             <div class="card-body">
@@ -60,7 +62,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $cate->name }}</td>
-                                    <td><img src="{{ asset('storage/uploads/imgcate/' . $cate->image) }}" width="150px" alt=""></td>
+                                    <td><img src="{{ asset('storage/uploads/categories/images/' . $cate->image) }}" width="150px" alt=""></td>
                                     <td>{{ $cate->description }}</td>
                                     <td>{{ $cate->fixed == 1 ? 'Danh mục thường' : 'Sản phẩm bán chạy' }}</td>
                                     <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>

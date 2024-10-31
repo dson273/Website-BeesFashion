@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('product_view_histories', function (Blueprint $table) {
             $table->id();
             $table->integer('click')->comment('Số lượt click vào xem sản phẩm của người dùng');
-            $table->foreignIdFor(User::class)->constrained()->comment('Xác định người dùng nào click');
-            $table->foreignIdFor(Product::class)->constrained()->comment('Xác định sản phẩm nào được người dùng click');
+            $table->foreignIdFor(User::class)->comment('Xác định người dùng nào click')->constrained();
+            $table->foreignIdFor(Product::class)->comment('Xác định sản phẩm nào được người dùng click')->constrained();
             $table->timestamps();
         });
     }
