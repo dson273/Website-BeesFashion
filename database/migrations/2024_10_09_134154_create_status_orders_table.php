@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('status_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Status::class)->constrained()->comment('Xác định trạng thái nào');
-            $table->foreignIdFor(Order::class)->constrained()->comment('Xác định đơn hàng nào có trạng thái này');
+            $table->foreignIdFor(Status::class)->comment('Xác định trạng thái nào')->constrained();
+            $table->foreignIdFor(Order::class)->comment('Xác định đơn hàng nào có trạng thái này')->constrained();
             $table->timestamps();
         });
     }

@@ -21,6 +21,8 @@ function switchShowHidden(form, dataForm, chevron) {
 //BASE PRODUCT
 switchShowHidden('#baseProduct', 'baseProduct', '#chevronBaseProduct');
 switchShowHidden('#customVariants', 'customVariants', '#chevronCustomVariants');
+switchShowHidden('#contentCategoryContainer', 'productCategory', '#chevronProductCategory');
+switchShowHidden('#contentBrandContainer', 'productBrand', '#chevronProductBrand');
 $(document).on('click', '#baseProductSwitch', function () {
     switchShowHidden('#baseProduct', 'baseProduct', '#chevronBaseProduct');
 });
@@ -30,6 +32,9 @@ $(document).on('click', '#baseCustomVariantsSwitch', function () {
 });
 $(document).on('click', '.productCategoryTitle', function () {
     switchShowHidden('#contentCategoryContainer', 'productCategory', '#chevronProductCategory');
+});
+$(document).on('click', '.productBrandTitle', function () {
+    switchShowHidden('#contentBrandContainer', 'productBrand', '#chevronProductBrand');
 });
 
 //---------------------------------------------Load all categoies--------------------------------------------
@@ -126,7 +131,7 @@ function createCategoryOptions(categories, level = 0) {
     return options;
 }
 
-//--------------------------------------Add new category-------------------------------------
+//--------------------------------------Add new category by ajax-------------------------------------
 function createNewCategoryByAjax(name, parent_id) {
     if (parent_id) {
         $.ajax({
@@ -202,7 +207,127 @@ $(document).on('click', '#addNewCategoryBtn', async function () {
         notification('warning', 'You need enter category name!', 'Warning!');
     }
 })
+//-----------------------------------------------------Load brand by ajax-------------------------------------------------------------
+var brands = [];
+function getAllBrands() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: getAllBrandsRoute,
+            method: "POST",
+            data: {
+                _token: csrf
+            },
+            success: function (response) {
+                if (response.status == 200) {
+                    brands = response.data;
+                } else {
+                    console.log(response.message);
+                }
+                resolve();
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                notification('error', 'Unable to get catalog data!', 'Error');
+                reject();
+            }
+        });
+    })
+}
+//-------------------------------------------------------Load all brand to html-----------------------------------------------------------
+async function loadAllBrands() {
+    await getAllBrands();
+    if (brands.length) {
+        const container = document.createElement("div");
+        container.classList.add("listBrands");
+        brands.forEach(function (brand) {
+            const checkbox = document.createElement("input");
+            checkbox.type = "radio";
+            checkbox.className = "brandItem";
+            checkbox.id = brand.id;
+            checkbox.name = "brand";
+            checkbox.style.transform = 'scale(1.2)';
 
+            const label = document.createElement("label");
+            label.classList.add("m-0", "ml-2");
+            label.textContent = brand.name;
+
+            // Tạo container cho mỗi category item
+            const item = document.createElement("div");
+            item.classList.add("d-flex", "flex-row", "align-items-center", "pl-2", "pr-2", "brandItem");
+
+            item.appendChild(checkbox);
+            item.appendChild(label);
+            container.appendChild(item);
+        })
+        document.getElementById("contentBrandContainer").appendChild(container);
+    }
+}
+setInterval(loadAllBrands(), 5000);
+//----------------------------------------------------Create new brand by ajax------------------------------------------------------
+var checkNewBrandName = true;
+function createNewBrandByAjax(brandName) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: createNewBrandRoute,
+            method: "POST",
+            data: {
+                _token: csrf,
+                brand_name: brandName,
+            },
+            success: function (response) {
+                if (response.status == 409) {
+                    checkNewBrandName = false;
+                    notification('error', response.message, 'Error!');
+                    resolve(false);
+                } else if (response.status == 200) {
+                    checkNewBrandName = true;
+                    resolve(true);
+                } else {
+                    notification('error', 'Something went wrong!', 'Error!');
+                    resolve(false);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                notification('error', 'Cannot create brand!', 'Error');
+                reject(new Error('Ajax request failed'));
+            }
+        });
+    });
+}
+
+//--------------------------------------------------------Add new brand------------------------------------------------------
+$(document).on('click', '#addNewBrandBtn', async function () {
+    checkNewBrandName = true;
+    var brandName = $('.brandName').val();
+    if (brandName) {
+        $('.container-spinner').removeClass('hidden');
+        try {
+            const result = await createNewBrandByAjax(brandName);
+            if (result && checkNewBrandName) {  // Chỉ thực hiện nếu `result` là true
+                $('#contentBrandContainer').find('.listBrands')[0].remove();
+                loadAllBrands();
+                $('.brandName').val('');
+                notification('success', 'Create new brand successfully!', 'Successfully!');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            $('.container-spinner').addClass('hidden');
+        }
+    } else {
+        notification('warning', 'You need to enter a brand name!', 'Warning!');
+    }
+});
+
+//-----------------------------------------Open/close form add brand------------------------------------
+$(document).on('click', '#btnOpenCloseFormAddBrand', function () {
+    if ($(this).next('.formAddNewBrand').hasClass('hidden')) {
+        $(this).next('.formAddNewBrand').removeClass('hidden');
+    } else {
+        $(this).next('.formAddNewBrand').addClass('hidden');
+    }
+})
 //---------------------------------------------------Upload images---------------------------------------------------
 let imageName;
 let imageNames = [];
@@ -1546,7 +1671,12 @@ var deleteAllVariations = $('.deleteAllVariations');
 var checkVariationsStatus = $('.checkVariationsStatus');
 var saveVariations = $('.saveVariations');
 var saveVariationsStatus = false;
-
+function createRequiredMark() {
+    var p = document.createElement('p');
+    p.className = "text-danger ml-1 mb-0";
+    p.textContent = "(*)";
+    return p;
+}
 $('#generateVariations').click(function () {
     if (generateVariationData.length > 0) {
         var confirmGenerateVariation = confirm('Do you want to generate all variations? This will create a new variation for each and every possible combination of variation attributes!');
@@ -1746,23 +1876,40 @@ $('#generateVariations').click(function () {
                     var divPart2 = document.createElement('div');
                     divPart2.className = 'mt-3';
 
-                    var divImportAndSalePrice = document.createElement('div');
-                    divImportAndSalePrice.className = 'd-flex flex-row justify-content-between';
+                    var divActualImportPrice = document.createElement('div');
+                    divActualImportPrice.className = "d-flex flex-column mt-3";
 
-                    var divImportPrice = document.createElement('div');
-                    divImportPrice.className = 'd-flex flex-column w-50 mr-4';
+                    var labelActualImportPrice = document.createElement('label');
+                    labelActualImportPrice.className = 'badge text-left d-flex flex-row';
+                    labelActualImportPrice.textContent = 'Actual import price (đ)';
+                    labelActualImportPrice.appendChild(createRequiredMark());
 
-                    var labelImportPrice = document.createElement('label');
-                    labelImportPrice.className = 'badge text-left';
-                    labelImportPrice.textContent = 'Import price (đ)';
+                    var inputActualImportPrice = document.createElement('input');
+                    inputActualImportPrice.type = 'number';
+                    inputActualImportPrice.className = 'form-control actualImportPriceInput';
+                    inputActualImportPrice.placeholder = "Enter variation's actual import price...";
 
-                    var inputImportPrice = document.createElement('input');
-                    inputImportPrice.type = 'number';
-                    inputImportPrice.className = 'form-control importPriceInput';
-                    inputImportPrice.placeholder = "Enter variation's import price...";
+                    divActualImportPrice.appendChild(labelActualImportPrice);
+                    divActualImportPrice.appendChild(inputActualImportPrice);
 
-                    divImportPrice.appendChild(labelImportPrice);
-                    divImportPrice.appendChild(inputImportPrice);
+                    var divDisplayImportAndSalePrice = document.createElement('div');
+                    divDisplayImportAndSalePrice.className = 'd-flex flex-row justify-content-between mt-3';
+
+                    var divDisplayImportPrice = document.createElement('div');
+                    divDisplayImportPrice.className = 'd-flex flex-column w-50 mr-4';
+
+                    var labelDisplayImportPrice = document.createElement('label');
+                    labelDisplayImportPrice.className = 'badge text-left d-flex flex-row';
+                    labelDisplayImportPrice.textContent = 'Display import price (đ)';
+                    labelDisplayImportPrice.appendChild(createRequiredMark());
+
+                    var inputDisplayImportPrice = document.createElement('input');
+                    inputDisplayImportPrice.type = 'number';
+                    inputDisplayImportPrice.className = 'form-control displayImportPriceInput';
+                    inputDisplayImportPrice.placeholder = "Enter variation's display import price...";
+
+                    divDisplayImportPrice.appendChild(labelDisplayImportPrice);
+                    divDisplayImportPrice.appendChild(inputDisplayImportPrice);
 
                     var divSalePrice = document.createElement('div');
                     divSalePrice.className = 'd-flex flex-column w-50';
@@ -1779,15 +1926,16 @@ $('#generateVariations').click(function () {
                     divSalePrice.appendChild(labelSalePrice);
                     divSalePrice.appendChild(inputSalePrice);
 
-                    divImportAndSalePrice.appendChild(divImportPrice);
-                    divImportAndSalePrice.appendChild(divSalePrice);
+                    divDisplayImportAndSalePrice.appendChild(divDisplayImportPrice);
+                    divDisplayImportAndSalePrice.appendChild(divSalePrice);
 
                     var divStock = document.createElement('div');
                     divStock.className = 'd-flex flex-column mt-3';
 
                     var labelStock = document.createElement('label');
-                    labelStock.className = 'badge text-left';
+                    labelStock.className = 'badge text-left d-flex flex-row';
                     labelStock.textContent = 'Stock';
+                    labelStock.appendChild(createRequiredMark());
 
                     var inputStock = document.createElement('input');
                     inputStock.type = 'number';
@@ -1822,7 +1970,8 @@ $('#generateVariations').click(function () {
                     divActive.appendChild(labelActive);
                     divActive.appendChild(selectActive);
 
-                    divPart2.appendChild(divImportAndSalePrice);
+                    divPart2.appendChild(divActualImportPrice);
+                    divPart2.appendChild(divDisplayImportAndSalePrice);
                     divPart2.appendChild(divStock);
                     divPart2.appendChild(divActive);
 
@@ -2155,23 +2304,40 @@ $(document).on('click', '#addManually', function () {
                 var divPart2 = document.createElement('div');
                 divPart2.className = 'mt-3';
 
-                var divImportAndSalePrice = document.createElement('div');
-                divImportAndSalePrice.className = 'd-flex flex-row justify-content-between';
+                var divActualImportPrice = document.createElement('div');
+                divActualImportPrice.className = "d-flex flex-column mt-3";
 
-                var divImportPrice = document.createElement('div');
-                divImportPrice.className = 'd-flex flex-column w-50 mr-4';
+                var labelActualImportPrice = document.createElement('label');
+                labelActualImportPrice.className = 'badge text-left d-flex flex-row';
+                labelActualImportPrice.textContent = 'Actual import price (đ)';
+                labelActualImportPrice.appendChild(createRequiredMark());
 
-                var labelImportPrice = document.createElement('label');
-                labelImportPrice.className = 'badge text-left';
-                labelImportPrice.textContent = 'Import price (đ)';
+                var inputActualImportPrice = document.createElement('input');
+                inputActualImportPrice.type = 'number';
+                inputActualImportPrice.className = 'form-control actualImportPriceInput';
+                inputActualImportPrice.placeholder = "Enter variation's actual import price...";
 
-                var inputImportPrice = document.createElement('input');
-                inputImportPrice.type = 'number';
-                inputImportPrice.className = 'form-control importPriceInput';
-                inputImportPrice.placeholder = "Enter variation's import price...";
+                divActualImportPrice.appendChild(labelActualImportPrice);
+                divActualImportPrice.appendChild(inputActualImportPrice);
 
-                divImportPrice.appendChild(labelImportPrice);
-                divImportPrice.appendChild(inputImportPrice);
+                var divDisplayImportAndSalePrice = document.createElement('div');
+                divDisplayImportAndSalePrice.className = 'd-flex flex-row justify-content-between mt-3';
+
+                var divDisplayImportPrice = document.createElement('div');
+                divDisplayImportPrice.className = 'd-flex flex-column w-50 mr-4';
+
+                var labelDisplayImportPrice = document.createElement('label');
+                labelDisplayImportPrice.className = 'badge text-left d-flex flex-row';
+                labelDisplayImportPrice.textContent = 'Display import price (đ)';
+                labelDisplayImportPrice.appendChild(createRequiredMark());
+
+                var inputDisplayImportPrice = document.createElement('input');
+                inputDisplayImportPrice.type = 'number';
+                inputDisplayImportPrice.className = 'form-control displayImportPriceInput';
+                inputDisplayImportPrice.placeholder = "Enter variation's display import price...";
+
+                divDisplayImportPrice.appendChild(labelDisplayImportPrice);
+                divDisplayImportPrice.appendChild(inputDisplayImportPrice);
 
                 var divSalePrice = document.createElement('div');
                 divSalePrice.className = 'd-flex flex-column w-50';
@@ -2188,15 +2354,16 @@ $(document).on('click', '#addManually', function () {
                 divSalePrice.appendChild(labelSalePrice);
                 divSalePrice.appendChild(inputSalePrice);
 
-                divImportAndSalePrice.appendChild(divImportPrice);
-                divImportAndSalePrice.appendChild(divSalePrice);
+                divDisplayImportAndSalePrice.appendChild(divDisplayImportPrice);
+                divDisplayImportAndSalePrice.appendChild(divSalePrice);
 
                 var divStock = document.createElement('div');
                 divStock.className = 'd-flex flex-column mt-3';
 
                 var labelStock = document.createElement('label');
-                labelStock.className = 'badge text-left';
+                labelStock.className = 'badge text-left d-flex flex-row';
                 labelStock.textContent = 'Stock';
+                labelStock.appendChild(createRequiredMark());
 
                 var inputStock = document.createElement('input');
                 inputStock.type = 'number';
@@ -2231,7 +2398,8 @@ $(document).on('click', '#addManually', function () {
                 divActive.appendChild(labelActive);
                 divActive.appendChild(selectActive);
 
-                divPart2.appendChild(divImportAndSalePrice);
+                divPart2.appendChild(divActualImportPrice);
+                divPart2.appendChild(divDisplayImportAndSalePrice);
                 divPart2.appendChild(divStock);
                 divPart2.appendChild(divActive);
 
@@ -2246,9 +2414,9 @@ $(document).on('click', '#addManually', function () {
                 $('.notificationNoVariationsYet').addClass('hidden');
                 totalVariations = $('.variationItem').length;
                 if (totalVariations == 1) {
-                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
+                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá nhập thực tế và giá nhập hiển thị, vui lòng nhập đầy đủ các trường thông tin cho các biến thể này.!');
                 } else {
-                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
+                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá nhập thực tế và giá nhập hiển thị, vui lòng nhập đầy đủ các trường thông tin cho các biến thể này.!');
                 }
                 // if (totalVariations == 1) {
                 //     $('.notificationQuantityVariations').text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
@@ -2412,13 +2580,72 @@ function checkNumberInput(input) {
         return true;
     }
 }
-$(document).on('change', '.importPriceInput', function () {
+
+$(document).on('change', '.actualImportPriceInput', function () {
+    checkNumberInput($(this));
+    const salePrice = $(this).closest('.variationItemContent').find('.salePriceInput');
+    if (salePrice.val()) {
+        if (parseFloat(salePrice.val()) <= parseFloat($(this).val())) {
+            $(this).val('');
+            notification('warning', 'Giá nhập thực tế phải nhỏ hơn giá bán!', 'Warning!');
+        }
+    }
+    var countActualImportPrice = 0;
+    var countDisplayImportPrice = 0;
+    $('.variationItem').each(function () {
+        var actualImportPriceInput = $(this).find('.actualImportPriceInput').val();
+        var displayImportPriceInput = $(this).find('.displayImportPriceInput').val();
+        if (!actualImportPriceInput) {
+            countActualImportPrice++;
+        }
+        if (!displayImportPriceInput) {
+            countDisplayImportPrice++;
+        }
+    })
+    if (countActualImportPrice != 0 && countDisplayImportPrice != 0) {
+
+    }
+    if (countActualImportPrice != 0 && countDisplayImportPrice != 0) {
+        $('.notificationQuantityVariations').removeClass('hidden');
+        $('.notificationQuantityVariations').text(countActualImportPrice + ' biến thể chưa có giá nhập thực tế và ' + countDisplayImportPrice + ' biến thể chưa có giá nhập hiển thị, vui lòng nhập đầy đủ các trường thông tin này.!');
+    } else if (countActualImportPrice != 0 && countDisplayImportPrice == 0) {
+        $('.notificationQuantityVariations').removeClass('hidden');
+        $('.notificationQuantityVariations').text(countActualImportPrice + ' biến thể chưa có giá nhập thực tế, vui lòng nhập đầy đủ các trường thông tin này.!');
+    } else if (countActualImportPrice == 0 && countDisplayImportPrice != 0) {
+        $('.notificationQuantityVariations').removeClass('hidden');
+        $('.notificationQuantityVariations').text(countDisplayImportPrice + ' biến thể chưa có giá nhập hiển thị, vui lòng nhập đầy đủ các trường thông tin này.!');
+    } else {
+        $('.notificationQuantityVariations').addClass('hidden');
+    }
+})
+
+$(document).on('click', '.displayImportPriceInput', function () {
+    const actualImportPrice = $(this).closest('.variationItemContent').find('.actualImportPriceInput');
+    if (actualImportPrice.val() == '') {
+        notification('warning', 'Bạn cần nhập giá nhập thực tế trước!', 'Warning!');
+        actualImportPrice.focus();
+    }
+})
+
+$(document).on('change', '.displayImportPriceInput', function () {
+    const actualImportPrice = $(this).closest('.variationItemContent').find('.actualImportPriceInput');
+    if (actualImportPrice.val() == '') {
+        notification('warning', 'Bạn cần nhập giá nhập thực tế trước!', 'Warning!');
+        actualImportPrice.focus();
+        $(this).val('');
+    }
     const salePrice = $(this).closest('.variationItemContent').find('.salePriceInput');
     if (checkNumberInput($(this))) {
+        if (actualImportPrice.val()) {
+            if (parseFloat(actualImportPrice.val()) >= parseFloat($(this).val())) {
+                $(this).val('');
+                notification('warning', 'Vui lòng nhập giá nhập hiển thị lớn hơn giá nhập thực tế!', 'Warning!');
+            }
+        }
         if (salePrice.val()) {
-            if (salePrice.val() >= $(this).val()) {
+            if (parseFloat(salePrice.val()) >= parseFloat($(this).val())) {
                 $(this).val(parseFloat(salePrice.val()) + 1);
-                notification('warning', 'Vui lòng nhập giá nhập lớn hơn giá bán!', 'Warning!');
+                notification('warning', 'Vui lòng nhập giá nhập hiển thị lớn hơn giá bán!', 'Warning!');
                 // notification('warning', 'Please enter greater than sale price!', 'Warning!');
             }
         }
@@ -2427,34 +2654,63 @@ $(document).on('change', '.importPriceInput', function () {
             salePrice.val('');
         }
     }
-    var count = 0;
+    var countActualImportPrice = 0;
+    var countDisplayImportPrice = 0;
     $('.variationItem').each(function () {
-        var value = $(this).find('.importPriceInput').val();
-        if (!value) {
-            count++;
+        var actualImportPriceInput = $(this).find('.actualImportPriceInput').val();
+        var displayImportPriceInput = $(this).find('.displayImportPriceInput').val();
+        if (!actualImportPriceInput) {
+            countActualImportPrice++;
+        }
+        if (!displayImportPriceInput) {
+            countDisplayImportPrice++;
         }
     })
-    if (count != 0) {
+    if (countActualImportPrice != 0 && countDisplayImportPrice != 0) {
         $('.notificationQuantityVariations').removeClass('hidden');
-        $('.notificationQuantityVariations').text(count + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
+        $('.notificationQuantityVariations').text(countActualImportPrice + ' biến thể chưa có giá nhập thực tế và ' + countDisplayImportPrice + ' biến thể chưa có giá nhập hiển thị, vui lòng nhập đầy đủ các trường thông tin này.!');
+    } else if (countDisplayImportPrice != 0 && countActualImportPrice == 0) {
+        $('.notificationQuantityVariations').removeClass('hidden');
+        $('.notificationQuantityVariations').text(countDisplayImportPrice + ' biến thể chưa có giá nhập hiển thị, vui lòng nhập đầy đủ các trường thông tin này.!');
+    } else if (countDisplayImportPrice == 0 && countActualImportPrice != 0) {
+        $('.notificationQuantityVariations').removeClass('hidden');
+        $('.notificationQuantityVariations').text(countDisplayImportPrice + ' biến thể chưa có giá nhập thực tế, vui lòng nhập đầy đủ các trường thông tin này.!');
     } else {
         $('.notificationQuantityVariations').addClass('hidden');
     }
 })
+
+$(document).on('click', '.salePriceInput', function () {
+    const displayImportPrice = $(this).closest('.variationItemContent').find('.displayImportPriceInput');
+    if (displayImportPrice.val() == '') {
+        notification('warning', 'Bạn cần nhập giá nhập hiển thị trước!', 'Warning!');
+        displayImportPrice.focus();
+    }
+})
+
 $(document).on('change', '.salePriceInput', function () {
     checkNumberInput($(this));
     if (checkNumberInput($(this))) {
-        const importPrice = $(this).closest('.variationItemContent').find('.importPriceInput').val();
-        if (importPrice) {
-            if (parseFloat(importPrice) <= parseFloat($(this).val())) {
-                $(this).val(importPrice - 1);
-                notification('warning', 'Vui nhập giá bán nhỏ hơn giá nhập!', 'Warning!');
-                // notification('warning', 'Please enter less than import price!', 'Warning!');
+        const actualImportPriceInput = $(this).closest('.variationItemContent').find('.actualImportPriceInput').val();
+        const displayImportPriceInput = $(this).closest('.variationItemContent').find('.displayImportPriceInput').val();
+        if (displayImportPriceInput) {
+            if (parseFloat(displayImportPriceInput) <= parseFloat($(this).val())) {
+                $(this).val(displayImportPriceInput - 1);
+                notification('warning', 'Vui nhập giá bán nhỏ hơn giá nhập hiển thị!', 'Warning!');
+                // notification('warning', 'Please enter less than display import price!', 'Warning!');
             }
         } else {
             $(this).val('');
-            notification('warning', 'Bạn cần nhập giá nhập trước!', 'Warning!');
-            // notification('warning', 'You need enter import price first!', 'Warning!');
+            notification('warning', 'Bạn cần nhập giá nhập hiển thị trước!', 'Warning!');
+            // notification('warning', 'You need enter display import price first!', 'Warning!');
+        }
+        if (actualImportPriceInput) {
+            if (parseFloat(actualImportPriceInput) >= parseFloat($(this).val())) {
+                $(this).val('');
+                $(this).focus();
+                notification('warning', 'Vui nhập giá bán lớn hơn giá nhập thực tế!', 'Warning!');
+                // notification('warning', 'Please enter greater than actual import price!', 'Warning!');
+            }
         }
     }
 })
@@ -2497,8 +2753,27 @@ function addValues(messageInput, classInput, message, forAll) {
                         $(this).val(value);
                     }
                 })
-                if (classInput == '.importPriceInput') {
-                    $('.notificationQuantityVariations').addClass('hidden');
+                if (classInput == '.actualImportPriceInput') {
+                    var check = true;
+                    $('.displayImportPriceInput').each(function () {
+                        if ($(this).val() == '') {
+                            check = false;
+                        }
+                    })
+                    if (check) {
+                        $('.notificationQuantityVariations').addClass('hidden');
+                    }
+                }
+                if (classInput == '.displayImportPriceInput') {
+                    var check = true;
+                    $('.actualImportPriceInput').each(function () {
+                        if ($(this).val() == '') {
+                            check = false;
+                        }
+                    })
+                    if (check) {
+                        $('.notificationQuantityVariations').addClass('hidden');
+                    }
                 }
                 notification('success', message, 'Successfully!');
             }
@@ -2512,31 +2787,39 @@ function addValues(messageInput, classInput, message, forAll) {
 $(document).on('change', '.controlVariationsSelect', function () {
     //Vietnamese version
     if ($(this).val() == 1) {
-        addValues('Nhập "giá nhập" cho tất cả các biến thể chưa có giá nhập', '.importPriceInput', 'Thêm giá nhập cho tất cả các biến thể chưa có giá nhập thành công!', false);
+        addValues('Nhập "giá nhập thực tế" cho tất cả các biến thể chưa có giá nhập thực tế', '.actualImportPriceInput', 'Thêm giá nhập thực tế cho tất cả các biến thể chưa có giá nhập thực tế thành công!', false);
     } else if ($(this).val() == 2) {
-        addValues('Nhập "giá bán" cho tất cả các biến thể chưa có giá bán', '.salePriceInput', 'Thêm giá bán cho tất cả các biến thể chưa có giá bán thành công!', false);
+        addValues('Nhập "giá nhập hiển thị" cho tất cả các biến thể chưa có giá nhập hiển thị', '.displayImportPriceInput', 'Thêm giá nhập hiển thị cho tất cả các biến thể chưa có giá nhập hiển thị thành công!', false);
     } else if ($(this).val() == 3) {
-        addValues('Nhập "số lượng" cho tất cả các biến thể chưa có số lượng', '.stockInput', 'Thêm số lượng cho tất cả các biến thể chưa có số lượng thành công!', false);
+        addValues('Nhập "giá bán" cho tất cả các biến thể chưa có giá bán', '.salePriceInput', 'Thêm giá bán cho tất cả các biến thể chưa có giá bán thành công!', false);
     } else if ($(this).val() == 4) {
-        addValues('Nhập "giá nhập" cho tất cả các biến thể', '.importPriceInput', 'Thêm giá nhập cho tất cả các biến thể thành công!', true);
+        addValues('Nhập "số lượng" cho tất cả các biến thể chưa có số lượng', '.stockInput', 'Thêm số lượng cho tất cả các biến thể chưa có số lượng thành công!', false);
     } else if ($(this).val() == 5) {
-        addValues('Nhập "giá bán" cho tất cả các biến thể', '.salePriceInput', 'Thêm giá bán cho tất cả các biến thể thành công!', true);
+        addValues('Nhập "giá nhập thực tế" cho tất cả các biến thể', '.actualImportPriceInput', 'Thêm giá nhập thực tế cho tất cả các biến thể thành công!', true);
     } else if ($(this).val() == 6) {
+        addValues('Nhập "giá nhập hiển thị" cho tất cả các biến thể', '.displayImportPriceInput', 'Thêm giá nhập hiển thị cho tất cả các biến thể thành công!', true);
+    } else if ($(this).val() == 7) {
+        addValues('Nhập "giá bán" cho tất cả các biến thể', '.salePriceInput', 'Thêm giá bán cho tất cả các biến thể thành công!', true);
+    } else if ($(this).val() == 8) {
         addValues('Nhập "số lượng" cho tất cả các biến thể', '.stockInput', 'Thêm số lượng cho tất cả các biến thể thành công!', true);
     }
     //English version
     // if ($(this).val() == 1) {
-    //     addValues('Enter import prices for all variations that do not have prices yet', '.importPriceInput', 'Add import prices for all variations that do not have prices yet successfully!', false);
+    //     addValues('Import "actual price" for all variants without actual price', '.actualImportPriceInput', 'Added actual price to all variants without actual price successfully!', false);
     // } else if ($(this).val() == 2) {
-    //     addValues('Enter sale prices for all variations that do not have prices yet', '.salePriceInput', 'Add sale prices for all variations that do not have prices yet successfully!', false);
+    //     addValues('Import "display price" for all variants without display price', '.displayImportPriceInput', 'Added display price to all variants without display price successfully!', false);
     // } else if ($(this).val() == 3) {
-    //     addValues('Enter prices for all variations that do not have prices yet', '.stockInput', 'Add stocks for all variations that do not have stocks yet successfully!', false);
+    //     addValues('Import "sale price" for all variants without sale price', '.salePriceInput', 'Added sale price to all variants without sale price successfully!', false);
     // } else if ($(this).val() == 4) {
-    //     addValues('Enter import prices for all variations', '.importPriceInput', 'Add import prices for all variations successfully!', true);
+    //     addValues('Enter "quantity" for all variants without quantity', '.stockInput', 'Added quantity for all variants without quantity successfully!', false);
     // } else if ($(this).val() == 5) {
-    //     addValues('Enter sale prices for all variations', '.salePriceInput', 'Add sale prices for all variations successfully!', true);
+    //     addValues('Enter "actual import price" for all variants', '.actualImportPriceInput', 'Added actual import price for all variants successfully!', true);
     // } else if ($(this).val() == 6) {
-    //     addValues('Enter prices for all variations', '.stockInput', 'Add stocks for all variations that do not have stocks yet successfully!', true);
+    //     addValues('Enter "display import price" for all variants', '.displayImportPriceInput', 'Added display import price for all variants successfully!', true);
+    // } else if ($(this).val() == 7) {
+    //     addValues('Enter "sale price" for all variants', '.salePriceInput', 'Added sale price for all variants successfully!', true);
+    // } else if ($(this).val() == 8) {
+    //     addValues('Enter "quantity" for all variants', '.stockInput', 'Added quantity for all variants successfully!', true);
     // }
 })
 
@@ -2547,8 +2830,13 @@ $(document).on('click', '.checkVariationsStatus', function () {
     var variationsIndex = [];
     var check = true;
     var checkSelectAttribute = false;
-    var checkImportAndSalePrice = true;
-    var importSaleVariationsIndex = [];
+
+    var checkDisplayImportAndSalePrice = true;
+    var displayImportSaleVariationsIndex = [];
+
+    var checkActualImportAndSalePrice = true;
+    var actualImportSaleVariationsIndex = [];
+
     $('.container-spinner').removeClass('hidden');
     try {
         $('.variationItem').each(function () {
@@ -2566,10 +2854,18 @@ $(document).on('click', '.checkVariationsStatus', function () {
             }
             var index = $(this).find('strong').text();
             var imageInput = $(this).find('.variationImageInput').val();
-            var importPriceInput = $(this).find('.importPriceInput').val();
+            var actualImportPriceInput = $(this).find('.actualImportPriceInput').val();
+            var displayImportPriceInput = $(this).find('.displayImportPriceInput').val();
             var salePriceInput = $(this).find('.salePriceInput').val();
-            if (!Number(importPriceInput) && importPriceInput != '') {
-                notification('error', 'Giá nhập của biến thể ' + index + ' phải là số!');
+            var stockInput = $(this).find('.stockInput').val();
+
+            if (!Number(actualImportPriceInput) && actualImportPriceInput != '') {
+                notification('error', 'Giá nhập thực tế của biến thể ' + index + ' phải là số!');
+                check = false;
+                return false;
+            }
+            if (!Number(displayImportPriceInput) && displayImportPriceInput != '') {
+                notification('error', 'Giá nhập hiển thị của biến thể ' + index + ' phải là số!');
                 check = false;
                 return false;
             }
@@ -2578,13 +2874,16 @@ $(document).on('click', '.checkVariationsStatus', function () {
                 check = false;
                 return false;
             }
-            if (salePriceInput != '' && Number(salePriceInput) > Number(importPriceInput)) {
-                checkImportAndSalePrice = false;
-                importSaleVariationsIndex.push(index);
+            if (salePriceInput != '' && parseFloat(salePriceInput) >= parseFloat(displayImportPriceInput)) {
+                checkDisplayImportAndSalePrice = false;
+                displayImportSaleVariationsIndex.push(index);
             }
-            var stockInput = $(this).find('.stockInput').val();
+            if (salePriceInput != '' && parseFloat(salePriceInput) <= parseFloat(actualImportPriceInput)) {
+                checkActualImportAndSalePrice = false;
+                actualImportSaleVariationsIndex.push(index);
+            }
 
-            if (!imageInput || !importPriceInput || !stockInput) {
+            if (!imageInput || !displayImportPriceInput || !stockInput || !actualImportPriceInput) {
                 check = false;
                 variationsIndex.push(index);
             }
@@ -2597,13 +2896,15 @@ $(document).on('click', '.checkVariationsStatus', function () {
             saveVariationsStatus = false;
             notification('warning', 'Biến thể ' + variationsIndex.join(', ') + ' không được để trống thông tin!', 'Warning!');
             // notification('warning', 'Variations ' + variationsIndex.join(', ') + ' cannot be left blank!', 'Warning!');
-        } else if (!checkImportAndSalePrice) {
-            notification('error', 'Giá nhập của biến thể ' + importSaleVariationsIndex.join(', ') + ' phải lớn hơn giá bán!');
+        } else if (!checkDisplayImportAndSalePrice) {
+            notification('error', 'Giá nhập hiển thị của biến thể ' + displayImportSaleVariationsIndex.join(', ') + ' phải lớn hơn giá bán!');
+        } else if (!checkActualImportAndSalePrice) {
+            notification('error', 'Giá nhập thực tế của biến thể ' + actualImportSaleVariationsIndex.join(', ') + ' phải nhỏ hơn giá bán!');
         }
-        if (check && checkImportAndSalePrice) {
+        if (check && checkDisplayImportAndSalePrice && checkActualImportAndSalePrice) {
             saveVariations.removeClass('disabledButton');
             saveVariationsStatus = true;
-        }else{
+        } else {
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
         }
@@ -2657,8 +2958,11 @@ $(document).on('click', '.saveVariations', function () {
                 sku = sku.val() ? sku.val() : '';
                 variationData.sku = sku;
 
-                const importPrice = $(this).find('.importPriceInput');
-                variationData.import_price = importPrice.val();
+                const actualImportPrice = $(this).find('.actualImportPriceInput');
+                variationData.actual_import_price = actualImportPrice.val();
+
+                const displayImportPrice = $(this).find('.displayImportPriceInput');
+                variationData.display_import_price = displayImportPrice.val();
 
                 const salePrice = $(this).find('.salePriceInput');
                 variationData.sale_price = salePrice.val();
@@ -2669,11 +2973,11 @@ $(document).on('click', '.saveVariations', function () {
                 const active = $(this).find('.activeSelect');
                 variationData.active = active.val();
 
-                console.log(importPrice.val());
+                console.log(displayImportPrice.val());
                 console.log(salePrice.val());
 
-                if (parseFloat(importPrice.val()) < parseFloat(salePrice.val())) {
-                    notification('warning', 'Sale price need less than import price!', 'Variation ' + index + '!');
+                if (parseFloat(displayImportPrice.val()) < parseFloat(salePrice.val())) {
+                    notification('warning', 'Sale price need less than display import price!', 'Variation ' + index + '!');
                     return false;
                 }
                 variationDataHasBeenSaved.push(variationData);
@@ -2700,6 +3004,9 @@ function createNewProduct(productDatas) {
         formData.append('baseInformation[name]', productDatas.baseInformation.name);
         formData.append('baseInformation[description]', productDatas.baseInformation.description);
         formData.append('baseInformation[status]', productDatas.baseInformation.status);
+        
+        //Thêm thương hiệu
+        formData.append('brandId', productDatas.brandId);
 
         // Thêm main image
         formData.append('mainImage', productDatas.image);
@@ -2723,7 +3030,8 @@ function createNewProduct(productDatas) {
         productDatas.variations.forEach((variation, index) => {
             // Thêm các thuộc tính khác của biến thể
             formData.append(`variations[${index}][active]`, variation.active);
-            formData.append(`variations[${index}][import_price]`, variation.import_price);
+            formData.append(`variations[${index}][actual_import_price]`, variation.actual_import_price);
+            formData.append(`variations[${index}][display_import_price]`, variation.display_import_price);
             formData.append(`variations[${index}][name]`, variation.name);
             formData.append(`variations[${index}][sale_price]`, variation.sale_price);
             formData.append(`variations[${index}][sku]`, variation.sku);
@@ -2853,6 +3161,7 @@ $(document).on('click', '#publishBtn', async function () {
         images: [], // Để rỗng vì đây là mảng
         videos: [], // Để rỗng vì đây là mảng
         categoriesId: [], // Để rỗng vì đây là mảng
+        brandId: '', // Để rỗng vì đây là mảng
         variations: [] // Để rỗng vì đây là mảng
     };
     var checkDatas = true;
@@ -2889,6 +3198,12 @@ $(document).on('click', '#publishBtn', async function () {
         if ($(this).prop("checked")) {
             var getCategoryId = $(this).attr('id');
             productDatas.categoriesId.push(getCategoryId);
+        }
+    });
+    $('.brandItem').each(function () {
+        if ($(this).prop("checked")) {
+            var getBrandId = $(this).attr('id');
+            productDatas.brandId = getBrandId;
         }
     });
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('file_name')->comment('Tên file');
             $table->string('file_type')->comment('Loại tệp là gì(image/video)');
-            $table->foreignIdFor(Product::class)->constrained()->comment('Xác định file này thuộc về sản phẩm nào');
+            $table->foreignIdFor(Product::class)->comment('Xác định file này thuộc về sản phẩm nào')->constrained();
             $table->boolean('is_default')->comment('Tệp mặc định để đại diện sản phẩm')->default(0);
             $table->timestamps();
         });

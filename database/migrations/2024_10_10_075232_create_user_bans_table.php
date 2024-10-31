@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('user_bans', function (Blueprint $table) {
             $table->id();
             $table->string('reason')->comment('Lý do thay đổi trạng thái');
-            $table->foreignIdFor(User::class)->constrained()->comment('Xác định người dùng nào được thay đổi trạng thái')->onDelete('cascade');
+            $table->foreignIdFor(User::class)->comment('Xác định người dùng nào được thay đổi trạng thái')->constrained()->onDelete('cascade');
             $table->boolean('status')->comment('Loại trạng thái, có 2 loại là active và inactive');
             $table->tinyInteger(column: 'is_active')->default(1)->comment('Trạng thái hiệu lực, mặc định là 1 (có hiệu lực, 0 là không có hiệu lực)');
             $table->timestamps();

@@ -22,9 +22,9 @@ return new class extends Migration
             ->comment('Trạng thái đã đánh giá chưa, mặc định là chưa, khi nào người dùng đánh giá thì chuyển thành true, nếu là true thì không cho đánh giá thêm nữa, mỗi sản phẩm trong một đơn hàng chỉ được đánh giá một lần');
             $table->boolean('edit')->default(false)
             ->comment('Trạng thái chỉnh sửa đánh giá, mặc định là chưa, khi nào người dùng sửa đánh giá thì chuyển thành true , nếu là true thì không cho sửa nữa');
-            $table->foreignIdFor(Product_variant::class)->constrained()->comment('Xác định người dùng đang đánh giá biến thể nào');
-            $table->foreignIdFor(Order_detail::class)->constrained()->comment('Xác định đơn hàng chi tiết nào đang được đánh giá');
-            $table->foreignIdFor(User::class)->constrained()->comment('Xác định người dùng nào đang đánh giá');
+            $table->foreignIdFor(Product_variant::class)->comment('Xác định người dùng đang đánh giá biến thể nào')->constrained();
+            $table->foreignIdFor(Order_detail::class)->comment('Xác định đơn hàng chi tiết nào đang được đánh giá')->constrained();
+            $table->foreignIdFor(User::class)->comment('Xác định người dùng nào đang đánh giá')->constrained();
             $table->timestamps();
         });
     }

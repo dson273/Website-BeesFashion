@@ -111,7 +111,7 @@
     </li>
 
     {{-- Kiểm tra nếu là admin --}}
-    @if (Auth::user()->role === 'admin')
+   
         {{-- Quản lý manager setting --}}
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManagers"
@@ -144,7 +144,7 @@
                 </div>
             </div>
         </li>
-    @endif
+    
 
     {{-- Quản lý khách hàng --}}
     <li class="nav-item">

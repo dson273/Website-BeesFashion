@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_likes', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->comment('Thuộc người dùng nào (người dùng nào like)')->constrained();
-            $table->foreignIdFor(Product::class)->comment('Xác định sản phẩm được like')->constrained();
+            $table->string('name')->comment('Tên thương hiệu');
+            $table->string('image')->nullable()->comment('Ảnh thương hiệu');
+            $table->tinyInteger('is_active')->default(1)->comment('Trạng thái hoạt động thương hiệu, (mặc định là 1)');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_likes');
+        Schema::dropIfExists('brands');
     }
 };
