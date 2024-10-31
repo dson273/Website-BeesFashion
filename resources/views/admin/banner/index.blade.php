@@ -28,7 +28,7 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Banner trang web</h6>
-                <a href="{{ route('admin.banner.create') }}" class="btn btn-success text-white text-decoration-none"><i
+                <a href="{{ route('admin.banner.create') }}" class="btn btn-primary text-white text-decoration-none"><i
                         class="fas fa-plus"></i> Thêm mới banner</a>
             </div>
             <div class="card-body">
@@ -37,7 +37,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên Banner</th>                              
+                                <th>Tên Banner</th>
                                 <th>Hình ảnh</th>
                                 <th>Trạng thái</th>
                                 <th>Actions</th>
@@ -46,7 +46,7 @@
                         <tfoot>
                             <tr>
                                 <th>#</th>
-                                <th>Tên Banner</th>                              
+                                <th>Tên Banner</th>
                                 <th>Hình ảnh</th>
                                 <th>Trạng thái</th>
                                 <th>Actions</th>
@@ -58,28 +58,31 @@
                                     <td>{{ $banner->id }}</td>
                                     <td>{{ $banner->name }}</td>
                                     <td>
-                                       
-                                            @foreach ($banner->banner_images as $banner_image)
-                                                <img src="{{ asset('storage/uploads/banners/images/id_' . $banner->id . '/' . $banner_image->file_name) }}"
-                                                    alt="Banner Image" style="max-width: 100px;">
-                                            @endforeach
-                                      
+
+                                        @foreach ($banner->banner_images as $banner_image)
+                                            <img src="{{ asset('storage/uploads/banners/images/id_' . $banner->id . '/' . $banner_image->file_name) }}"
+                                                alt="Banner Image" style="max-width: 100px;">
+                                        @endforeach
+
                                     </td>
                                     <td>{{ $banner->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
-                                        @if($banner->is_active == 1)
-                                        <a href="{{ route('admin.banner.offactive', $banner->id) }}" class="btn btn-danger"><i class="fa fa-eye-slash"></i></a>
-                                    @else
-                                        <a href="{{ route('admin.banner.onactive', $banner->id) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
-                                    @endif
-                                        <a href="{{ route('admin.banner.edit', $banner->id) }}"
-                                            class="btn btn-warning"><i class="fa fa-wrench"></i></a>
+                                        @if ($banner->is_active == 1)
+                                            <a href="{{ route('admin.banner.offactive', $banner->id) }}"
+                                                class="btn btn-danger"><i class="fa fa-eye-slash"></i></a>
+                                        @else
+                                            <a href="{{ route('admin.banner.onactive', $banner->id) }}"
+                                                class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                        @endif
+                                        <a href="{{ route('admin.banner.edit', $banner->id) }}" class="btn btn-warning"><i
+                                                class="fa fa-wrench"></i></a>
                                         <form action="{{ route('admin.banner.destroy', $banner->id) }}" method="POST"
-                                            style="display: inline;">
+                                            style="display: inline;"
+                                            onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></button>
+                                            <button type="submit" class="btn btn-danger"><i
+                                                    class="fa fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>
