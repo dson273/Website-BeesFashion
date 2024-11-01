@@ -50,10 +50,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
     })->name('dashboard');
     // Các chức năng staff có thể quản lý
 
-
-    Route::resource('vouchers', VoucherController::class);
-
-
     //=======================================================Quản lý sản phẩm============================================================
     // Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {
     Route::resource('products', ProductController::class);
