@@ -8,6 +8,7 @@ Tạo mới sản phẩm
 <link rel="stylesheet" href="{{asset('css/admin/product/create.css')}}">
 @endsection
 
+
 @section('script-libs')
 <script src="{{asset('js/admin/product/create.js')}}"></script>
 @endsection
@@ -42,7 +43,7 @@ Tạo mới sản phẩm
                         </div>
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Description</label>
-                            <textarea name="description" id="" cols="40" rows="4" class="form-control descriptionProduct" placeholder="Enter description for product"></textarea>
+                            <textarea name="description" id="descriptionProduct" cols="40" rows="4" class="form-control descriptionProduct" placeholder="Enter description for product"></textarea>
                         </div>
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Status</label>
@@ -210,21 +211,21 @@ Tạo mới sản phẩm
                             <div class="d-flex flex-column align-items-end w-25">
                                 <select name="" id="" class="form-control controlVariationsSelect bg-primary btn-sm text-white hidden">
                                     <option value="">Control</option>
-                                    <option value="1" class="addActualImportPriceForVariationsNoHaveValue">Nhập "giá nhập thực tế" cho tất cả các biến thể chưa có giá nhập thực tế</option>
-                                    <option value="2" class="addDisplayImportPriceForVariationsNoHaveValue">Nhập "giá nhập hiển thị" cho tất cả các biến thể chưa có giá nhập hiển thị</option>
-                                    <option value="3" class="addSalePriceForVariationsNoHaveValue">Nhập "giá bán" cho tất cả các biến thể chưa có giá bán</option>
+                                    <option value="1" class="addImportPriceForVariationsNoHaveValue">Nhập "giá nhập" cho tất cả các biến thể chưa có giá nhập</option>
+                                    <option value="2" class="addRegularPriceForVariationsNoHaveValue">Nhập "giá bán thông thường" cho tất cả các biến thể chưa có giá bán thông thường</option>
+                                    <option value="3" class="addSalePriceForVariationsNoHaveValue">Nhập "giá bán đã giảm" cho tất cả các biến thể chưa có giá bán đã giảm</option>
                                     <option value="4" class="addStockForVariationsNoHaveValue">Nhập "số lượng" cho tất cả các biến thể chưa có số lượng</option>
-                                    <option value="5" class="addActualImportPriceAllForVariations">Nhập "giá nhập thực tế" cho tất cả các biến thể</option>
-                                    <option value="6" class="addDisplayImportPriceAllForVariations">Nhập "giá nhập hiển thị" cho tất cả các biến thể</option>
-                                    <option value="7" class="addSalePriceForAllVariations">Nhập "giá bán" cho tất cả các biến thể</option>
+                                    <option value="5" class="addImportPriceAllForVariations">Nhập "giá nhập" cho tất cả các biến thể</option>
+                                    <option value="6" class="addRegularPriceAllForVariations">Nhập "giá bán thông thường" cho tất cả các biến thể</option>
+                                    <option value="7" class="addSalePriceForAllVariations">Nhập "giá bán đã giảm" cho tất cả các biến thể</option>
                                     <option value="8" class="addStockForAllVariations">Nhập "số lượng" cho tất cả các biến thể</option>
                                     <!-- English version -->
-                                    <!-- <option value="1" class="addActualImportPriceForVariationsNoHaveValue">Enter "actual import price" for all variants that do not have an actual import price</option>
-                                    <option value="2" class="addDisplayImportPriceForVariationsNoHaveValue">Enter "display import price" for all variants that do not have an import price</option>
+                                    <!-- <option value="1" class="addImportPriceForVariationsNoHaveValue">Enter "import price" for all variants that do not have an  import price</option>
+                                    <option value="2" class="addRegularPriceForVariationsNoHaveValue">Enter "regular price" for all variants that do not have an regular price</option>
                                     <option value="3" class="addSalePriceForVariationsNoHaveValue">Enter "sale price" for all variants that do not have a sale price</option>
                                     <option value="4" class="addStockForVariationsNoHaveValue">Enter "quantity" for all variants that do not have a quantity</option>
-                                    <option value="5" class="addActualImportPriceAllForVariations">Enter "actual import price" for all variants</option>
-                                    <option value="6" class="addDisplayImportPriceAllForVariations">Enter "display import price" for all variants</option>
+                                    <option value="5" class="addImportPriceAllForVariations">Enter "import price" for all variants</option>
+                                    <option value="6" class="addRegularPriceAllForVariations">Enter "regular price" for all variants</option>
                                     <option value="7" class="addSalePriceForAllVariations">Enter "sale price" for all variants</option>
                                     <option value="8" class="addStockForAllVariations">Enter "quantity" for all variants</option> -->
                                 </select>
@@ -275,13 +276,13 @@ Tạo mới sản phẩm
                                     </div>
                                     <div class="mt-3">
                                         <div class="d-flex flex-column mt-3">
-                                            <label for="" class="badge text-left d-flex flex-row">Actual import price <p class="text-danger ml-1 mb-0">(*)</p></label>
-                                            <input type="number" class="form-control actualImportPriceInput" placeholder="Enter variation's actual import price...">
+                                            <label for="" class="badge text-left d-flex flex-row">Import price <p class="text-danger ml-1 mb-0">(*)</p></label>
+                                            <input type="number" class="form-control importPriceInput" placeholder="Enter variation's  import price...">
                                         </div>
                                         <div class="d-flex flex-row justify-content-between mt-3">
                                             <div class="d-flex flex-column w-50 mr-4">
-                                                <label for="" class="badge text-left">Display import price (đ)</label>
-                                                <input type="number" class="form-control displayImportPriceInput" placeholder="Enter variation's display import price...">
+                                                <label for="" class="badge text-left">Regular price (đ)</label>
+                                                <input type="number" class="form-control regularPriceInput" placeholder="Enter variation's regular price...">
                                             </div>
                                             <div class="d-flex flex-column w-50">
                                                 <label for="" class="badge text-left">Sale price (đ)</label>

@@ -128,15 +128,20 @@
         };
         //Route variable
 
-        var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
-        var getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
-        var getAllBrandsRoute = "{{route('admin.getAllBrands')}}";
-        var createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
-        var createNewBrandRoute = "{{route('admin.createNewBrand')}}";
-        var storeProductRoute = "{{route('admin.products.store')}}";
-        var getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
-        var getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
+        const getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
 
+        const getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
+        const createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
+        const checkCategoryByIdRoute = "{{route('admin.checkCategoryById')}}";
+
+        const getAllBrandsRoute = "{{route('admin.getAllBrands')}}";
+        const createNewBrandRoute = "{{route('admin.createNewBrand')}}";
+        const checkBrandByIdRoute = "{{route('admin.checkBrandById')}}";
+
+        const getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
+        const getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
+
+        const storeProductRoute = "{{route('admin.products.store')}}";
 
         function returnGetAllAttributeValuesByIdRoute(id) {
             return "{{ route('admin.getAllAttributeValuesById', ':id') }}".replace(':id', id);
@@ -146,7 +151,7 @@
             return "{{ route('admin.addNewAttributeValueById', ':id') }}".replace(':id', id);
         }
 
-        var csrf = "{{ csrf_token() }}";
+        const csrf = "{{ csrf_token() }}";
         //Thông báo cố định
     </script>
 
@@ -161,6 +166,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.js"></script>
 
+    <!-- Tinymce -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.0.0/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#descriptionProduct',
+            plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            automatic_uploads: true,
+        });
+    </script>
 
     <!-- Link libs -->
     @yield('script-libs')
@@ -168,7 +182,6 @@
     <!-- Short notification commands -->
 
     <script>
-
         @if(session('statusSuccess'))
         var message = @json(session('statusSuccess'));
         notification('success', message, 'Successfully');

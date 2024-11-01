@@ -134,8 +134,8 @@ class ProductController extends Controller
                     $skuVariation = $request->input("variations.$index.sku");
                     $nameVariation = $request->input("variations.$index.name");
                     $skuVariation = $skuVariation != '' ? $skuVariation : $newProduct->SKU . '-' . $nameVariation;
-                    $actualImportPriceVariation = $request->input("variations.$index.actual_import_price");
-                    $displayImportPriceVariation = $request->input("variations.$index.display_import_price");
+                    $importPriceVariation = $request->input("variations.$index.import_price");
+                    $regularPriceVariation = $request->input("variations.$index.regular_price");
                     $salePriceVariation = $request->input("variations.$index.sale_price");
                     $stockVariation = $request->input("variations.$index.stock");
                     $activeVariation = $request->input("variations.$index.active") ? 1 : 0;
@@ -153,7 +153,7 @@ class ProductController extends Controller
                         'SKU' => $skuVariation,
                         'name' => $nameVariation,
                         'image' => $imageNameHashed,
-                        'display_import_price' => $displayImportPriceVariation,
+                        'regular_price' => $regularPriceVariation,
                         'sale_price' => $salePriceVariation,
                         'stock' => $stockVariation,
                         'product_id' => $newProduct->id,
@@ -163,7 +163,7 @@ class ProductController extends Controller
                     // Thêm vào bảng Import_history
                     Import_history::create([
                         'quantity' => $stockVariation,
-                        'actual_import_price' => $actualImportPriceVariation,
+                        'import_price' => $importPriceVariation,
                         'product_variant_id' => $newProductVariation->id
                     ]);
 
@@ -172,10 +172,13 @@ class ProductController extends Controller
                     foreach ($variationAttributeData as $attributeItem) {
                         if (!empty($attributeItem['attributeId'])) {
                             if (!empty($attributeItem['attributeValueId'])) {
-                                Product_variant_attribute_value::create([
-                                    'product_variant_id' => $newProductVariation->id,
-                                    'attribute_value_id' => $attributeItem['attributeValueId']
-                                ]);
+                                $checkAttributeValueId = Attribute_value::find($attributeItem['attributeValueId']);
+                                if ($checkAttributeValueId) {
+                                    Product_variant_attribute_value::create([
+                                        'product_variant_id' => $newProductVariation->id,
+                                        'attribute_value_id' => $attributeItem['attributeValueId']
+                                    ]);
+                                }
                             }
                         } else {
                             if ($attributeItem['attributeValue'] && $attributeItem['attributeValue'] != '') {
@@ -316,6 +319,25 @@ class ProductController extends Controller
         // Trả về JSON response
         return response()->json($response);
     }
+    public function checkCategoryById()
+    {
+        $category_id = request()->input('category_id');
+        if ($category_id) {
+            $result = Category::find($category_id);
+            if ($result) {
+                $response = [
+                    'status' => 200,
+                    'message' => 'This category is not exists!',
+                ];
+            } else {
+                $response = [
+                    'status' => 400,
+                    'message' => 'Something went wrong!',
+                ];
+            }
+            return response()->json($response);
+        }
+    }
     public function getAllBrands()
     {
         $all_brands = Brand::where('is_active', 1)->get();
@@ -369,6 +391,25 @@ class ProductController extends Controller
             }
         }
         return response()->json($response);
+    }
+    public function checkBrandById()
+    {
+        $brand_id = request()->input('brand_id');
+        if ($brand_id) {
+            $result = Brand::find($brand_id);
+            if ($result) {
+                $response = [
+                    'status' => 200,
+                    'message' => 'This brand is not exists!',
+                ];
+            } else {
+                $response = [
+                    'status' => 400,
+                    'message' => 'Something went wrong!',
+                ];
+            }
+            return response()->json($response);
+        }
     }
     public function getSkuProduct()
     {
