@@ -27,6 +27,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/swiper-slider/swiper-bundle.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/toastify.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <script defer src="{{ asset('assets/css/landing_page.js') }}"></script>
     <script defer src="{{ asset('assets/css/style.js') }}"></script>
     <link href="{{ asset('assets/css/landing_page.css') }}" rel="stylesheet">
@@ -40,6 +41,13 @@
 </head>
 
 <body>
+    <div class="tap-top">
+        <div><i class="fa-solid fa-angle-up"></i></div>
+    </div>
+    {{-- <span class="cursor"><span class="cursor-move-inner"><span class="cursor-inner"></span></span><span
+            class="cursor-move-outer"><span class="cursor-outer"></span></span>
+    </span> --}}
+
     <!-- Header -->
     @include('user.layouts.header')
     <!-- End header -->

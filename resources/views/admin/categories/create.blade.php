@@ -33,7 +33,7 @@
                     <label for="" class="form-label">Phân loại</label>
                     <select name="fixed" class="form-control">
                         <option value="1" selected>Danh mục thường</option>
-                        <option value="0">Danh mục sản phẩm bán chạy</option>
+                        <option value="0">Danh mục tùy chỉnh</option>
                     </select>
                 </div>
                 <div class="mt-3 mb-3">

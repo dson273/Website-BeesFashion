@@ -102,11 +102,6 @@ class CollectionController extends Controller
 
     public function filterProducts(Request $request)
     {
-
-        //lọc theo tên của sản phẩm
-
-
-
         // Lấy danh sách các danh mục được chọn từ request
         $categoryIds = $request->input('categories');
 

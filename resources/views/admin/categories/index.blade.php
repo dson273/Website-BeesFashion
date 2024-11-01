@@ -28,10 +28,10 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Danh sách danh mục</h6>
-                <a href="{{ route('admin.categories.create') }}" class="btn btn-success text-white text-decoration-none"><i
+                <a href="{{ route('admin.categories.create') }}" class="btn btn-primary text-white text-decoration-none"><i
                         class="fas fa-plus"></i> Thêm mới danh mục</a>
             </div>
-           
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
@@ -62,16 +62,18 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $cate->name }}</td>
-                                    <td><img src="{{ asset('storage/uploads/categories/images/' . $cate->image) }}" width="150px" alt=""></td>
+                                    <td><img src="{{ asset('storage/uploads/categories/images/' . $cate->image) }}"
+                                            width="150px" alt=""></td>
                                     <td>{{ $cate->description }}</td>
-                                    <td>{{ $cate->fixed == 1 ? 'Danh mục thường' : 'Sản phẩm bán chạy' }}</td>
+                                    <td>{{ $cate->fixed == 1 ? 'Danh mục thường' : 'Danh mục tùy chỉnh' }}</td>
                                     <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
                                         @if ($cate->fixed == 1)
                                             <a href="{{ route('admin.categories.show', $cate->id) }}"
                                                 class="btn btn-success"><i class="fa fa-eye"></i></a>
                                         @else
-                                            <a href="{{ route('admin.categories.product', $cate->id) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                            <a href="{{ route('admin.categories.product', $cate->id) }}"
+                                                class="btn btn-success"><i class="fa fa-eye"></i></a>
                                         @endif
                                         <a href="{{ route('admin.categories.edit', $cate->id) }}"
                                             class="btn btn-warning"><i class="fa fa-wrench"></i></a>
@@ -79,7 +81,8 @@
                                             method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" ><i class="fa fa-trash"></i></button>
+                                            <button type="submit" class="btn btn-danger"><i
+                                                    class="fa fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>
