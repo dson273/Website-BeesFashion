@@ -12,9 +12,7 @@
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('theme/admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('theme/admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
@@ -26,7 +24,6 @@
     <!-- Slimselect -->
     <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
     </link>
-
 
     @yield('style-libs')
 
@@ -130,30 +127,31 @@
             });
         };
         //Route variable
-        var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
 
-        var getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
-        var createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
-        var checkCategoryByIdRoute = "{{route('admin.checkCategoryById')}}";
+        const getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
 
-        var getAllBrandsRoute = "{{route('admin.getAllBrands')}}";
-        var createNewBrandRoute = "{{route('admin.createNewBrand')}}";
-        var checkBrandByIdRoute = "{{route('admin.checkBrandById')}}";
+        const getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
+        const createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
+        const checkCategoryByIdRoute = "{{route('admin.checkCategoryById')}}";
 
-        var getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
-        var getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
+        const getAllBrandsRoute = "{{route('admin.getAllBrands')}}";
+        const createNewBrandRoute = "{{route('admin.createNewBrand')}}";
+        const checkBrandByIdRoute = "{{route('admin.checkBrandById')}}";
 
-        var storeProductRoute = "{{route('admin.products.store')}}";
+        const getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
+        const getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
+
+        const storeProductRoute = "{{route('admin.products.store')}}";
 
         function returnGetAllAttributeValuesByIdRoute(id) {
-            return "{{route('admin.getAllAttributeValuesById',':id')}}".replace(':id', id);
+            return "{{ route('admin.getAllAttributeValuesById', ':id') }}".replace(':id', id);
         }
 
         function returnAddNewAttributeValueByIdRoute(id) {
-            return "{{route('admin.addNewAttributeValueById',':id')}}".replace(':id', id);
+            return "{{ route('admin.addNewAttributeValueById', ':id') }}".replace(':id', id);
         }
 
-        var csrf = "{{ csrf_token() }}";
+        const csrf = "{{ csrf_token() }}";
         //Thông báo cố định
     </script>
 
@@ -193,6 +191,7 @@
         @elseif(session('statusWarning'))
         var message = @json(session('statusWarning'));
         notification('warning', message, 'warning');
+
         @endif
     </script>
 </body>

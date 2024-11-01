@@ -32,25 +32,37 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $params = $request->except('_token');
-            $Ban = Banner::query()->create($params);
-            $banID = $Ban->id;
+        $request->validate([
+            'file_name.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // Thêm các điều kiện hợp lệ hóa khác nếu cần
+        ]);
 
-            //sử lí thêm album
-            if ($request->hasFile('file_name')) {
-                foreach ($request->file('file_name') as $image) {
-                    if ($image) {
-                        $path = $image->store('uploads/imageBanner/id_' . $banID, 'public');
-                        $Ban->banner_images()->create([
-                            'ban_id' => $banID,
-                            'file_name' => $path,
-                        ]);
+        try {
+            if ($request->isMethod('POST')) {
+                $params = $request->except('_token');
+                $params['is_active'] = $request->has('is_active') ? 1 : 0;
+
+                $Ban = Banner::create($params);
+                $banID = $Ban->id;
+
+                // Xử lý thêm album
+                if ($request->hasFile('file_name')) {
+                    foreach ($request->file('file_name') as $image) {
+                        if ($image) {
+                            $imageName = $image->getClientOriginalName();
+                            $image->storeAs('uploads/banners/images/id_' . $banID, $imageName, 'public');
+                            $Ban->banner_images()->create([
+                                'ban_id' => $banID,
+                                'file_name' => $imageName,
+                            ]);
+                        }
                     }
                 }
-            }
 
-            return redirect()->route('admin.banner.index')->with('statusSuccess', 'Thêm thành công');
+                return redirect()->route('admin.banner.index')->with('statusSuccess', 'Thêm thành công');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('statusError', 'Đã xảy ra lỗi khi thêm banner');
         }
     }
 
@@ -71,71 +83,68 @@ class BannerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         if ($request->isMethod('PUT')) {
-
             $params = $request->except('_token', '_method');
 
-            $Ban = Banner::query()->findOrFail($id);
-
-            // if ($request->hasFile('file_name')) {
+            $Ban = Banner::findOrFail($id);
 
             // Lấy các ID của ảnh hiện tại từ DB
             $currentImages = $Ban->banner_images->pluck('id')->toArray();
-            // dd($currentImages);
             $arrayCombine = array_combine($currentImages, $currentImages);
 
-            // Trường hợp xóa ảnh - duyệt lại toàn bộ các ảnh hiện tại để kiểm tra
+            // Xử lý xóa ảnh nếu ảnh không còn trong yêu cầu
             foreach ($arrayCombine as $key => $value) {
-                // dd($value);
-                // die;
-                // Kiểm tra xem ảnh có trong request không, nếu không có tức là đã bị xóa
                 if (!array_key_exists($key, $request->file_name)) {
-                    $banner_images = Banner_image::query()->find($key);
+                    $banner_image = Banner_image::find($key);
 
-                    // Nếu ảnh tồn tại thì xóa cả file và record trong DB
-                    if ($banner_images && Storage::disk('public')->exists($banner_images->file_name)) {
-                        Storage::disk('public')->delete($banner_images->file_name);
-                        $banner_images->delete();
+                    // Nếu ảnh tồn tại, xóa file và bản ghi trong DB
+                    if ($banner_image && Storage::disk('public')->exists('uploads/banners/images/id_' . $id . '/' . $banner_image->file_name)) {
+                        Storage::disk('public')->delete('uploads/banners/images/id_' . $id . '/' . $banner_image->file_name);
+                        $banner_image->delete();
                     }
                 }
             }
 
-            // Xử lý các ảnh mới hoặc cập nhật
+            // Xử lý ảnh mới hoặc cập nhật ảnh hiện có
             foreach ($request->file_name as $key => $image) {
                 if (!array_key_exists($key, $arrayCombine)) {
-                    // Ảnh mới
+                    // Thêm ảnh mới
                     if ($request->hasFile("file_name.$key")) {
-                        $path = $image->store('uploads/imageBanner/id_' . $id, 'public');
+                        $imageName = $image->getClientOriginalName();
+                        $image->storeAs('uploads/banners/images/id_' . $id, $imageName, 'public');
                         $Ban->banner_images()->create([
                             'ban_id' => $id,
-                            'file_name' => $path,
+                            'file_name' => $imageName,
                         ]);
                     }
-                } else if (is_file($image) && $request->hasFile("file_name.$key")) {
+                } elseif (is_file($image) && $request->hasFile("file_name.$key")) {
                     // Cập nhật ảnh hiện có
-                    $banner_images = Banner_image::query()->find($key);
+                    $banner_image = Banner_image::find($key);
 
-                    // Nếu ảnh đã có và tồn tại trong storage, thì xóa file cũ
-                    if ($banner_images && Storage::disk('public')->exists($banner_images->file_name)) {
-                        Storage::disk('public')->delete($banner_images->file_name);
+                    // Xóa ảnh cũ nếu tồn tại
+                    if ($banner_image && Storage::disk('public')->exists('uploads/banners/images/id_' . $id . '/' . $banner_image->file_name)) {
+                        Storage::disk('public')->delete('uploads/banners/images/id_' . $id . '/' . $banner_image->file_name);
                     }
-                    // Lưu file ảnh mới
-                    $path = $image->store('uploads/imageBanner/id_' . $id, 'public');
-                    $banner_images->update([
-                        'file_name' => $path,
+
+                    // Lưu ảnh mới với tên gốc
+                    $imageName = $image->getClientOriginalName();
+                    $image->storeAs('uploads/banners/images/id_' . $id, $imageName, 'public');
+                    $banner_image->update([
+                        'file_name' => $imageName,
                     ]);
                 }
             }
-            // }
 
             // Cập nhật các thông tin khác của banner
+            $params['is_active'] = $request->has('is_active') ? 1 : 0;
             $Ban->update($params);
 
             return redirect()->route('admin.banner.index')->with('statusSuccess', 'Cập nhật thành công!');
         }
     }
+
 
 
     /**
@@ -150,7 +159,7 @@ class BannerController extends Controller
         $Ban->banner_images()->delete();
 
         // Xóa thư mục chứa hình ảnh sản phẩm nếu tồn tại
-        $path = 'uploads/imageBanner/id_' . $id;
+        $path = 'uploads/banners/images/id_' . $id;
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->deleteDirectory($path);
         }
@@ -183,7 +192,7 @@ class BannerController extends Controller
 
         // Nếu chỉ còn một banner đang bật và nó là banner cần tắt
         if ($activeBanner <= 1) {
-            return redirect()->route('admin.banner.index')->with('statusError','Phải có ít nhất một banner đang bật');
+            return redirect()->route('admin.banner.index')->with('statusError', 'Phải có ít nhất một banner đang bật');
         }
         // Tắt banner được chọn
         $banner = Banner::find($id);

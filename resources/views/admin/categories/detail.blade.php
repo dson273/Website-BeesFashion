@@ -61,7 +61,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $cate->name }}</td>
-                                    <td><img src="{{ asset('storage/uploads/imgcate/' . $cate->image) }}" width="150px" alt=""></td>
+                                    <td><img src="{{ asset('storage/uploads/categories/images/' . $cate->image) }}" width="150px" alt=""></td>
                                     <td>{{ $cate->description }}</td>
                                     <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>

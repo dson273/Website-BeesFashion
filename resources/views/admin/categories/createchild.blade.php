@@ -29,19 +29,8 @@
                     <div class="mt-3 mb-3">
                         <label for="" class="form-label">Thuộc danh mục</label>
                         <select name="parent_category_id" class="form-control">
-                            <option value="" selected>--Danh mục cha--</option>
-                            @foreach ($cate_parent as $key => $value)
-                                <option value="{{ $value->id }}">
-                                    @php
-                                        $str = '';
-                                        for ($i = 0; $i < $value->level; $i++) {
-                                            echo $str;
-                                            $str .= '-- ';
-                                        }
-                                    @endphp
-                                    {{ $value->name }}
-                                </option>
-                            @endforeach
+                            <option value="" selected>Danh mục cha</option>
+                            {!! $htmlOption !!}
                         </select>
                     </div>
                     <div class="mt-3 mb-3">

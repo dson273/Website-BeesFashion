@@ -93,6 +93,23 @@
         </div>
     </li>
 
+
+    {{-- quản lý thương hiệu(brand) --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBrands"
+            aria-expanded="true" aria-controls="collapseBrands">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Quản lý thương hiệu</span>
+        </a>
+        <div id="collapseBrands" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{ route('admin.brands.index') }}">Danh sách</a>
+                <a class="collapse-item" href="{{ route('admin.brands.create') }}">Thêm</a>
+            </div>
+        </div>
+    </li>
+
     {{-- Kiểm tra nếu là admin --}}
    
         {{-- Quản lý manager setting --}}

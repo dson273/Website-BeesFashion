@@ -63,7 +63,11 @@ class AttributeController extends Controller
         //
         $AttributesID = Attribute::query()->findOrFail($id);
         $attribute_type = Attribute_type::where('id', $AttributesID->attribute_type_id)->first();
-        $type_name = $attribute_type->type_name;
+        if($attribute_type){
+            $type_name = $attribute_type->type_name;
+        }else{
+            $type_name = '';
+        }
         $listAttributeTypes = Attribute_type::query()->get();
         $listAttribute = Attribute::query()->get();
         return view('admin.attributes.edit', compact('listAttribute', 'AttributesID', 'type_name', 'attribute_type', 'listAttributeTypes'));
@@ -72,7 +76,7 @@ class AttributeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreAttributeRequest $request, string $id)
     {
         if ($request->isMethod('PUT')) {
             $params = $request->except('_token', '_method');
