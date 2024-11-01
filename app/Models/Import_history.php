@@ -10,7 +10,7 @@ class Import_history extends Model
     use HasFactory;
     protected $fillable = [
         'quantity',
-        'actual_import_price',
+        'import_price',
         'product_variant_id',
         'created_at',
         'updated_at'

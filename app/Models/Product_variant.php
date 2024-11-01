@@ -12,7 +12,7 @@ class Product_variant extends Model
         'SKU',
         'name',
         'image',
-        'display_import_price',
+        'regular_price',
         'sale_price',
         'stock',
         'product_id',

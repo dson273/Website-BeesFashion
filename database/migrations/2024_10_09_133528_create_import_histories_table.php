@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('import_histories', function (Blueprint $table) {
             $table->id();
             $table->integer('quantity')->comment('Số lượng nhập vào');
-            $table->bigInteger('actual_import_price')->comment('Giá nhập thực tế của sản phẩm mà bạn đã mua từ nhà cung cấp. Đây là giá gốc của sản phẩm.');
+            $table->bigInteger('import_price')->comment('Giá nhập thực tế của sản phẩm mà bạn đã mua từ nhà cung cấp. Đây là giá gốc của sản phẩm.');
             $table->foreignIdFor(model: Product_variant::class)->comment('Xác định lịch sử nhập này thuộc biến thể nào')->constrained();
             $table->timestamps();
         });
