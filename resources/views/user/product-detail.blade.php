@@ -29,43 +29,29 @@
                             <div class="col-sm-2 col-3">
                                 <div class="swiper product-slider product-slider-img">
                                     <div class="swiper-wrapper">
-                                        <div class="swiper-slide"> <img src="../assets/images/product/slider/1.jpg" alt="">
-                                        </div>
-                                        <div class="swiper-slide"> <img src="../assets/images/product/slider/2.jpg" alt="">
-                                        </div>
-                                        <div class="swiper-slide"> <img src="../assets/images/product/slider/3.jpg" alt="">
-                                        </div>
-                                        <div class="swiper-slide"> <img src="../assets/images/product/slider/4.jpg"
-                                                alt=""><span> <i class="iconsax" data-icon="play"></i></span></div>
-                                        <div class="swiper-slide"> <img src="../assets/images/product/slider/5.jpg" alt="">
-                                        </div>
-                                        <div class="swiper-slide"> <img src="../assets/images/product/slider/6.jpg" alt="">
-                                        </div>
-                                        <div class="swiper-slide"> <img src="../assets/images/product/slider/7.jpg" alt="">
-                                        </div>
+                                        @foreach ($product->product_files as $image)
+                                            <div class="swiper-slide"><img
+                                                    src="{{ asset('uploads/products/images/' . $image->file_name) }}"
+                                                    alt=""></div>
+                                        @endforeach
+                                        {{-- <div class="swiper-slide"> <img src="../assets/images/product/slider/4.jpg"
+                                                alt=""><span> <i class="iconsax" data-icon="play"></i></span></div> --}}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-10 col-9">
                                 <div class="swiper product-slider-thumb product-slider-img-1">
                                     <div class="swiper-wrapper ratio_square-2">
-                                        <div class="swiper-slide"> <img class="bg-img"
-                                                src="../assets/images/product/slider/1.jpg" alt=""></div>
-                                        <div class="swiper-slide"> <img class="bg-img"
-                                                src="../assets/images/product/slider/2.jpg" alt=""></div>
-                                        <div class="swiper-slide"> <img class="bg-img"
-                                                src="../assets/images/product/slider/3.jpg" alt=""></div>
-                                        <div class="swiper-slide"> <video class="video-tag" loop="" autoplay="" muted="">
+                                        @foreach ($product->product_files as $image)
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('uploads/products/images/' . $image->file_name) }}"
+                                                    alt=""></div>
+                                        @endforeach
+                                        {{-- <div class="swiper-slide"> <video class="video-tag" loop="" autoplay="" muted="">
                                                 <source
                                                     src="https://themes.pixelstrap.net/katie/assets/images/product/slider/clothing.mp4"
                                                     type="video/mp4"> Your browser does not support the video tag.
-                                            </video></div>
-                                        <div class="swiper-slide"> <img class="bg-img"
-                                                src="../assets/images/product/slider/5.jpg" alt=""></div>
-                                        <div class="swiper-slide"> <img class="bg-img"
-                                                src="../assets/images/product/slider/6.jpg" alt=""></div>
-                                        <div class="swiper-slide"> <img class="bg-img"
-                                                src="../assets/images/product/slider/7.jpg" alt=""></div>
+                                            </video></div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -79,8 +65,8 @@
                                         src="../assets/images/gif/fire.gif" alt="">
                                     <p>Move fast!</p>
                                 </div>
-                                <h3>{{$product->name}}</h3>
-                                <p>$20.00<del>$35.00</del><span class="offer-btn">25% off</span></p>
+                                <h3>{{ $product->name }} {{ $product->SKU }}</h3>
+                                <p>20₫<del>$35.00</del><span class="offer-btn">25% off</span></p>
                                 <div class="rating">
                                     <ul>
                                         <li><i class="fa-solid fa-star"> </i>
@@ -98,50 +84,61 @@
                                 <div class="buy-box border-buttom">
                                     <ul>
                                         <li> <span data-bs-toggle="modal" data-bs-target="#size-chart" title="Quick View"
-                                                tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Size Chart</span>
+                                                tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Size
+                                                Chart</span>
                                         </li>
                                         <li> <span data-bs-toggle="modal" data-bs-target="#terms-conditions-modal"
                                                 title="Quick View" tabindex="0"><i class="iconsax me-2"
                                                     data-icon="truck"></i>Delivery & return</span></li>
                                         <li> <span data-bs-toggle="modal" data-bs-target="#question-box" title="Quick View"
-                                                tabindex="0"><i class="iconsax me-2" data-icon="question-message"></i>Ask a
+                                                tabindex="0"><i class="iconsax me-2" data-icon="question-message"></i>Ask
+                                                a
                                                 Question</span></li>
                                     </ul>
                                 </div>
-                                <div class="d-flex">
-                                    <div>
-                                        <h5>Size:</h5>
-                                        <div class="size-box">
-                                            <ul class="selected">
-                                                <li><a href="#">s</a></li>
-                                                <li><a href="#">m</a></li>
-                                                <li class="active"><a href="#">l</a></li>
-                                                <li><a href="#">xl </a></li>
-                                            </ul>
+                                @foreach ($array_attributes as $attribute_item)
+                                    @if ($attribute_item['type'] == 'button')
+                                        <div class="d-flex">
+                                            <div>
+                                                <h5>Size:</h5>
+
+                                                    <div class="size-box">
+                                                        <ul class="selected">
+                                                            @foreach ($attribute_item['attribute_values'] as $attribute_value_item)
+                                                            <li><a href="#">{{ $attribute_value_item['name'] }}</a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5>Color:</h5>
-                                    <div class="color-box">
-                                        <ul class="color-variant">
-                                            <li class="bg-color-brown"></li>
-                                            <li class="bg-color-chocolate"></li>
-                                            <li class="bg-color-coffee"></li>
-                                            <li class="bg-color-black"></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                    @elseif ($attribute_item['type'] == 'color')
+                                        <div>
+                                            <h5>Color:</h5>
+                                                <div class="color-box">
+                                                    <ul class="color-variant">
+                                                        @foreach ($attribute_item['attribute_values'] as $attribute_value_item)
+                                                        <li style="background-color: {{ $attribute_value_item['value'] }}; border:1px solid rgba(var(--theme-default))"></li>
+                                                        @endforeach
+                                                    </ul>
+
+                                                </div>
+
+                                        </div>
+                                    @endif
+                                @endforeach
+
                                 <div class="quantity-box d-flex align-items-center gap-3">
                                     <div class="quantity"><button class="minus" type="button"><i
                                                 class="fa-solid fa-minus"></i></button><input type="number" value="1"
                                             min="1" max="20"><button class="plus" type="button"><i
                                                 class="fa-solid fa-plus"></i></button></div>
-                                    <div class="d-flex align-items-center gap-3 w-100"> <a class="btn btn_black sm" href="#"
-                                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                                    <div class="d-flex align-items-center gap-3 w-100"> <a class="btn btn_black sm"
+                                            href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
                                             aria-controls="offcanvasRight">Add To Cart</a><a class="btn btn_outline sm"
                                             href="#">Buy Now</a></div>
                                 </div>
+
                                 <div class="buy-box">
                                     <ul>
                                         <li> <a href="#"> <i class="fa-regular fa-heart me-2"></i>Add To
@@ -227,14 +224,16 @@
                 <div class="custom-container container">
                     <div class="row">
                         <div class="col-12">
-                            <ul class="product-tab theme-scrollbar nav nav-tabs nav-underline" id="Product" role="tablist">
+                            <ul class="product-tab theme-scrollbar nav nav-tabs nav-underline" id="Product"
+                                role="tablist">
                                 <li class="nav-item" role="presentation"><button class="nav-link active"
                                         id="Description-tab" data-bs-toggle="tab" data-bs-target="#Description-tab-pane"
                                         role="tab" aria-controls="Description-tab-pane"
                                         aria-selected="true">Description</button></li>
                                 <li class="nav-item" role="presentation"><button class="nav-link" id="specification-tab"
                                         data-bs-toggle="tab" data-bs-target="#specification-tab-pane" role="tab"
-                                        aria-controls="specification-tab-pane" aria-selected="false">Specification</button>
+                                        aria-controls="specification-tab-pane"
+                                        aria-selected="false">Specification</button>
                                 </li>
                                 <li class="nav-item" role="presentation"><button class="nav-link" id="question-tab"
                                         data-bs-toggle="tab" data-bs-target="#question-tab-pane" role="tab"
@@ -249,7 +248,8 @@
                                     aria-labelledby="Description-tab" tabindex="0">
                                     <div class="row gy-4">
                                         <div class="col-12">
-                                            <p class="paragraphs">Experience the perfect blend of comfort and style with our
+                                            <p class="paragraphs">Experience the perfect blend of comfort and style with
+                                                our
                                                 Summer Breeze Cotton Dress. Crafted from 100% premium cotton, this dress
                                                 offers a soft and breathable feel, making it ideal for warm weather. The
                                                 lightweight fabric ensures you stay cool and comfortable throughout the day.
@@ -373,8 +373,10 @@
                                                     <p>Q1 </p>
                                                     <h6>Which designer created the little black dress?</h6>
                                                     <ul class="link-dislike-box">
-                                                        <li> <a href="#"><i class="iconsax" data-icon="like"> </i>0</a></li>
-                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike"> </i>0</a>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="like">
+                                                                </i>0</a></li>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike">
+                                                                </i>0</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -389,8 +391,10 @@
                                                     <p>Q2 </p>
                                                     <h6>Which First Lady influenced women's fashion in the 1960s?</h6>
                                                     <ul class="link-dislike-box">
-                                                        <li> <a href="#"><i class="iconsax" data-icon="like"> </i>0</a></li>
-                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike"> </i>0</a>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="like">
+                                                                </i>0</a></li>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike">
+                                                                </i>0</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -405,9 +409,11 @@
                                                     <p>Q3 </p>
                                                     <h6>What was the first name of the fashion designer Chanel?</h6>
                                                     <ul class="link-dislike-box">
-                                                        <li> <a href="#"><i class="iconsax" data-icon="like"> </i>0 </a>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="like"> </i>0
+                                                            </a>
                                                         </li>
-                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike"> </i>0</a>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike">
+                                                                </i>0</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -423,8 +429,10 @@
                                                     <h6>Carnaby Street, famous in the 60s as a fashion center, is in which
                                                         capital?</h6>
                                                     <ul class="link-dislike-box">
-                                                        <li> <a href="#"><i class="iconsax" data-icon="like"> </i>0</a></li>
-                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike"> </i>0</a>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="like">
+                                                                </i>0</a></li>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike">
+                                                                </i>0</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -437,8 +445,10 @@
                                                     <p>Q5 </p>
                                                     <h6>Threadless is a company selling unique what?</h6>
                                                     <ul class="link-dislike-box">
-                                                        <li> <a href="#"><i class="iconsax" data-icon="like"> </i>0</a></li>
-                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike"> </i>0</a>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="like">
+                                                                </i>0</a></li>
+                                                        <li> <a href="#"><i class="iconsax" data-icon="dislike">
+                                                                </i>0</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -540,8 +550,10 @@
                                                                 <div class="user-info">
                                                                     <div class="d-flex justify-content-between gap-3">
                                                                         <h6> <i class="iconsax"
-                                                                                data-icon="user-1"></i>Michel Poe</h6><span>
-                                                                            <i class="iconsax" data-icon="clock"></i>Mar 29,
+                                                                                data-icon="user-1"></i>Michel Poe</h6>
+                                                                        <span>
+                                                                            <i class="iconsax" data-icon="clock"></i>Mar
+                                                                            29,
                                                                             2022</span>
                                                                     </div>
                                                                     <ul class="rating p-0 mb">
@@ -570,8 +582,10 @@
                                                                 <div class="user-info">
                                                                     <div class="d-flex justify-content-between gap-3">
                                                                         <h6> <i class="iconsax"
-                                                                                data-icon="user-1"></i>Michel Poe</h6><span>
-                                                                            <i class="iconsax" data-icon="clock"></i>Mar 29,
+                                                                                data-icon="user-1"></i>Michel Poe</h6>
+                                                                        <span>
+                                                                            <i class="iconsax" data-icon="clock"></i>Mar
+                                                                            29,
                                                                             2022</span>
                                                                     </div>
                                                                     <ul class="rating p-0 mb">
@@ -600,8 +614,10 @@
                                                                 <div class="user-info">
                                                                     <div class="d-flex justify-content-between gap-3">
                                                                         <h6> <i class="iconsax"
-                                                                                data-icon="user-1"></i>Michel Poe</h6><span>
-                                                                            <i class="iconsax" data-icon="clock"></i>Mar 29,
+                                                                                data-icon="user-1"></i>Michel Poe</h6>
+                                                                        <span>
+                                                                            <i class="iconsax" data-icon="clock"></i>Mar
+                                                                            29,
                                                                             2022</span>
                                                                     </div>
                                                                     <ul class="rating p-0 mb">
@@ -664,8 +680,8 @@
                                             </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
                                                 data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                                aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
+                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Quick View"></i></a></div>
                                     <div class="countdown">
                                         <ul class="clockdiv2">
@@ -729,8 +745,8 @@
                                             </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
                                                 data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                                aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
+                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Quick View"></i></a></div>
                                 </div>
                                 <div class="product-detail">
@@ -767,8 +783,8 @@
                                             </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
                                                 data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                                aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
+                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Quick View"></i></a></div>
                                 </div>
                                 <div class="product-detail">
@@ -805,8 +821,8 @@
                                             </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
                                                 data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                                aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
+                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Quick View"></i></a></div>
                                     <div class="countdown">
                                         <ul class="clockdiv4">
@@ -870,8 +886,8 @@
                                             </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
                                                 data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                                aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
+                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Quick View"></i></a></div>
                                     <div class="countdown">
                                         <ul class="clockdiv3">
@@ -953,9 +969,10 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Review Content :</label><textarea
-                                        class="form-control" id="comment" cols="30" rows="4"
-                                        placeholder="Write your comments here..."></textarea></div>
+                                <div class="from-group"> <label class="form-label">Review Content :</label>
+                                    <textarea class="form-control" id="comment" cols="30" rows="4"
+                                        placeholder="Write your comments here..."></textarea>
+                                </div>
                             </div><button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
                                 aria-label="Close">Submit</button>
                         </div>
@@ -992,9 +1009,10 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Your Question</label><textarea
-                                        class="form-control" id="comment-1" cols="30" rows="5"
-                                        placeholder="Write Your Question here..."></textarea></div>
+                                <div class="from-group"> <label class="form-label">Your Question</label>
+                                    <textarea class="form-control" id="comment-1" cols="30" rows="5"
+                                        placeholder="Write Your Question here..."></textarea>
+                                </div>
                             </div>
                             <div class="modal-button-group"><button class="btn btn-cancel" type="submit"
                                     data-bs-dismiss="modal" aria-label="Close">Cancel</button><button
@@ -1068,11 +1086,12 @@
                                         <h6 class="product-title">Quantity</h6>
                                         <div class="quantity"><button class="minus" type="button"><i
                                                     class="fa-solid fa-minus"></i></button><input type="number"
-                                                value="1" min="1" max="20"><button class="plus" type="button"><i
-                                                    class="fa-solid fa-plus"></i></button></div>
+                                                value="1" min="1" max="20"><button class="plus"
+                                                type="button"><i class="fa-solid fa-plus"></i></button></div>
                                     </div>
                                     <div class="product-buttons"><a class="btn btn-solid" href="cart.html">Add to
-                                            cart</a><a class="btn btn-solid" href="product-detail.html">View detail</a></div>
+                                            cart</a><a class="btn btn-solid" href="product-detail.html">View detail</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1150,9 +1169,10 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="from-group"> <label class="form-label">Your Question :</label><textarea
-                                        class="form-control" id="comment" cols="30" rows="4"
-                                        placeholder="Write your Question here..."></textarea></div>
+                                <div class="from-group"> <label class="form-label">Your Question :</label>
+                                    <textarea class="form-control" id="comment" cols="30" rows="4"
+                                        placeholder="Write your Question here..."></textarea>
+                                </div>
                             </div>
                             <div class="modal-button-group"><button class="btn btn-cancel" type="submit"
                                     data-bs-dismiss="modal" aria-label="Close">Cancel</button><button
@@ -1164,7 +1184,8 @@
             </div>
         </div>
 
-        <div class="modal theme-modal fade social-modal" id="social-box" tabindex="-1" role="dialog" aria-modal="true">
+        <div class="modal theme-modal fade social-modal" id="social-box" tabindex="-1" role="dialog"
+            aria-modal="true">
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1194,5 +1215,5 @@
 @endsection
 
 @section('script-libs')
-<script src="{{ asset('assets/js/grid-option.js') }}"></script>
+    <script src="{{ asset('assets/js/grid-option.js') }}"></script>
 @endsection

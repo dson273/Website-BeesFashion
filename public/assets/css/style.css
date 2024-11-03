@@ -1,7 +1,7 @@
 /*!***************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js!./assets/scss/style.scss ***!
   \***************************************************************************************************************************************************************************************/
-:root {
+  :root {
     --light-white: 255, 255, 255;
     --white: 255, 255, 255;
     --black: 0, 0, 0;
@@ -307,7 +307,7 @@ section {
 }
 
 .section-b-space {
-    padding-bottom: calc(30px + 3.125vw)
+    padding-bottom: calc(10px + 1.125vw)
 }
 
 .large-section {
@@ -1148,7 +1148,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .coming-soon-section header .main-menu {
-    padding: 25px 0;
+    padding: 25px 0
 }
 
 @media (max-width:577px) {
@@ -2300,12 +2300,12 @@ header .header-1 .main-menu {
     gap: 20px;
     justify-content: space-between;
     position: relative;
-    z-index: 8;
-
+    z-index: 8
 }
 
 header .header-1 .main-menu .brand-logo {
     line-height: 0;
+    width: 130px
 }
 
 header .header-1 .main-menu .brand-logo img {
@@ -4251,7 +4251,7 @@ footer .footer-1 .social-icon>li:hover a i {
 }
 
 .theme-modal .modal-dialog .modal-content .modal-body .product-right .color-variant li:before {
-    border: 2px solid #fff;
+    border: 2px solid rgba(var(--theme-default));
     border-radius: 100%;
     content: "";
     height: 100%;
@@ -7769,7 +7769,7 @@ footer .footer-1 .social-icon>li:hover a i {
 }
 
 .product-detail-box .product-option .color-box ul li:before {
-    border: 2px solid #fff;
+    border: 2px solid rgba(var(--theme-default));
     border-radius: 100%;
     content: "";
     height: 100%;
@@ -13952,26 +13952,6 @@ body.skeleton_body {
     color: #222
 }
 
-.carousel-item, .row, .col-12 {
-    height: 100%;
-}
-
-/* Định dạng cho indicators */
-.carousel-indicators {
-    bottom: 20px; /* Căn dưới */
-}
-
-.carousel-indicators button {
-    background-color: rgba(255, 255, 255, 0.7);
-    width: 10px;
-    height: 10px;
-    border: none;
-}
-
-.carousel-indicators .active {
-    background-color: #000000;
-}
-
 .home-section-4 {
     background-color: rgba(var(--box-background), 1);
     height: 700px;
@@ -17714,6 +17694,29 @@ body div canvas:first-child {
     width: 70%
 }
 
+/* Custom thêm */
+
+.carousel-item{
+    height: 100%;
+}
+
+/* Định dạng cho indicators */
+.carousel-indicators {
+    bottom: 20px; /* Căn dưới */
+}
+
+.carousel-indicators button {
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 10px;
+    height: 10px;
+    border: none;
+}
+
+.carousel-indicators .active {
+    background-color: #000000;
+}
+
+/*  */
 .custom-set-address{
     border:none;
     color:rgba(var(--theme-default), 1);
@@ -17744,7 +17747,7 @@ body div canvas:first-child {
     border-radius: 2px;
 }
 
-
+/*  */
 .range-slider {
     --range-slider-value-low-fallback: calc(
       var(--range-slider-value-low, 0) * 1%
