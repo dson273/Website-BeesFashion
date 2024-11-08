@@ -2,10 +2,13 @@
 @section('title')
 Danh sách sản phẩm
 @endsection
+
 @section('style-libs')
 <!-- Custom styles for this page -->
 <link href="{{ asset('theme/admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="{{asset('css/admin/product/index.css')}}">
 @endsection
+
 @section('script-libs')
 <!-- Page level plugins -->
 <script src="{{ asset('theme/admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
@@ -13,7 +16,9 @@ Danh sách sản phẩm
 
 <!-- Page level custom scripts -->
 <script src="{{ asset('theme/admin/js/demo/datatables-demo.js') }}"></script>
+<script src="{{asset('js/admin/product/index.js')}}"></script>
 @endsection
+
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -25,8 +30,14 @@ Danh sách sản phẩm
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
+        <div class="card-header py-3 d-flex flex-row align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Data of all products</h6>
+            <a href="{{route('admin.products.index')}}">
+                <span class="ml-3 btn btn-outline-primary btn-sm" id="active">Active</span>
+            </a>
+            <a href="{{route('admin.products.index.inactive')}}">
+                <span class="ml-3 btn btn-outline-danger btn-sm" id="inactive">Inactive</span>
+            </a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -34,38 +45,79 @@ Danh sách sản phẩm
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Product ID</th>
                             <th>SKU</th>
+                            <th>Image</th>
                             <th>Name</th>
-                            <th>Description</th>
                             <th>Views</th>
                             <th>Total variations</th>
                             <th>Purchases</th>
                             <th>Status</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
                             <th>Control</th>
                         </tr>
                     </thead>
                     <tfoot class="sticky-bottom">
                         <tr>
                             <th>#</th>
+                            <th>Product ID</th>
                             <th>SKU</th>
+                            <th>Image</th>
                             <th>Name</th>
-                            <th>Description</th>
                             <th>Views</th>
                             <th>Total variations</th>
                             <th>Purchases</th>
                             <th>Status</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
                             <th>Control</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @if ($listProducts) 
+                        @if ($listProducts!='')
+                        @foreach ($listProducts as $key => $product)
+                        <tr class="productItem">
+                            <td>{{$key+1}}</td>
+                            <td>{{$product->id}}</td>
+                            <td>{{$product->SKU}}</td>
+                            <td>
+                                <img src="{{asset('uploads/products/images/'.$product->mainImage)}}" alt="" width="100" height="100">
+                            </td>
+                            <td>{{$product->name}}</td>
+                            <td>{{$product->view}}</td>
+                            <td>{{$product->product_variants_count}}</td>
+                            <td>{{$product->total_sold}}</td>
+                            <td>
+                                @if($product->is_active==1)
+                                <span class="text-success">Đang hoạt động</span>
+                                @else
+                                <span class="text-danger">Ngừng bán</span>
+                                @endif
+                            </td>
+                            <td>{{$product->created_at}}</td>
+                            <td>{{$product->updated_at}}</td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <a href="{{route('admin.products.show',$product->id)}}" class="btn btn-secondary btn-sm d-flex align-items-center mr-1"><i class="fas fa-eye fa-sm mr-1"></i>Detail</a>
+                                        @if($product->is_active==1)
+                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm mr-1"></i>Inactive</a>
+                                        @else
+                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm mr-1"></i>Active</a>
+                                        @endif
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-center mt-2">
+                                        <a href="{{route('admin.products.edit',$product->id)}}" class="btn btn-warning btn-sm d-flex align-items-center mr-1"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Edit</a>
+                                        <a href="" class="btn btn-primary btn-sm d-flex align-items-center mr-1"><i class="fas fa-file-export fa-sm mr-1"></i>Export</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                        @else
                         <tr>
-                            <td>Hope Fuentes</td>
-                            <td>Secretary</td>
-                            <td>San Francisco</td>
-                            <td>41</td>
-                            <td>2010/02/12</td>
-                            <td>$109,850</td>
+                            <td colspan="9" align="center">Không có sản phẩm nào có sẵn!</td>
                         </tr>
                         @endif
                     </tbody>

@@ -11,9 +11,7 @@ class Import_history extends Model
     protected $fillable = [
         'quantity',
         'import_price',
-        'product_variant_id',
-        'created_at',
-        'updated_at'
+        'product_variant_id'
     ];
     public function product_variant()
     {

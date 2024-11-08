@@ -159,7 +159,7 @@ Tạo mới sản phẩm
                     <div class="w-50 mr-4">
                         <li class="text-primary">Attributes</li>
                         <div class="mt-2 border-bottom d-flex flex-row pb-3">
-                            <span class="btn btn-primary btn-sm mr-2 white-space" id="addNewAttribute">Add new</span>
+                            <span class="btn btn-primary btn-sm mr-2 no-wrap" id="addNewAttribute">Add new</span>
                             <div class="w-50" id="loadAttributeDatas">
                                 <select name="selectAddExisting" id="selectAddExisting" multiple>
                                     <option data-placeholder="true"></option>
@@ -199,8 +199,8 @@ Tạo mới sản phẩm
                         <li class="text-primary">Variations</li>
                         <div class="mt-2 border-bottom d-flex flex-row pb-3 align-items-center justify-content-between">
                             <div class="d-flex flex-row">
-                                <span class="btn btn-primary btn-sm mr-2 white-space disabledButton" id="generateVariations">Generate variations</span>
-                                <span class="btn btn-primary btn-sm mr-2 white-space disabledButton" id="addManually"> Add manually</span>
+                                <span class="btn btn-primary btn-sm mr-2 no-wrap disabledButton" id="generateVariations">Generate variations</span>
+                                <span class="btn btn-primary btn-sm mr-2 no-wrap disabledButton" id="addManually"> Add manually</span>
                             </div>
                         </div>
                         <p align="center" class="notificationNoVariationsYet">No variations yet. Generate them from all added attributes or add a new variation manually.</p>
@@ -229,7 +229,7 @@ Tạo mới sản phẩm
                                     <option value="7" class="addSalePriceForAllVariations">Enter "sale price" for all variants</option>
                                     <option value="8" class="addStockForAllVariations">Enter "quantity" for all variants</option> -->
                                 </select>
-                                <span class="btn btn-danger btn-sm mt-2 white-space deleteAllVariations hidden">Delete all variations</span>
+                                <span class="btn btn-danger btn-sm mt-2 no-wrap deleteAllVariations hidden">Delete all variations</span>
                             </div>
                         </div>
                         <div id="variations" class="pt-2">

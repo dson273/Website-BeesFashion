@@ -16,9 +16,7 @@ class Product_variant extends Model
         'sale_price',
         'stock',
         'product_id',
-        'is_active',
-        'created_at',
-        'updated_at'
+        'is_active'
     ];
     public function product()
     {

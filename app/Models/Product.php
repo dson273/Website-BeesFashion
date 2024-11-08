@@ -14,9 +14,7 @@ class Product extends Model
         'view',
         'description',
         'is_active',
-        'brand_id',
-        'created_at',
-        'updated_at'
+        'brand_id'
     ];
     public function categories()
     {
@@ -37,6 +35,15 @@ class Product extends Model
     public function product_files()
     {
         return $this->hasMany(Product_file::class);
+    }
+    public function product_gallery()
+    {
+        return $this->hasMany(Product_file::class)->where('is_default', 0)->where('file_type', 'image');
+    }
+
+    public function product_videos()
+    {
+        return $this->hasMany(Product_file::class)->where('is_default', 0)->where('file_type', 'video');
     }
     public function product_likes()
     {

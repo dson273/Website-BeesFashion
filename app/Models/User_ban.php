@@ -12,9 +12,7 @@ class User_ban extends Model
         'reason',
         'user_id',
         'status',
-        'is_active',
-        'created_at',
-        'updated_at'
+        'is_active'
     ];
     public function user(){
         return $this->belongsTo(User::class);

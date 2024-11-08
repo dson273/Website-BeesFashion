@@ -25,6 +25,9 @@
     <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
     </link>
 
+    <!-- RateYo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+
     @yield('style-libs')
 
 </head>
@@ -126,8 +129,9 @@
                 };
             });
         };
-        //Route variable
+        //Route variable INDEX
 
+        //Route variable CREATE
         const getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
 
         const getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
@@ -176,6 +180,9 @@
         });
     </script>
 
+    <!-- RateYo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
     <!-- Link libs -->
     @yield('script-libs')
 
@@ -191,7 +198,6 @@
         @elseif(session('statusWarning'))
         var message = @json(session('statusWarning'));
         notification('warning', message, 'warning');
-
         @endif
     </script>
 </body>

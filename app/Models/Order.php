@@ -15,9 +15,7 @@ class Order extends Model
         'voucher',
         'total_payment',
         'user_id',
-        'user_shipping_address_id',
-        'created_at',
-        'updated_at'
+        'user_shipping_address_id'
     ];
     public function user()
     {

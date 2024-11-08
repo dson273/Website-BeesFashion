@@ -14,9 +14,7 @@ class Category extends Model
         'description',
         'fixed',
         'is_active',
-        'parent_category_id',
-        'created_at',
-        'updated_at'
+        'parent_category_id'
     ];
 
     public function categoryChildrent()
