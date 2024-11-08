@@ -10,9 +10,7 @@ class Product_variant_attribute_value extends Model
     use HasFactory;
     protected $fillable = [
         'product_variant_id',
-        'attribute_value_id',
-        'created_at',
-        'updated_at'
+        'attribute_value_id'
     ];
     public function attribute_value()
     {

@@ -9,9 +9,7 @@ class Status extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
-        'created_at',
-        'updated_at'
+        'name'
     ];
     public function status_orders()
     {

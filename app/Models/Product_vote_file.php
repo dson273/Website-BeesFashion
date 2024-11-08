@@ -11,9 +11,7 @@ class Product_vote_file extends Model
     protected $fillable = [
         'file_name',
         'file_type',
-        'product_vote_id',
-        'created_at',
-        'updated_at'
+        'product_vote_id'
     ];
     public function product_vote()
     {

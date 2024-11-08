@@ -10,9 +10,7 @@ class Attribute extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'attribute_type_id',
-        'created_at',
-        'updated_at'
+        'attribute_type_id'
     ];
     public function attribute_values()
     {
