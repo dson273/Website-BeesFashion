@@ -124,13 +124,15 @@ class ProductController extends Controller
         $import_price = request()->input('import_price');
         $check_product_variant_by_id = Product_variant::find($product_variant_id);
         if ($check_product_variant_by_id) {
-            $importingGood = Import_history::create([
+            $importing_good = Import_history::create([
                 'quantity' => $quantity,
                 'import_price' => $import_price,
                 'product_variant_id' => $product_variant_id,
                 'user_id' => Auth::user()->id ? Auth::user()->id : ''
             ]);
-            if ($importingGood) {
+            if ($importing_good) {
+                $check_product_variant_by_id->stock += $quantity;
+                $check_product_variant_by_id->save();
                 $response = [
                     'status' => 200,
                     'message' => 'Không tìm thấy biến thể cần nhập thêm hàng!'
