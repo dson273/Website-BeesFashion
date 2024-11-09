@@ -66,7 +66,12 @@
                                     <p>Move fast!</p>
                                 </div>
                                 <h3>{{ $product->name }} {{ $product->SKU }}</h3>
-                                <p>20₫<del>$35.00</del><span class="offer-btn">25% off</span></p>
+
+                                <div class="box-price-top d-flex align-items-end gap-2">
+                                    <div id="price">{{ $product->priceRange }}</div>
+                                    <div id="discount" class="offer-btn">Hot!</div>
+                                </div>
+
                                 <div class="rating">
                                     <ul>
                                         <li><i class="fa-solid fa-star"> </i>
@@ -78,10 +83,9 @@
                                         <li>(4.7) Rating</li>
                                     </ul>
                                     <p>Dressing up. People just don't do it anymore. We have to change that. Give me time
-                                        and I'll give you a revolution. What I hate is nasty, ugly people. The market is
-                                        like a language, and you have to be able to understand what they're saying. </p>
+                                        and I'll give you a revolution.</p>
                                 </div>
-                                <div class="buy-box border-buttom">
+                                <div class="buy-box border-buttom mb-3">
                                     <ul>
                                         <li> <span data-bs-toggle="modal" data-bs-target="#size-chart" title="Quick View"
                                                 tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Size
@@ -92,53 +96,93 @@
                                                     data-icon="truck"></i>Delivery & return</span></li>
                                         <li> <span data-bs-toggle="modal" data-bs-target="#question-box" title="Quick View"
                                                 tabindex="0"><i class="iconsax me-2" data-icon="question-message"></i>Ask
-                                                a
-                                                Question</span></li>
+                                                a Question</span></li>
                                     </ul>
                                 </div>
-                                @foreach ($array_attributes as $attribute_item)
-                                    @if ($attribute_item['type'] == 'button')
-                                        <div class="d-flex">
-                                            <div>
-                                                <h5>Size:</h5>
-
-                                                    <div class="size-box">
-                                                        <ul class="selected">
+                                <input type="number" class="total_attributes" value="{{ count($array_attributes) }}"
+                                    hidden>
+                                <input type="number" class="product_id" value="{{ $product->id }}" hidden>
+                                <div class="blink-border">
+                                    @foreach ($array_attributes as $attribute_item)
+                                        @if ($attribute_item['type'] == 'button')
+                                            <div class="d-flex attribute-section">
+                                                <div>
+                                                    <h5>{{ $attribute_item['name'] }}:</h5>
+                                                    <div class="button-box attribute_group"
+                                                        data-id="{{ $attribute_item['id'] }}"
+                                                        data-type="{{ $attribute_item['type'] }}">
+                                                        <ul class="button-variant">
                                                             @foreach ($attribute_item['attribute_values'] as $attribute_value_item)
-                                                            <li><a href="#">{{ $attribute_value_item['name'] }}</a></li>
+                                                                <li class="attribute_item able"
+                                                                    title="{{ $attribute_value_item['name'] }}"
+                                                                    data-id="{{ $attribute_value_item['id'] }}">
+                                                                    {{ $attribute_value_item['name'] }}
+                                                                </li>
                                                             @endforeach
                                                         </ul>
                                                     </div>
-
+                                                </div>
                                             </div>
-                                        </div>
-                                    @elseif ($attribute_item['type'] == 'color')
-                                        <div>
-                                            <h5>Color:</h5>
-                                                <div class="color-box">
+                                        @elseif ($attribute_item['type'] == 'color')
+                                            <div class="attribute-section">
+                                                <h5>{{ $attribute_item['name'] }}:</h5>
+                                                <div class="color-box attribute_group"
+                                                    data-id="{{ $attribute_item['id'] }}">
                                                     <ul class="color-variant">
                                                         @foreach ($attribute_item['attribute_values'] as $attribute_value_item)
-                                                        <li style="background-color: {{ $attribute_value_item['value'] }}; border:1px solid rgba(var(--theme-default))"></li>
+                                                            <li class="attribute_item able"
+                                                                title="{{ $attribute_value_item['name'] }}"
+                                                                style="background-color: {{ $attribute_value_item['value'] }}; border:1px solid rgba(var(--theme-default))"
+                                                                data-id="{{ $attribute_value_item['id'] }}">
+                                                            </li>
                                                         @endforeach
                                                     </ul>
-
                                                 </div>
-
-                                        </div>
-                                    @endif
-                                @endforeach
-
-                                <div class="quantity-box d-flex align-items-center gap-3">
-                                    <div class="quantity"><button class="minus" type="button"><i
-                                                class="fa-solid fa-minus"></i></button><input type="number" value="1"
-                                            min="1" max="20"><button class="plus" type="button"><i
-                                                class="fa-solid fa-plus"></i></button></div>
-                                    <div class="d-flex align-items-center gap-3 w-100"> <a class="btn btn_black sm"
-                                            href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                                            aria-controls="offcanvasRight">Add To Cart</a><a class="btn btn_outline sm"
-                                            href="#">Buy Now</a></div>
+                                            </div>
+                                        @else
+                                            <div class="attribute-section">
+                                                <h5>{{ $attribute_item['name'] }}:</h5>
+                                                <div class="default-box attribute_group"
+                                                    data-id="{{ $attribute_item['id'] }}">
+                                                    <ul class="default-variant">
+                                                        @foreach ($attribute_item['attribute_values'] as $attribute_value_item)
+                                                            <li class="attribute_item able"
+                                                                title="{{ $attribute_value_item['name'] }}"
+                                                                data-id="{{ $attribute_value_item['id'] }}">
+                                                                {{ $attribute_value_item['name'] }}
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
                                 </div>
 
+                                <div class="quantity-box d-flex align-items-center gap-3">
+                                    <div class="quantity_pro">
+                                        <button class="reduce" type="button"><i class="fa-solid fa-minus"></i></button>
+                                        <input class="quantity" type="number" value="1" min="1" max="20">
+                                        <button class="increment" type="button"><i class="fa-solid fa-plus"></i></button>
+                                    </div>
+                                    <div class="selected-variant d-flex">
+                                        <p id="update-stock" class="me-1">{{ $total_stock }} </p> sản phẩm có sẵn
+                                    </div>
+                                    <!-- Nút "Chọn lại" -->
+                                    <div class="reset-button">
+                                        <button class="reset_selected">Reset</button>
+                                    </div>
+                                </div>
+                                <span class="box-price d-flex align-items-end gap-2">
+                                    <p class="currency mb-3" id="sale-price"></p>
+                                    <p class="currency mb-3" id="regular-price"></p>
+                                    <p class="mb-3" id="percent-discount"></p>
+                                </span>
+                                <div class="d-flex align-items-center gap-2 w-100 add-cart-box mb-3">
+                                    <a class="btn btn_black sm add-to-cart" href="#" title="add product">Add To
+                                        Cart</a>
+                                    <a class="btn btn_outline sm" href="#">Buy Now</a>
+                                </div>
                                 <div class="buy-box">
                                     <ul>
                                         <li> <a href="#"> <i class="fa-regular fa-heart me-2"></i>Add To
@@ -183,7 +227,8 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="dz-info">
+
+                                {{-- <div class="dz-info">
                                     <ul>
                                         <li>
                                             <div class="d-flex align-items-center gap-2">
@@ -210,7 +255,7 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> --}}
                                 <div class="share-option">
                                     <h5>Secure Checkout </h5><img class="img-fluid"
                                         src="../assets/images/other-img/secure_payments.png" alt="">
@@ -247,7 +292,8 @@
                                 <div class="tab-pane fade show active" id="Description-tab-pane" role="tabpanel"
                                     aria-labelledby="Description-tab" tabindex="0">
                                     <div class="row gy-4">
-                                        <div class="col-12">
+                                        {!! $product->description !!}
+                                        {{-- <div class="col-12">
                                             <p class="paragraphs">Experience the perfect blend of comfort and style with
                                                 our
                                                 Summer Breeze Cotton Dress. Crafted from 100% premium cotton, this dress
@@ -297,7 +343,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 {{-- End mô tả --}}
@@ -1089,8 +1135,8 @@
                                                 value="1" min="1" max="20"><button class="plus"
                                                 type="button"><i class="fa-solid fa-plus"></i></button></div>
                                     </div>
-                                    <div class="product-buttons"><a class="btn btn-solid" href="cart.html">Add to
-                                            cart</a><a class="btn btn-solid" href="product-detail.html">View detail</a>
+                                    <div class="product-buttons"><a class="btn btn-solid" href="#">Add to
+                                            cart</a><a class="btn btn-solid" href="#">View detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -1216,4 +1262,390 @@
 
 @section('script-libs')
     <script src="{{ asset('assets/js/grid-option.js') }}"></script>
+    <script>
+        $(document).ready(function(e) {
+            //-----------------------currency------------------------------
+            function currency() {
+                var status = true;
+                try {
+                    $('.currency').each(function() {
+                        var value = $(this).text();
+                        // Loại bỏ các ký tự không phải số
+                        var numericValue = parseFloat(value.replace(/[^0-9]/g, ''));
+                        // Định dạng số theo định dạng tiền tệ
+                        var formattedValue = new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND'
+                        }).format(numericValue);
+                        // Cập nhật giá trị định dạng vào phần tử
+                        $(this).text(formattedValue);
+                    });
+                } catch (e) {
+                    status = false;
+                }
+                return status;
+            }
+            currency();
+
+            // Biến lưu trữ các biến thể của sản phẩm
+            var variants;
+            @if (!empty($array_variants))
+                var variants = @json($array_variants);
+            @else
+                var variants = [];
+            @endif
+            var attribute_value_ids = [];
+            var current_item_id = 0;
+            var product_id = $('.product_id').val();
+            var total_attributes = $('.total_attributes').val();
+            var total_stock = $("#update-stock").text();
+            var sale_price = $("#sale-price").text();
+            var regular_price = $("#regular-price").text();
+            var percent_discount = $("#percent-discount").text();
+            var variant_selected = false;
+            var variant_id = null;
+            var get_stock_variant_clicked = null;
+            $('#sale-price').hide();
+            $('#regular-price').hide();
+            $('#percent-discount').hide();
+            // Khi người dùng chọn một giá trị thuộc tính
+            $(".attribute_item").click(function(e) {
+                if ($(this).hasClass('able')) {
+                    var array_allow_click_attribute_values_id = [];
+                    var attributeValueId = $(this).data("id");
+                    // Kiểm tra nếu đang ở trạng thái active (được chọn)
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active'); // Xóa class active khi bỏ chọn
+                        // Xoá id của thuộc tính được bỏ chọn khỏi mảng
+                        attribute_value_ids = attribute_value_ids.filter(function(item) {
+                            return item != attributeValueId;
+                        });
+                        // Nếu không còn thuộc tính nào được chọn, reset variant_selected
+                        if (attribute_value_ids.length == 0 || variant_selected == true) {
+                            variant_selected = false;
+                            variant_id = null;
+                        }
+                        // Ẩn nút reset khi không còn thuộc tính nào được chọn
+                        if (attribute_value_ids.length == 0) {
+                            $('.reset_selected').hide();
+                            $('#sale-price').hide();
+                            $('#regular-price').hide();
+                            $('#percent-discount').hide();
+                        }
+                        // Lấy lại các thuộc tính từ các nhóm
+                        // $('.attribute_group').each(function() {
+                        //     var group = $(this);
+                        //     var groupId = group.data('id');
+                        //     if (groupId == 1) {
+                        //         var group_attribute_values_id_1 = [];
+                        //         var attributeValues = group.find('.attribute_item');
+                        //         attributeValues.each(function() {
+                        //             var attributeValueId = $(this).data('id');
+                        //             group_attribute_values_id_1.push(attributeValueId);
+                        //         });
+                        //     }
+                        // });
+                        // Cập nhật lại giá và số lượng sản phẩm
+                        $('#regular-price').text(regular_price);
+                        $('#sale-price').text(sale_price);
+                        $('#update-stock').text(total_stock);
+                        $('#percent-discount').text(percent_discount);
+                        get_stock_variant_clicked = null;
+                        console.log(get_stock_variant_clicked);
+                        $('.attribute_item').each(function() {
+                            if (!$(this).hasClass('able')) {
+                                $(this).removeClass('disabled');
+                                $(this).addClass('able active');
+                                if ($(this).hasClass('disableRadio')) {
+                                    $(this).removeClass('disableRadio');
+                                }
+                            }
+                        });
+                        // Lọc các biến thể hợp lệ
+                        variants.forEach(function(variant) {
+                            var isSubset = attribute_value_ids.every(function(item) {
+                                return variant['attribute_values'].includes(item);
+                            });
+                            if (isSubset && variant['stock'] > 0) {
+                                variant['attribute_values'].forEach(function(
+                                    item_variant_attribute_value_id) {
+                                    if (!array_allow_click_attribute_values_id.includes(
+                                            item_variant_attribute_value_id)) {
+                                        array_allow_click_attribute_values_id.push(
+                                            item_variant_attribute_value_id);
+                                    }
+                                });
+                            }
+                        });
+                        // Disable các item không hợp lệ
+                        array_allow_click_attribute_values_id.forEach(function(item) {
+                            $('.able').each(function() {
+                                var id_item_btn_click = $(this).data('id');
+                                if (!array_allow_click_attribute_values_id.includes(
+                                        id_item_btn_click)) {
+                                    $(this).removeClass('able active');
+                                    $(this).addClass('disabled');
+                                }
+                            });
+                        });
+                    } else {
+                        var current_item = $(this).closest('.attribute_group').find(
+                            '.attribute_item.active');
+                        if (current_item.hasClass('active')) {
+                            current_item.removeClass('active');
+                            current_item_id = current_item.data('id');
+                            // console.log('Id trước đó:' + current_item_id);
+                            attribute_value_ids = attribute_value_ids.filter(function(item) {
+                                return item != current_item_id;
+                            });
+                        }
+                        $(this).addClass('active');
+                        attribute_value_ids.push(attributeValueId); // Thêm id thuộc tính vừa chọn vào mảng
+                        // Hiển thị nút reset khi có thuộc tính được chọn
+                        if (attribute_value_ids.length > 0) {
+                            $('.reset_selected').show();
+                            $('#sale-price').show();
+                            $('#regular-price').show();
+                            $('#percent-discount').show();
+                        }
+                        //Xử lý lọc thuộc tính khi người dùng chọn
+                        variants.forEach(function(variant) {
+                            var isSubset = attribute_value_ids.every(function(item) {
+                                return variant['attribute_values'].includes(item);
+                            });
+                            if (isSubset && variant['stock'] > 0) {
+                                variant['attribute_values'].forEach(function(
+                                    item_variant_attribute_value_id) {
+                                    if (!array_allow_click_attribute_values_id.includes(
+                                            item_variant_attribute_value_id)) {
+                                        array_allow_click_attribute_values_id.push(
+                                            item_variant_attribute_value_id);
+                                    }
+                                });
+                            }
+                        });
+                        //Kiểm tra xem biến thể có liên kết với nhau không
+                        function arraysEqualUnordered(arr1, arr2) {
+                            if (arr1.length !== arr2.length) return false;
+                            let sortedArr1 = arr1.slice().sort();
+                            let sortedArr2 = arr2.slice().sort();
+                            return sortedArr1.every((value, index) => value === sortedArr2[index]);
+                        }
+                        variants.some(function(variant) {
+                            variant_selected = arraysEqualUnordered(variant['attribute_values'],
+                                attribute_value_ids);
+                            if (variant_selected) {
+                                variant_id = variant['variant_id'];
+                            }
+                            console.log('Trạng thái của variant_selected là: ' + variant_selected);
+                            return variant_selected;
+                        });
+                        // Disable các item không hợp lệ
+                        array_allow_click_attribute_values_id.forEach(function(item) {
+                            $('.able').each(function() {
+                                var id_item_btn_click = $(this).data('id');
+                                if (!array_allow_click_attribute_values_id.includes(
+                                        id_item_btn_click)) {
+                                    $(this).removeClass('able active');
+                                    $(this).addClass('disabled');
+                                }
+                            });
+                        });
+                        e.preventDefault();
+                        $('.attribute_group').each(function() {
+                            var group = $(this);
+                            var groupId = group.data('id');
+                            if (groupId == 1) {
+                                attributeValues = group.find('.attribute_item');
+                                attributeValues.each(function() {
+                                    attributeValuesId = $(this).data('id');
+                                    if (attribute_value_ids.includes(attributeValuesId)) {
+                                        $.ajax({
+                                            url: "{{ route('userProductDetailFocused') }}",
+                                            type: "POST",
+                                            data: {
+                                                _token: "{{ csrf_token() }}",
+                                                attribute_value_ids: attribute_value_ids,
+                                                product_id: product_id
+                                            },
+                                            success: function(response) {
+                                                if (response.status ==
+                                                    "success") {
+                                                    var regular_price = response
+                                                        .data['regular_price'];
+                                                    var sale_price = response
+                                                        .data['sale_price'];
+                                                    var stock = response.data[
+                                                        'stock'];
+                                                    var percent_discount = (
+                                                        100 - (sale_price /
+                                                            regular_price *
+                                                            100)).toFixed(1);
+                                                    if (variant_selected) {
+                                                        if (sale_price &&
+                                                            sale_price > 0) {
+                                                            $('#regular-price')
+                                                                .text(
+                                                                    regular_price
+                                                                    ).addClass(
+                                                                    'regular-price-css'
+                                                                    )
+                                                                .removeClass(
+                                                                    'regular-price'
+                                                                    );
+                                                            $('#sale-price')
+                                                                .text(
+                                                                    sale_price);
+                                                            $('#update-stock')
+                                                                .text(stock);
+                                                            $('#percent-discount')
+                                                                .text("-" +
+                                                                    percent_discount +
+                                                                    "%");
+                                                        } else {
+                                                            $('#regular-price')
+                                                                .text(
+                                                                    regular_price
+                                                                    ).addClass(
+                                                                    'regular-price'
+                                                                    )
+                                                                .removeClass(
+                                                                    'regular-price-css'
+                                                                    );
+                                                            $('#sale-price')
+                                                                .hide();
+                                                            $('#percent-discount')
+                                                                .hide();
+                                                        }
+                                                        get_stock_variant_clicked
+                                                            = stock;
+                                                        currency();
+                                                    }
+                                                } else {
+                                                    $('#update-stock').text(0);
+                                                    notification('error',
+                                                        'Sản phẩm không có sẵn',
+                                                        'Hết hàng');
+                                                    console.log(
+                                                        'Response status is not success'
+                                                        );
+                                                }
+                                            },
+                                            error: function(xhr) {
+                                                alert(
+                                                    'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.');
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        });
+                    }
+
+                }
+            });
+            //------------------Handle increment and reduce quantity-------------------
+            $('.reduce').click(function() {
+                if (!variant_selected) {
+                    $('.blink-border').addClass('animation-blink-border');
+                    setTimeout(() => {
+                        $('.blink-border').removeClass('animation-blink-border');
+                    }, 950);
+                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
+                } else {
+                    if ($('.quantity').val() <= 1) {
+                        $('.quantity').val(1);
+                    } else {
+                        $('.quantity').val($('.quantity').val() - 1);
+                    }
+                }
+            })
+            $('.quantity').on('input', function() {
+                if (!variant_selected) {
+                    $(this).val(1);
+                    $('.blink-border').addClass('animation-blink-border');
+                    setTimeout(() => {
+                        $('.blink-border').removeClass('animation-blink-border');
+                    }, 950);
+                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
+                } else {
+                    if (!Number($(this).val())) {
+                        $(this).val(1);
+                        notification('error', 'Vui lòng nhập số!', 'Lỗi');
+                    }
+                }
+            })
+            $('.increment').click(function() {
+                if (!variant_selected) {
+                    $('.blink-border').addClass('animation-blink-border');
+                    setTimeout(() => {
+                        $('.blink-border').removeClass('animation-blink-border');
+                    }, 950);
+                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
+                } else {
+                    if ($('.quantity').val() >= get_stock_variant_clicked) {
+                        $('.blink-border-text').addClass('animation-blink-border');
+                        setTimeout(() => {
+                            $('.blink-border-text').removeClass('animation-blink-border');
+                        }, 950);
+                        notification('warning', 'Đã đạt đến số lượng tối đa trong kho!', 'Cảnh báo!');
+                    } else if ($('.quantity').val() >= 10) {
+                        notification('warning', 'Mỗi lần chỉ được phép mua tối đa 10 sản phẩm!',
+                            'Cảnh báo!');
+                    } else {
+                        $('.quantity').val(function(i, val) {
+                            return parseInt(val) + 1;
+                        });
+                    }
+                }
+            })
+            $('.add-to-cart').click(function() {
+                if (!variant_selected) {
+                    $('.blink-border').addClass('animation-blink-border');
+                    setTimeout(() => {
+                        $('.blink-border').removeClass('animation-blink-border');
+                    }, 950);
+                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
+                } else {
+                    var quantity = $('.quantity').val();
+                    const url =
+                        "{{ route('addToCart', ['variant_id' => ':variant_id', 'quantity' => ':quantity']) }}"
+                        .replace(':variant_id', variant_id)
+                        .replace(':quantity', quantity);
+                    window.location.href = url;
+                }
+            })
+
+            //------------Xử lý reset selected-----------------------
+            if (attribute_value_ids.length == 0) {
+                $('.reset_selected').hide();
+            }
+            $('.reset_selected').click(function() {
+                attribute_value_ids = [];
+                $('.attribute_item').each(function() {
+                    if (!$(this).hasClass('able')) {
+                        $(this).removeClass('disabled');
+                        $(this).addClass('able active');
+                        if ($(this).hasClass('disableRadio')) {
+                            $(this).removeClass('disableRadio');
+                        }
+                    }
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active');
+                    }
+                });
+                $('#regular-price').text(regular_price);
+                $('#sale-price').text(sale_price);
+                $('#update-stock').text(total_stock);
+                $('#percent-discount').text(percent_discount);
+                get_stock_variant_clicked = null;
+                $('.reset_selected').hide();
+                $('#sale-price').hide();
+                $('#regular-price').hide();
+                $('#percent-discount').hide();
+                variant_selected = false;
+            })
+
+        });
+    </script>
 @endsection
