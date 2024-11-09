@@ -106,7 +106,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.js.map"></script>
     <!-- Notification function -->
     <script>
-        function notification(type, data, title) {
+        function notification(type, data, title, timeOut = "10000") {
             $(document).ready();
             $(function() {
                 Command: toastr[type](data, title);
@@ -120,7 +120,7 @@
                     onclick: null,
                     showDuration: "300",
                     hideDuration: "1000",
-                    timeOut: "10000",
+                    timeOut: timeOut,
                     extendedTimeOut: "1000",
                     showEasing: "swing",
                     hideEasing: "linear",
@@ -129,29 +129,29 @@
                 };
             });
         };
-        //Route variable INDEX
-
+        //Route variable SHOW
+        const routeImportingGoods = "{{route('admin.importingGoods')}}";
         //Route variable CREATE
-        const getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
+        const routeGetAllAttributes = "{{route('admin.getAllAttributes')}}";
 
-        const getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
-        const createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
-        const checkCategoryByIdRoute = "{{route('admin.checkCategoryById')}}";
+        const routeGetAllCategories = "{{route('admin.getAllCategories')}}";
+        const routeCreateNewCategory = "{{route('admin.createNewCategory')}}";
+        const routeCheckCategoryById = "{{route('admin.checkCategoryById')}}";
 
-        const getAllBrandsRoute = "{{route('admin.getAllBrands')}}";
-        const createNewBrandRoute = "{{route('admin.createNewBrand')}}";
-        const checkBrandByIdRoute = "{{route('admin.checkBrandById')}}";
+        const routeGetAllBrands = "{{route('admin.getAllBrands')}}";
+        const routeCreateNewBrand = "{{route('admin.createNewBrand')}}";
+        const routeCheckBrandById = "{{route('admin.checkBrandById')}}";
 
-        const getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
-        const getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
+        const routeGetSkuProduct = "{{route('admin.getSkuProduct')}}";
+        const routeGetSkuProductVariation = "{{route('admin.getSkuProductVariation')}}";
 
-        const storeProductRoute = "{{route('admin.products.store')}}";
+        const routeStoreProduct = "{{route('admin.products.store')}}";
 
-        function returnGetAllAttributeValuesByIdRoute(id) {
+        function routeReturnGetAllAttributeValuesById(id) {
             return "{{ route('admin.getAllAttributeValuesById', ':id') }}".replace(':id', id);
         }
 
-        function returnAddNewAttributeValueByIdRoute(id) {
+        function routeReturnAddNewAttributeValueById(id) {
             return "{{ route('admin.addNewAttributeValueById', ':id') }}".replace(':id', id);
         }
 

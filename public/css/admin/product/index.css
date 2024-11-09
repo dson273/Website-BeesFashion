@@ -18,11 +18,11 @@ td {
     -ms-user-select: none;
 }
 
-.scroll-x {
+/* .scroll-x {
     overflow-x: auto;
-    /* scrollbar-color: transparent transparent; */
+    scrollbar-color: transparent transparent;
 }
 
 .scroll-x::-webkit-scrollbar {
     display: none;
-}
+} */

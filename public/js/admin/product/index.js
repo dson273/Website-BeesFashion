@@ -10,9 +10,9 @@ $('#active').click(function () {
     $(this).removeClass('btn-outline-primary').addClass('btn-primary');
 })
 $(document).ready(function () {
-    $('.col-sm-12').each(function () {
-        if ($(this).find('table')) {
-            $(this).addClass('scroll-x table-container');
-        }
-    })
+    // $('.col-sm-12').each(function () {
+    //     if ($(this).find('table')) {
+    //         $(this).addClass('scroll-x table-container');
+    //     }
+    // })
 })
