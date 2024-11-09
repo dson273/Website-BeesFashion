@@ -11,9 +11,7 @@ class User_manager_setting extends Model
     protected $fillable = [
         'user_id',
         'manager_setting_id',
-        'is_active',
-        'created_at',
-        'updated_at'
+        'is_active'
     ];
     public function user()
     {

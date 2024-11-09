@@ -1,0 +1,23 @@
+th,
+td {
+    text-align: center;
+}
+
+.cspt {
+    cursor: pointer;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.importantInformationDiv{
+    width: 300px;
+    height: 100px;
+}

@@ -14,9 +14,7 @@ class Order_detail extends Model
         'amount_reduced',
         'quantity',
         'order_id',
-        'product_variant_id',
-        'created_at',
-        'updated_at'
+        'product_variant_id'
     ];
     public function order()
     {

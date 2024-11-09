@@ -9,26 +9,94 @@ use App\Models\Attribute_value;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Import_history;
+use App\Models\Order_detail;
 use App\Models\Product;
 use App\Models\Product_category;
 use App\Models\Product_file;
 use App\Models\Product_variant;
 use App\Models\Product_variant_attribute_value;
+use App\Models\Product_vote;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-
+use \Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\error;
+use function PHPUnit\Framework\isEmpty;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function returnRedirectRouteWithMessage($routeName, $messageType, $messageContent)
+    {
+        return redirect()->route($routeName)->with($messageType, $messageContent);
+    }
     public function index()
     {
-        $listProducts = Product::all();
-        $listProducts = $listProducts ? $listProducts : '';
+        $listProducts = Product::with(['product_variants.order_details.order.status_orders', 'product_files'])
+            ->select('products.*')
+            ->selectRaw('(
+            SELECT COALESCE(SUM(od.quantity), 0) 
+            FROM order_details od 
+            INNER JOIN product_variants pv ON od.product_variant_id = pv.id 
+            INNER JOIN orders o ON od.order_id = o.id
+            INNER JOIN status_orders so ON o.id = so.order_id
+            WHERE pv.product_id = products.id
+            AND so.status_id = 3
+        ) as total_sold')
+            ->where('is_active', 1)
+            ->selectRaw('(
+            SELECT file_name 
+            FROM product_files 
+            WHERE is_default=1 and product_id=products.id
+            ) as mainImage')
+            ->withCount('product_variants')
+            ->having('product_variants_count', '>', 0)
+            ->get();
+        // ==================================
         return view('admin.products.index', compact('listProducts'));
+    }
+    public function inactive()
+    {
+        $listProducts = Product::with(['product_variants.order_details.order.status_orders', 'product_files'])
+            ->select('products.*')
+            ->selectRaw('(
+            SELECT COALESCE(SUM(od.quantity), 0) 
+            FROM order_details od 
+            INNER JOIN product_variants pv ON od.product_variant_id = pv.id 
+            INNER JOIN orders o ON od.order_id = o.id
+            INNER JOIN status_orders so ON o.id = so.order_id
+            WHERE pv.product_id = products.id
+            AND so.status_id = 3
+        ) as total_sold')
+            ->selectRaw('(
+            SELECT file_name 
+            FROM product_files 
+            WHERE is_default=1 and product_id=products.id
+            ) as mainImage')
+            ->where('is_active', 0)
+            ->withCount('product_variants')
+            ->having('product_variants_count', '>', 0)
+            ->get();
+        // ==================================
+        return view('admin.products.index', compact('listProducts'));
+    }
+    public function changeStatus(Request $request)
+    {
+        $productId = $request['id'];
+        $checkProduct = Product::find($productId);
+        if ($checkProduct) {
+            $checkProduct->is_active = $checkProduct->is_active == 1 ? 0 : 1;
+            $checkProduct->save();
+            if ($checkProduct->is_active == 1) {
+                return $this->returnRedirectRouteWithMessage('admin.products.index.inactive', 'statusSuccess', 'Thay đổi trạng thái thành công!');
+            } else {
+                return $this->returnRedirectRouteWithMessage('admin.products.index', 'statusSuccess', 'Thay đổi trạng thái thành công!');
+            }
+        } else {
+            return $this->returnRedirectRouteWithMessage('admin.products.index', 'statusError', 'Không tìm thấy sản phẩm cần thay đổi trạng thái!');
+        }
     }
 
     /**
@@ -36,7 +104,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        // return redirect()->route('admin.products.index')->with('statusSuccess','Website loaded successfully!');
         return view('admin.products.create');
     }
 
@@ -184,16 +251,19 @@ class ProductController extends Controller
                             if ($attributeItem['attributeValue'] && $attributeItem['attributeValue'] != '') {
                                 $checkAttribute = false;
                                 foreach ($attributeData as $itemAttributeData) {
+                                    //Kiểm tra xem thuộc tính hiện tại đã được tạo trong cơ sở dữ liệu chưa
                                     if ($itemAttributeData['attributeName'] == $attributeItem['attributeName']) {
-                                        $findAttributeValue = Attribute_value::where('value', $attributeItem['attributeValue'])
+                                        //Nếu đã tồn tại trong cơ sở dữ liệu thì tìm kiếm giá trị thuộc tính hiện tại của nó đã được tạo trong db chưa
+                                        $findAttributeValue = Attribute_value::where('name', $attributeItem['attributeValue'])
                                             ->where('attribute_id', $itemAttributeData['attributeId'])->first();
-
+                                        //Nếu đã đc tạo trong db rồi thì tạo một bản ghi ở bảng 'product_variant_attribute_values'
                                         if ($findAttributeValue) {
                                             Product_variant_attribute_value::create([
                                                 'product_variant_id' => $newProductVariation->id,
                                                 'attribute_value_id' => $findAttributeValue->id
                                             ]);
                                         } else {
+                                            //Nếu giá trị thuộc tính này chưa tồn tại trong thuộc tính hiện tại thì tạo mới nó và thêm 1 bản ghi ở bảng 'product_variant_attribute_values'
                                             $newAttributeValue = Attribute_value::create([
                                                 'name' => $attributeItem['attributeValue'],
                                                 'attribute_id' => $itemAttributeData['attributeId']
@@ -208,7 +278,9 @@ class ProductController extends Controller
                                     }
                                 }
                                 if (!$checkAttribute) {
-                                    $newAttribute = Attribute::create(['name' => $attributeItem['attributeName']]);
+                                    $newAttribute = Attribute::create([
+                                        'name' => $attributeItem['attributeName']
+                                    ]);
                                     $newAttributeValue = Attribute_value::create([
                                         'name' => $attributeItem['attributeValue'],
                                         'attribute_id' => $newAttribute->id
@@ -249,7 +321,127 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $productDetail = Product::with([
+            'product_variants.order_details.order.status_orders',
+            'product_gallery',
+            'product_videos'
+        ])
+            ->select('products.*')
+            ->selectRaw('(
+                SELECT COALESCE(SUM(od.quantity), 0) 
+                FROM order_details od 
+                INNER JOIN product_variants pv ON od.product_variant_id = pv.id 
+                INNER JOIN orders o ON od.order_id = o.id
+                INNER JOIN status_orders so ON o.id = so.order_id
+                WHERE pv.product_id = products.id
+                AND so.status_id = 3
+            ) as total_sold')
+            ->selectRaw('(
+                SELECT file_name 
+                FROM product_files 
+                WHERE is_default=1 and product_id=products.id
+            ) as mainImage')
+            ->where('id', $id)
+            ->withCount('product_variants')
+            ->having('product_variants_count', '>', 0)
+            ->first();
+        $productVariants = Product_variant::with('order_details.order.status_orders')
+            ->select('product_variants.*')
+            ->selectRaw('(
+                SELECT COALESCE(SUM(od.quantity), 0) 
+                FROM order_details od 
+                INNER JOIN orders o ON od.order_id = o.id
+                INNER JOIN status_orders so ON o.id = so.order_id
+                WHERE od.product_variant_id = product_variants.id
+                AND so.status_id = 3
+            ) as total_sold')
+            ->where('product_variants.product_id', $id)
+            ->get();
+        if ($productVariants) {
+            $starRatingOfMultipleProductVariants = 0;
+            $variantVoted = 0;
+            foreach ($productVariants as $variant) {
+                $totalProfitPerItem = 0;
+                $import_histories = Import_history::where('product_variant_id', $variant->id)->orderBy('created_at', 'asc')->get();
+                if ($import_histories) {
+                    foreach ($import_histories as $key => $history) {
+                        $totalProfitPerTime = 0;
+                        $currentTime = $history->created_at;
+                        $nextTime = isset($import_histories[$key + 1]) ? $import_histories[$key + 1]->created_at : Carbon::now('Asia/Ho_Chi_Minh');
+                        $order_details = Order_detail::with('order.status_orders')
+                            ->whereHas('order.status_orders', function ($query) {
+                                $query->where('status_id', 3);
+                            })
+                            ->where('product_variant_id', $variant->id)
+                            ->where('created_at', '>=', $currentTime)
+                            ->where('created_at', '<', $nextTime)
+                            ->get();
+                        if ($order_details) {
+                            foreach ($order_details as $key => $order_detail) {
+                                $totalProfitPerTime += ($order_detail->original_price - $history->import_price) * $order_detail->quantity;
+                            }
+                        }
+                        $totalProfitPerItem += $totalProfitPerTime;
+                    }
+                }
+                $variant->total_profit = $totalProfitPerItem;
+
+                //Get star
+                $productVotes = Product_vote::where('product_variant_id', $variant->id)
+                    ->where('status', 1)->get();
+                if ($productVotes->count() > 0) {
+                    $starRatingPerProductVariant = 0;
+                    $productVote = 0;
+                    foreach ($productVotes as $voteItem) {
+                        $productVote += $voteItem->star;
+                    }
+                    $starRatingPerProductVariant = $productVote / $productVotes->count();
+                    $starRatingOfMultipleProductVariants += $starRatingPerProductVariant;
+                    $variantVoted++;
+                }
+            }
+            if ($variantVoted > 0) {
+                $starRatingOfMultipleProductVariants /= $variantVoted;
+            }
+            $productStar = $starRatingOfMultipleProductVariants > 0 ? $starRatingOfMultipleProductVariants : 0;
+            // dd($starRatingOfMultipleProductVariants);
+        }
+        if ($productDetail->product_variants) {
+            $totalProfit = 0;
+            foreach ($productDetail->product_variants as $variant) {
+                $totalProfitPerItem = 0;
+                $import_histories = Import_history::where('product_variant_id', $variant->id)->orderBy('created_at', 'asc')->get();
+                if ($import_histories) {
+                    foreach ($import_histories as $key => $history) {
+                        $totalProfitPerTime = 0;
+                        $currentTime = $history->created_at;
+                        $nextTime = isset($import_histories[$key + 1]) ? $import_histories[$key + 1]->created_at : Carbon::now('Asia/Ho_Chi_Minh');
+                        $order_details = Order_detail::with('order.status_orders')
+                            ->whereHas('order.status_orders', function ($query) {
+                                $query->where('status_id', 3);
+                            })
+                            ->where('product_variant_id', $variant->id)
+                            ->where('created_at', '>=', $currentTime)
+                            ->where('created_at', '<', $nextTime)
+                            ->get();
+                        if ($order_details) {
+                            foreach ($order_details as $key => $order_detail) {
+                                $totalProfitPerTime += ($order_detail->original_price - $history->import_price) * $order_detail->quantity;
+                            }
+                        }
+                        $totalProfitPerItem += $totalProfitPerTime;
+                    }
+                }
+                $totalProfit += $totalProfitPerItem;
+            }
+            if ($productDetail) {
+                return view('admin.products.show', compact('productDetail', 'productVariants', 'totalProfit', 'productStar', 'variantVoted'));
+            } else {
+                return $this->returnRedirectRouteWithMessage('admin.products.index', 'statusError', 'Không tìm thấy sản phẩm cần xem chi tiết!');
+            }
+        } else {
+            return $this->returnRedirectRouteWithMessage('admin.products.index', 'statusError', 'Sản phẩm chi tiết này không có biến thể, đây là sản phẩm lỗi!');
+        }
     }
 
     /**

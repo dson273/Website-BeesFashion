@@ -10,9 +10,7 @@ class Banner_image extends Model
     use HasFactory;
     protected $fillable = [
         'file_name',
-        'banner_id',
-        'created_at',
-        'updated_at'
+        'banner_id'
     ];
     public function banner()
     {

@@ -10,9 +10,7 @@ class Status_order extends Model
     use HasFactory;
     protected $fillable = [
         'status_id',
-        'order_id',
-        'created_at',
-        'updated_at'
+        'order_id'
     ];
     public function status()
     {

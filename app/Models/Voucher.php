@@ -18,9 +18,7 @@ class Voucher extends Model
         'start_date',
         'end_date',
         'minimum_order_value',
-        'is_active',
-        'created_at',
-        'updated_at'
+        'is_active'
     ];
     public function product_vouchers()
     {

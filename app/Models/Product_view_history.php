@@ -11,9 +11,7 @@ class Product_view_history extends Model
     protected $fillable = [
         'click',
         'user_id',
-        'product_id',
-        'created_at',
-        'updated_at'
+        'product_id'
     ];
     public function user()
     {
