@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Cart;
 use App\Models\Banner;
 use App\Models\Product;
 use App\Models\Category;
@@ -11,6 +12,8 @@ use App\Models\Attribute_type;
 use App\Models\Attribute_value;
 use App\Models\Product_variant;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Product_variant_attribute_value;
 
 class HomeController extends Controller
 {
@@ -68,6 +71,12 @@ class HomeController extends Controller
         return view('user.dashboard');
     }
 
+    //Trang thanh toán
+    public function checkout()
+    {
+        return view('user.check-out');
+    }
+
     //Trang chi tiết sản phẩm
     public function product_detail(string $id)
     {
@@ -84,6 +93,8 @@ class HomeController extends Controller
         $array_variants = $product->product_variants->map(function ($variant) {
             return [
                 'variant_id' => $variant->id,
+                'regular_price' => $variant->regular_price,
+                'sale_price' => $variant->sale_price,
                 'stock' => $variant->stock,
                 'attribute_values' => $variant->variant_attribute_values->pluck('attribute_value_id')->toArray()
             ];
@@ -116,7 +127,7 @@ class HomeController extends Controller
                     'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null, // Lấy tên loại thuộc tính
                     'attribute_values' => $attribute->attribute_values->sortBy(function ($value) {
                         // Sắp xếp theo thứ tự "S", "M", "L", "XL", nếu giá trị khác số
-                        $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' =>5];
+                        $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
                         return $sizes[$value->name] ?? $value->name; // Sắp xếp theo thứ tự định trước hoặc theo tên
                     })->values()->map(function ($value) {
                         return [
@@ -128,10 +139,133 @@ class HomeController extends Controller
                 ]
             ];
         })->toArray();
-        $productDetail = Product::find($id);
 
-        // dd($array_attributes);
+        // Lấy hình ảnh của biến thể sản phẩm (duy nhất)
+        $productImages = Product_variant::select('image')
+            ->where('product_id', $id)
+            ->groupBy('image')
+            ->get();
 
-        return view('user.product-detail', compact('product', 'productDetail', 'array_attributes', 'array_variants'));
+        // Tính tổng số lượng hàng tồn kho của sản phẩm
+        $total_stock = Product_variant::where('product_id', $id)->sum('stock');
+
+        // Lấy giá của biến thể
+        if ($product) {
+            $minPrice = $product->product_variants->min('sale_price');
+            $maxPrice = $product->product_variants->max('sale_price');
+
+            // Gán giá trị khoảng giá vào thuộc tính mới
+            $product->priceRange = $minPrice === $maxPrice
+                ? number_format($minPrice, 0, ',', '.') . 'đ'
+                : number_format($minPrice, 0, ',', '.'). 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
+        }
+
+        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'productImages', 'total_stock'));
+    }
+
+    public function updateInformationProduct(Request $request)
+    {
+        $array_attribute_value_ids = $request->input('attribute_value_ids');
+        $product_id = $request->input('product_id');
+
+        $productFocusQuery = Product_variant_attribute_value::query()
+            ->join('product_variants as pv', 'product_variant_attribute_values.product_variant_id', '=', 'pv.id')
+            ->select('pv.*')
+            ->where('pv.product_id', $product_id)
+            ->whereIn('product_variant_attribute_values.attribute_value_id', $array_attribute_value_ids)
+            ->groupBy('pv.id')
+            ->havingRaw('COUNT(DISTINCT product_variant_attribute_values.attribute_value_id) = ?', [count($array_attribute_value_ids)])
+            ->get();
+
+        if ($productFocusQuery->isNotEmpty()) {
+            $productDetailUpdate = $productFocusQuery->first();
+            $response = [
+                'status' => 'success',
+                'data' => $productDetailUpdate
+            ];
+            return response()->json($response);
+        }
+    }
+
+    public function addToCart(string $variant_id, string $quantity)
+    {
+        $checkCart = Cart::with('product_variant')->where('product_variant_id', $variant_id)->where('user_id', Auth::user()->id)->first();
+        if ($checkCart) {
+            if ($checkCart->product_variant->stock < $checkCart->quantity + $quantity) {
+                $checkCart->quantity = $checkCart->product_variant->stock;
+            } else if ($checkCart->quantity + $quantity > 10) {
+                $checkCart->quantity = 10;
+            } else {
+                $checkCart->quantity = $checkCart->quantity + $quantity;
+            }
+            $checkCart->updated_at->now();
+            $checkCart->save();
+        } else {
+            $variant = Product_variant::select('stock')->where('id', $variant_id)->first();
+            if ($variant) {
+                Cart::create([
+                    'quantity' => $quantity <= $variant->stock ? $quantity : $variant->stock,
+                    'product_variant_id' => $variant_id,
+                    'user_id' => Auth::user()->id,
+                    'created_at' => now()
+                ]);
+            }
+        }
+        return redirect()->back()->with('statusSuccess', 'Thêm sản phẩm vào giỏ hàng thành công.');
+    }
+
+    //Trang giỏ hàng
+    public function cart()
+    {
+        $carts = Auth::user()->carts;
+        $cart_list = [];
+        foreach ($carts as $itemCart) {
+            $array_item_cart = [];
+            $array_item_cart['quantity'] = $itemCart->quantity;
+            $variants = $itemCart->product_variant;
+
+            $array_item_cart['product_name'] = Product_variant::select('p.name')
+                ->rightJoin('products as p', 'product_variants.product_id', '=', 'p.id')
+                ->first()->name;
+
+            $array_item_cart['image'] = Product_variant::where('id', $variants->id)->value('image');
+            $array_item_cart['regular_price'] = $variants->regular_price;
+            $array_item_cart['sale_price'] = $variants->sale_price;
+            $array_item_cart['stock'] = $variants->stock;
+            $array_item_cart['product_id'] = $variants->product_id;
+            $array_item_cart['variant_id'] = $variants->id;
+            $array_item_cart['id_cart'] = $itemCart->id;
+
+            // Lấy thông tin thuộc tính và giá trị
+            $array_item_attribute_values = [];
+            $productAttributeValueDetails = Product_variant_attribute_value::where('product_variant_id', $variants->id)->get();
+
+            foreach ($productAttributeValueDetails as $itemProductAttributeValueDetail) {
+                $attributeValue = $itemProductAttributeValueDetail->attribute_value;
+                $attribute = $attributeValue->attribute;
+
+                $array_item_attribute_values[] = [
+                    'attribute_name' => $attribute->name,
+                    'value_name' => $attributeValue->name,
+                    'value_code' => $attributeValue->value
+                ];
+            }
+
+            $array_item_cart['attribute_values'] = $array_item_attribute_values;
+            $cart_list[] = $array_item_cart;
+        }
+        // dd($cart_list);
+        $total_payment = 0;
+        $total_discount = 0;
+        foreach ($cart_list as $item_cart) {
+            if ($item_cart['sale_price'] != null) {
+                $discount = $item_cart['regular_price'] - $item_cart['sale_price'];
+                $total_discount += $discount * $item_cart['quantity'];
+                $total_payment += $item_cart['sale_price'] * $item_cart['quantity'];
+            } else {
+                $total_payment += $item_cart['regular_price'] * $item_cart['quantity'];
+            }
+        }
+        return view('user.cart', compact('cart_list', 'total_payment', 'total_discount'));
     }
 }
