@@ -77,7 +77,7 @@ Danh sách sản phẩm
                     <tbody>
                         @if ($listProducts!='')
                         @foreach ($listProducts as $key => $product)
-                        <tr class="productItem">
+                        <tr class="small">
                             <td>{{$key+1}}</td>
                             <td>{{$product->id}}</td>
                             <td>{{$product->SKU}}</td>
@@ -90,9 +90,9 @@ Danh sách sản phẩm
                             <td>{{$product->total_sold}}</td>
                             <td>
                                 @if($product->is_active==1)
-                                <span class="text-success">Đang hoạt động</span>
+                                <span class="text-white badge badge-success">Đang hoạt động</span>
                                 @else
-                                <span class="text-danger">Ngừng bán</span>
+                                <span class="text-white badge badge-danger">Ngừng bán</span>
                                 @endif
                             </td>
                             <td>{{$product->created_at}}</td>

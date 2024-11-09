@@ -175,7 +175,7 @@ Chi tiết sản phẩm
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body scroll-x">
             <h4>List variations</h4>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -194,6 +194,7 @@ Chi tiết sản phẩm
                             <th>Status</th>
                             <th>Created at</th>
                             <th>Updated at</th>
+                            <th>Control</th>
                         </tr>
                     </thead>
                     <tfoot class="sticky-bottom">
@@ -211,23 +212,29 @@ Chi tiết sản phẩm
                             <th>Status</th>
                             <th>Created at</th>
                             <th>Updated at</th>
+                            <th>Control</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @if ($productVariants!='')
                         @foreach ($productVariants as $key => $productVariant)
-                        <tr>
+                        <tr class="small">
                             <td>{{$key+1}}</td>
-                            <td>{{$productVariant->id}}</td>
-                            <td>{{$productVariant->SKU}}</td>
+                            <td class="productVariantId">{{$productVariant->id}}</td>
+                            <td class="cspt copySku">
+                                <div class="d-flex flex-column">
+                                    <span class="contentSku">{{$productVariant->SKU}}</span>
+                                    <span class="text-primary">(Click to copy)</span>
+                                </div>
+                            </td>
                             <td>
                                 <img src="{{asset('uploads/products/images/'.$productVariant->image)}}" alt="" width="100" height="100">
                             </td>
                             <td>{{$productVariant->name}}</td>
                             <td>{{$productVariant->total_sold}}</td>
-                            <td>{{number_format($productVariant->total_profit,0,',','.')}} VND</td>
-                            <td>{{$productVariant->regular_price}}</td>
-                            <td>{{$productVariant->sale_price}}</td>
+                            <td class="no-wrap">{{number_format($productVariant->total_profit,0,',','.')}} VND</td>
+                            <td class="no-wrap">{{number_format($productVariant->regular_price,0,',','.')}} VND</td>
+                            <td class="no-wrap">{{number_format($productVariant->sale_price,0,',','.')}} VND</td>
                             <td>{{$productVariant->stock}}</td>
                             <td>
                                 @if($productVariant->is_active==1)
@@ -238,6 +245,16 @@ Chi tiết sản phẩm
                             </td>
                             <td>{{$productVariant->created_at}}</td>
                             <td>{{$productVariant->updated_at}}</td>
+                            <td>
+                                <div class="d-flex flex-column align-items-center justify-content-center">
+                                    <span class="btn btn-sm btn-primary no-wrap btnImportingGoods mb-2" data-toggle="modal" data-target="#exampleModal"><i class="mr-1 fas fa-plus fa-sm"></i>Importing goods</span>
+                                    @if($productVariant->is_active==1)
+                                    <a href="{{route('admin.products.show.changestatus',$productVariant->id)}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm mr-1"></i>Inactive</a>
+                                    @else
+                                    <a href="{{route('admin.products.show.changestatus',$productVariant->id)}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm mr-1"></i>Active</a>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
                         @endforeach
                         @else
@@ -250,7 +267,32 @@ Chi tiết sản phẩm
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Importing goods (Nhập hàng)</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column">
+                        <label for="">Quantity</label>
+                        <input type="number" class="form-control quantityImportPrice" placeholder="Enter quantity">
+                    </div>
+                    <div class="d-flex flex-column mt-2">
+                        <label for="">Import price</label>
+                        <input type="number" class="form-control importPrice" placeholder="Enter import price">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancle</button>
+                    <button type="button" class="btn btn-primary" id="doneImportingGoods">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /.container-fluid -->
 @endsection

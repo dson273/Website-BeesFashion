@@ -42,7 +42,7 @@ var categories = [];
 function getAllCategories() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: getAllCategoriesRoute,
+            url: routeGetAllCategories,
             method: "POST",
             data: {
                 _token: csrf
@@ -135,7 +135,7 @@ function createCategoryOptions(categories, level = 0) {
 function createNewCategoryByAjax(name, parent_id) {
     if (parent_id) {
         $.ajax({
-            url: createNewCategoryRoute,
+            url: routeCreateNewCategory,
             method: "POST",
             data: {
                 _token: csrf,
@@ -153,7 +153,7 @@ function createNewCategoryByAjax(name, parent_id) {
         });
     } else {
         $.ajax({
-            url: createNewCategoryRoute,
+            url: routeCreateNewCategory,
             method: "POST",
             data: {
                 _token: csrf,
@@ -186,7 +186,7 @@ $(document).on('click', '#addNewCategoryBtn', async function () {
                 console.error('Error:', error);
             } finally {
                 $('.container-spinner').addClass('hidden');
-                notification('success', 'Create new category successfully!', 'Successfully!');
+                notification('success', 'Create new category successfully!', 'Successfully!', '1000');
             }
         } else {
             $('.container-spinner').removeClass('hidden');
@@ -200,18 +200,18 @@ $(document).on('click', '#addNewCategoryBtn', async function () {
                 console.error('Error:', error);
             } finally {
                 $('.container-spinner').addClass('hidden');
-                notification('success', 'Create new category successfully!', 'Successfully!');
+                notification('success', 'Create new category successfully!', 'Successfully!', '1000');
             }
         }
     } else {
-        notification('warning', 'You need enter category name!', 'Warning!');
+        notification('warning', 'You need enter category name!', 'Warning!', '3000');
     }
 })
 //----------------------------------------------------Check category by ajax-----------------------------------------------------
 function checkCategoryByAjax(categoryId) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: checkCategoryByIdRoute,
+            url: routeCheckCategoryById,
             method: "POST",
             data: {
                 _token: csrf,
@@ -221,13 +221,13 @@ function checkCategoryByAjax(categoryId) {
                 if (response.status == 200) {
                     resolve(true);
                 } else {
-                    notification('error', response.message, 'Error!');
+                    notification('error', response.message, 'Error!', '3000');
                     resolve(false);
                 }
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
-                notification('error', 'Unable check category by id!', 'Error!');
+                notification('error', 'Unable check category by id!', 'Error!', '3000');
                 reject();
             }
         })
@@ -238,7 +238,7 @@ var brands = [];
 function getAllBrands() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: getAllBrandsRoute,
+            url: routeGetAllBrands,
             method: "POST",
             data: {
                 _token: csrf
@@ -294,7 +294,7 @@ var checkNewBrandName = true;
 function createNewBrandByAjax(brandName) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: createNewBrandRoute,
+            url: routeCreateNewBrand,
             method: "POST",
             data: {
                 _token: csrf,
@@ -303,13 +303,13 @@ function createNewBrandByAjax(brandName) {
             success: function (response) {
                 if (response.status == 409) {
                     checkNewBrandName = false;
-                    notification('error', response.message, 'Error!');
+                    notification('error', response.message, 'Error!', '3000');
                     resolve(false);
                 } else if (response.status == 200) {
                     checkNewBrandName = true;
                     resolve(true);
                 } else {
-                    notification('error', 'Something went wrong!', 'Error!');
+                    notification('error', 'Something went wrong!', 'Error!', '3000');
                     resolve(false);
                 }
             },
@@ -325,7 +325,7 @@ function createNewBrandByAjax(brandName) {
 function checkBrandByAjax(brandId) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: checkBrandByIdRoute,
+            url: routeCheckBrandById,
             method: "POST",
             data: {
                 _token: csrf,
@@ -335,13 +335,13 @@ function checkBrandByAjax(brandId) {
                 if (response.status == 200) {
                     resolve(true);
                 } else {
-                    notification('error', response.message, 'Error!');
+                    notification('error', response.message, 'Error!', '3000');
                     resolve(false);
                 }
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
-                notification('error', 'Unable check brand by id!', 'Error!');
+                notification('error', 'Unable check brand by id!', 'Error!', '3000');
                 reject();
             }
         })
@@ -359,7 +359,7 @@ $(document).on('click', '#addNewBrandBtn', async function () {
                 $('#contentBrandContainer').find('.listBrands')[0].remove();
                 loadAllBrands();
                 $('.brandName').val('');
-                notification('success', 'Create new brand successfully!', 'Successfully!');
+                notification('success', 'Create new brand successfully!', 'Successfully!', '1000');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -367,7 +367,7 @@ $(document).on('click', '#addNewBrandBtn', async function () {
             $('.container-spinner').addClass('hidden');
         }
     } else {
-        notification('warning', 'You need to enter a brand name!', 'Warning!');
+        notification('warning', 'You need to enter a brand name!', 'Warning!', '3000');
     }
 });
 
@@ -738,7 +738,7 @@ const seenAttributeIds = new Set();
 
 function getAttributeDatas() {
     $.ajax({
-        url: getAllAttributesRoute,
+        url: routeGetAllAttributes,
         method: "POST",
         data: {
             _token: csrf
@@ -1373,7 +1373,7 @@ function getAttributeValueDatas(id, attributeId) {
     //resolve và reject là hai hàm được truyền vào bên trong Promise để báo hiệu rằng công việc bất đồng bộ (ở đây là cuộc gọi AJAX) đã hoàn tất
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: returnGetAllAttributeValuesByIdRoute(id),
+            url: routeReturnGetAllAttributeValuesById(id),
             method: "POST",
             data: {
                 attribute_id: attributeId,
@@ -1608,7 +1608,7 @@ $(document).on('click', '.selectNoneAttributeValuesBtn', function () {
 function addNewAttributeValue(id, newAttributeValue) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: returnAddNewAttributeValueByIdRoute(id),
+            url: routeReturnAddNewAttributeValueById(id),
             method: 'POST',
             data: {
                 attribute_id: id,
@@ -1707,11 +1707,11 @@ $('#saveAttributesBtn').click(function () {
                 generateVariationData = attributeData;
                 document.getElementById('generateVariations').classList.remove('disabledButton');
                 document.getElementById('addManually').classList.remove('disabledButton');
-                notification('success', 'Save attributes successfully!', 'Successfully!');
+                notification('success', 'Save attributes successfully!', 'Successfully!', '1000');
             }
         }
     } else {
-        notification('error', 'An error occurred when save attribute(s). Please try again!', 'Error!');
+        notification('error', 'An error occurred when save attribute(s). Please try again!', 'Error!', '3000');
     }
 })
 //------------------------------------------Handle generate variations------------------------------------------
@@ -2040,7 +2040,7 @@ $('#generateVariations').click(function () {
                 var variationItems = $('#variations').find('.variationItem');
                 if (variationItems.length > 0) {
                     $('.notificationNoVariationsYet').addClass('hidden');
-                    notification('success', 'Generate variations successfully!', 'Successfully!');
+                    notification('success', 'Generate variations successfully!', 'Successfully!', '1000');
                 }
                 if (totalVariations == 1) {
                     $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
@@ -2066,8 +2066,8 @@ $('#generateVariations').click(function () {
             }
         }
     } else {
-        notification('warning', 'Bạn cần thêm ít nhất một thuộc tính!', 'Warning!');
-        // notification('warning', 'You need to add attribute(s)!', 'Warning!');
+        notification('warning', 'Bạn cần thêm ít nhất một thuộc tính!', 'Warning!', '3000');
+        // notification('warning', 'You need to add attribute(s)!', 'Warning!','3000');
     }
 })
 //-----------------------------------------Pagination-----------------------------------------
@@ -2490,8 +2490,8 @@ $(document).on('click', '#addManually', function () {
             $('.container-spinner').addClass('hidden');
         }
     } else {
-        notification('warning', 'Bạn cần thêm ít nhất một thuộc tính!', 'Warning!');
-        // notification('warning', 'You need to add attribute(s)!', 'Warning!');
+        notification('warning', 'Bạn cần thêm ít nhất một thuộc tính!', 'Warning!', '3000');
+        // notification('warning', 'You need to add attribute(s)!', 'Warning!','3000');
     }
 })
 //-------------------------------------------Delete all variations-------------------------------------------
@@ -2511,8 +2511,8 @@ $(document).on('click', '.deleteAllVariations', function () {
             saveVariations.addClass('hidden disabledButton');
             saveVariationsStatus = false;
             pagination();
-            notification('success', 'Đã xóa tất cả biến thể thành công!', 'Successfully!');
-            // notification('success', 'Remove all variations successfully!', 'Successfully!');
+            notification('success', 'Đã xóa tất cả biến thể thành công!', 'Successfully!', '1000');
+            // notification('success', 'Remove all variations successfully!', 'Successfully!','1000');
         }
     } catch (error) {
         console.error('Error:', error);
@@ -2530,8 +2530,8 @@ function previewVariationImage(input) {
             const file = input.files[0];
 
             if (file.size > maxSizeBytes) {
-                notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn!`, 'Error');
-                // notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error');
+                notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn!`, 'Error', '2000');
+                // notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error', '2000');
                 input.value = ''; // Reset input nếu ảnh quá lớn
                 return;
             }
@@ -2565,11 +2565,11 @@ function previewVariationImage(input) {
                         divPreviewVariationImage.appendChild(iRemoveVariationImage);
                     }
                     reader.readAsDataURL(file);
-                    notification('success', 'Đã tải ảnh lên thành công!', 'Successfully');
-                    // notification('success', 'Image uploaded successfully', 'Successfully');
+                    notification('success', 'Đã tải ảnh lên thành công!', 'Successfully', '2000');
+                    // notification('success', 'Image uploaded successfully', 'Successfully', '2000');
                 } else {
-                    notification('warning', 'Ảnh đã tồn tại (đã được tải lên)', 'Warning');
-                    // notification('warning', 'Image already exists', 'Warning');
+                    notification('warning', 'Ảnh đã tồn tại (đã được tải lên)', 'Warning', '2000');
+                    // notification('warning', 'Image already exists', 'Warning', '2000');
                 }
             } else {
                 reader.onload = function (e) {
@@ -2593,8 +2593,8 @@ function previewVariationImage(input) {
                     divPreviewVariationImage.appendChild(iRemoveVariationImage);
                 }
                 reader.readAsDataURL(file);
-                notification('success', 'Đã tải ảnh lên thành công!', 'Successfully');
-                // notification('success', 'Image uploaded successfully', 'Successfully');
+                notification('success', 'Đã tải ảnh lên thành công!', 'Successfully', '2000');
+                // notification('success', 'Image uploaded successfully', 'Successfully', '2000');
             }
         }
     } catch (error) {
@@ -2621,14 +2621,24 @@ $(document).on('click', '#removeVariationImage', function () {
 })
 
 //--------------------------------------Check for data type of input---------------------------------------
-function checkNumberInput(input) {
+function checkNumberInput(input, typeInput = null) {
     saveVariations.addClass('disabledButton');
     saveVariationsStatus = false;
-    if (!Number(input.val())) {
-        input.val('');
-        return false;
+    if (typeInput == 'stock') {
+        let value = parseFloat(input.val().replace(',', '.'));
+        if (!Number.isInteger(value)) {
+            input.val('');
+            return false;
+        } else {
+            return true;
+        }
     } else {
-        return true;
+        if (isNaN(parseFloat(input.val())) && !Number(parseFloat(input.val()))) {
+            input.val('');
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
@@ -2638,7 +2648,7 @@ $(document).on('change', '.importPriceInput', function () {
     if (salePrice.val()) {
         if (parseFloat(salePrice.val()) <= parseFloat($(this).val())) {
             $(this).val('');
-            notification('warning', 'Giá nhập phải nhỏ hơn giá bán đã giảm!', 'Warning!');
+            notification('warning', 'Giá nhập phải nhỏ hơn giá bán đã giảm!', 'Warning!', '3000');
         }
     }
     var countImportPrice = 0;
@@ -2673,7 +2683,7 @@ $(document).on('change', '.importPriceInput', function () {
 $(document).on('click', '.regularPriceInput', function () {
     const importPrice = $(this).closest('.variationItemContent').find('.importPriceInput');
     if (importPrice.val() == '') {
-        notification('warning', 'Bạn cần nhập giá nhập trước!', 'Warning!');
+        notification('warning', 'Bạn cần nhập giá nhập trước!', 'Warning!', '3000');
         importPrice.focus();
     }
 })
@@ -2681,7 +2691,7 @@ $(document).on('click', '.regularPriceInput', function () {
 $(document).on('change', '.regularPriceInput', function () {
     const importPrice = $(this).closest('.variationItemContent').find('.importPriceInput');
     if (importPrice.val() == '') {
-        notification('warning', 'Bạn cần nhập giá nhập trước!', 'Warning!');
+        notification('warning', 'Bạn cần nhập giá nhập trước!', 'Warning!', '3000');
         importPrice.focus();
         $(this).val('');
     }
@@ -2690,14 +2700,14 @@ $(document).on('change', '.regularPriceInput', function () {
         if (importPrice.val()) {
             if (parseFloat(importPrice.val()) >= parseFloat($(this).val())) {
                 $(this).val('');
-                notification('warning', 'Vui lòng nhập giá bán thông thường lớn hơn giá nhập!', 'Warning!');
+                notification('warning', 'Vui lòng nhập giá bán thông thường lớn hơn giá nhập!', 'Warning!', '3000');
             }
         }
         if (salePrice.val()) {
             if (parseFloat(salePrice.val()) >= parseFloat($(this).val())) {
                 $(this).val(parseFloat(salePrice.val()) + 1);
-                notification('warning', 'Vui lòng nhập giá bán thông thường lớn hơn giá bán đã giảm!', 'Warning!');
-                // notification('warning', 'Please enter greater than sale price!', 'Warning!');
+                notification('warning', 'Vui lòng nhập giá bán thông thường lớn hơn giá bán đã giảm!', 'Warning!', '3000');
+                // notification('warning', 'Please enter greater than sale price!', 'Warning!','3000');
             }
         }
     } else {
@@ -2734,7 +2744,7 @@ $(document).on('change', '.regularPriceInput', function () {
 $(document).on('click', '.salePriceInput', function () {
     const regularPrice = $(this).closest('.variationItemContent').find('.regularPriceInput');
     if (regularPrice.val() == '') {
-        notification('warning', 'Bạn cần nhập giá bán thông thường trước!', 'Warning!');
+        notification('warning', 'Bạn cần nhập giá bán thông thường trước!', 'Warning!', '3000');
         regularPrice.focus();
     }
 })
@@ -2747,26 +2757,26 @@ $(document).on('change', '.salePriceInput', function () {
         if (regularPriceInput) {
             if (parseFloat(regularPriceInput) <= parseFloat($(this).val())) {
                 $(this).val(regularPriceInput - 1);
-                notification('warning', 'Vui nhập giá bán đã giảm nhỏ hơn giá bán thông thường!', 'Warning!');
-                // notification('warning', 'Please enter less than regular price!', 'Warning!');
+                notification('warning', 'Vui nhập giá bán đã giảm nhỏ hơn giá bán thông thường!', 'Warning!', '3000');
+                // notification('warning', 'Please enter less than regular price!', 'Warning!','3000');
             }
         } else {
             $(this).val('');
-            notification('warning', 'Bạn cần nhập giá bán thông thường trước!', 'Warning!');
-            // notification('warning', 'You need enter regular price first!', 'Warning!');
+            notification('warning', 'Bạn cần nhập giá bán thông thường trước!', 'Warning!', '3000');
+            // notification('warning', 'You need enter regular price first!', 'Warning!','3000');
         }
         if (importPriceInput) {
             if (parseFloat(importPriceInput) >= parseFloat($(this).val())) {
                 $(this).val('');
                 $(this).focus();
-                notification('warning', 'Vui nhập giá bán đã giảm lớn hơn giá nhập!', 'Warning!');
-                // notification('warning', 'Please enter greater than import price!', 'Warning!');
+                notification('warning', 'Vui nhập giá bán đã giảm lớn hơn giá nhập!', 'Warning!', '3000');
+                // notification('warning', 'Please enter greater than import price!', 'Warning!','3000');
             }
         }
     }
 })
 $(document).on('change', '.stockInput', function () {
-    checkNumberInput($(this));
+    checkNumberInput($(this), 'stock');
 })
 //--------------------------------------Check for duplicate value---------------------------------------
 $(document).on('change', '.skuInput', function () {
@@ -2778,8 +2788,8 @@ $(document).on('change', '.skuInput', function () {
         if ($(this).val() == valueInput && thisElement[0] !== this) {
             var index = $(this).closest('.variationItem').find('strong').text();
             thisElement.val('');
-            notification('warning', 'Trùng lặp SKU với biến thể ' + index, 'Warning!');
-            // notification('warning', 'Duplicate value with variation ' + index, 'Warning!');
+            notification('warning', 'Trùng lặp SKU với biến thể ' + index, 'Warning!', '3000');
+            // notification('warning', 'Duplicate value with variation ' + index, 'Warning!','3000');
         }
     })
 })
@@ -2792,8 +2802,8 @@ function addValues(messageInput, classInput, message, forAll) {
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
             if (!Number(value)) {
-                notification('error', 'Vui lòng nhập số!', 'Error!');
-                // notification('error', 'Please enter number!', 'Error!');
+                notification('error', 'Vui lòng nhập số!', 'Error!', '3000');
+                // notification('error', 'Please enter number!', 'Error!','3000');
             } else {
                 $(classInput).each(function () {
                     if (forAll == false) {
@@ -2826,7 +2836,7 @@ function addValues(messageInput, classInput, message, forAll) {
                         $('.notificationQuantityVariations').addClass('hidden');
                     }
                 }
-                notification('success', message, 'Successfully!');
+                notification('success', message, 'Successfully!', '1000');
             }
         }
     } catch (error) {
@@ -2940,13 +2950,13 @@ $(document).on('click', '.checkVariationsStatus', function () {
             }
         })
         if (!checkSelectAttribute) {
-            notification('warning', 'Vui lòng chọn ít nhất 1 thuộc tính từ thẻ select của biến thể', 'Warning!');
-            // notification('warning', 'Please select attribute from select of variations!', 'Warning!');
+            notification('warning', 'Vui lòng chọn ít nhất 1 thuộc tính từ thẻ select của biến thể', 'Warning!', '3000');
+            // notification('warning', 'Please select attribute from select of variations!', 'Warning!','3000');
         } else if (!check && variationsIndex.length > 0) {
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
-            notification('warning', 'Biến thể ' + variationsIndex.join(', ') + ' không được để trống thông tin!', 'Warning!');
-            // notification('warning', 'Variations ' + variationsIndex.join(', ') + ' cannot be left blank!', 'Warning!');
+            notification('warning', 'Biến thể ' + variationsIndex.join(', ') + ' không được để trống thông tin!', 'Warning!', '3000');
+            // notification('warning', 'Variations ' + variationsIndex.join(', ') + ' cannot be left blank!', 'Warning!','3000');
         } else if (!checkRegularAndSalePrice) {
             notification('error', 'Giá bán thông thường của biến thể ' + regularAndSalePriceVariationsIndex.join(', ') + ' phải lớn hơn giá bán đã giảm!');
         } else if (!checkImportAndSalePrice) {
@@ -3034,10 +3044,10 @@ $(document).on('click', '.saveVariations', function () {
                 }
                 variationDataHasBeenSaved.push(variationData);
             })
-            notification('success', 'Save variations successfully!.', 'Successfully!');
+            notification('success', 'Save variations successfully!.', 'Successfully!', '1000');
             console.log(variationDataHasBeenSaved);
         } else {
-            notification('error', 'An error occurred.', 'Error!');
+            notification('error', 'An error occurred.', 'Error!', '3000');
         }
     } catch (error) {
         console.error('Error:', error);
@@ -3113,7 +3123,7 @@ function createNewProduct(productDatas) {
         console.log(formData);
 
         $.ajax({
-            url: storeProductRoute,
+            url: routeStoreProduct,
             method: 'POST',
             data: formData,
             processData: false, // Không xử lý `formData`
@@ -3141,7 +3151,7 @@ var statusSkuProduct = true;
 function checkSkuProduct(input) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: getSkuProductRoute,
+            url: routeGetSkuProduct,
             method: "POST",
             data: {
                 sku: input,
@@ -3164,7 +3174,7 @@ function checkSkuProduct(input) {
 $(document).on('change', '.skuProduct', async function () {
     await checkSkuProduct($(this).val());
     if (!statusSkuProduct) {
-        notification('warning', 'Sku is already exists!', 'Warning!');
+        notification('warning', 'Sku is already exists!', 'Warning!', '3000');
         statusSkuProduct = true;
         $(this).val('');
     }
@@ -3173,7 +3183,7 @@ var statusSkuProductVariation = true;
 function checkSkuProductVariation(input) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: getSkuProductVariationRoute,
+            url: routeGetSkuProductVariation,
             method: "POST",
             data: {
                 sku: input,
@@ -3196,7 +3206,7 @@ function checkSkuProductVariation(input) {
 $(document).on('change', '.skuInput', async function () {
     await checkSkuProductVariation($(this).val());
     if (!statusSkuProductVariation) {
-        notification('warning', 'Sku is already exists!', 'Warning!');
+        notification('warning', 'Sku is already exists!', 'Warning!', '3000');
         statusSkuProductVariation = true;
         $(this).val('');
     }
@@ -3227,22 +3237,22 @@ $(document).on('click', '#publishBtn', async function () {
     // Kiểm tra tính hợp lệ của các trường
     if (!skuProduct) {
         checkDatas = false;
-        notification('warning', 'Please enter SKU for product!', 'Warning!');
+        notification('warning', 'Please enter SKU for product!', 'Warning!', '3000');
     }
     if (!nameProduct) {
         checkDatas = false;
-        notification('warning', 'Please enter name for product!', 'Warning!');
+        notification('warning', 'Please enter name for product!', 'Warning!', '3000');
     }
     if (!descriptionProduct) {
         checkDatas = false;
-        notification('warning', 'Please enter description for product!', 'Warning!');
+        notification('warning', 'Please enter description for product!', 'Warning!', '3000');
     }
 
     // Kiểm tra hình ảnh chính
     var mainImage = document.getElementById('imageUpload').files[0];
     if (!mainImage) {
         checkDatas = false;
-        notification('warning', 'Please upload product image!', 'Warning!');
+        notification('warning', 'Please upload product image!', 'Warning!', '3000');
     }
 
     // Lấy danh sách danh mục đã chọn
@@ -3254,7 +3264,7 @@ $(document).on('click', '#publishBtn', async function () {
                 productDatas.categoriesId.push(getCategoryId);
             } else {
                 checkDatas = false;
-                notification('error', 'Một danh mục được chọn không tồn tại trong cơ sở dữ liệu!', 'Error!');
+                notification('error', 'Một danh mục được chọn không tồn tại trong cơ sở dữ liệu!', 'Error!', '3000');
                 break;
             }
         }
@@ -3267,7 +3277,7 @@ $(document).on('click', '#publishBtn', async function () {
                 productDatas.brandId = getBrandId;
             } else {
                 checkDatas = false;
-                notification('error', 'Thương hiệu được chọn không tồn tại trong cơ sở dữ liệu!', 'Error!');
+                notification('error', 'Thương hiệu được chọn không tồn tại trong cơ sở dữ liệu!', 'Error!', '3000');
                 break;
             }
         }
@@ -3283,7 +3293,7 @@ $(document).on('click', '#publishBtn', async function () {
     // Kiểm tra biến thể sản phẩm
     if (!variationDataHasBeenSaved.length || !saveVariationsStatus) {
         checkDatas = false;
-        notification('warning', "Add at least one variation if you haven't already. If you make any changes to the variation, click the save variations button.", 'Warning!');
+        notification('warning', "Add at least one variation if you haven't already. If you make any changes to the variation, click the save variations button.", 'Warning!', '3000');
     }
 
     // Nếu tất cả các dữ liệu hợp lệ, thêm chúng vào `productDatas`
@@ -3308,6 +3318,6 @@ $(document).on('click', '#publishBtn', async function () {
             $('.container-spinner').addClass('hidden');
         }
     } else {
-        notification('error', 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại!', 'Error!');
+        notification('error', 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại!', 'Error!', '3000');
     }
 });
