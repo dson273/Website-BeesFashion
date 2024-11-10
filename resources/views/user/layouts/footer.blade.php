@@ -136,7 +136,7 @@
     {{-- End logout --}}
 
     <!-- Modal cart right -->
-    <div class="offcanvas offcanvas-end shopping-details" id="offcanvasRight" tabindex="-1"
+    {{-- <div class="offcanvas offcanvas-end shopping-details" id="offcanvasRight" tabindex="-1"
         aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h4 class="offcanvas-title" id="offcanvasRightLabel">Shopping Cart</h4>
@@ -242,7 +242,7 @@
             <div class="cart-button"> <a class="btn btn_outline" href="cart.html"> View Cart</a><a
                     class="btn btn_black" href="check-out.html"> Checkout</a></div>
         </div>
-    </div>
+    </div> --}}
     <!-- End modal cart right -->
 
     <!-- Modal add cart -->
@@ -256,20 +256,19 @@
                                 <div class="modal-bg addtocart">
                                     <button class="btn-close" type="button" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
-                                    <div class="d-flex">
-                                        <a href="#"><img class="img-fluid blur-up lazyload pro-img"
-                                                src="{{ asset('assets/images/modal/0.jpg') }}" alt=""></a>
+                                    <div class="conten-popup">
+                                        {{-- <a href="#"><img class="img-fluid blur-up lazyload pro-img"
+                                                src="{{ asset('assets/images/modal/0.jpg') }}" alt=""></a> --}}
                                         <div class="add-card-content align-self-center text-center">
                                             <a href="#">
-                                                <h6><i class="fa-solid fa-check"> </i>Item <span>men full
-                                                        sleeves</span><span> successfully added to your Cart</span>
+                                                <h6><i class="fa-solid fa-check"> </i>The product has been successfully added to your shopping cart
                                                 </h6>
                                             </a>
-                                            <div class="buttons"><a class="view-cart btn btn-solid"
-                                                    href="cart.html">Your cart</a><a class="checkout btn btn-solid"
-                                                    href="check-out.html">Check
-                                                    out</a><a class="continue btn btn-solid"
-                                                    href="index.html">Continue shopping</a></div>
+                                            <div class="buttons">
+                                                <a class="view-cart btn btn-solid" href="{{route('cart')}}">Your cart</a>
+                                                {{-- <a class="checkout btn btn-solid" href="check-out.html">Check out</a> --}}
+                                                <a class="continue btn btn-solid" href="{{route('/')}}">Continue shopping</a>
+                                            </div>
                                             <div class="upsell_payment"><img class="img-fluid blur-up lazyload"
                                                     src="{{ asset('assets/images/payment_cart.png') }}"
                                                     alt=""></div>
@@ -277,7 +276,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12">
+
+                            {{-- <div class="col-12">
                                 <div class="product-upsell">
                                     <h5>Products Loved by Our Customers</h5>
                                     <svg>
@@ -334,7 +334,7 @@
                                         <p>$25</p>
                                     </a>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

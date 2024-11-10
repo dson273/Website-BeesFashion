@@ -10,12 +10,12 @@
                         <div class="col-sm-6">
                             <h4>Cart</h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Cart</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -23,155 +23,174 @@
         <section class="section-b-space pt-0">
             <div class="custom-container container">
                 <div class="row g-4">
-                    <div class="col-12">
-                        <div class="cart-countdown"><img src="../assets/images/gif/fire-2.gif" alt="">
-                            <h6>Please, hurry! Someone has placed an order on one of the items you have in the cart.
-                                We'll
-                                keep it for you for<span id="countdown"></span>minutes.</h6>
-                        </div>
-                    </div>
-                    <div class="col-xxl-9 col-xl-8">
-                        <div class="cart-table">
-                            <div class="table-title">
-                                <h5>Cart<span id="cartTitle">(3)</span></h5><button id="clearAllButton">Clear
-                                    All</button>
-                            </div>
-                            <div class="table-responsive theme-scrollbar">
-                                <table class="table" id="cart-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Product </th>
-                                            <th>Price </th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="cart-box"> <a href="product-detail.html"> <img
-                                                            src="../assets/images/cart/category/1.jpg" alt=""></a>
-                                                    <div> <a href="product-detail.html">
-                                                            <h5>Concrete Jungle Pack</h5>
-                                                        </a>
-                                                        <p>Sold By: <span>Roger Group </span></p>
-                                                        <p>Size: <span>Small</span></p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>$20.00</td>
-                                            <td>
-                                                <div class="quantity"><button class="minus" type="button"><i
-                                                            class="fa-solid fa-minus"></i></button><input type="number"
-                                                        value="1" min="1" max="20"><button class="plus" type="button"><i
-                                                            class="fa-solid fa-plus"></i></button></div>
-                                            </td>
-                                            <td>$195.00</td>
-                                            <td><a class="deleteButton" href="javascript:void(0)"><i class="iconsax"
-                                                        data-icon="trash"></i></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="cart-box"> <a href="product-detail.html"> <img
-                                                            src="../assets/images/cart/category/2.jpg" alt=""></a>
-                                                    <div> <a href="product-detail.html">
-                                                            <h5>Mini dress with ruffled straps</h5>
-                                                        </a>
-                                                        <p>Sold By: <span>luisa Shop</span></p>
-                                                        <p>Size: <span>Medium </span></p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>$20.00</td>
-                                            <td>
-                                                <div class="quantity"><button class="minus" type="button"><i
-                                                            class="fa-solid fa-minus"></i></button><input type="number"
-                                                        value="1" min="1" max="20"><button class="plus" type="button"><i
-                                                            class="fa-solid fa-plus"></i></button></div>
-                                            </td>
-                                            <td>$150.00</td>
-                                            <td> <a class="deleteButton" href="javascript:void(0)"><i class="iconsax"
-                                                        data-icon="trash"></i></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="cart-box"> <a href="product-detail.html"> <img
-                                                            src="../assets/images/cart/category/3.jpg" alt=""></a>
-                                                    <div> <a href="product-detail.html">
-                                                            <h5>Long Sleeve Asymmetric</h5>
-                                                        </a>
-                                                        <p>Sold By: <span>Brown Shop</span></p>
-                                                        <p>Size: <span>Large </span></p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>$25.00</td>
-                                            <td>
-                                                <div class="quantity"><button class="minus" type="button"><i
-                                                            class="fa-solid fa-minus"></i></button><input type="number"
-                                                        value="1" min="1" max="20"><button class="plus" type="button"><i
-                                                            class="fa-solid fa-plus"></i></button></div>
-                                            </td>
-                                            <td>$120.00</td>
-                                            <td> <a class="deleteButton" href="javascript:void(0)"><i class="iconsax"
-                                                        data-icon="trash"></i></a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="no-data" id="data-show"><img src="../assets/images/cart/1.gif" alt="">
-                                <h4>You have nothing in your shopping cart!</h4>
-                                <p>Today is a great day to purchase the things you have been holding onto! or
-                                    <span>Carry on
-                                        Buying</span></p>
+                    @if (count($cart_list) > 0)
+                        <div class="col-12">
+                            <div class="cart-countdown"><img src="../assets/images/gif/fire-2.gif" alt="">
+                                <h6>Please, hurry! Someone has placed an order on one of the items you have in the cart.
+                                    We'll keep it for you for<span id="countdown"></span>minutes.</h6>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xxl-3 col-xl-4">
-                        <div class="cart-items">
-                            <div class="cart-progress">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 43%"
-                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"><span> <i
-                                                class="iconsax" data-icon="truck-fast"></i></span></div>
+                        <div class="col-xxl-9 col-xl-8">
+                            <div class="cart-table">
+                                <div class="table-title">
+                                    <h5>Cart <span id="cartTitle">({{ count($cart_list) }} item)</span></h5><button id="clearAllButton">Clear
+                                        All</button>
                                 </div>
-                                <p>Almost there, add <span>$267.00 </span>more to get <span>FREE Shipping !! </span></p>
+                                <div class="table-responsive theme-scrollbar">
+                                    <table class="table" id="cart-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product </th>
+                                                <th>Price </th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($cart_list as $item_cart)
+                                                <tr>
+                                                    <td>
+                                                        <div class="cart-box">
+                                                            <a
+                                                                href="{{ route('product.detail', $item_cart['product_id']) }}">
+                                                                <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}"
+                                                                    alt=""></a>
+                                                            <div class="cart-box-variant">
+                                                                <a
+                                                                    href="{{ route('product.detail', $item_cart['product_id']) }}">
+                                                                    <h5 class="text-wrap">{{ $item_cart['product_name'] }}
+                                                                    </h5>
+                                                                </a>
+                                                                <div class="box-edit-variant mb-2">
+                                                                    <button type="button" id="variantButton"
+                                                                        class="text-start">Chọn phân loại<span
+                                                                            class="ms-lg-5"><i
+                                                                                class="fa-solid fa-chevron-down"></i></span></button>
+                                                                </div>
+                                                                @foreach ($item_cart['attribute_values'] as $attribute)
+                                                                    <h6>{{ $attribute['attribute_name'] }}:
+                                                                        <span>{{ $attribute['value_name'] }}</span>
+                                                                    </h6>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p
+                                                            style="color: rgba(var(--theme-font-color), 1); font-size: calc(13.4px + .1875vw); font-weight: 500;">
+                                                            {{ number_format($item_cart['sale_price'] ?? $item_cart['regular_price'], 0, ',', '.') }}đ
+                                                            @if ($item_cart['sale_price'])
+                                                                <del class="ms-2"
+                                                                    style="color:rgba(var(--light-color), 1); font-weight: normal">
+                                                                    {{ number_format($item_cart['regular_price'], 0, ',', '.') }}đ
+                                                                </del>
+                                                            @endif
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <div class="quantity">
+                                                            <button class="minus" type="button"><i
+                                                                    class="fa-solid fa-minus"></i></button>
+                                                            <input type="number" value="{{ $item_cart['quantity'] }}"
+                                                                min="1" max="20">
+                                                            <button class="plus" type="button"><i
+                                                                    class="fa-solid fa-plus"></i></button>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {{ number_format(($item_cart['sale_price'] ?? $item_cart['regular_price']) * $item_cart['quantity'], 0, ',', '.') }}đ
+                                                    </td>
+                                                    <td>
+                                                        <a class="deleteButton" href="javascript:void(0)"
+                                                            style="color: rgba(var(--danger-color), 1)">
+                                                            <i class="fa-solid fa-trash-can"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="no-data" id="data-show"><img src="../assets/images/cart/1.gif" alt="">
+                                    <h4>You have nothing in your shopping cart!</h4>
+                                    <p>Today is a great day to purchase the things you have been holding onto! or
+                                        <span>Carry on
+                                            Buying</span>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="cart-body">
-                                <h6>Price Details (3 Items) </h6>
-                                <ul>
-                                    <li>
-                                        <p>Bag total </p><span>$220.00 </span>
-                                    </li>
-                                    <li>
-                                        <p>Bag savings </p><span class="theme-color">-$20.00 </span>
-                                    </li>
-                                    <li>
-                                        <p>Coupon Discount </p><span class="Coupon">Apply Coupon </span>
-                                    </li>
-                                    <li>
-                                        <p>Delivery </p><span>$50.00 </span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="cart-bottom">
-                                <p><i class="iconsax me-1" data-icon="tag-2"></i>SPECIAL OFFER (-$1.49) </p>
-                                <h6>Subtotal <span>$158.41 </span></h6><span>Taxes and shipping calculated at
-                                    checkout</span>
-                            </div>
-                            <div class="coupon-box">
-                                <h6>Coupon</h6>
-                                <ul>
-                                    <li> <span> <input type="text" placeholder="Apply Coupon"><i class="iconsax me-1"
-                                                data-icon="tag-2"> </i></span><button class="btn">Apply </button></li>
-                                    <li> <span> <a class="theme-color" href="login.html">Login </a>to see best coupon
-                                            for
-                                            you </span></li>
-                                </ul>
-                            </div><a class="btn btn_black w-100 rounded sm" href="check-out.html">Check Out</a>
                         </div>
-                    </div>
+                        <div class="col-xxl-3 col-xl-4">
+                            <div class="cart-items">
+                                <div class="cart-progress">
+                                    <h6>Price Details <span>({{ count($cart_list) }} Items)</span></h6>
+                                    {{-- <div class="progress">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 43%"
+                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"><span> <i class="iconsax"
+                                                data-icon="truck-fast"></i></span></div>
+                                </div>
+                                <p>Almost there, add <span>$267.00 </span>more to get <span>FREE Shipping !! </span></p> --}}
+                                </div>
+                                <div class="cart-body">
+
+                                    <ul>
+                                        <li>
+                                            <p>Total price</p>
+                                            <span>{{ number_format($total_payment, 0, ',', '.') }}đ</span>
+                                        </li>
+                                        @if ($total_discount > 0)
+                                            <li>
+                                                <p>Discount</p><span
+                                                    class="theme-color">-{{ number_format($total_discount, 0, ',', '.') }}đ</span>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                                <div class="cart-bottom mb-2">
+                                    <h6>Subtotal
+                                        <span>{{ number_format($total_payment - $total_discount, 0, ',', '.') }}đ</span>
+                                    </h6>
+                                    <p>Use <span>BeesFashion's</span> discount code in the next step</p>
+                                </div>
+                                <a class="btn btn_black w-100 rounded sm" href="{{ route('checkout') }}">Check Out</a>
+                            </div>
+                        </div>
+
+                        <!-- Box Chọn Biến Thể -->
+                        <div id="variantBox" class="box-variant">
+                            <div>
+                                <label class="form-label">Màu sắc: <span>Đen</span></label>
+                                <div class="d-flex mb-2 color-options">
+                                    <input type="radio" id="color-black" name="color" value="black">
+                                    <label for="color-black" title="black" class="color-label me-2"
+                                        style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
+
+                                    <input type="radio" id="color-gray" name="color" value="gray">
+                                    <label for="color-gray" class="color-label"
+                                        style="background-image: url('{{ asset('assets/images/cart/2.jpg') }}');"></label>
+
+                                </div>
+
+                                <label class="form-label">Size: <span>S</span></label>
+                                <div class="d-flex flex-wrap mb-2 wrap-vra">
+                                    <button class="btn-variant">S</button>
+                                    <button class="btn-variant">M</button>
+                                    <button class="btn-variant">L</button>
+                                    <button class="btn-variant">L</button>
+                                </div>
+                                <div class="d-flex mt-3 justify-content-between box-variant-bottom">
+                                    <button type="button" id="backButton" class="btn-back">Trở lại</button>
+                                    <button type="submit" class="btn-confirm">Xác nhận</button>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <h5 class="text-center">Giỏ hàng của bạn đang trống!</h5>
+                        <div class="text-center mt-3">
+                            <button><a href="{{ route('/') }}">Tiếp tục mua sắm</a></button>
+                        </div>
+                    @endif
+
                     <div class="col-12">
                         <div class="cart-slider">
                             <div class="d-flex align-items-start justify-content-between">
@@ -270,85 +289,55 @@
                     </div>
                 </div>
             </div>
+
         </section>
-        <div class="modal theme-modal fade cart-modal" id="addtocart" tabindex="-1" role="dialog" aria-modal="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body modal1">
-                        <div class="custom-container container">
-                            <div class="row">
-                                <div class="col-12 px-0">
-                                    <div class="modal-bg addtocart"><button class="btn-close" type="button"
-                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                        <div class="d-flex"><a href="#"><img class="img-fluid blur-up lazyload pro-img"
-                                                    src="../assets/images/modal/0.jpg" alt=""></a>
-                                            <div class="add-card-content align-self-center text-center"><a href="#">
-                                                    <h6><i class="fa-solid fa-check"> </i>Item <span>men full
-                                                            sleeves</span><span> successfully added to your Cart</span>
-                                                    </h6>
-                                                </a>
-                                                <div class="buttons"><a class="view-cart btn btn-solid"
-                                                        href="cart.html">Your cart</a><a class="checkout btn btn-solid"
-                                                        href="check-out.html">Check out</a><a
-                                                        class="continue btn btn-solid" href="index.html">Continue
-                                                        shopping</a></div>
-                                                <div class="upsell_payment"><img class="img-fluid blur-up lazyload"
-                                                        src="../assets/images/payment_cart.png" alt=""></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="product-upsell">
-                                        <h5>Products Loved by Our Customers</h5><svg>
-                                            <use
-                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#main-line">
-                                            </use>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card-img"> <img src="../assets/images/modal/1.jpg" alt="user"><a
-                                            href="#">
-                                            <h6>Woven Jacket</h6>
-                                            <p>$25</p>
-                                        </a></div>
-                                    <div class="card-img"> <img src="../assets/images/modal/2.jpg" alt="user"><a
-                                            href="#">
-                                            <h6>Printed Dresses</h6>
-                                            <p>$25</p>
-                                        </a></div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card-img"> <img src="../assets/images/modal/3.jpg" alt="user"><a
-                                            href="#">
-                                            <h6>Woven Jacket</h6>
-                                            <p>$25</p>
-                                        </a></div>
-                                    <div class="card-img"> <img src="../assets/images/modal/4.jpg" alt="user"><a
-                                            href="#">
-                                            <h6>Printed Dresses</h6>
-                                            <p>$25</p>
-                                        </a></div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="card-img"> <img src="../assets/images/modal/5.jpg" alt="user"><a
-                                            href="#">
-                                            <h6>Woven Jacket</h6>
-                                            <p>$25</p>
-                                        </a></div>
-                                    <div class="card-img"> <img src="../assets/images/modal/6.jpg" alt="user"><a
-                                            href="#">
-                                            <h6>Printed Dresses</h6>
-                                            <p>$25</p>
-                                        </a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
+
     <!-- End container content -->
+@endsection
+
+@section('script-libs')
+    <script>
+        //Lấy tất cả các nút có class 'btn-variant'
+        const variantButtons = document.querySelectorAll('.btn-variant');
+
+        variantButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Xóa lớp 'selected' khỏi tất cả các nút
+                variantButtons.forEach(btn => btn.classList.remove('selected'));
+                // Thêm lớp 'selected' vào nút hiện tại
+                button.classList.add('selected');
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const variantButton = document.getElementById("variantButton");
+            const variantBox = document.getElementById("variantBox");
+            const backButton = document.getElementById("backButton");
+
+            // Hàm hiển thị box dưới nút
+            variantButton.addEventListener("click", function(event) {
+                event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+                const rect = variantButton.getBoundingClientRect();
+
+                // Cập nhật vị trí của variantBox ngay dưới nút
+                variantBox.style.top = `${rect.bottom + window.scrollY}px`;
+                variantBox.style.left = `${rect.left + window.scrollX}px`;
+
+                variantBox.classList.toggle("active"); // Hiển thị box
+            });
+
+            // Đóng box khi nhấn nút "Trở lại"
+            backButton.addEventListener("click", function() {
+                variantBox.classList.remove("active");
+            });
+
+            // Đóng box khi nhấn ra ngoài
+            document.addEventListener("click", function(event) {
+                if (!variantBox.contains(event.target) && !variantButton.contains(event.target)) {
+                    variantBox.classList.remove("active");
+                }
+            });
+        });
+    </script>
 @endsection

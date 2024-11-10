@@ -19,7 +19,10 @@ use App\Models\Product_vote;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\DB;
+use Mockery\Undefined;
+
 use function Laravel\Prompts\error;
 use function PHPUnit\Framework\isEmpty;
 
@@ -28,9 +31,9 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function returnRedirectRouteWithMessage($routeName, $messageType, $messageContent)
+    public function returnRedirectRouteWithMessage($routeName, $parameter = '', $messageType, $messageContent)
     {
-        return redirect()->route($routeName)->with($messageType, $messageContent);
+        return redirect()->route($routeName, $parameter)->with($messageType, $messageContent);
     }
     public function index()
     {
@@ -82,7 +85,7 @@ class ProductController extends Controller
         // ==================================
         return view('admin.products.index', compact('listProducts'));
     }
-    public function changeStatus(Request $request)
+    public function changeStatusProduct(Request $request)
     {
         $productId = $request['id'];
         $checkProduct = Product::find($productId);
@@ -90,15 +93,64 @@ class ProductController extends Controller
             $checkProduct->is_active = $checkProduct->is_active == 1 ? 0 : 1;
             $checkProduct->save();
             if ($checkProduct->is_active == 1) {
-                return $this->returnRedirectRouteWithMessage('admin.products.index.inactive', 'statusSuccess', 'Thay đổi trạng thái thành công!');
+                return $this->returnRedirectRouteWithMessage('admin.products.index.inactive', '', 'statusSuccess', 'Thay đổi trạng thái thành công!');
             } else {
-                return $this->returnRedirectRouteWithMessage('admin.products.index', 'statusSuccess', 'Thay đổi trạng thái thành công!');
+                return $this->returnRedirectRouteWithMessage('admin.products.index', '', 'statusSuccess', 'Thay đổi trạng thái thành công!');
             }
         } else {
-            return $this->returnRedirectRouteWithMessage('admin.products.index', 'statusError', 'Không tìm thấy sản phẩm cần thay đổi trạng thái!');
+            return $this->returnRedirectRouteWithMessage('admin.products.index', '', 'statusError', 'Không tìm thấy sản phẩm cần thay đổi trạng thái!');
         }
     }
-
+    public function changeStatusProductVariant(Request $request)
+    {
+        $productVariantId = $request['id'];
+        $checkProductVariant = Product_variant::find($productVariantId);
+        if ($checkProductVariant) {
+            $checkProductVariant->is_active = $checkProductVariant->is_active == 1 ? 0 : 1;
+            $checkProductVariant->save();
+            if ($checkProductVariant->is_active == 1) {
+                return $this->returnRedirectRouteWithMessage('admin.products.show', $checkProductVariant->product_id, 'statusSuccess', 'Thay đổi trạng thái thành công!');
+            } else {
+                return $this->returnRedirectRouteWithMessage('admin.products.show', $checkProductVariant->product_id, 'statusSuccess', 'Thay đổi trạng thái thành công!');
+            }
+        } else {
+            return $this->returnRedirectRouteWithMessage('admin.products.show', $checkProductVariant->product_id, 'statusError', 'Không tìm thấy biến thể cần thay đổi trạng thái!');
+        }
+    }
+    public function importingGoods()
+    {
+        $product_variant_id = request()->input('product_variant_id');
+        $quantity = request()->input('quantity');
+        $import_price = request()->input('import_price');
+        $check_product_variant_by_id = Product_variant::find($product_variant_id);
+        if ($check_product_variant_by_id) {
+            $importing_good = Import_history::create([
+                'quantity' => $quantity,
+                'import_price' => $import_price,
+                'product_variant_id' => $product_variant_id,
+                'user_id' => Auth::user()->id ? Auth::user()->id : ''
+            ]);
+            if ($importing_good) {
+                $check_product_variant_by_id->stock += $quantity;
+                $check_product_variant_by_id->save();
+                $response = [
+                    'status' => 200,
+                    'message' => 'Không tìm thấy biến thể cần nhập thêm hàng!'
+                ];
+            } else {
+                $response = [
+                    'status' => 400,
+                    'message' => 'Có lỗi khi nhập hàng, vui lòng thử lại!'
+                ];
+            }
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => 'Không tìm thấy biến thể cần nhập thêm hàng!'
+            ];
+        }
+        return response()->json($response);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -231,7 +283,8 @@ class ProductController extends Controller
                     Import_history::create([
                         'quantity' => $stockVariation,
                         'import_price' => $importPriceVariation,
-                        'product_variant_id' => $newProductVariation->id
+                        'product_variant_id' => $newProductVariation->id,
+                        'user_id' => Auth::user()->id ? Auth::user()->id : ''
                     ]);
 
                     // Xử lý dữ liệu variationAttributeData
@@ -437,10 +490,10 @@ class ProductController extends Controller
             if ($productDetail) {
                 return view('admin.products.show', compact('productDetail', 'productVariants', 'totalProfit', 'productStar', 'variantVoted'));
             } else {
-                return $this->returnRedirectRouteWithMessage('admin.products.index', 'statusError', 'Không tìm thấy sản phẩm cần xem chi tiết!');
+                return $this->returnRedirectRouteWithMessage('admin.products.index', '', 'statusError', 'Không tìm thấy sản phẩm cần xem chi tiết!');
             }
         } else {
-            return $this->returnRedirectRouteWithMessage('admin.products.index', 'statusError', 'Sản phẩm chi tiết này không có biến thể, đây là sản phẩm lỗi!');
+            return $this->returnRedirectRouteWithMessage('admin.products.index', '', 'statusError', 'Sản phẩm chi tiết này không có biến thể, đây là sản phẩm lỗi!');
         }
     }
 

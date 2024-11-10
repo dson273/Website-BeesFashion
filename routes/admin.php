@@ -54,9 +54,11 @@ Route::prefix('admin')->as('admin.')->group(function () {
     //=======================================================Quản lý sản phẩm============================================================
     // Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {
     //List product
-    Route::get('products/inactive', [ProductController::class, 'inactive'])->name('products.index.inactive');
-    Route::get('products/changestatus/{id}', [ProductController::class, 'changeStatus'])->name('products.index.changestatus');
+    Route::get('products/inactive', [ProductController::class, 'inactive'])->name(name: 'products.index.inactive');
+    Route::get('products/changestatusproduct/{id}', [ProductController::class, 'changeStatusProduct'])->name('products.index.changestatus');
+    Route::get('products/changestatusproductvariant/{id}', [ProductController::class, 'changeStatusProductVariant'])->name('products.show.changestatus');
     Route::resource('products', ProductController::class);
+    Route::post('product/importingGoods', [ProductController::class, 'importingGoods'])->name('importingGoods');
     //Create product
     Route::post('products/getAllCategories', action: [ProductController::class, 'getAllCategories'])->name('getAllCategories');
     Route::post('products/createNewCategory', action: [ProductController::class, 'createNewCategory'])->name('createNewCategory');
