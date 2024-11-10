@@ -11,9 +11,7 @@ class Cart extends Model
     protected $fillable = [
         'quantity',
         'product_variant_id',
-        'user_id',
-        'created_at',
-        'updated_at'
+        'user_id'
     ];
     public function product_variant()
     {

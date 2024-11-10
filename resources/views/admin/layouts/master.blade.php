@@ -25,6 +25,9 @@
     <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
     </link>
 
+    <!-- RateYo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+
     @yield('style-libs')
 
 </head>
@@ -103,7 +106,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.js.map"></script>
     <!-- Notification function -->
     <script>
-        function notification(type, data, title) {
+        function notification(type, data, title, timeOut = "10000") {
             $(document).ready();
             $(function() {
                 Command: toastr[type](data, title);
@@ -117,7 +120,7 @@
                     onclick: null,
                     showDuration: "300",
                     hideDuration: "1000",
-                    timeOut: "10000",
+                    timeOut: timeOut,
                     extendedTimeOut: "1000",
                     showEasing: "swing",
                     hideEasing: "linear",
@@ -126,27 +129,33 @@
                 };
             });
         };
-        //Route variable
+        //Route variable SHOW
+        const routeImportingGoods = "{{route('admin.importingGoods')}}";
+        //Route variable CREATE
+        const routeGetAllAttributes = "{{route('admin.getAllAttributes')}}";
 
-        var getAllAttributesRoute = "{{route('admin.getAllAttributes')}}";
-        var getAllCategoriesRoute = "{{route('admin.getAllCategories')}}";
-        var getAllBrandsRoute = "{{route('admin.getAllBrands')}}";
-        var createNewCategoryRoute = "{{route('admin.createNewCategory')}}";
-        var createNewBrandRoute = "{{route('admin.createNewBrand')}}";
-        var storeProductRoute = "{{route('admin.products.store')}}";
-        var getSkuProductRoute = "{{route('admin.getSkuProduct')}}";
-        var getSkuProductVariationRoute = "{{route('admin.getSkuProductVariation')}}";
+        const routeGetAllCategories = "{{route('admin.getAllCategories')}}";
+        const routeCreateNewCategory = "{{route('admin.createNewCategory')}}";
+        const routeCheckCategoryById = "{{route('admin.checkCategoryById')}}";
 
+        const routeGetAllBrands = "{{route('admin.getAllBrands')}}";
+        const routeCreateNewBrand = "{{route('admin.createNewBrand')}}";
+        const routeCheckBrandById = "{{route('admin.checkBrandById')}}";
 
-        function returnGetAllAttributeValuesByIdRoute(id) {
+        const routeGetSkuProduct = "{{route('admin.getSkuProduct')}}";
+        const routeGetSkuProductVariation = "{{route('admin.getSkuProductVariation')}}";
+
+        const routeStoreProduct = "{{route('admin.products.store')}}";
+
+        function routeReturnGetAllAttributeValuesById(id) {
             return "{{ route('admin.getAllAttributeValuesById', ':id') }}".replace(':id', id);
         }
 
-        function returnAddNewAttributeValueByIdRoute(id) {
+        function routeReturnAddNewAttributeValueById(id) {
             return "{{ route('admin.addNewAttributeValueById', ':id') }}".replace(':id', id);
         }
 
-        var csrf = "{{ csrf_token() }}";
+        const csrf = "{{ csrf_token() }}";
         //Thông báo cố định
     </script>
 
@@ -161,6 +170,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.js"></script>
 
+    <!-- Tinymce -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.0.0/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#descriptionProduct',
+            plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            automatic_uploads: true,
+        });
+    </script>
+
+    <!-- RateYo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 
     <!-- Link libs -->
     @yield('script-libs')
@@ -168,7 +189,6 @@
     <!-- Short notification commands -->
 
     <script>
-
         @if(session('statusSuccess'))
         var message = @json(session('statusSuccess'));
         notification('success', message, 'Successfully');
@@ -178,7 +198,6 @@
         @elseif(session('statusWarning'))
         var message = @json(session('statusWarning'));
         notification('warning', message, 'warning');
-
         @endif
     </script>
 </body>

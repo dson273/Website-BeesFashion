@@ -302,7 +302,7 @@ var swiper = new Swiper(".offer-slider", {
 });
 var swiper = new Swiper(".product-slider", {
   direction: 'vertical',
-  spaceBetween: 15,
+  spaceBetween: 5,
   slidesPerView: 5,
   loop: true,
   freeMode: true,

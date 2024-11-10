@@ -10,9 +10,7 @@ class Manager_setting extends Model
     use HasFactory;
     protected $fillable = [
         'manager_name',
-        'parent_manager_setting_id',
-        'created_at',
-        'updated_at'
+        'parent_manager_setting_id'
     ];
     public function user_manager_settings()
     {

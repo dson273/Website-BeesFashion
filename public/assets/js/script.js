@@ -90,7 +90,7 @@ mobileBack.addEventListener('click', function () {
 
 
 /*============================
-        07.cart js 
+        07.cart js
 ============================*/
 
 function initializeCounter(counterId, totalId, addBtnId, removeBtnId) {
@@ -149,7 +149,7 @@ initializeCounter("quantity3", "total3", "btn-add3", "btn-remove3");
 
 
 /*============================
-           05.Tost js 
+           05.Tost js
    ============================*/
 
 document.querySelectorAll(".wishlist-icon").forEach(function (element) {
@@ -178,7 +178,7 @@ for (var i = 0; i < footerButton.length; ++i) {
 
 
 /*====================
-       title change 
+       title change
    =======================*/
 var title = document.title;
 
@@ -191,7 +191,7 @@ window.addEventListener('blur', function () {
 });
 
 /*====================
-   other js 
+   other js
 =======================*/
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -223,19 +223,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-var colorItems = document.querySelectorAll('.color-variant li');
-colorItems.forEach(function (item) {
-    item.addEventListener('click', function (e) {
-        colorItems.forEach(function (colorItem) {
-            colorItem.classList.remove('active');
-        });
-        this.classList.add('active');
-    });
-});
-
-
 /*====================
-       offcanvas cart 
+       offcanvas cart
    =======================*/
 document.addEventListener('DOMContentLoaded', function () {
     var deleteIcons = document.querySelectorAll('.delete-icon');
@@ -264,7 +253,7 @@ wishlistProduct.forEach(el => {
 
 
 /*====================
-      Header responsive 
+      Header responsive
    =======================*/
 
 document.addEventListener('DOMContentLoaded', () => {

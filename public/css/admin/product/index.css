@@ -1,0 +1,28 @@
+th,
+td {
+    text-align: center;
+}
+
+.cspt {
+    cursor: pointer;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* .scroll-x {
+    overflow-x: auto;
+    scrollbar-color: transparent transparent;
+}
+
+.scroll-x::-webkit-scrollbar {
+    display: none;
+} */

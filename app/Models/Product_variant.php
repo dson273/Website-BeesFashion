@@ -12,13 +12,11 @@ class Product_variant extends Model
         'SKU',
         'name',
         'image',
-        'display_import_price',
+        'regular_price',
         'sale_price',
         'stock',
         'product_id',
-        'is_active',
-        'created_at',
-        'updated_at'
+        'is_active'
     ];
     public function product()
     {

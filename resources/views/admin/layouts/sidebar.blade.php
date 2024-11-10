@@ -175,7 +175,21 @@
         </div>
     </div>
 </li>
-
+{{-- Lịch sử nhập hàng--}}
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistory"
+        aria-expanded="true" aria-controls="collapseHistory">
+        <i class="fas fa-fw fa-wrench"></i>
+        <span>Lịch sử nhập hàng</span>
+    </a>
+    <div id="collapseHistory" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Danh sách chức năng</h6>
+            <a class="collapse-item" href="{{ route('admin.import_history.index') }}">Danh sách</a>
+            {{-- <a class="collapse-item" href="{{ route('admin.banner.create') }}">Thêm</a> --}}
+        </div>
+    </div>
+</li>
     {{-- <!-- Divider -->
     <hr class="sidebar-divider">
 

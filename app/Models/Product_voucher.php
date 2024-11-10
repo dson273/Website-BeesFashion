@@ -10,9 +10,7 @@ class Product_voucher extends Model
     use HasFactory;
     protected $fillable = [
         'product_id',
-        'voucher_id',
-        'created_at',
-        'updated_at'
+        'voucher_id'
     ];
     public function product()
     {

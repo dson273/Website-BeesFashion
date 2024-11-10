@@ -11,9 +11,7 @@ class Attribute_value extends Model
     protected $fillable = [
         'name',
         'value',
-        'attribute_id',
-        'created_at',
-        'updated_at'
+        'attribute_id'
     ];
     public function attribute()
     {
