@@ -1,19 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\user\CollectionController;
 use App\Http\Controllers\user\FilterProductController;
+use App\Http\Controllers\User\ProductDetailController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
 //Trang chi tiết sản phẩm
-Route::get('productDetail/{product}', [HomeController::class, 'product_detail'])->name('product.detail');
-Route::post('productDetail', [HomeController::class, 'updateInformationProduct'])->name('userProductDetailFocused');
+Route::get('productDetail/{product}', [ProductDetailController::class, 'index'])->name('product.detail');
+Route::post('productDetail', [ProductDetailController::class, 'updateInformationProduct'])->name('userProductDetailFocused');
 
 //Trang thanh toán
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
@@ -44,7 +45,7 @@ Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPasswor
 
 //filterProduct
 Route::get('product', [FilterProductController::class, 'index']);
-Route::post('product/getMinMaxPriceProduct',[FilterProductController::class],'getMinMaxPriceProduct')->name('getMinMaxPriceProduct');
+Route::post('product/getMinMaxPriceProduct', [FilterProductController::class], 'getMinMaxPriceProduct')->name('getMinMaxPriceProduct');
 // web.php hoặc api.php
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
 
@@ -62,6 +63,6 @@ Route::middleware('auth')->group(function () {
     // Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
 
     //Trang giỏ hàng
-    Route::get('cart', [HomeController::class, 'cart'])->name('cart');
-    Route::get('cart/{variant_id}/{quantity}', [HomeController::class, 'addToCart'])->name('addToCart');//Add cart
+    Route::get('cart', [CartController::class, 'index'])->name('cart');
+    Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
 });
