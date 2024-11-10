@@ -392,7 +392,7 @@ function previewImage(input) {
     const maxSizeMB = 2; // Giới hạn dung lượng tối đa (MB)
     const maxSizeBytes = maxSizeMB * 1024 * 1024; // Chuyển đổi sang byte
 
-    if (input.files && input.files[0]) {
+    if (input.files.length > 0) {
         const file = input.files[0];
         mainImageFile = file;
         if (file.size > maxSizeBytes) {
@@ -473,6 +473,10 @@ function previewImage(input) {
         } finally {
             $('.container-spinner').addClass('hidden');
         }
+    } else {
+        $('#mainImagePreview').find('.divImg').remove();
+        mainImageFile = null;
+        imageName = '';
     }
     console.log(mainImageFile);
 }
