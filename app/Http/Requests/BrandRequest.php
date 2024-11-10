@@ -23,7 +23,7 @@ class BrandRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255', // Quy tắc cho trường 'name'
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif', // Quy tắc cho trường 'image'
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Quy tắc cho trường 'image'
             'is_active' => 'required|boolean', // Quy tắc cho trường 'is_active'
         ];
     }
@@ -34,8 +34,10 @@ class BrandRequest extends FormRequest
             'name.required' => 'Tên thương hiệu là bắt buộc.',
             'name.string' => 'Tên thương hiệu phải là chuỗi.',
             'name.max' => 'Tên thương hiệu không được vượt quá 255 ký tự.',
-            'image.image' => 'Ảnh thương hiệu phải là một tệp hình ảnh.',
-            'image.mimes' => 'Ảnh thương hiệu phải có định dạng jpeg, png, jpg, hoặc gif.',
+            'image.required' => 'Không được để trống ảnh.',
+            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
+            'image.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif, svg.',
+            'image.max' => 'Dung lượng ảnh tối đa là 2MB.',
             'is_active.required' => 'Trạng thái hoạt động là bắt buộc.',
             'is_active.boolean' => 'Trạng thái hoạt động phải là true hoặc false.',
         ];
