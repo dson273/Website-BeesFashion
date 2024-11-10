@@ -52,7 +52,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td><img src="{{ asset('assets/images/pro/1.jpg') }}" width="150px" alt="">
+                                    <td><img src="{{ asset('uploads/products/images/' . $item->product_files[0]->file_name) }}" width="100px" alt="">
                                     </td>
                                     <td>{{ $item->description }}</td>
                                     <td>

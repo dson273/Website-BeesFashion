@@ -27,7 +27,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Danh Mục Sản Phẩm</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Chi Tiết Danh Mục</h6>
                 {{-- <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Thêm danh mục con</a> --}}
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                     Thêm danh mục con

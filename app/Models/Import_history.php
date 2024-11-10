@@ -22,4 +22,10 @@ class Import_history extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getTotalPriceAttribute()
+    {
+        return $this->quantity * $this->import_price;
+    }
+
 }

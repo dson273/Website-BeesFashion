@@ -46,43 +46,51 @@ class CategoryController extends Controller
         return $htmlOption;
     }
 
-    // public function getProductsByCategory($id)
-    // {
-    //     // Lấy danh mục theo ID
-    //     $category = Category::find($id);
 
-    //     if (!$category) {
-    //         return response()->json(['message' => 'Category not found'], 404);
-    //     }
-    //     // Lấy tất cả sản phẩm liên quan đến danh mục này thông qua bảng product_categories
-    //     $products = $category->product_categories()->with('product')->get();
-
-    //     return response()->json([
-    //         'category' => $category,
-    //         'products' => $products,
-    //     ]);
-    // }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|string',
+        ], [
+            'name.required' => 'Tên danh mục chưa được nhập.',
+            'name.string' => 'Tên danh mục phải là một chuỗi ký tự.',
+            'name.max' => 'Tên danh mục không được quá 255 ký tự.',
+
+            'image.required' => 'Không được để trống ảnh.',
+            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
+            'image.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif, svg.',
+            'image.max' => 'Dung lượng ảnh tối đa là 2MB.',
+
+            'description.required' => 'Mô tả danh mục chưa được nhập.',
+            'description.string' => 'Mô tả phải là một chuỗi ký tự.',
+        ]);
         if ($request->isMethod('POST')) {
             $params = $request->except('_token');
+
+            // Kiểm tra và xử lý ảnh nếu có
             if ($request->hasFile('image')) {
-                // Lấy tên ảnh
-                $imageName = $request->file('image')->getClientOriginalName();
-                // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/categories/images', $imageName, 'public');
+                // Lấy tên ảnh và tạo tên mới duy nhất
+                $image = $request->file('image');
+                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                // Lưu ảnh vào thư mục 'uploads/categories/images'
+                $image->storeAs('uploads/categories/images', $imageName, 'public');
                 // Lưu chỉ tên ảnh vào params
                 $params['image'] = $imageName;
             } else {
-                $params['image'] = null;
+                $params['image'] = null;  // Trường hợp không có ảnh
             }
+
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
+
+            // Tạo danh mục mới
             Category::create($params);
 
-            return back()->with('statusSuccess', 'Thêm danh mục thành công');
+            return redirect()->route('admin.categories.index')->with('statusSuccess', 'Thêm danh mục thành công');
         }
     }
 
@@ -139,26 +147,47 @@ class CategoryController extends Controller
             $params = $request->except('_token', '_method');
             $Cate = Category::findOrFail($id);
 
+            // Kiểm tra xem danh mục hiện tại có phải là danh mục cha không
+            if ($Cate->parent_category_id === null) {
+                // Lấy danh mục con hiện tại của danh mục cha (nếu có)
+                $childCategories = Category::where('parent_category_id', $Cate->id)->pluck('id')->toArray();
+
+                // Nếu danh mục cha đang được sửa chọn chính nó là con
+                if (in_array($request->parent_category_id, $childCategories)) {
+                    return redirect()->back()->with('statusError', 'Bạn không thể chọn danh mục con của danh mục cha này.');
+                }
+            }
+
+            // Xử lý ảnh nếu có
             if ($request->hasFile('image')) {
-                if ($Cate->image && Storage::disk('public')->exists($Cate->image)) {
-                    Storage::disk('public')->delete($Cate->image);
+                // Nếu có ảnh cũ và ảnh mới được tải lên, xóa ảnh cũ
+                if ($Cate->image && Storage::disk('public')->exists('uploads/categories/images/' . $Cate->image)) {
+                    Storage::disk('public')->delete('uploads/categories/images/' . $Cate->image);
                 }
 
-                $name = $request->file('image')->getClientOriginalName();
-                // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/categories/images', $name, 'public');
+                // Tạo tên ảnh duy nhất
+                $image = $request->file('image');
+                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('uploads/categories/images', $imageName, 'public');
 
-                $params['image'] = $name;
+                // Lưu tên ảnh mới
+                $params['image'] = $imageName;
             } else {
+                // Nếu không có ảnh mới, giữ ảnh cũ
                 $params['image'] = $Cate->image;
             }
+
+            // Cập nhật trạng thái hoạt động
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
 
+            // Cập nhật thông tin danh mục
             $Cate->update($params);
 
             return redirect()->route('admin.categories.index')->with('statusSuccess', 'Cập nhật danh mục thành công');
         }
     }
+
+
     /**
      * Remove the specified resource from storage.
      */

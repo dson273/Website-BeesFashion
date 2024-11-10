@@ -40,7 +40,7 @@
                                 <th>Tên Banner</th>
                                 <th>Hình ảnh</th>
                                 <th>Trạng thái</th>
-                                <th>Actions</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -49,7 +49,7 @@
                                 <th>Tên Banner</th>
                                 <th>Hình ảnh</th>
                                 <th>Trạng thái</th>
-                                <th>Actions</th>
+                                <th>Thao tác</th>
                             </tr>
                         </tfoot>
                         <tbody>
