@@ -137,7 +137,7 @@ class ProductController extends Controller
                 $check_product_variant_by_id->save();
                 $response = [
                     'status' => 200,
-                    'message' => 'Không tìm thấy biến thể cần nhập thêm hàng!'
+                    'message' => 'Nhập hàng thành công!'
                 ];
             } else {
                 $response = [

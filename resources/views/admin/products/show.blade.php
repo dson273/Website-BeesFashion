@@ -114,9 +114,9 @@ Chi tiết sản phẩm
                                 <td>{{$productDetail['name']}}</td>
                                 <td>
                                     @if($productDetail['is_active']==1)
-                                    <span class="text-success">Đang hoạt động</span>
+                                    <span class="text-white badge badge-success">Đang hoạt động</span>
                                     @else
-                                    <span class="text-danger">Ngừng bán</span>
+                                    <span class="text-white badge badge-danger">Ngừng bán</span>
                                     @endif
                                 </td>
                                 <td>{{$productDetail['created_at']}}</td>
@@ -238,9 +238,9 @@ Chi tiết sản phẩm
                             <td>{{$productVariant->stock}}</td>
                             <td>
                                 @if($productVariant->is_active==1)
-                                <span class="text-success">Đang hoạt động</span>
+                                <span class="text-white badge badge-success">Đang hoạt động</span>
                                 @else
-                                <span class="text-danger">Ngừng bán</span>
+                                <span class="text-white badge badge-danger">Ngừng bán</span>
                                 @endif
                             </td>
                             <td>{{$productVariant->created_at}}</td>
