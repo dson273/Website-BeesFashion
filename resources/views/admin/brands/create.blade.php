@@ -1,12 +1,12 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Tạo mới danh mục sản phẩm
+    Tạo mới thương hiệu sản phẩm
 @endsection
 
 @section('content')
     <div class="card shadow mb-4">
-        <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Tạo mới danh mục </h1>
+        <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Tạo mới thương hiệu </h1>
         <div class="card-body">
             <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -21,10 +21,9 @@
                 </div>
                 <div class="mt-3 mb-3">
                     <label for="" class="form-label">Ảnh</label>
-                    <input type="file" name="image"
-                        class="form-control @error('image') is-invalid @enderror"value="{{ old('image') }}">
+                    <input type="file" name="image" class="form-control" value="{{ old('image') }}">
                     @error('image')
-                        <p class="text-danger">{{ $message }}</p>
+                        <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="mt-3 mb-3">

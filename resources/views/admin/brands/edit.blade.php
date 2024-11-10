@@ -10,67 +10,51 @@
 
         <div class="card-body">
             <form action="{{ route('admin.brands.update', $brandID->id) }}" method="POST" enctype="multipart/form-data">
-
                 @csrf
                 @method('PUT')
                 <div class="mt-3 mb-3">
-                    <label for="" class="form-label">Tên danh mục</label>
-                    <input type="text" name="name"
-                        class="form-control @error('name') is-invalid @enderror"value="{{ old('name') }}"
-                        value="{{ $brandID->name }}">
+                    <label for="name" class="form-label">Tên thương hiệu</label>
+                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" 
+                        value="{{ old('name', $brandID->name) }}">
                     @error('name')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-
                 </div>
+                <!-- Ảnh -->
                 <div class="mt-3 mb-3">
-                    <label for="" class="form-label">Ảnh</label>
-                    <input type="file" name="image"
-                        class="form-control @error('image') is-invalid @enderror"value="{{ old('image') }}">
+                    <label for="image" class="form-label">Ảnh</label>
+                    <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror">
+                    
+                    <!-- Hiển thị ảnh cũ nếu có -->
+                    @if ($brandID->image)
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/uploads/brands/images/' .$brandID->image) }}" width="150px" alt="Brand Image">
+                        </div>
+                    @endif
+                    
                     @error('image')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                    <img src="{{ asset('storage/uploads/imgbrand/' . $brandID->image) }}" width="150px" alt="">
                 </div>
-
-                {{-- <div class="mt-3 mb-3">
-                    <label for="" class="form-label">Thuộc danh mục</label>
-                    <select name="parent_category_id" class="form-control" {{ $Cate->parent_category_id == '' }}>
-                        <option value="">--Danh mục cha--</option>
-                        @foreach ($cate_parent as $key => $value)
-                            @if (!in_array($value->id, $sub_parent))
-                                <option value="{{ $value->id }}"
-                                    {{ $value->id == $Cate->parent_category_id ? 'selected' : '' }}>
-                                    @php
-                                        $str = '';
-                                        for ($i = 0; $i < $value->level; $i++) {
-                                            echo $str;
-                                            $str .= '-- ';
-                                        }
-                                    @endphp
-                                    {{ $value->name }}
-                                </option>
-                            @endif
-                        @endforeach
-                    </select>
-                </div> --}}
-
-
+                
+                <!-- Trạng thái -->
                 <div class="mt-3 mb-3">
-                    <label for="" class="form-label">Trạng thái</label>
-                    <select name="is_active"
-                        class="form-control @error('is_active') is-invalid @enderror"value="{{ old('is_active') }}">
-                        <option value="1" {{ $brandID->is_active == '1' ? 'selected' : '' }}>Hiển Thị</option>
-                        <option value="0" {{ $brandID->is_active == '0' ? 'selected' : '' }}>Ẩn</option>
+                    <label for="is_active" class="form-label">Trạng thái</label>
+                    <select name="is_active" id="is_active" class="form-control @error('is_active') is-invalid @enderror">
+                        <option value="1" {{ old('is_active', $brandID->is_active) == 1 ? 'selected' : '' }}>Hiển Thị</option>
+                        <option value="0" {{ old('is_active', $brandID->is_active) == 0 ? 'selected' : '' }}>Ẩn</option>
                     </select>
                     @error('is_active')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
                 </div>
+                
+                <!-- Nút Submit -->
                 <div class="mt-3">
                     <button type="submit" class="btn btn-success">Chỉnh sửa</button>
                 </div>
             </form>
+            
         </div>
     </div>
 @endsection
