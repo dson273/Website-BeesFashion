@@ -128,7 +128,7 @@ class ProductController extends Controller
                 'quantity' => $quantity,
                 'import_price' => $import_price,
                 'product_variant_id' => $product_variant_id,
-                'user_id' => Auth::user()->id ? Auth::user()->id : ''
+                'user_id' => Auth::check() ? Auth::user()->id : ''
             ]);
             if ($importing_good) {
                 $check_product_variant_by_id->stock += $quantity;
@@ -284,7 +284,7 @@ class ProductController extends Controller
                         'quantity' => $stockVariation,
                         'import_price' => $importPriceVariation,
                         'product_variant_id' => $newProductVariation->id,
-                        'user_id' => Auth::user()->id ? Auth::user()->id : ''
+                        'user_id' => Auth::check() ? Auth::user()->id : ''
                     ]);
 
                     // Xử lý dữ liệu variationAttributeData
