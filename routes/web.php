@@ -38,7 +38,7 @@ Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPasswor
 
 //filterProduct
 Route::get('product', [FilterProductController::class, 'index']);
-
+Route::post('product/getMinMaxPriceProduct',[FilterProductController::class],'getMinMaxPriceProduct')->name('getMinMaxPriceProduct');
 // web.php hoặc api.php
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
 

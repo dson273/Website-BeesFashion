@@ -22,7 +22,20 @@ class UpdateAttributeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'attribute_type_id' => 'required|exists:attribute_types,id',
+        ];
+    }
+
+    /**
+     * Get custom messages for validation errors.
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên thuộc tính không được để trống',
+            'attribute_type_id.required' => 'Loại thuộc tính không được để trống',
+            'attribute_type_id.exists' => 'Loại thuộc tính không tồn tại',
         ];
     }
 }
