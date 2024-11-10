@@ -56,6 +56,7 @@ class ProductController extends Controller
             ) as mainImage')
             ->withCount('product_variants')
             ->having('product_variants_count', '>', 0)
+            ->orderBy('products.created_at', 'desc')
             ->get();
         // ==================================
         return view('admin.products.index', compact('listProducts'));
@@ -81,6 +82,7 @@ class ProductController extends Controller
             ->where('is_active', 0)
             ->withCount('product_variants')
             ->having('product_variants_count', '>', 0)
+            ->orderBy('products.created_at', 'desc')
             ->get();
         // ==================================
         return view('admin.products.index', compact('listProducts'));
@@ -128,7 +130,7 @@ class ProductController extends Controller
                 'quantity' => $quantity,
                 'import_price' => $import_price,
                 'product_variant_id' => $product_variant_id,
-                'user_id' => Auth::check() ? Auth::user()->id : ''
+                'user_id' => Auth::check() ? Auth::user()->id : null
             ]);
             if ($importing_good) {
                 $check_product_variant_by_id->stock += $quantity;
@@ -284,7 +286,7 @@ class ProductController extends Controller
                         'quantity' => $stockVariation,
                         'import_price' => $importPriceVariation,
                         'product_variant_id' => $newProductVariation->id,
-                        'user_id' => Auth::check() ? Auth::user()->id : ''
+                        'user_id' => Auth::check() ? Auth::user()->id : null
                     ]);
 
                     // Xử lý dữ liệu variationAttributeData
