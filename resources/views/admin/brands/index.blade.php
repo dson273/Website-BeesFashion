@@ -54,12 +54,12 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td><img src="{{ asset('storage/uploads/imgbrand/' . $item->image) }}" width="150px "
+                                    <td><img src="{{ asset('storage/uploads/brands/images/' .$item->image) }}" width="150px "
                                             alt=""></td>
                                     <td>{{ $item->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
-                                        <a href="{{ route('admin.brands.edit', $item->id) }}" class="btn btn-warning"><i
-                                                class="fa fa-pencil-alt"></i></a>
+                                        <a href="{{ route('admin.brands.edit', $item->id) }}"
+                                            class="btn btn-warning"><i class="fa fa-wrench"></i></a>
                                         <form action="{{ route('admin.brands.destroy', $item->id) }}" class="d-inline"
                                             method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf

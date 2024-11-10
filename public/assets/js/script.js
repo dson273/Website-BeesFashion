@@ -223,17 +223,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-var colorItems = document.querySelectorAll('.color-variant li');
-colorItems.forEach(function (item) {
-    item.addEventListener('click', function (e) {
-        colorItems.forEach(function (colorItem) {
-            colorItem.classList.remove('active');
-        });
-        this.classList.add('active');
-    });
-});
-
-
 /*====================
        offcanvas cart
    =======================*/

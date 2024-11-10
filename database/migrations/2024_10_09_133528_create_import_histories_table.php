@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Import_history;
 use App\Models\Product_variant;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->integer('quantity')->comment('Số lượng nhập vào');
             $table->bigInteger('import_price')->comment('Giá nhập thực tế của sản phẩm mà bạn đã mua từ nhà cung cấp. Đây là giá gốc của sản phẩm.');
             $table->foreignIdFor(model: Product_variant::class)->comment('Xác định lịch sử nhập này thuộc biến thể nào')->constrained();
-            $table->foreignIdFor(User::class)->comment('Xác định người dùng nào nhập hàng!')->nullable()->constrained();
+            $table->foreignIdFor(model: User::class)->comment('Người nhập hàng')->constrained();
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Attribute_type;
 use App\Models\Attribute_value;
 use App\Http\Requests\StoreAttributeRequest;
+use App\Http\Requests\UpdateAttributeRequest;
 use App\Http\Controllers\Controller;
 use League\CommonMark\Extension\Attributes\Node\Attributes;
 
@@ -27,6 +28,7 @@ class AttributeController extends Controller
     {
         $listAttributeTypes = Attribute_type::query()->get();
         $listAttribute = Attribute::query()->get();
+        $attributeIds = Attribute_value::whereNotNull('attribute_id')->pluck('id');
 
         // dd($listAttribute);
 
@@ -63,9 +65,9 @@ class AttributeController extends Controller
         //
         $AttributesID = Attribute::query()->findOrFail($id);
         $attribute_type = Attribute_type::where('id', $AttributesID->attribute_type_id)->first();
-        if($attribute_type){
+        if ($attribute_type) {
             $type_name = $attribute_type->type_name;
-        }else{
+        } else {
             $type_name = '';
         }
         $listAttributeTypes = Attribute_type::query()->get();
@@ -76,11 +78,12 @@ class AttributeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreAttributeRequest $request, string $id)
+    public function update(UpdateAttributeRequest $request, string $id)
     {
         if ($request->isMethod('PUT')) {
             $params = $request->except('_token', '_method');
             $AttributesID = Attribute::findOrFail($id);
+            // dd($AttributesID);
             $AttributesID->update($params);
             return redirect()->route('admin.attributes.create')->with('statusSuccess', 'chỉnh sửa loại thuộc tính thành công');
         }

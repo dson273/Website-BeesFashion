@@ -11,7 +11,7 @@ class UpdateBrandRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -19,10 +19,26 @@ class UpdateBrandRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:255', // Quy tắc cho trường 'name'
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Quy tắc cho trường 'image'
+            'is_active' => 'required|boolean', // Quy tắc cho trường 'is_active'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên thương hiệu là bắt buộc.',
+            'name.string' => 'Tên thương hiệu phải là chuỗi.',
+            'name.max' => 'Tên thương hiệu không được vượt quá 255 ký tự.',
+            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
+            'image.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif, svg.',
+            'image.max' => 'Dung lượng ảnh tối đa là 2MB.',
+            'is_active.required' => 'Trạng thái hoạt động là bắt buộc.',
+            'is_active.boolean' => 'Trạng thái hoạt động phải là true hoặc false.',
         ];
     }
 }

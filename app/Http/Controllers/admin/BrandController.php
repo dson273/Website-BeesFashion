@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BrandRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateBrandRequest;
 
 class BrandController extends Controller
 {
@@ -18,7 +19,7 @@ class BrandController extends Controller
         //
         $listBrand = Brand::get();
         // dd($listBrand);
-        return view('admin.brands.index',compact('listBrand'));
+        return view('admin.brands.index', compact('listBrand'));
     }
 
     /**
@@ -28,7 +29,6 @@ class BrandController extends Controller
     {
         //
         return view('admin.brands.create');
-
     }
 
     /**
@@ -36,22 +36,20 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request)
     {
-        //
+        // Kiểm tra phương thức POST (Laravel đã tự động xử lý nhưng nếu bạn muốn giữ lại kiểm tra, thì có thể)
         if ($request->isMethod('POST')) {
             $params = $request->except('_token');
             if ($request->hasFile('image')) {
-                // Lấy tên ảnh
-                $imageName = $request->file('image')->getClientOriginalName();
-                // Lưu ảnh vào thư mục 'uploads/imgcate'
-                $request->file('image')->storeAs('uploads/imgbrand', $imageName, 'public');
-                // Lưu chỉ tên ảnh vào params
+                $image = $request->file('image');
+                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('uploads/brands/images', $imageName, 'public');
                 $params['image'] = $imageName;
             } else {
                 $params['image'] = null;
             }
             Brand::create($params);
-
-            return view('admin.brands.index')->with('statusSuccess', 'Thêm thương hiệu thành công');
+            // Chuyển hướng về trang danh sách thương hiệu và hiển thị thông báo thành công
+            return redirect()->route('admin.brands.index')->with('statusSuccess', 'Thêm thương hiệu thành công');
         }
     }
 
@@ -69,14 +67,15 @@ class BrandController extends Controller
     public function edit(string $id)
     {
         //
-        $brandID = Brand::query()->findOrFail($id);
+        $brandID = Brand::findOrFail($id);
+        // dd($brandID);
         return view('admin.brands.edit', compact('brandID'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(BrandRequest $request, string $id)
+    public function update(UpdateBrandRequest $request, string $id)
     {
         //
         if ($request->isMethod('PUT')) {
@@ -89,8 +88,7 @@ class BrandController extends Controller
                 }
 
                 $name = $request->file('image')->getClientOriginalName();
-                // Lưu ảnh vào thư mục 'uploads/imgbrandID'
-                $request->file('image')->storeAs('uploads/imgbrand', $name, 'public');
+                $request->file('image')->storeAs('uploads/brands/images', $name, 'public');
 
                 $params['image'] = $name;
             } else {
@@ -108,17 +106,24 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-        $brandID = Brand::findOrFail($id);
+        try {
+            // Tìm thương hiệu theo ID, nếu không tìm thấy sẽ trả về lỗi 404
+            $brand = Brand::findOrFail($id);
 
-        $childCategories = Brand::where('parent_category_id', $brandID->id)->count();
+            // Kiểm tra nếu có hình ảnh và hình ảnh tồn tại trong storage
+            if ($brand->image && Storage::disk('public')->exists('uploads/brands/images/' . $brand->image)) {
+                // Xóa ảnh từ storage
+                Storage::disk('public')->delete('uploads/brands/images/' . $brand->image);
+            }
 
-        if ($brandID->image && Storage::disk('public')->exists($brandID->image)) {
-            Storage::disk('public')->delete($brandID->image);
+            // Xóa thương hiệu
+            $brand->delete();
+
+            // Thông báo thành công và chuyển hướng về trang danh sách
+            return redirect()->route('admin.brands.index')->with('statusSuccess', 'Xóa thương hiệu thành công!');
+        } catch (\Exception $e) {
+            // Nếu có lỗi, thông báo lỗi và chuyển hướng về danh sách
+            return redirect()->route('admin.brands.index')->with('statusError', 'Có lỗi xảy ra khi xóa thương hiệu!');
         }
-
-        $brandID->delete();
-
-        return redirect()->route('admin.categories.index')->with('statusSuccess', 'Xóa thương hiệu thành công!');
     }
 }

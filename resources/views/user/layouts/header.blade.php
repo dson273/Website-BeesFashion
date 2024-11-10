@@ -140,8 +140,7 @@
                                 @endguest
 
                                 <li class="onhover-div shopping-cart">
-                                    <a class="p-0" href="#" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                    <a class="p-0" href="{{route('cart')}}">
                                         <div class="shoping-prize"><i class="iconsax pe-2" data-icon="basket-2"></i>0
                                             items
                                         </div>

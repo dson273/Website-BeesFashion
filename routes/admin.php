@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\AttributeValueController;
 use App\Http\Controllers\admin\BrandController;
+use App\Http\Controllers\admin\ImportHistoryController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\ManagerSettingController;
 
@@ -112,6 +113,12 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('vouchers/onactive/{id}', [VoucherController::class, 'onActive'])->name('vouchers.onactive');
     Route::get('vouchers/offactive/{id}', [VoucherController::class, 'offActive'])->name('vouchers.offactive');
     // });
+
+    Route::resource('import_history', ImportHistoryController::class);
+    Route::post('import_history/update', [ImportHistoryController::class, 'updateQuantity'])
+    ->name('import_history.update');
+
+
 
     //=======================================================Quản lý khách hàng=======================================================
     // Route::middleware(['checkPermission:Quản lý khách hàng'])->group(function () {

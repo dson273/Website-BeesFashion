@@ -88,9 +88,9 @@ tapTopElement.addEventListener('click', function () {
         smHorizontal.classList.remove('open');
     });
 
- 
+
 /*============================
-        07.cart js 
+        07.cart js
 ============================*/
 
 function initializeCounter(counterId, totalId, addBtnId, removeBtnId) {
@@ -149,7 +149,7 @@ initializeCounter("quantity3", "total3", "btn-add3", "btn-remove3");
 
 
 /*============================
-           05.Tost js 
+           05.Tost js
    ============================*/
 
 document.querySelectorAll(".wishlist-icon").forEach(function (element) {
@@ -178,7 +178,7 @@ for (var i = 0; i < footerButton.length; ++i) {
 
 
 /*====================
-       title change 
+       title change
    =======================*/
 var title = document.title;
 
@@ -191,37 +191,37 @@ window.addEventListener('blur', function () {
 });
 
 /*====================
-   other js 
+   other js
 =======================*/
 
-document.addEventListener('DOMContentLoaded', function () {
-    console.log("DOM fully loaded and parsed");
+// document.addEventListener('DOMContentLoaded', function () {
+//     console.log("DOM fully loaded and parsed");
 
-    var sizeItems = document.querySelectorAll('.size-box ul li');
-    console.log("sizeItems:", sizeItems);
+//     var sizeItems = document.querySelectorAll('.size-box ul li');
+//     console.log("sizeItems:", sizeItems);
 
-    sizeItems.forEach(function (item) {
-        item.addEventListener('click', function (e) {
-            console.log("Clicked on size item:", this);
+//     sizeItems.forEach(function (item) {
+//         item.addEventListener('click', function (e) {
+//             console.log("Clicked on size item:", this);
 
-            sizeItems.forEach(function (sizeItem) {
-                sizeItem.classList.remove('active');
-            });
+//             sizeItems.forEach(function (sizeItem) {
+//                 sizeItem.classList.remove('active');
+//             });
 
-            var selectSize = document.getElementById('selectSize');
-            console.log("selectSize:", selectSize);
+//             var selectSize = document.getElementById('selectSize');
+//             console.log("selectSize:", selectSize);
 
-            if (selectSize) {
-                selectSize.classList.remove('cartMove');
-            } else {
-                console.log("Element with id 'selectSize' not found.");
-            }
+//             if (selectSize) {
+//                 selectSize.classList.remove('cartMove');
+//             } else {
+//                 console.log("Element with id 'selectSize' not found.");
+//             }
 
-            this.classList.add('active');
-            this.parentNode.classList.add('selected');
-        });
-    });
-});
+//             this.classList.add('active');
+//             this.parentNode.classList.add('selected');
+//         });
+//     });
+// });
 
 var colorItems = document.querySelectorAll('.color-variant li');
 colorItems.forEach(function (item) {
@@ -235,7 +235,7 @@ colorItems.forEach(function (item) {
 
 
 /*====================
-       offcanvas cart 
+       offcanvas cart
    =======================*/
 document.addEventListener('DOMContentLoaded', function () {
     var deleteIcons = document.querySelectorAll('.delete-icon');
@@ -261,19 +261,19 @@ wishlistProduct.forEach(el => {
     });
 });
 
-  
+
 
 /*====================
-      Header responsive 
+      Header responsive
    =======================*/
 
 document.addEventListener('DOMContentLoaded', () => {
     function handleNavClick(event) {
       const clickedElement = event.target.closest('li');
-  
+
       if (clickedElement && !clickedElement.classList.contains('mobile-back')) {
         const isActive = clickedElement.classList.contains('show');
-  
+
         // Remove 'show' class from all <li> elements
         document.querySelectorAll('#sm-horizontal li').forEach(li => {
           li.classList.remove('show');
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
             li.querySelector('.nav-submenu').classList.remove('show');
           }
         });
-  
+
         // If the clicked element didn't have the 'show' class, add it
         if (!isActive) {
           clickedElement.classList.add('show');
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-  
+
     function handleResize() {
       if (window.innerWidth <= 1200) {
         document.getElementById('sm-horizontal').addEventListener('click', handleNavClick);
@@ -324,10 +324,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     }
-  
+
     // Initial check
     handleResize();
-  
+
     // Attach resize event listener
     window.addEventListener('resize', handleResize);
   });
