@@ -12,12 +12,35 @@
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="mt-3 mb-3">
-                        <label for="" class="form-label">Tên thuộc tính</label>
-                        <input type="text" name="name" class="form-control" value="{{ $AttributesID->name }}">
+                    <div class="mt-3 mb-2">
+                        <label for="name" class="form-label">Tên thuộc tính</label>
+                        <input type="text" name="name"
+                            class="form-control @error('name') is-invalid @enderror"value="{{ $AttributesID->name }}">
+                        @error('name')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="mt-3 mb-3">
                         <label for="attribute_type_id" class="form-label">Loại</label>
+                        <select name="attribute_type_id" id="attribute_type_id"
+                            class="form-select form-select-sm mb-3 @error('attribute_type_id') is-invalid @enderror"
+                            aria-label="small select example">
+                            <option value="" disabled {{ old('attribute_type_id') ? '' : 'selected' }}>Chọn loại thuộc
+                                tính</option>
+                            @if ($listAttributeTypes->isEmpty())
+                                <option value="" selected>Không có loại thuộc tính nào</option>
+                            @else
+                                @foreach ($listAttributeTypes as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ old('attribute_type_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->type_name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+
+
+                        {{-- <label for="attribute_type_id" class="form-label">Loại</label>
                         <select name="attribute_type_id" id="attribute_type_id" class="form-select form-select-sm mb-3"
                             aria-label="small select example"  >
                             @if ($listAttributeTypes->isEmpty())
@@ -31,7 +54,7 @@
                                     </option>
                                 @endforeach
                             @endif
-                        </select>
+                        </select> --}}
                     </div>
 
                     <div class="mt-3">
@@ -65,12 +88,12 @@
                                     </td>
                                     @if ($item->attribute_type)
                                         <td>{{ $item->attribute_type->type_name }}</td>
-                                        @else 
+                                    @else
                                         <td class="text-center">Chưa có loại</td>
                                     @endif
                                     <td>
-                                        <a href="{{ route('admin.attributes.edit', $item->id) }}" class="btn btn-warning"><i
-                                                class="fa fa-pencil-alt"></i></a>
+                                        <a href="{{ route('admin.attributes.edit', $item->id) }}"
+                                            class="btn btn-warning"><i class="fa fa-pencil-alt"></i></a>
                                         <form action="{{ route('admin.attributes.destroy', $item->id) }}" class="d-inline"
                                             method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf

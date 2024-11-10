@@ -1356,6 +1356,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .bg-overlay {
+    
     background-color: rgba(var(--black), 0);
     height: 100vh;
     left: 0;

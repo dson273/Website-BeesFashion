@@ -89,7 +89,7 @@
                     <div class="col-sm-6">
                         <ul class="breadcrumb float-end">
                             <li class="breadcrumb-item"> <a href="{{ route('/') }}">Home</a></li>
-                            <li class="breadcrumb-item active"> <a href="">Bộ sản phẩm</a></li>
+                            <li class="breadcrumb-item active"> <a href="{{ route('/') }}">Bộ sản phẩm</a></li>
                         </ul>
                     </div>
                 </div>
@@ -114,50 +114,128 @@
                             </div>
                             {{-- Lọc theo danh mục --}}
                             <div class="accordion-item">
-                                <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
-                                        data-bs-target="#panelsStayOpen-collapseTwo"><span>Danh Mục</span></button>
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsCateOpen-collapseEight">
+                                        <span>Danh mục</span>
+                                    </button>
                                 </h2>
-                                <div class="accordion-collapse collapse show" id="panelsStayOpen-collapseTwo">
+                                <div class="accordion-collapse collapse show" id="panelsCateOpen-collapseTwo">
                                     <div class="accordion-body">
                                         <ul class="catagories-side theme-scrollbar">
-                                            @foreach ($listCate as $category)
+                                            @foreach ($listCategory as $parentCategory)
                                                 <li style="list-style-type: none; display: flex; align-items: center;">
-                                                    <div style="margin-left: {{ $category->level * 20 }}px; flex-grow: 1;">
-                                                        <input class="custom-checkbox" id="category{{ $category->id }}"
-                                                            type="checkbox" name="categories[]" value="{{ $category->id }}"
-                                                            data-parent="{{ $category->parent_category_id }}"
-                                                            data-id="{{ $category->id }}"
-                                                            onchange="toggleChildCategorie({{ $category->id }})">
+                                                    <div style="margin-left: 0px; flex-grow: 1;">
+                                                        <!-- Hiển thị danh mục cha -->
+                                                        <input class="category-checkbox custom-checkbox"
+                                                            id="category{{ $parentCategory->id }}" type="checkbox"
+                                                            name="categories[]" value="{{ $parentCategory->id }}"
+                                                            data-parent="{{ $parentCategory->parent_category_id }}"
+                                                            data-id="{{ $parentCategory->id }}"
+                                                            onchange="toggleChildCategories({{ $parentCategory->id }})">
                                                         <label
-                                                            for="category{{ $category->id }}">{{ $category->name }}</label>
+                                                            for="category{{ $parentCategory->id }}">{{ $parentCategory->name }}</label>
                                                     </div>
+                                                </li>
+    
+                                                <!-- Hiển thị danh mục con của danh mục cha hiện tại -->
+                                                @if ($parentCategory->categoryChildrent)
+                                                    @foreach ($parentCategory->categoryChildrent as $childCategory)
+                                                        <li style="list-style-type: none; display: flex; align-items: center;">
+                                                            <div style="margin-left: 20px; flex-grow: 1;">
+                                                                <!-- Lùi lại cho danh mục con -->
+                                                                <input class="category-checkbox custom-checkbox"
+                                                                    id="category{{ $childCategory->id }}" type="checkbox"
+                                                                    name="categories[]" value="{{ $childCategory->id }}"
+                                                                    data-parent="{{ $childCategory->parent_category_id }}"
+                                                                    data-id="{{ $childCategory->id }}"
+                                                                    onchange="toggleChildCategories({{ $childCategory->id }})">
+                                                                <label
+                                                                    for="category{{ $childCategory->id }}">{{ $childCategory->name }}</label>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <!-- Phần lọc theo thương hiệu -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsStayOpen-collapseEight">
+                                        <span>Thương hiệu</span>
+                                    </button>
+                                </h2>
+                                <div class="accordion-collapse collapse show" id="panelsStayOpen-collapseEight">
+                                    <div class="accordion-body">
+                                        <ul class="theme-scrollbar">
+                                            @foreach ($listBrand as $value)
+                                                <li style="list-style-type: none; display: flex; align-items: center;">
+                                                    <input class="brand-checkbox custom-checkbox"
+                                                        id="brand{{ $value->id }}" type="checkbox" name="brands[]"
+                                                        value="{{ $value->id }}">
+                                                    <label for="brand{{ $value->id }}"
+                                                        style="margin-left: 8px; display: flex; align-items: center; height: 100%;">
+                                                        {{ $value->name }}
+                                                    </label>
                                                 </li>
                                             @endforeach
                                         </ul>
                                     </div>
                                 </div>
                             </div>
+
                             {{-- lọc theo giá --}}
-                            <div class="accordion-item">
-                                <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
-                                        data-bs-target="#panelsStayOpen-collapseFour"><span>Giá</span></button></h2>
-                                <div class="accordion-collapse collapse show" id="panelsStayOpen-collapseFour">
-                                    <div class="accordion-body">
-                                        <div class="range-slider">
-                                            <input class="range-slider-input" type="range" min="0" max="1200000"
-                                                step="1" value="200000" id="range-slider-min">
-                                            <input class="range-slider-input" type="range" min="0" max="1200000"
-                                                id="range-slider-max" step="1" value="1000000">
-                                            <div class="range-slider-display"></div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
+                                            data-bs-target="#panelsStayOpen-collapseFour"><span>Giá</span></button></h2>
+                                    <div class="price-display"> </div>
+                                    <div class="accordion-collapse collapse show" id="panelsStayOpen-collapseFour">
+                                        <div class="accordion-body">
+                                            {{-- {{$minPriceProduct}} --}}
+                                            <div class="range-slider">
+                                                <input class="range-slider-input" type="range" name="min_price" min="{{$minPriceProduct}}" max="{{$maxPriceProduct}}"
+                                                    step="1" value="{{$minPriceProduct}}" id="range-slider-min" readonly>
+                                                <input class="range-slider-input" type="range" name="max_price" min="{{$minPriceProduct}}" max="{{$maxPriceProduct}}"
+                                                    id="range-slider-max" step="1" value="{{$maxPriceProduct}}" readonly>
+                                                <div class="range-slider-display"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-
-
-
-
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header tags-header"><button class="accordion-button"><span>Vận chuyển & Giao hàng</span><span></span></button></h2>
+                                    <div class="accordion-collapse collapse show" id="panelsStayOpen-collapseSeven">
+                                        <div class="accordion-body">
+                                            <ul class="widget-card">
+                                                <li><i class="iconsax" data-icon="truck-fast"></i>
+                                                    <div>
+                                                        <h6>Miễn phí vận chuyển</h6>
+                                                        <p>Miễn phí vận chuyển cho tất cả các đơn hàng tại Việt Nam</p>
+                                                    </div>
+                                                </li>
+                                                <li><i class="iconsax" data-icon="headphones"></i>
+                                                    <div>
+                                                        <h6>Hỗ trợ 24/7</h6>
+                                                        <p>Miễn phí vận chuyển cho tất cả các đơn hàng tại Việt Nam</p>
+                                                    </div>
+                                                </li>
+                                                <li><i class="iconsax" data-icon="exchange"></i>
+                                                    <div>
+                                                        <h6>30 ngày hoàn trả</h6>
+                                                        <p>Miễn phí vận chuyển cho tất cả các đơn hàng tại Việt Nam</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -170,20 +248,20 @@
                                     <h6> <i class="iconsax" data-icon="filter"></i>Filter Menu </h6>
                                 </a>
                                 <div class="category-dropdown">
-                                    <label for="cars">Sort By :</label>
+                                    <label for="cars">Sắp xếp :</label>
                                     <select class="form-select" id="cars" name="carlist">
-                                        <option value="">Best selling</option>
-                                        <option value="">Popularity</option>
-                                        <option value="">Featured</option>
-                                        <option value="">Alphabetically, Z-A</option>
-                                        <option value="">High - Low Price</option>
-                                        <option value="">% Off - High To Low</option>
+                                        <option value="">Sản phẩm bán chạy</option>
+                                        <option value="">Phổ biến</option>
+                                        <option value="">Nổi bật</option>
+                                        <option value="">Theo thứ tự chữ cái, Z-A</option>
+                                        <option value="">Giá Cao - Thấp</option>
+                                        <option value="">% Giảm giá - Cao xuống Thấp</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="product-tab-content ratio1_3" >
+
+                        <div class="product-tab-content ratio1_3">
                             <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4">
                                 <!-- Sản phẩm sẽ được hiển thị ở đây -->
                             </div>
