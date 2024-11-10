@@ -34,9 +34,12 @@
                         </div> --}}
                     <!-- Indicators/dots -->
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0"
-                            class="active"></button>
-                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
+                        @foreach ($sliders as $slider)
+                            @foreach ($slider->banner_images as $key => $banner_image)
+                                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="{{ $key }}"
+                                    class="{{ $key === 0 ? 'active' : '' }}"></button>
+                            @endforeach
+                        @endforeach
                     </div>
                     <!-- Carousel Controls -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
@@ -166,11 +169,7 @@
                                                                     alt="lable"><span>on <br>Sale!</span></div>
                                                             <div class="product-image"><a href="{{route('product.detail', $product)}}">
 
-                                                                    @foreach ($product->product_files as $file)
-                                                                        <img src="{{ asset('upload/products/images/' . $file->file_name) }}"
-                                                                            alt="Product Image" width="200">
-                                                                    @endforeach
-
+                                                                <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
                                                                 </a></div>
                                                             <div class="cart-info-icon"> <a class="wishlist-icon"
                                                                     href="javascript:void(0)" tabindex="0"><i
@@ -191,21 +190,27 @@
                                                                     Cart</a>
                                                             </div>
                                                             <div class="color-box">
-                                                                <ul class="color-variant">
-                                                                    <li class="bg-color-purple"></li>
-                                                                    <li class="bg-color-blue"></li>
-                                                                    <li class="bg-color-red"></li>
-                                                                    <li class="bg-color-yellow"></li>
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                    @foreach ($product->product_variants as $variant)
+                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                            @php
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
+                                                                            @endphp
+                                                                            @if (!empty($attributeValue->value))
+                                                                                <li style="background-color: #{{ $attributeValue->value }};"
+                                                                                  >
+                                                                                </li>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endforeach
                                                                 </ul>
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
                                                             <a href="{{route('product.detail', $product)}}">
                                                                 <h6>{{ $product->name }}</h6>
                                                             </a>
-
-
                                                             <p>
-                                                                Giá bán: ${{ $product->priceRange }}
+                                                                {{ $product->priceRange }}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -371,54 +376,60 @@
                                     <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($topProducts as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
-                                                    <div class="product-box">
-                                                        <div class="img-wrapper">
-                                                            <div class="label-block"><img
-                                                                    src="{{ asset('assets/images/product/3.png') }}"
-                                                                    alt="lable"><span>on <br>Sale!</span></div>
-                                                            <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
-                                                                        class="bg-img"
-                                                                        src="{{ asset('assets/images/product/product-4/17.jpg') }}"
-                                                                        alt="product"></a></div>
-                                                            <div class="cart-info-icon"> <a class="wishlist-icon"
-                                                                    href="javascript:void(0)" tabindex="0"><i
-                                                                        class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i></a><a
-                                                                    href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i
-                                                                        class="iconsax" data-icon="eye"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Quick View"></i></a></div>
-                                                        </div>
-                                                        <div class="product-detail">
-                                                            <div class="add-button"><a href="#"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart"
-                                                                    title="add product" tabindex="0"><i
-                                                                        class="fa-solid fa-plus"></i> Add To
-                                                                    Cart</a>
-                                                            </div>
-                                                            <div class="color-box">
-                                                                <ul class="color-variant">
-                                                                    <li class="bg-color-purple"></li>
-                                                                    <li class="bg-color-blue"></li>
-                                                                    <li class="bg-color-red"></li>
-                                                                    <li class="bg-color-yellow"></li>
-                                                                </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
-                                                            </div>
-                                                            <a href="{{route('product.detail', $product)}}">
-                                                                <h6>{{ $product->name }}</h6>
-                                                            </a>
+                                            <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="product-box">
+                                                    <div class="img-wrapper">
+                                                        <div class="label-block"><img
+                                                                src="{{ asset('assets/images/product/3.png') }}"
+                                                                alt="lable"><span>on <br>Sale!</span></div>
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}">
 
-                                                            <p>
-                                                                Giá bán: ${{ $product->priceRange }}
-                                                            </p>
-
+                                                            <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                            </a></div>
+                                                        <div class="cart-info-icon"> <a class="wishlist-icon"
+                                                                href="javascript:void(0)" tabindex="0"><i
+                                                                    class="iconsax" data-icon="heart"
+                                                                    aria-hidden="true" data-bs-toggle="tooltip"
+                                                                    data-bs-title="Add to Wishlist"></i></a><a
+                                                                href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" tabindex="0"><i
+                                                                    class="iconsax" data-icon="eye"
+                                                                    aria-hidden="true" data-bs-toggle="tooltip"
+                                                                    data-bs-title="Quick View"></i></a></div>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <div class="add-button"><a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                                title="add product" tabindex="0"><i
+                                                                    class="fa-solid fa-plus"></i> Add To
+                                                                Cart</a>
                                                         </div>
+                                                        <div class="color-box">
+                                                            <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                @foreach ($product->product_variants as $variant)
+                                                                    @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                        @php
+                                                                            $attributeValue = $variantAttributeValue->attribute_value;
+                                                                        @endphp
+                                                                        @if (!empty($attributeValue->value))
+                                                                            <li style="background-color: #{{ $attributeValue->value }};"
+                                                                              >
+                                                                            </li>
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </ul>
+                                                            <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                        </div>
+                                                        <a href="{{route('product.detail', $product)}}">
+                                                            <h6>{{ $product->name }}</h6>
+                                                        </a>
+                                                        <p>
+                                                            {{ $product->priceRange }}
+                                                        </p>
                                                     </div>
                                                 </div>
+                                            </div>
                                             @endforeach
                                             {{-- <div class="col-xxl-3 col-md-4 col-6">
                                                 <div class="product-box">
@@ -580,53 +591,60 @@
                                     <div class="tab-pane fade" id="seller-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($newProducts as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
-                                                    <div class="product-box">
-                                                        <div class="img-wrapper">
-                                                            <div class="label-block"><img
-                                                                    src="{{ asset('assets/images/product/3.png') }}"
-                                                                    alt="lable"><span>on <br>Sale!</span></div>
-                                                            <div class="product-image"><a href="{{route('product.detail', $product)}}"> <img
-                                                                        class="bg-img"
-                                                                        src="{{ asset('assets/images/product/product-4/17.jpg') }}"
-                                                                        alt="product"></a></div>
-                                                            <div class="cart-info-icon"> <a class="wishlist-icon"
-                                                                    href="javascript:void(0)" tabindex="0"><i
-                                                                        class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i></a><a
-                                                                    href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i
-                                                                        class="iconsax" data-icon="eye"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Quick View"></i></a></div>
-                                                        </div>
-                                                        <div class="product-detail">
-                                                            <div class="add-button"><a href="#"
-                                                                    data-bs-toggle="modal" data-bs-target="#addtocart"
-                                                                    title="add product" tabindex="0"><i
-                                                                        class="fa-solid fa-plus"></i> Add To
-                                                                    Cart</a>
-                                                            </div>
-                                                            <div class="color-box">
-                                                                <ul class="color-variant">
-                                                                    <li class="bg-color-purple"></li>
-                                                                    <li class="bg-color-blue"></li>
-                                                                    <li class="bg-color-red"></li>
-                                                                    <li class="bg-color-yellow"></li>
-                                                                </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
-                                                            </div>
-                                                            <a href="{{route('product.detail', $product)}}">
-                                                                <h6>{{ $product->name }}</h6>
-                                                            </a>
-                                                            <p>
-                                                                Giá bán: ${{ $product->priceRange }}
-                                                            </p>
+                                            <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="product-box">
+                                                    <div class="img-wrapper">
+                                                        <div class="label-block"><img
+                                                                src="{{ asset('assets/images/product/3.png') }}"
+                                                                alt="lable"><span>on <br>Sale!</span></div>
+                                                        <div class="product-image"><a href="{{route('product.detail', $product)}}">
 
+                                                            <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                            </a></div>
+                                                        <div class="cart-info-icon"> <a class="wishlist-icon"
+                                                                href="javascript:void(0)" tabindex="0"><i
+                                                                    class="iconsax" data-icon="heart"
+                                                                    aria-hidden="true" data-bs-toggle="tooltip"
+                                                                    data-bs-title="Add to Wishlist"></i></a><a
+                                                                href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" tabindex="0"><i
+                                                                    class="iconsax" data-icon="eye"
+                                                                    aria-hidden="true" data-bs-toggle="tooltip"
+                                                                    data-bs-title="Quick View"></i></a></div>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <div class="add-button"><a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                                title="add product" tabindex="0"><i
+                                                                    class="fa-solid fa-plus"></i> Add To
+                                                                Cart</a>
                                                         </div>
+                                                        <div class="color-box">
+                                                            <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                @foreach ($product->product_variants as $variant)
+                                                                    @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                        @php
+                                                                            $attributeValue = $variantAttributeValue->attribute_value;
+                                                                        @endphp
+                                                                        @if (!empty($attributeValue->value))
+                                                                            <li style="background-color: #{{ $attributeValue->value }};"
+                                                                              >
+                                                                            </li>
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </ul>
+                                                            <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                        </div>
+                                                        <a href="{{route('product.detail', $product)}}">
+                                                            <h6>{{ $product->name }}</h6>
+                                                        </a>
+                                                        <p>
+                                                            {{ $product->priceRange }}
+                                                        </p>
                                                     </div>
                                                 </div>
+                                            </div>
                                             @endforeach
                                             {{-- <div class="col-xxl-3 col-md-4 col-6">
                                                 <div class="product-box">

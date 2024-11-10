@@ -1,18 +1,38 @@
 @extends('admin.layouts.master')
-
 @section('title')
-    Thêm banner trang web
+    Danh sách danh mục
 @endsection
+@section('style-libs')
+    <!-- Custom styles for this page -->
+    <link href="{{ asset('theme/admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endsection
+@section('script-libs')
+    <!-- Page level plugins -->
+    <script src="{{ asset('theme/admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('theme/admin/js/demo/datatables-demo.js') }}"></script>
+@endsection
 @section('content')
-    <div class="card-body">
-        <div class="mb-3">
-            <a href="{{ route('admin.banner.index') }}" class="btn btn-dark text-white text-decoration-none">
-                <i class="fas fa-arrow-left"></i> Quay lại
-            </a>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
+                DataTables documentation</a>.</p>
+        <div class="mb-2 ml-3">
+            <a href="{{ route('admin.banner.index') }}" class="btn btn-dark text-white text-decoration-none"><i
+                    class="fas fa-arrow-left"></i> Quay lại</a>
         </div>
+
+        <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Thêm banner trang web</h1>
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Cập nhật banner trang web</h6>
+            </div>
             <div class="card-body">
                 <form action="{{ route('admin.banner.update', $Ban->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -22,9 +42,6 @@
                         <input type="text" name="name" id="name" value="{{ $Ban->name }}"
                             class="form-control">
                     </div>
-
-
-
                     <div class="form-group">
                         <div class="mb-3">
                             <label for="" class="form-label">Album ảnh:</label>
@@ -36,8 +53,8 @@
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <img class="me-3" id="preview_{{ $index }}"
-                                                    src="{{ Storage::url('uploads//banners/images/id_' . $Ban->id . '/' . $image->file_name) }}" alt="Hình ảnh sản phẩm"
-                                                    style="width: 50px;">
+                                                    src="{{ Storage::url('uploads//banners/images/id_' . $Ban->id . '/' . $image->file_name) }}"
+                                                    alt="Hình ảnh sản phẩm" style="width: 50px;">
                                                 <input type="file" id="hinh_anh" class="form-control"
                                                     name="file_name[{{ $image->id }}]"
                                                     onchange="previewImage(this, {{ $index }})">
