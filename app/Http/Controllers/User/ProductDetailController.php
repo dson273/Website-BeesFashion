@@ -20,7 +20,9 @@ class ProductDetailController extends Controller
     public function index(string $id)
     {
         $product = Product::with([
-            'product_variants.variant_attribute_values.attribute_value.attribute'
+            'product_variants.variant_attribute_values.attribute_value.attribute',
+            'categories',
+            'product_files'
         ])->find($id);
 
         //View tăng lên 1
@@ -78,13 +80,6 @@ class ProductDetailController extends Controller
                 ]
             ];
         })->toArray();
-
-        // Lấy hình ảnh của biến thể sản phẩm (duy nhất)
-        $productImages = Product_variant::select('image')
-            ->where('product_id', $id)
-            ->groupBy('image')
-            ->get();
-
         // Tính tổng số lượng hàng tồn kho của sản phẩm
         $total_stock = Product_variant::where('product_id', $id)->sum('stock');
 
@@ -98,8 +93,28 @@ class ProductDetailController extends Controller
                 ? number_format($minPrice, 0, ',', '.') . 'đ'
                 : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
         }
+        // Lấy danh sách sản phẩm liên quan qua danh mục
+        $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
+            $query->whereIn('category_id', $product->categories->pluck('id'));
+        })->where('id', '!=', $product->id)
+          ->take(8)
+          ->get();
 
-        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'productImages', 'total_stock'));
+        $relatedProducts = $relatedProducts->map(function ($relatedProduct) {
+            $minPrice = $relatedProduct->product_variants->min('sale_price');
+            $maxPrice = $relatedProduct->product_variants->max('sale_price');
+            $relatedProduct->priceRange = $minPrice === $maxPrice
+                ? number_format($minPrice, 0, ',', '.') . 'đ'
+                : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
+
+            $activeImage = $relatedProduct->product_files->where('is_default', 1)->first();
+            $inactiveImage = $relatedProduct->product_files->where('is_default', 0)->first();
+            $relatedProduct->active_image = $activeImage ? $activeImage->file_name : null;
+            $relatedProduct->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
+            return $relatedProduct;
+        });
+
+        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts'));
     }
 
     public function updateInformationProduct(Request $request)
