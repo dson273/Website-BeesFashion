@@ -33,8 +33,7 @@
                         <div class="col-xxl-9 col-xl-8">
                             <div class="cart-table">
                                 <div class="table-title">
-                                    <h5>Cart <span id="cartTitle">({{ count($cart_list) }} item)</span></h5><button id="clearAllButton">Clear
-                                        All</button>
+                                    <h5>Cart <span id="cartTitle">({{ count($cart_list) }} item)</span></h5><button class="btn-clear" id="clearAllButton">Clear All</button>
                                 </div>
                                 <div class="table-responsive theme-scrollbar">
                                     <table class="table" id="cart-table">
@@ -49,25 +48,28 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($cart_list as $item_cart)
-                                                <tr>
+                                                <tr data-cart-id="{{ $item_cart['id_cart'] }}" data-variant-id="{{ $item_cart['variant_id'] }}" data-product-id="{{ $item_cart['product_id'] }}"
+                                                    data-regular-price="{{ $item_cart['regular_price'] }}" data-sale-price="{{ $item_cart['sale_price'] }}" data-stock="{{ $item_cart['stock'] }}">
                                                     <td>
                                                         <div class="cart-box">
                                                             <a href="{{ route('product.detail', $item_cart['product_id']) }}">
-                                                                <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}" alt=""></a>
+                                                                <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}" alt="{{ $item_cart['product_name'] }}" class="product-image"></a>
                                                             <div class="cart-box-variant">
                                                                 <a href="{{ route('product.detail', $item_cart['product_id']) }}">
-                                                                    <h5 class="text-wrap">{{ $item_cart['product_name'] }}
-                                                                    </h5>
+                                                                    <h5 class="text-wrap">{{ $item_cart['product_name'] }}</h5>
                                                                 </a>
-                                                                <div class="box-edit-variant mb-2">
-                                                                    <button type="button" id="variantButton" class="text-start">Chọn phân loại<span class="ms-lg-5"><i
+                                                                <div class="box-edit-variant mb-2 variant-selector">
+                                                                    <button type="button" id="variantButton" class="variant-button text-start">Chọn phân loại<span class="ms-lg-5"><i
                                                                                 class="fa-solid fa-chevron-down"></i></span></button>
                                                                 </div>
-                                                                @foreach ($item_cart['attribute_values'] as $attribute)
-                                                                    <h6>{{ $attribute['attribute_name'] }}:
-                                                                        <span>{{ $attribute['value_name'] }}</span>
-                                                                    </h6>
-                                                                @endforeach
+                                                                <div class="variant-details">
+                                                                    @foreach ($item_cart['attribute_values'] as $attribute)
+                                                                        <h6 class="attribute-item">
+                                                                            {{ $attribute['attribute_name'] }}:
+                                                                            <span class="attribute-value">{{ $attribute['value_name'] }}</span>
+                                                                        </h6>
+                                                                    @endforeach
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -83,12 +85,13 @@
                                                     </td>
                                                     <td>
                                                         <div class="quantity">
-                                                            <button class="minus" type="button"><i class="fa-solid fa-minus"></i></button>
-                                                            <input type="number" value="{{ $item_cart['quantity'] }}" min="1" max="20">
-                                                            <button class="plus" type="button"><i class="fa-solid fa-plus"></i></button>
+                                                            <button class="quantity-btn minus" type="button"><i class="fa-solid fa-minus"></i></button>
+                                                            <input class="quantity-input" type="number" value="{{ $item_cart['quantity'] }}" min="1"
+                                                            max="{{ $item_cart['stock'] }}">
+                                                            <button class="quantity-btn plus" type="button"><i class="fa-solid fa-plus"></i></button>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td class="total-price">
                                                         {{ number_format(($item_cart['sale_price'] ?? $item_cart['regular_price']) * $item_cart['quantity'], 0, ',', '.') }}đ
                                                     </td>
                                                     <td>
@@ -144,106 +147,30 @@
                             </div>
                         </div>
                     @else
-                        <h5 class="text-center">Giỏ hàng của bạn đang trống!</h5>
-                        <div class="text-center mt-3">
-                            <button><a href="{{ route('/') }}">Tiếp tục mua sắm</a></button>
-                        </div>
-                    @endif
-
-                    <div class="col-12">
-                        <div class="cart-slider">
-                            <div class="d-flex align-items-start justify-content-between">
-                                <div>
-                                    <h6>For a trendy and modern twist, especially during transitional seasons.</h6>
-                                    <p> <img class="me-2" src="../assets/images/gif/discount.gif" alt="">You will get
-                                        10%
-                                        OFF on each product</p>
-                                </div><a class="btn btn_outline sm rounded" href="product-detail.html">View All<svg>
-                                        <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                        </use>
-                                    </svg></a>
-                            </div>
-                            <div class="swiper cart-slider-box">
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <div class="cart-box"> <a href="product-detail.html"> <img src="../assets/images/user/4.jpg" alt=""></a>
-                                            <div> <a href="product-detail.html">
-                                                    <h5>Polo-neck Body Dress</h5>
-                                                </a>
-                                                <h6>Sold By: <span>Brown Shop</span></h6>
-                                                <div class="category-dropdown"><select class="form-select" name="carlist">
-                                                        <option value="">Best color</option>
-                                                        <option value="">White</option>
-                                                        <option value="">Black</option>
-                                                        <option value="">Green</option>
-                                                    </select></div>
-                                                <p>$19.90 <span> <del>$14.90 </del></span></p><a class="btn" href="#">Add</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="cart-box"> <a href="product-detail.html"> <img src="../assets/images/user/5.jpg" alt=""></a>
-                                            <div> <a href="product-detail.html">
-                                                    <h5>Short Sleeve Sweater</h5>
-                                                </a>
-                                                <h6>Sold By: <span>Brown Shop</span></h6>
-                                                <div class="category-dropdown"><select class="form-select" name="carlist">
-                                                        <option value="">Best color</option>
-                                                        <option value="">White</option>
-                                                        <option value="">Black</option>
-                                                        <option value="">Green</option>
-                                                    </select></div>
-                                                <p>$22.90 <span> <del>$24.90 </del></span></p><a class="btn" href="#">Add</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="cart-box"> <a href="product-detail.html"> <img src="../assets/images/user/6.jpg" alt=""></a>
-                                            <div> <a href="product-detail.html">
-                                                    <h5>Oversized Cotton Short</h5>
-                                                </a>
-                                                <h6>Sold By: <span>Brown Shop</span></h6>
-                                                <div class="category-dropdown"><select class="form-select" name="carlist">
-                                                        <option value="">Best color</option>
-                                                        <option value="">White</option>
-                                                        <option value="">Black</option>
-                                                        <option value="">Green</option>
-                                                    </select></div>
-                                                <p>$10.90 <span> <del>$18.90 </del></span></p><a class="btn" href="#">Add</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="cart-box"> <a href="product-detail.html"> <img src="../assets/images/user/7.jpg" alt=""></a>
-                                            <div> <a href="product-detail.html">
-                                                    <h5>Oversized Women Shirt</h5>
-                                                </a>
-                                                <h6>Sold By: <span>Brown Shop</span></h6>
-                                                <div class="category-dropdown"><select class="form-select" name="carlist">
-                                                        <option value="">Best color</option>
-                                                        <option value="">White</option>
-                                                        <option value="">Black</option>
-                                                        <option value="">Green</option>
-                                                    </select></div>
-                                                <p>$15.90 <span> <del>$20.90 </del></span></p><a class="btn" href="#">Add</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="empty-cart-container">
+                        <div class="empty-cart-content">
+                            <img src="{{ asset('images/cart/empty-cart.gif') }}" alt="Giỏ hàng trống" class="empty-cart-image">
+                            <h5 class="empty-cart-message">Giỏ hàng của bạn đang trống!</h5>
+                            <div class="empty-cart-action">
+                                <a href="{{ route('/') }}" class="btn-continue-shopping">
+                                    Tiếp tục mua sắm
+                                </a>
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
             <!-- Box Chọn Biến Thể -->
             <div id="variantBox" class="box-variant">
-                <div>
-                    <label class="form-label">Màu sắc: <span>Đen</span></label>
+                <div class="variant-container">
+                    <div class="varianr-content">
+                        <label class="form-label">Color: <span>Đen</span></label>
                     <div class="d-flex mb-2 color-options">
-                        <input type="radio" id="color-black" name="color" value="black">
+                        <input class="btn-color" type="radio" id="color-black" name="color" value="black">
                         <label for="color-black" title="black" class="color-label me-2" style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
 
-                        <input type="radio" id="color-gray" name="color" value="gray">
+                        <input class="btn-color" type="radio" id="color-gray" name="color" value="gray">
                         <label for="color-gray" class="color-label" style="background-image: url('{{ asset('assets/images/cart/2.jpg') }}');"></label>
 
                     </div>
@@ -253,7 +180,14 @@
                         <button class="btn-variant">S</button>
                         <button class="btn-variant">M</button>
                         <button class="btn-variant">L</button>
-                        <button class="btn-variant">L</button>
+                    </div>
+
+                    <label class="form-label">Vải: <span>Lụa</span></label>
+                    <div class="d-flex flex-wrap mb-2 wrap-vra">
+                        <button class="btn-variant-default">Lụa</button>
+                        <button class="btn-variant-default">Tơ</button>
+                        <button class="btn-variant-default">Jean</button>
+                    </div>
                     </div>
                     <div class="d-flex mt-3 justify-content-between box-variant-bottom">
                         <button type="button" id="backButton" class="btn-back">Trở lại</button>
@@ -271,12 +205,24 @@
     <script>
         //Lấy tất cả các nút có class 'btn-variant'
         const variantButtons = document.querySelectorAll('.btn-variant');
+        const variantDefault = document.querySelectorAll('.btn-variant-default');
+        const variantColors = document.querySelectorAll('.btn-color');
 
         variantButtons.forEach(button => {
             button.addEventListener('click', () => {
-                // Xóa lớp 'selected' khỏi tất cả các nút
                 variantButtons.forEach(btn => btn.classList.remove('selected'));
-                // Thêm lớp 'selected' vào nút hiện tại
+                button.classList.add('selected');
+            });
+        });
+        variantDefault.forEach(button => {
+            button.addEventListener('click', () => {
+                variantDefault.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+        variantColors.forEach(button => {
+            button.addEventListener('click', () => {
+                variantColors.forEach(btn => btn.classList.remove('selected'));
                 button.classList.add('selected');
             });
         });
