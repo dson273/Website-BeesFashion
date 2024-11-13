@@ -34,7 +34,10 @@
                     <div class="carousel-indicators">
                         @foreach ($sliders as $slider)
                             @foreach ($slider->banner_images as $key => $banner_image)
-                                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="{{ $key }}" class="{{ $key === 0 ? 'active' : '' }}"></button>
+                                <button type="button" data-bs-target="#bannerCarousel"
+                                    data-bs-slide-to="{{ $key }}"
+                                    class="{{ $key === 0 ? 'active' : '' }}"></button>
+
                             @endforeach
                         @endforeach
                     </div>
@@ -142,6 +145,7 @@
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
+
                                                             <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
                                                             <div class="product-image">
                                                                 @if ($product)
@@ -166,11 +170,13 @@
                                                                 <a href="#"><i class="fa-regular fa-eye"></i> View details</a>
                                                             </div>
                                                             <div class="color-box">
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                <ul class="color-variant"
+                                                                    style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue = $variantAttributeValue->attribute_value;
+                                                                                $attributeValue =
+                                                                                    $variantAttributeValue->attribute_value;
                                                                             @endphp
                                                                             @if (!empty($attributeValue->value))
                                                                                 <li style="background-color: #{{ $attributeValue->value }};">
@@ -202,6 +208,7 @@
                                     <!-- Sản phẩm bán chạy -->
                                     <div class="tab-pane fade" id="features-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
+
                                             @foreach ($products as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
@@ -240,6 +247,7 @@
                                                                             @endphp
                                                                             @if (!empty($attributeValue->value))
                                                                                 <li style="background-color: #{{ $attributeValue->value }};">
+
                                                                                 </li>
                                                                             @endif
                                                                         @endforeach
@@ -256,18 +264,21 @@
                                                                     <h6>{{ $product->name }}</h6>
                                                                 </a>
                                                             @endif
+
                                                             <p>
                                                                 {{ $product->priceRange }}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                             @endforeach
                                         </div>
                                     </div>
                                     <!-- Sản phẩm có lượt xem nhiều -->
                                     <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
+
                                             @foreach ($topProducts as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
@@ -306,6 +317,7 @@
                                                                             @endphp
                                                                             @if (!empty($attributeValue->value))
                                                                                 <li style="background-color: #{{ $attributeValue->value }};">
+
                                                                                 </li>
                                                                             @endif
                                                                         @endforeach
@@ -313,6 +325,7 @@
                                                                 </ul>
                                                                 <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             </div>
+
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product) }}">
                                                                     <h6>{{ $product->name }}</h6>
@@ -322,6 +335,7 @@
                                                                     <h6>{{ $product->name }}</h6>
                                                                 </a>
                                                             @endif
+
                                                             <p>
                                                                 {{ $product->priceRange }}
                                                             </p>
@@ -821,6 +835,7 @@
                                         <div class="quantity"><button class="minus" type="button"><i class="fa-solid fa-minus"></i></button><input type="number" value="1" min="1"
                                                 max="20"><button class="plus" type="button"><i class="fa-regular fa-eye"></i></button></div>
                                     </div>
+
                                     <div class="product-buttons"><a class="btn btn-solid" href="#">Add to
                                             cart</a><a class="btn btn-solid" href="#">View
                                             detail</a></div>
