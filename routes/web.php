@@ -68,8 +68,8 @@ Route::middleware('auth')->group(function () {
 
     //Trang giỏ hàng
 
-    Route::get('cart', [HomeController::class, 'cart'])->name('cart');
-    Route::get('cart/{variant_id}/{quantity}', [HomeController::class, 'addToCart'])->name('addToCart');//Add cart
+    Route::get('cart', [CartController::class, 'index'])->name('cart');
+    Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart');//Add cart
     //Trang yêu thích
     Route::get('wishlist/{product_id}', [WishlistController::class, 'index']);
 
