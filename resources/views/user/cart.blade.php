@@ -147,14 +147,92 @@
                             </div>
                         </div>
                     @else
-                    <div class="empty-cart-container">
-                        <div class="empty-cart-content">
-                            <img src="{{ asset('images/cart/empty-cart.gif') }}" alt="Giỏ hàng trống" class="empty-cart-image">
-                            <h5 class="empty-cart-message">Giỏ hàng của bạn đang trống!</h5>
-                            <div class="empty-cart-action">
-                                <a href="{{ route('/') }}" class="btn-continue-shopping">
-                                    Tiếp tục mua sắm
-                                </a>
+                        <h5 class="text-center">Giỏ hàng của bạn đang trống!</h5>
+                        <div class="text-center mt-3">
+                            <button><a href="{{ route('/') }}">Tiếp tục mua sắm</a></button>
+                        </div>
+                    @endif
+
+                    <div class="col-12">
+                        <div class="cart-slider">
+                            <div class="d-flex align-items-start justify-content-between">
+                                <div>
+                                    <h6>For a trendy and modern twist, especially during transitional seasons.</h6>
+                                    <p> <img class="me-2" src="../assets/images/gif/discount.gif" alt="">You will get
+                                        10%
+                                        OFF on each product</p>
+                                </div><a class="btn btn_outline sm rounded" href="product-detail.html">View All<svg>
+                                        <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                        </use>
+                                    </svg></a>
+                            </div>
+                            <div class="swiper cart-slider-box">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="cart-box"> <a href="product-detail.html"> <img src="../assets/images/user/4.jpg" alt=""></a>
+                                            <div> <a href="product-detail.html">
+                                                    <h5>Polo-neck Body Dress</h5>
+                                                </a>
+                                                <h6>Sold By: <span>Brown Shop</span></h6>
+                                                <div class="category-dropdown"><select class="form-select" name="carlist">
+                                                        <option value="">Best color</option>
+                                                        <option value="">White</option>
+                                                        <option value="">Black</option>
+                                                        <option value="">Green</option>
+                                                    </select></div>
+                                                <p>$19.90 <span> <del>$14.90 </del></span></p><a class="btn" href="#">Add</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="cart-box"> <a href="product-detail.html"> <img src="../assets/images/user/5.jpg" alt=""></a>
+                                            <div> <a href="product-detail.html">
+                                                    <h5>Short Sleeve Sweater</h5>
+                                                </a>
+                                                <h6>Sold By: <span>Brown Shop</span></h6>
+                                                <div class="category-dropdown"><select class="form-select" name="carlist">
+                                                        <option value="">Best color</option>
+                                                        <option value="">White</option>
+                                                        <option value="">Black</option>
+                                                        <option value="">Green</option>
+                                                    </select></div>
+                                                <p>$22.90 <span> <del>$24.90 </del></span></p><a class="btn" href="#">Add</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="cart-box"> <a href="product-detail.html"> <img src="../assets/images/user/6.jpg" alt=""></a>
+                                            <div> <a href="product-detail.html">
+                                                    <h5>Oversized Cotton Short</h5>
+                                                </a>
+                                                <h6>Sold By: <span>Brown Shop</span></h6>
+                                                <div class="category-dropdown"><select class="form-select" name="carlist">
+                                                        <option value="">Best color</option>
+                                                        <option value="">White</option>
+                                                        <option value="">Black</option>
+                                                        <option value="">Green</option>
+                                                    </select></div>
+                                                <p>$10.90 <span> <del>$18.90 </del></span></p><a class="btn" href="#">Add</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="cart-box"> <a href="product-detail.html"> <img src="../assets/images/user/7.jpg" alt=""></a>
+                                            <div> <a href="product-detail.html">
+                                                    <h5>Oversized Women Shirt</h5>
+                                                </a>
+                                                <h6>Sold By: <span>Brown Shop</span></h6>
+                                                <div class="category-dropdown"><select class="form-select" name="carlist">
+                                                        <option value="">Best color</option>
+                                                        <option value="">White</option>
+                                                        <option value="">Black</option>
+                                                        <option value="">Green</option>
+                                                    </select></div>
+                                                <p>$15.90 <span> <del>$20.90 </del></span></p><a class="btn" href="#">Add</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -174,7 +252,6 @@
                         <label for="color-gray" class="color-label" style="background-image: url('{{ asset('assets/images/cart/2.jpg') }}');"></label>
 
                     </div>
-
                     <label class="form-label">Size: <span>S</span></label>
                     <div class="d-flex flex-wrap mb-2 wrap-vra">
                         <button class="btn-variant">S</button>

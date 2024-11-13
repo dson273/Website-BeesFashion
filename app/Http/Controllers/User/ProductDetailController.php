@@ -80,7 +80,6 @@ class ProductDetailController extends Controller
                 ]
             ];
         })->toArray();
-
         // Tính tổng số lượng hàng tồn kho của sản phẩm
         $total_stock = Product_variant::where('product_id', $id)->sum('stock');
 
@@ -94,14 +93,12 @@ class ProductDetailController extends Controller
                 ? number_format($minPrice, 0, ',', '.') . 'đ'
                 : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
         }
-
         // Lấy danh sách sản phẩm liên quan qua danh mục
         $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
             $query->whereIn('category_id', $product->categories->pluck('id'));
-        })
-            ->where('id', '!=', $product->id)
-            ->take(8)
-            ->get();
+        })->where('id', '!=', $product->id)
+          ->take(8)
+          ->get();
 
         $relatedProducts = $relatedProducts->map(function ($relatedProduct) {
             $minPrice = $relatedProduct->product_variants->min('sale_price');

@@ -374,7 +374,7 @@
                                         </table>
                                     </div>
                                 </div>
-
+                                
                                 {{-- Q&A --}}
                                 <div class="tab-pane fade" id="question-tab-pane" role="tabpanel" aria-labelledby="question-tab" tabindex="0">
                                     <div class="question-main-box">

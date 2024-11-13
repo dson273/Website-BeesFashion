@@ -22,7 +22,6 @@ class CartController extends Controller
             $array_item_cart = [];
             $array_item_cart['quantity'] = $itemCart->quantity;
             $variants = $itemCart->product_variant;
-
             $array_item_cart['product_name'] = Product_variant::select('p.name')
                 ->rightJoin('products as p', 'product_variants.product_id', '=', 'p.id')
                 ->first()->name;
