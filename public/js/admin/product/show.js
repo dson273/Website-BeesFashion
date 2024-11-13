@@ -12,11 +12,6 @@ $(document).ready(function () {
         //     alert("Đánh giá của bạn là: " + rating);
         // },
     });
-    // $('.col-sm-12').each(function () {
-    //     if ($(this).find('table')) {
-    //         $(this).addClass('scroll-x table-container');
-    //     }
-    // })
 });
 //-----------------------------------------------Handle copy sku----------------------------------------------
 $('.copySku').click(function () {

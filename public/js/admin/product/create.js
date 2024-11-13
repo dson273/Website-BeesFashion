@@ -380,9 +380,11 @@ $(document).on('click', '#btnOpenCloseFormAddBrand', function () {
     }
 })
 //---------------------------------------------------Upload images---------------------------------------------------
-let imageName;
-let imageNames = [];
-let selectedImages = [];
+var imageName;
+var mainImageFile = null;
+
+var imageNames = [];
+var selectedImages = [];
 //Xử lý xem trước ảnh sau khi chọn ảnh
 function previewImage(input) {
     const previewContainer = document.getElementById('mainImagePreview');
@@ -390,9 +392,9 @@ function previewImage(input) {
     const maxSizeMB = 2; // Giới hạn dung lượng tối đa (MB)
     const maxSizeBytes = maxSizeMB * 1024 * 1024; // Chuyển đổi sang byte
 
-    if (input.files && input.files[0]) {
+    if (input.files.length > 0) {
         const file = input.files[0];
-
+        mainImageFile = file;
         if (file.size > maxSizeBytes) {
             notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error');
             input.value = ''; // Reset input nếu ảnh quá lớn
@@ -471,7 +473,12 @@ function previewImage(input) {
         } finally {
             $('.container-spinner').addClass('hidden');
         }
+    } else {
+        $('#mainImagePreview').find('.divImg').remove();
+        mainImageFile = null;
+        imageName = '';
     }
+    console.log(mainImageFile);
 }
 function previewImages(input) {
     const previewContainer = document.getElementById('imagePreview');
@@ -578,6 +585,7 @@ $(document).on('click', '#removeMainImgBtn', function () {
         document.getElementById('imageUpload').value = '';
         //Xóa thẻ div bao bọc thẻ img được click xóa
         imgElm.closest('.divImg').remove();
+        mainImageFile = null;
         notification('success', 'Image removed successfully', 'Successfully');
     } catch (error) {
         console.error('Error:', error);
@@ -2522,11 +2530,14 @@ $(document).on('click', '.deleteAllVariations', function () {
 })
 //---------------------------------------------Change variation image---------------------------------------------
 function previewVariationImage(input) {
+    saveVariations.addClass('disabledButton');
+    saveVariationsStatus = false;
     const maxSizeMB = 2; // Giới hạn dung lượng tối đa (MB)
     const maxSizeBytes = maxSizeMB * 1024 * 1024; // Chuyển đổi sang byte
     $('.container-spinner').removeClass('hidden');
     try {
-        if (input.files) {
+        var variationItem = $(input).closest('.variationItemContent');
+        if (input.files.length > 0) {
             const file = input.files[0];
 
             if (file.size > maxSizeBytes) {
@@ -2535,7 +2546,6 @@ function previewVariationImage(input) {
                 input.value = ''; // Reset input nếu ảnh quá lớn
                 return;
             }
-            var variationItem = $(input).closest('.variationItemContent');
             var checkPreviewVariationImage = variationItem.find('.variationImage');
 
             const reader = new FileReader();
@@ -2545,7 +2555,6 @@ function previewVariationImage(input) {
                     variationItem.find('.previewVariationImage').html('');
                     reader.onload = function (e) {
                         const divPreviewVariationImage = variationItem.find('.previewVariationImage')[0];
-                        console.log(divPreviewVariationImage);
 
                         // Tạo một thẻ img mới
                         const variationImage = document.createElement('img');
@@ -2596,6 +2605,8 @@ function previewVariationImage(input) {
                 notification('success', 'Đã tải ảnh lên thành công!', 'Successfully', '2000');
                 // notification('success', 'Image uploaded successfully', 'Successfully', '2000');
             }
+        } else {
+            variationItem.find('.previewVariationImage').html('');
         }
     } catch (error) {
         console.error('Error:', error);
@@ -2624,6 +2635,11 @@ $(document).on('click', '#removeVariationImage', function () {
 function checkNumberInput(input, typeInput = null) {
     saveVariations.addClass('disabledButton');
     saveVariationsStatus = false;
+    if (input.val() < 0) {
+        input.val('');
+        notification('warning', 'Giá trị phải lớn hơn hoặc bằng 0!', 'Warning!', '3000');
+        return false;
+    }
     if (typeInput == 'stock') {
         let value = parseFloat(input.val().replace(',', '.'));
         if (!Number.isInteger(value)) {
@@ -3120,7 +3136,6 @@ function createNewProduct(productDatas) {
         });
         // Thêm CSRF token
         formData.append('_token', csrf);
-        console.log(formData);
 
         $.ajax({
             url: routeStoreProduct,
@@ -3249,8 +3264,7 @@ $(document).on('click', '#publishBtn', async function () {
     }
 
     // Kiểm tra hình ảnh chính
-    var mainImage = document.getElementById('imageUpload').files[0];
-    if (!mainImage) {
+    if (mainImageFile == null) {
         checkDatas = false;
         notification('warning', 'Please upload product image!', 'Warning!', '3000');
     }
@@ -3302,7 +3316,7 @@ $(document).on('click', '#publishBtn', async function () {
         productDatas.baseInformation.name = nameProduct;
         productDatas.baseInformation.description = descriptionProduct;
         productDatas.baseInformation.status = activeProduct;
-        productDatas.image = mainImage;
+        productDatas.image = mainImageFile;
         productDatas.images = selectedImages;
         productDatas.videos = selectedVideos;
         productDatas.variations = variationDataHasBeenSaved;
@@ -3311,7 +3325,6 @@ $(document).on('click', '#publishBtn', async function () {
 
         try {
             await createNewProduct(productDatas);
-            // Xử lý kết quả nếu cần
         } catch (error) {
             console.error('Error:', error);
         } finally {

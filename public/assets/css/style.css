@@ -1356,7 +1356,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .bg-overlay {
-    
+
     background-color: rgba(var(--black), 0);
     height: 100vh;
     left: 0;
@@ -17960,9 +17960,57 @@ body div canvas:first-child {
     transition: all .4s ease-in-out;
 }
 
-/* Điều chỉnh kích thước nút cho màn hình nhỏ */
 @media (max-width: 576px) {
     .btn-variant {
+        min-width: calc(50% - 8px);
+    }
+}
+
+.btn-variant-default {
+    min-width: calc(30% - 5px);
+    padding: 7px 7px;
+    text-align: center;
+    border: 1px solid rgba(var(--light-border), 1);
+    background-color: #fff;
+    border-radius: 1px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Hiệu ứng khi chọn */
+.btn-variant-default.selected {
+    background-color: #ffffff;
+    color: rgba(var(--danger-color), 1);
+    border-color: rgba(var(--danger-color), 1);
+}
+
+/* Góc checkmark */
+.btn-variant-default.selected::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    background-color: rgba(var(--danger-color), 1);
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    transition: all .4s ease-in-out;
+}
+
+/* Biểu tượng checkmark */
+.btn-variant-default.selected::before {
+    content: '✔';
+    position: absolute;
+    bottom: 0;
+    right: 2px;
+    color: white;
+    font-size: 12px;
+    z-index: 2;
+    transition: all .4s ease-in-out;
+}
+
+@media (max-width: 576px) {
+    .btn-variant-default {
         min-width: calc(50% - 8px);
     }
 }
@@ -17986,9 +18034,35 @@ body div canvas:first-child {
 }
 
 /* Hiệu ứng khi được chọn */
-.color-options input[type="radio"]:checked + .color-label {
+.color-options input[type="radio"].selected + .color-label {
     border: 1px solid #ff0000; /* Màu viền khi được chọn */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Empty Cart Styles */
+.empty-cart-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-cart-image {
+    max-width: 200px;
+    margin-bottom: 1rem;
+}
+
+.btn-continue-shopping {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-continue-shopping:hover {
+    background: #333;
 }
 
 .border-bonus {

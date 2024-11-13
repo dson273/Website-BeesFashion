@@ -20,7 +20,7 @@
                 </div>
             </div>
         </section>
-        <section class="section-b-space pt-0 product-thumbnail-page">
+        <section class="section-b-space product-thumbnail-page pt-0">
             <div class="custom-container container">
                 <div class="row gy-4">
                     {{-- box-left --}}
@@ -30,9 +30,7 @@
                                 <div class="swiper product-slider product-slider-img">
                                     <div class="swiper-wrapper">
                                         @foreach ($product->product_files as $image)
-                                            <div class="swiper-slide"><img
-                                                    src="{{ asset('uploads/products/images/' . $image->file_name) }}"
-                                                    alt=""></div>
+                                            <div class="swiper-slide"><img src="{{ asset('uploads/products/images/' . $image->file_name) }}" alt=""></div>
                                         @endforeach
                                         {{-- <div class="swiper-slide"> <img src="../assets/images/product/slider/4.jpg"
                                                 alt=""><span> <i class="iconsax" data-icon="play"></i></span></div> --}}
@@ -43,9 +41,7 @@
                                 <div class="swiper product-slider-thumb product-slider-img-1">
                                     <div class="swiper-wrapper ratio_square-2">
                                         @foreach ($product->product_files as $image)
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="{{ asset('uploads/products/images/' . $image->file_name) }}"
-                                                    alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('uploads/products/images/' . $image->file_name) }}" alt=""></div>
                                         @endforeach
                                         {{-- <div class="swiper-slide"> <video class="video-tag" loop="" autoplay="" muted="">
                                                 <source
@@ -61,8 +57,7 @@
                     <div class="col-lg-6">
                         <div class="product-detail-box">
                             <div class="product-option">
-                                <div class="move-fast-box d-flex align-items-center gap-1"><img
-                                        src="../assets/images/gif/fire.gif" alt="">
+                                <div class="move-fast-box d-flex align-items-center gap-1"><img src="../assets/images/gif/fire.gif" alt="">
                                     <p>Move fast!</p>
                                 </div>
                                 <h3>{{ $product->name }} {{ $product->SKU }}</h3>
@@ -71,7 +66,6 @@
                                     <div id="price">{{ $product->priceRange }}</div>
                                     <div id="discount" class="offer-btn">Hot!</div>
                                 </div>
-
                                 <div class="rating">
                                     <ul>
                                         <li><i class="fa-solid fa-star"> </i>
@@ -87,20 +81,16 @@
                                 </div>
                                 <div class="buy-box border-buttom mb-3">
                                     <ul>
-                                        <li> <span data-bs-toggle="modal" data-bs-target="#size-chart" title="Quick View"
-                                                tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Size
+                                        <li> <span data-bs-toggle="modal" data-bs-target="#size-chart" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Size
                                                 Chart</span>
                                         </li>
-                                        <li> <span data-bs-toggle="modal" data-bs-target="#terms-conditions-modal"
-                                                title="Quick View" tabindex="0"><i class="iconsax me-2"
-                                                    data-icon="truck"></i>Delivery & return</span></li>
-                                        <li> <span data-bs-toggle="modal" data-bs-target="#question-box" title="Quick View"
-                                                tabindex="0"><i class="iconsax me-2" data-icon="question-message"></i>Ask
+                                        <li> <span data-bs-toggle="modal" data-bs-target="#terms-conditions-modal" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="truck"></i>Delivery
+                                                & return</span></li>
+                                        <li> <span data-bs-toggle="modal" data-bs-target="#question-box" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="question-message"></i>Ask
                                                 a Question</span></li>
                                     </ul>
                                 </div>
-                                <input type="number" class="total_attributes" value="{{ count($array_attributes) }}"
-                                    hidden>
+                                <input type="number" class="total_attributes" value="{{ count($array_attributes) }}" hidden>
                                 <input type="number" class="product_id" value="{{ $product->id }}" hidden>
                                 <div class="blink-border">
                                     @foreach ($array_attributes as $attribute_item)
@@ -108,14 +98,10 @@
                                             <div class="d-flex attribute-section">
                                                 <div>
                                                     <h5>{{ $attribute_item['name'] }}:</h5>
-                                                    <div class="button-box attribute_group"
-                                                        data-id="{{ $attribute_item['id'] }}"
-                                                        data-type="{{ $attribute_item['type'] }}">
+                                                    <div class="button-box attribute_group" data-id="{{ $attribute_item['id'] }}" data-type="{{ $attribute_item['type'] }}">
                                                         <ul class="button-variant">
                                                             @foreach ($attribute_item['attribute_values'] as $attribute_value_item)
-                                                                <li class="attribute_item able"
-                                                                    title="{{ $attribute_value_item['name'] }}"
-                                                                    data-id="{{ $attribute_value_item['id'] }}">
+                                                                <li class="attribute_item able" title="{{ $attribute_value_item['name'] }}" data-id="{{ $attribute_value_item['id'] }}">
                                                                     {{ $attribute_value_item['name'] }}
                                                                 </li>
                                                             @endforeach
@@ -126,12 +112,10 @@
                                         @elseif ($attribute_item['type'] == 'color')
                                             <div class="attribute-section">
                                                 <h5>{{ $attribute_item['name'] }}:</h5>
-                                                <div class="color-box attribute_group"
-                                                    data-id="{{ $attribute_item['id'] }}">
+                                                <div class="color-box attribute_group" data-id="{{ $attribute_item['id'] }}">
                                                     <ul class="color-variant">
                                                         @foreach ($attribute_item['attribute_values'] as $attribute_value_item)
-                                                            <li class="attribute_item able"
-                                                                title="{{ $attribute_value_item['name'] }}"
+                                                            <li class="attribute_item able" title="{{ $attribute_value_item['name'] }}"
                                                                 style="background-color: {{ $attribute_value_item['value'] }}; border:1px solid rgba(var(--theme-default))"
                                                                 data-id="{{ $attribute_value_item['id'] }}">
                                                             </li>
@@ -142,13 +126,10 @@
                                         @else
                                             <div class="attribute-section">
                                                 <h5>{{ $attribute_item['name'] }}:</h5>
-                                                <div class="default-box attribute_group"
-                                                    data-id="{{ $attribute_item['id'] }}">
+                                                <div class="default-box attribute_group" data-id="{{ $attribute_item['id'] }}">
                                                     <ul class="default-variant">
                                                         @foreach ($attribute_item['attribute_values'] as $attribute_value_item)
-                                                            <li class="attribute_item able"
-                                                                title="{{ $attribute_value_item['name'] }}"
-                                                                data-id="{{ $attribute_value_item['id'] }}">
+                                                            <li class="attribute_item able" title="{{ $attribute_value_item['name'] }}" data-id="{{ $attribute_value_item['id'] }}">
                                                                 {{ $attribute_value_item['name'] }}
                                                             </li>
                                                         @endforeach
@@ -178,7 +159,7 @@
                                     <p class="currency mb-3" id="regular-price"></p>
                                     <p class="mb-3" id="percent-discount"></p>
                                 </span>
-                                <div class="d-flex align-items-center gap-2 w-100 add-cart-box mb-3">
+                                <div class="d-flex align-items-center w-100 add-cart-box mb-3 gap-2">
                                     <a class="btn btn_black sm add-to-cart" href="#" title="add product">Add To
                                         Cart</a>
                                     <a class="btn btn_outline sm" href="#">Buy Now</a>
@@ -189,14 +170,12 @@
                                                 Wishlist</a></li>
                                         <li> <a href="#"> <i class="fa-solid fa-arrows-rotate me-2"></i>Add To
                                                 Compare</a></li>
-                                        <li> <a href="#" data-bs-toggle="modal" data-bs-target="#social-box"
-                                                title="Quick View" tabindex="0"><i
+                                        <li> <a href="#" data-bs-toggle="modal" data-bs-target="#social-box" title="Quick View" tabindex="0"><i
                                                     class="fa-solid fa-share-nodes me-2"></i>Share</a></li>
                                     </ul>
                                 </div>
                                 <div class="sale-box">
-                                    <div class="d-flex align-items-center gap-2"><img src="../assets/images/gif/timer.gif"
-                                            alt="">
+                                    <div class="d-flex align-items-center gap-2"><img src="../assets/images/gif/timer.gif" alt="">
                                         <p>Limited Time Left! Hurry, Sale Ending!</p>
                                     </div>
                                     <div class="countdown">
@@ -257,8 +236,7 @@
                                     </ul>
                                 </div> --}}
                                 <div class="share-option">
-                                    <h5>Secure Checkout </h5><img class="img-fluid"
-                                        src="../assets/images/other-img/secure_payments.png" alt="">
+                                    <h5>Secure Checkout </h5><img class="img-fluid" src="../assets/images/other-img/secure_payments.png" alt="">
                                 </div>
                             </div>
                         </div>
@@ -269,28 +247,20 @@
                 <div class="custom-container container">
                     <div class="row">
                         <div class="col-12">
-                            <ul class="product-tab theme-scrollbar nav nav-tabs nav-underline" id="Product"
-                                role="tablist">
-                                <li class="nav-item" role="presentation"><button class="nav-link active"
-                                        id="Description-tab" data-bs-toggle="tab" data-bs-target="#Description-tab-pane"
-                                        role="tab" aria-controls="Description-tab-pane"
-                                        aria-selected="true">Description</button></li>
-                                <li class="nav-item" role="presentation"><button class="nav-link" id="specification-tab"
-                                        data-bs-toggle="tab" data-bs-target="#specification-tab-pane" role="tab"
-                                        aria-controls="specification-tab-pane"
-                                        aria-selected="false">Specification</button>
+                            <ul class="product-tab theme-scrollbar nav nav-tabs nav-underline" id="Product" role="tablist">
+                                <li class="nav-item" role="presentation"><button class="nav-link active" id="Description-tab" data-bs-toggle="tab" data-bs-target="#Description-tab-pane"
+                                        role="tab" aria-controls="Description-tab-pane" aria-selected="true">Description</button></li>
+                                <li class="nav-item" role="presentation"><button class="nav-link" id="specification-tab" data-bs-toggle="tab" data-bs-target="#specification-tab-pane" role="tab"
+                                        aria-controls="specification-tab-pane" aria-selected="false">Specification</button>
                                 </li>
-                                <li class="nav-item" role="presentation"><button class="nav-link" id="question-tab"
-                                        data-bs-toggle="tab" data-bs-target="#question-tab-pane" role="tab"
+                                <li class="nav-item" role="presentation"><button class="nav-link" id="question-tab" data-bs-toggle="tab" data-bs-target="#question-tab-pane" role="tab"
                                         aria-controls="question-tab-pane" aria-selected="false">Q & A</button></li>
-                                <li class="nav-item" role="presentation"><button class="nav-link" id="Reviews-tab"
-                                        data-bs-toggle="tab" data-bs-target="#Reviews-tab-pane" role="tab"
+                                <li class="nav-item" role="presentation"><button class="nav-link" id="Reviews-tab" data-bs-toggle="tab" data-bs-target="#Reviews-tab-pane" role="tab"
                                         aria-controls="Reviews-tab-pane" aria-selected="false">Reviews</button></li>
                             </ul>
                             <div class="tab-content product-content" id="ProductContent">
                                 {{-- Mô tả sản phẩm --}}
-                                <div class="tab-pane fade show active" id="Description-tab-pane" role="tabpanel"
-                                    aria-labelledby="Description-tab" tabindex="0">
+                                <div class="tab-pane fade show active" id="Description-tab-pane" role="tabpanel" aria-labelledby="Description-tab" tabindex="0">
                                     <div class="row gy-4">
                                         {!! $product->description !!}
                                         {{-- <div class="col-12">
@@ -348,15 +318,15 @@
                                 </div>
                                 {{-- End mô tả --}}
 
-                                <div class="tab-pane fade" id="specification-tab-pane" role="tabpanel"
-                                    aria-labelledby="specification-tab" tabindex="0">
+                                {{-- Specification --}}
+                                <div class="tab-pane fade" id="specification-tab-pane" role="tabpanel" aria-labelledby="specification-tab" tabindex="0">
                                     <p>I like to be real. I don't like things to be staged or fussy. Grunge is a hippied
                                         romantic version of punk. I have my favourite fashion decade, yes, yes, yes: '60s.
                                         It was a sort of little revolution; the clothes were amazing but not too
                                         exaggerated. Fashions fade, style is eternal. A girl should be two things: classy
                                         and fabulous.</p>
                                     <div class="table-responsive theme-scrollbar">
-                                        <table class="specification-table table striped">
+                                        <table class="specification-table striped table">
                                             <tr>
                                                 <th>Product Dimensions</th>
                                                 <td>15 x 15 x 3 cm; 250 Grams</td>
@@ -404,13 +374,12 @@
                                         </table>
                                     </div>
                                 </div>
-
-                                <div class="tab-pane fade" id="question-tab-pane" role="tabpanel"
-                                    aria-labelledby="question-tab" tabindex="0">
+                                
+                                {{-- Q&A --}}
+                                <div class="tab-pane fade" id="question-tab-pane" role="tabpanel" aria-labelledby="question-tab" tabindex="0">
                                     <div class="question-main-box">
                                         <h5>Have Doubts Regarding This Product ?</h5>
-                                        <h6 data-bs-toggle="modal" data-bs-target="#question-modal" title="Quick View"
-                                            tabindex="0">Post Your Question</h6>
+                                        <h6 data-bs-toggle="modal" data-bs-target="#question-modal" title="Quick View" tabindex="0">Post Your Question</h6>
                                     </div>
                                     <div class="question-answer">
                                         <ul>
@@ -504,9 +473,9 @@
                                         </ul>
                                     </div>
                                 </div>
+                                
                                 {{-- Đánh giá --}}
-                                <div class="tab-pane fade" id="Reviews-tab-pane" role="tabpanel"
-                                    aria-labelledby="Reviews-tab" tabindex="0">
+                                <div class="tab-pane fade" id="Reviews-tab-pane" role="tabpanel" aria-labelledby="Reviews-tab" tabindex="0">
                                     <div class="row gy-4">
                                         <div class="col-lg-4">
                                             <div class="review-right">
@@ -517,7 +486,7 @@
                                                         </div>
                                                         <div>
                                                             <h6>Average Ratings</h6>
-                                                            <ul class="rating p-0 mb">
+                                                            <ul class="rating mb p-0">
                                                                 <li><i class="fa-solid fa-star"></i></li>
                                                                 <li><i class="fa-solid fa-star"></i></li>
                                                                 <li><i class="fa-solid fa-star"></i></li>
@@ -530,57 +499,41 @@
                                                     <ul class="rating-progess">
                                                         <li>
                                                             <p>5 Star</p>
-                                                            <div class="progress" role="progressbar"
-                                                                aria-label="Animated striped example" aria-valuenow="75"
-                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                                    style="width: 80%"></div>
+                                                            <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 80%"></div>
                                                             </div>
                                                             <p>80%</p>
                                                         </li>
                                                         <li>
                                                             <p>4 Star</p>
-                                                            <div class="progress" role="progressbar"
-                                                                aria-label="Animated striped example" aria-valuenow="75"
-                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                                    style="width: 70%"></div>
+                                                            <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 70%"></div>
                                                             </div>
                                                             <p>70%</p>
                                                         </li>
                                                         <li>
                                                             <p>3 Star</p>
-                                                            <div class="progress" role="progressbar"
-                                                                aria-label="Animated striped example" aria-valuenow="75"
-                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                                    style="width: 55%"></div>
+                                                            <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 55%"></div>
                                                             </div>
                                                             <p>55%</p>
                                                         </li>
                                                         <li>
                                                             <p>2 Star</p>
-                                                            <div class="progress" role="progressbar"
-                                                                aria-label="Animated striped example" aria-valuenow="75"
-                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                                    style="width: 40%"></div>
+                                                            <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 40%"></div>
                                                             </div>
                                                             <p>40%</p>
                                                         </li>
                                                         <li>
                                                             <p>1 Star</p>
-                                                            <div class="progress" role="progressbar"
-                                                                aria-label="Animated striped example" aria-valuenow="75"
-                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                                    style="width: 25%"></div>
+                                                            <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 25%"></div>
                                                             </div>
                                                             <p>25%</p>
                                                         </li>
-                                                    </ul><button class="btn reviews-modal" data-bs-toggle="modal"
-                                                        data-bs-target="#Reviews-modal" title="Quick View"
-                                                        tabindex="0">Write a review</button>
+                                                    </ul><button class="btn reviews-modal" data-bs-toggle="modal" data-bs-target="#Reviews-modal" title="Quick View" tabindex="0">Write a
+                                                        review</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -590,19 +543,17 @@
                                                 <ul class="theme-scrollbar">
                                                     <li>
                                                         <div class="comment-items">
-                                                            <div class="user-img"> <img src="../assets/images/user/1.jpg"
-                                                                    alt=""></div>
+                                                            <div class="user-img"> <img src="../assets/images/user/1.jpg" alt=""></div>
                                                             <div class="user-content">
                                                                 <div class="user-info">
                                                                     <div class="d-flex justify-content-between gap-3">
-                                                                        <h6> <i class="iconsax"
-                                                                                data-icon="user-1"></i>Michel Poe</h6>
+                                                                        <h6> <i class="iconsax" data-icon="user-1"></i>Michel Poe</h6>
                                                                         <span>
                                                                             <i class="iconsax" data-icon="clock"></i>Mar
                                                                             29,
                                                                             2022</span>
                                                                     </div>
-                                                                    <ul class="rating p-0 mb">
+                                                                    <ul class="rating mb p-0">
                                                                         <li><i class="fa-solid fa-star"></i></li>
                                                                         <li><i class="fa-solid fa-star"></i></li>
                                                                         <li><i class="fa-solid fa-star"></i></li>
@@ -614,27 +565,24 @@
                                                                     horn buttons and patch pockets showerproof black
                                                                     lightgrey. Printed lining patch pockets jersey blazer
                                                                     built in pocket square wool casual quilted jacket
-                                                                    without hood azure.</p><a href="#"> <span> <i
-                                                                            class="iconsax" data-icon="undo"></i>
+                                                                    without hood azure.</p><a href="#"> <span> <i class="iconsax" data-icon="undo"></i>
                                                                         Replay</span></a>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li class="reply">
                                                         <div class="comment-items">
-                                                            <div class="user-img"> <img src="../assets/images/user/2.jpg"
-                                                                    alt=""></div>
+                                                            <div class="user-img"> <img src="../assets/images/user/2.jpg" alt=""></div>
                                                             <div class="user-content">
                                                                 <div class="user-info">
                                                                     <div class="d-flex justify-content-between gap-3">
-                                                                        <h6> <i class="iconsax"
-                                                                                data-icon="user-1"></i>Michel Poe</h6>
+                                                                        <h6> <i class="iconsax" data-icon="user-1"></i>Michel Poe</h6>
                                                                         <span>
                                                                             <i class="iconsax" data-icon="clock"></i>Mar
                                                                             29,
                                                                             2022</span>
                                                                     </div>
-                                                                    <ul class="rating p-0 mb">
+                                                                    <ul class="rating mb p-0">
                                                                         <li><i class="fa-solid fa-star"></i></li>
                                                                         <li><i class="fa-solid fa-star"></i></li>
                                                                         <li><i class="fa-solid fa-star"></i></li>
@@ -646,27 +594,24 @@
                                                                     horn buttons and patch pockets showerproof black
                                                                     lightgrey. Printed lining patch pockets jersey blazer
                                                                     built in pocket square wool casual quilted jacket
-                                                                    without hood azure.</p><a href="#"> <span> <i
-                                                                            class="iconsax" data-icon="undo"></i>
+                                                                    without hood azure.</p><a href="#"> <span> <i class="iconsax" data-icon="undo"></i>
                                                                         Replay</span></a>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="comment-items">
-                                                            <div class="user-img"> <img src="../assets/images/user/3.jpg"
-                                                                    alt=""></div>
+                                                            <div class="user-img"> <img src="../assets/images/user/3.jpg" alt=""></div>
                                                             <div class="user-content">
                                                                 <div class="user-info">
                                                                     <div class="d-flex justify-content-between gap-3">
-                                                                        <h6> <i class="iconsax"
-                                                                                data-icon="user-1"></i>Michel Poe</h6>
+                                                                        <h6> <i class="iconsax" data-icon="user-1"></i>Michel Poe</h6>
                                                                         <span>
                                                                             <i class="iconsax" data-icon="clock"></i>Mar
                                                                             29,
                                                                             2022</span>
                                                                     </div>
-                                                                    <ul class="rating p-0 mb">
+                                                                    <ul class="rating mb p-0">
                                                                         <li><i class="fa-solid fa-star"></i></li>
                                                                         <li><i class="fa-solid fa-star"></i></li>
                                                                         <li><i class="fa-solid fa-star"></i></li>
@@ -678,8 +623,7 @@
                                                                     horn buttons and patch pockets showerproof black
                                                                     lightgrey. Printed lining patch pockets jersey blazer
                                                                     built in pocket square wool casual quilted jacket
-                                                                    without hood azure.</p><a href="#"> <span> <i
-                                                                            class="iconsax" data-icon="undo"></i>
+                                                                    without hood azure.</p><a href="#"> <span> <i class="iconsax" data-icon="undo"></i>
                                                                         Replay</span></a>
                                                             </div>
                                                         </div>
@@ -698,37 +642,63 @@
             </div>
         </section>
         <section class="section-b-space pt-0">
-            <div class="custom-container container product-contain">
-                <div class="title text-start">
+            <div class="custom-container product-contain container">
+                <div class="text-start mb-4">
                     <h3>Related Products</h3>
-                    <svg>
-                        <use href="#"></use>
-                    </svg>
                 </div>
                 <div class="swiper special-offer-slide-2">
                     <div class="swiper-wrapper ratio1_3">
-                        <div class="swiper-slide">
+                        @foreach ($relatedProducts as $relatedProduct)
+                            <div class="swiper-slide">
+                                <div class="product-box-3">
+                                    <div class="img-wrapper">
+                                        <div class="label-block"><span class="lable-1">NEW</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax"
+                                                    data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
+                                        <div class="product-image">
+                                            <a class="pro-first" href="{{ route('product.detail', $relatedProduct->id) }}">
+                                                <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->active_image) }}" alt="product"></a>
+                                            <a class="pro-sec" href="{{ route('product.detail', $relatedProduct->id) }}">
+                                                <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->inactive_image) }}" alt="product"></a>
+                                        </div>
+                                        <div class="cart-info-icon">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" tabindex="0"><i class="iconsax" data-icon="basket-2" aria-hidden="true"
+                                                    data-bs-toggle="tooltip" data-bs-title="Add to cart">
+                                                </i></a>
+                                            {{-- <a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
+                                                data-bs-title="Compare"></i></a> --}}
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                    data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <ul class="rating">
+                                            <li><i class="fa-solid fa-star"></i></li>
+                                            <li><i class="fa-solid fa-star"></i></li>
+                                            <li><i class="fa-solid fa-star"></i></li>
+                                            <li><i class="fa-solid fa-star"></i></li>
+                                            <li><i class="fa-regular fa-star"></i></li>
+                                            <li>4.3</li>
+                                        </ul><a href="{{ route('product.detail', $relatedProduct->id) }}">
+                                            <h6>{{ $relatedProduct->name }}</h6>
+                                        </a>
+                                        <p style="color: rgb(201, 33, 39)">{{ $relatedProduct->priceRange }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        {{-- <div class="swiper-slide">
                             <div class="product-box-3">
                                 <div class="img-wrapper">
-                                    <div class="label-block"><span class="lable-1">NEW</span><a
-                                            class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i
-                                                class="iconsax" data-icon="heart" aria-hidden="true"
-                                                data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
-                                    <div class="product-image"><a class="pro-first" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/14.jpg"
-                                                alt="product"></a><a class="pro-sec" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/16.jpg"
+                                    <div class="label-block"><span class="lable-1">NEW</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax"
+                                                data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
+                                    <div class="product-image"><a class="pro-first" href="product-detail.html"> <img class="bg-img" src="../assets/images/product/product-3/14.jpg"
+                                                alt="product"></a><a class="pro-sec" href="product-detail.html"> <img class="bg-img" src="../assets/images/product/product-3/16.jpg"
                                                 alt="product"></a></div>
-                                    <div class="cart-info-icon"> <a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#addtocart" tabindex="0"><i class="iconsax"
-                                                data-icon="basket-2" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Add to cart">
-                                            </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
-                                                data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
-                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Quick View"></i></a></div>
+                                    <div class="cart-info-icon"> <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" tabindex="0"><i class="iconsax" data-icon="basket-2"
+                                                aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to cart">
+                                            </i></a><a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
+                                                data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
+                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
                                     <div class="countdown">
                                         <ul class="clockdiv2">
                                             <li>
@@ -771,225 +741,17 @@
                                     <p>$100.00 <del>$140.00</del><span>-20%</span></p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-box-3">
-                                <div class="img-wrapper">
-                                    <div class="label-block"><span class="lable-1">NEW</span><a
-                                            class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i
-                                                class="iconsax" data-icon="heart" aria-hidden="true"
-                                                data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
-                                    <div class="product-image"><a class="pro-first" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/11.jpg"
-                                                alt="product"></a><a class="pro-sec" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/19.jpg"
-                                                alt="product"></a></div>
-                                    <div class="cart-info-icon"> <a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#addtocart" tabindex="0"><i class="iconsax"
-                                                data-icon="basket-2" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Add to cart">
-                                            </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
-                                                data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
-                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Quick View"></i></a></div>
-                                </div>
-                                <div class="product-detail">
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4.3</li>
-                                    </ul><a href="product-detail.html">
-                                        <h6>Wide Linen-Blend Trousers</h6>
-                                    </a>
-                                    <p>$100.00 <del>$18.00 </del></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-box-3">
-                                <div class="img-wrapper">
-                                    <div class="label-block"><span class="lable-1">NEW</span><a
-                                            class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i
-                                                class="iconsax" data-icon="heart" aria-hidden="true"
-                                                data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
-                                    <div class="product-image"><a class="pro-first" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/18.jpg"
-                                                alt="product"></a><a class="pro-sec" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/17.jpg"
-                                                alt="product"></a></div>
-                                    <div class="cart-info-icon"> <a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#addtocart" tabindex="0"><i class="iconsax"
-                                                data-icon="basket-2" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Add to cart">
-                                            </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
-                                                data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
-                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Quick View"></i></a></div>
-                                </div>
-                                <div class="product-detail">
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li>4.3</li>
-                                    </ul><a href="product-detail.html">
-                                        <h6>Long Sleeve Rounded T-Shirt</h6>
-                                    </a>
-                                    <p>$120.30 <del>$140.00</del><span>-20%</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-box-3">
-                                <div class="img-wrapper">
-                                    <div class="label-block"><span class="lable-1">NEW</span><a
-                                            class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i
-                                                class="iconsax" data-icon="heart" aria-hidden="true"
-                                                data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
-                                    <div class="product-image"><a class="pro-first" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/12.jpg"
-                                                alt="product"></a><a class="pro-sec" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/22.jpg"
-                                                alt="product"></a></div>
-                                    <div class="cart-info-icon"> <a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#addtocart" tabindex="0"><i class="iconsax"
-                                                data-icon="basket-2" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Add to cart">
-                                            </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
-                                                data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
-                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Quick View"></i></a></div>
-                                    <div class="countdown">
-                                        <ul class="clockdiv4">
-                                            <li>
-                                                <div class="timer">
-                                                    <div class="days"></div>
-                                                </div><span class="title">Days</span>
-                                            </li>
-                                            <li class="dot"> <span>:</span></li>
-                                            <li>
-                                                <div class="timer">
-                                                    <div class="hours"></div>
-                                                </div><span class="title">Hours</span>
-                                            </li>
-                                            <li class="dot"> <span>:</span></li>
-                                            <li>
-                                                <div class="timer">
-                                                    <div class="minutes"></div>
-                                                </div><span class="title">Min</span>
-                                            </li>
-                                            <li class="dot"> <span>:</span></li>
-                                            <li>
-                                                <div class="timer">
-                                                    <div class="seconds"></div>
-                                                </div><span class="title">Sec</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li>4.3</li>
-                                    </ul><a href="product-detail.html">
-                                        <h6>Blue lined White T-Shirt</h6>
-                                    </a>
-                                    <p>$190.00 <del>$210.00</del></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-box-3">
-                                <div class="img-wrapper">
-                                    <div class="label-block"><span class="lable-1">NEW</span><a
-                                            class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i
-                                                class="iconsax" data-icon="heart" aria-hidden="true"
-                                                data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
-                                    <div class="product-image"><a class="pro-first" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/20.jpg"
-                                                alt="product"></a><a class="pro-sec" href="product-detail.html"> <img
-                                                class="bg-img" src="../assets/images/product/product-3/12.jpg"
-                                                alt="product"></a></div>
-                                    <div class="cart-info-icon"> <a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#addtocart" tabindex="0"><i class="iconsax"
-                                                data-icon="basket-2" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Add to cart">
-                                            </i></a><a href="compare.html" tabindex="0"><i class="iconsax"
-                                                data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view" tabindex="0"><i class="iconsax"
-                                                data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
-                                                data-bs-title="Quick View"></i></a></div>
-                                    <div class="countdown">
-                                        <ul class="clockdiv3">
-                                            <li>
-                                                <div class="timer">
-                                                    <div class="days"></div>
-                                                </div><span class="title">Days</span>
-                                            </li>
-                                            <li class="dot"> <span>:</span></li>
-                                            <li>
-                                                <div class="timer">
-                                                    <div class="hours"></div>
-                                                </div><span class="title">Hours</span>
-                                            </li>
-                                            <li class="dot"> <span>:</span></li>
-                                            <li>
-                                                <div class="timer">
-                                                    <div class="minutes"></div>
-                                                </div><span class="title">Min</span>
-                                            </li>
-                                            <li class="dot"> <span>:</span></li>
-                                            <li>
-                                                <div class="timer">
-                                                    <div class="seconds"></div>
-                                                </div><span class="title">Sec</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="product-detail">
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4.3</li>
-                                    </ul><a href="product-detail.html">
-                                        <h6>Greciilooks Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$100.00 <del>$140.00</del><span>-20%</span></p>
-                                </div>
-                            </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
         </section>
 
-        <div class="customer-reviews-modal modal theme-modal fade" id="Reviews-modal" tabindex="-1" role="dialog"
-            aria-modal="true">
+        <div class="customer-reviews-modal modal theme-modal fade" id="Reviews-modal" tabindex="-1" role="dialog" aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Write A Review</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <h4>Write A Review</h4><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
                         <div class="row g-3">
@@ -1005,7 +767,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="customer-rating"><label class="form-label">Review Content :</label>
-                                    <ul class="rating p-0 mb">
+                                    <ul class="rating mb p-0">
                                         <li><i class="fa-regular fa-star"></i></li>
                                         <li><i class="fa-regular fa-star"></i></li>
                                         <li><i class="fa-regular fa-star"></i></li>
@@ -1016,24 +778,20 @@
                             </div>
                             <div class="col-12">
                                 <div class="from-group"> <label class="form-label">Review Content :</label>
-                                    <textarea class="form-control" id="comment" cols="30" rows="4"
-                                        placeholder="Write your comments here..."></textarea>
+                                    <textarea class="form-control" id="comment" cols="30" rows="4" placeholder="Write your comments here..."></textarea>
                                 </div>
-                            </div><button class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                aria-label="Close">Submit</button>
+                            </div><button class="btn btn-submit" type="submit" data-bs-dismiss="modal" aria-label="Close">Submit</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="reviews-modal modal theme-modal fade" id="question-modal" tabindex="-1" role="dialog"
-            aria-modal="true">
+        <div class="reviews-modal modal theme-modal fade" id="question-modal" tabindex="-1" role="dialog" aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Ask a question</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <h4>Ask a question</h4><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
                         <div class="row g-3">
@@ -1043,7 +801,7 @@
                                         <div>
                                             <h5>Denim Skirts Corset Blazer</h5>
                                             <p>$20.00 <del>$35.00</del></p>
-                                            <ul class="rating p-0 mb">
+                                            <ul class="rating mb p-0">
                                                 <li><i class="fa-solid fa-star"></i></li>
                                                 <li><i class="fa-solid fa-star"></i></li>
                                                 <li><i class="fa-solid fa-star"></i></li>
@@ -1056,14 +814,11 @@
                             </div>
                             <div class="col-12">
                                 <div class="from-group"> <label class="form-label">Your Question</label>
-                                    <textarea class="form-control" id="comment-1" cols="30" rows="5"
-                                        placeholder="Write Your Question here..."></textarea>
+                                    <textarea class="form-control" id="comment-1" cols="30" rows="5" placeholder="Write Your Question here..."></textarea>
                                 </div>
                             </div>
-                            <div class="modal-button-group"><button class="btn btn-cancel" type="submit"
-                                    data-bs-dismiss="modal" aria-label="Close">Cancel</button><button
-                                    class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                    aria-label="Close">Submit</button></div>
+                            <div class="modal-button-group"><button class="btn btn-cancel" type="submit" data-bs-dismiss="modal" aria-label="Close">Cancel</button><button class="btn btn-submit"
+                                    type="submit" data-bs-dismiss="modal" aria-label="Close">Submit</button></div>
                         </div>
                     </div>
                 </div>
@@ -1073,33 +828,24 @@
         <div class="modal theme-modal fade" id="quick-view" tabindex="-1" role="dialog" aria-modal="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div class="modal-body"><button class="btn-close" type="button" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                    <div class="modal-body"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         <div class="row align-items-center">
                             <div class="col-lg-6 col-xs-12">
                                 <div class="quick-view-img">
                                     <div class="swiper modal-slide-1">
                                         <div class="swiper-wrapper ratio_square-2">
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="../assets/images/pro/1.jpg" alt=""></div>
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="../assets/images/pro/2.jpg" alt=""></div>
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="../assets/images/pro/3.jpg" alt=""></div>
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="../assets/images/pro/4.jpg" alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="../assets/images/pro/1.jpg" alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="../assets/images/pro/2.jpg" alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="../assets/images/pro/3.jpg" alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="../assets/images/pro/4.jpg" alt=""></div>
                                         </div>
                                     </div>
                                     <div class="swiper modal-slide-2">
                                         <div class="swiper-wrapper ratio3_4">
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="../assets/images/pro/5.jpg" alt=""></div>
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="../assets/images/pro/6.jpg" alt=""></div>
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="../assets/images/pro/7.jpg" alt=""></div>
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="../assets/images/pro/8.jpg" alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="../assets/images/pro/5.jpg" alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="../assets/images/pro/6.jpg" alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="../assets/images/pro/7.jpg" alt=""></div>
+                                            <div class="swiper-slide"><img class="bg-img" src="../assets/images/pro/8.jpg" alt=""></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1130,10 +876,8 @@
                                             </ul>
                                         </div>
                                         <h6 class="product-title">Quantity</h6>
-                                        <div class="quantity"><button class="minus" type="button"><i
-                                                    class="fa-solid fa-minus"></i></button><input type="number"
-                                                value="1" min="1" max="20"><button class="plus"
-                                                type="button"><i class="fa-solid fa-plus"></i></button></div>
+                                        <div class="quantity"><button class="minus" type="button"><i class="fa-solid fa-minus"></i></button><input type="number" value="1" min="1"
+                                                max="20"><button class="plus" type="button"><i class="fa-solid fa-plus"></i></button></div>
                                     </div>
                                     <div class="product-buttons"><a class="btn btn-solid" href="#">Add to
                                             cart</a><a class="btn btn-solid" href="#">View detail</a>
@@ -1146,13 +890,11 @@
             </div>
         </div>
 
-        <div class="terms-conditions-modal modal theme-modal fade" id="terms-conditions-modal" tabindex="-1"
-            role="dialog" aria-modal="true">
+        <div class="terms-conditions-modal modal theme-modal fade" id="terms-conditions-modal" tabindex="-1" role="dialog" aria-modal="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Delivery & return</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <h4>Delivery & return</h4><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
                         <ul class="returns-policy">
@@ -1185,22 +927,18 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Size Chart</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <h4>Size Chart</h4><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body pt-0"><a href="#"> <img class="img-fluid"
-                                src="../assets/images/size-chart/size-chart.jpg" alt=""></a></div>
+                    <div class="modal-body pt-0"><a href="#"> <img class="img-fluid" src="../assets/images/size-chart/size-chart.jpg" alt=""></a></div>
                 </div>
             </div>
         </div>
 
-        <div class="modal theme-modal fade question-answer-modal" id="question-box" tabindex="-1" role="dialog"
-            aria-modal="true">
+        <div class="modal theme-modal fade question-answer-modal" id="question-box" tabindex="-1" role="dialog" aria-modal="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Ask a Question</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <h4>Ask a Question</h4><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
                         <div class="row g-3">
@@ -1216,41 +954,31 @@
                             </div>
                             <div class="col-12">
                                 <div class="from-group"> <label class="form-label">Your Question :</label>
-                                    <textarea class="form-control" id="comment" cols="30" rows="4"
-                                        placeholder="Write your Question here..."></textarea>
+                                    <textarea class="form-control" id="comment" cols="30" rows="4" placeholder="Write your Question here..."></textarea>
                                 </div>
                             </div>
-                            <div class="modal-button-group"><button class="btn btn-cancel" type="submit"
-                                    data-bs-dismiss="modal" aria-label="Close">Cancel</button><button
-                                    class="btn btn-submit" type="submit" data-bs-dismiss="modal"
-                                    aria-label="Close">Submit</button></div>
+                            <div class="modal-button-group"><button class="btn btn-cancel" type="submit" data-bs-dismiss="modal" aria-label="Close">Cancel</button><button class="btn btn-submit"
+                                    type="submit" data-bs-dismiss="modal" aria-label="Close">Submit</button></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal theme-modal fade social-modal" id="social-box" tabindex="-1" role="dialog"
-            aria-modal="true">
+        <div class="modal theme-modal fade social-modal" id="social-box" tabindex="-1" role="dialog" aria-modal="true">
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6>Copy link</h6><button class="btn-close" type="button" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <h6>Copy link</h6><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body"><input class="form-field form-field--input" type="text"
-                            value="http://localhost:3000/katie/template/product-detail.html#">
+                    <div class="modal-body"><input class="form-field form-field--input" type="text" value="http://localhost:3000/katie/template/product-detail.html#">
                         <h6>Share:</h6>
                         <ul>
-                            <li> <a href="https://www.facebook.com/" target="_blank"> <i
-                                        class="fa-brands fa-facebook-f"></i></a></li>
-                            <li> <a href="https://in.pinterest.com/" target="_blank"> <i
-                                        class="fa-brands fa-pinterest-p"></i></a></li>
-                            <li> <a href="https://twitter.com/" target="_blank"> <i
-                                        class="fa-brands fa-x-twitter"></i></a>
+                            <li> <a href="https://www.facebook.com/" target="_blank"> <i class="fa-brands fa-facebook-f"></i></a></li>
+                            <li> <a href="https://in.pinterest.com/" target="_blank"> <i class="fa-brands fa-pinterest-p"></i></a></li>
+                            <li> <a href="https://twitter.com/" target="_blank"> <i class="fa-brands fa-x-twitter"></i></a>
                             </li>
-                            <li> <a href="https://www.instagram.com/" target="_blank"> <i
-                                        class="fa-brands fa-instagram"></i></a></li>
+                            <li> <a href="https://www.instagram.com/" target="_blank"> <i class="fa-brands fa-instagram"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -1288,12 +1016,7 @@
             currency();
 
             // Biến lưu trữ các biến thể của sản phẩm
-            var variants;
-            @if (!empty($array_variants))
-                var variants = @json($array_variants);
-            @else
-                var variants = [];
-            @endif
+            var variants = @json($array_variants) || [];
             var attribute_value_ids = [];
             var current_item_id = 0;
             var product_id = $('.product_id').val();
@@ -1305,9 +1028,7 @@
             var variant_selected = false;
             var variant_id = null;
             var get_stock_variant_clicked = null;
-            $('#sale-price').hide();
-            $('#regular-price').hide();
-            $('#percent-discount').hide();
+            $('#sale-price, #regular-price, #percent-discount').hide();
             // Khi người dùng chọn một giá trị thuộc tính
             $(".attribute_item").click(function(e) {
                 if ($(this).hasClass('able')) {
@@ -1328,37 +1049,17 @@
                         // Ẩn nút reset khi không còn thuộc tính nào được chọn
                         if (attribute_value_ids.length == 0) {
                             $('.reset_selected').hide();
-                            $('#sale-price').hide();
-                            $('#regular-price').hide();
-                            $('#percent-discount').hide();
                         }
-                        // Lấy lại các thuộc tính từ các nhóm
-                        // $('.attribute_group').each(function() {
-                        //     var group = $(this);
-                        //     var groupId = group.data('id');
-                        //     if (groupId == 1) {
-                        //         var group_attribute_values_id_1 = [];
-                        //         var attributeValues = group.find('.attribute_item');
-                        //         attributeValues.each(function() {
-                        //             var attributeValueId = $(this).data('id');
-                        //             group_attribute_values_id_1.push(attributeValueId);
-                        //         });
-                        //     }
-                        // });
                         // Cập nhật lại giá và số lượng sản phẩm
-                        $('#regular-price').text(regular_price);
-                        $('#sale-price').text(sale_price);
+                        $('#sale-price, #regular-price, #percent-discount').hide();
                         $('#update-stock').text(total_stock);
-                        $('#percent-discount').text(percent_discount);
                         get_stock_variant_clicked = null;
                         console.log(get_stock_variant_clicked);
+                        //kiểm tra từng phần tử
                         $('.attribute_item').each(function() {
                             if (!$(this).hasClass('able')) {
                                 $(this).removeClass('disabled');
-                                $(this).addClass('able active');
-                                if ($(this).hasClass('disableRadio')) {
-                                    $(this).removeClass('disableRadio');
-                                }
+                                $(this).addClass('able');
                             }
                         });
                         // Lọc các biến thể hợp lệ
@@ -1378,35 +1079,27 @@
                             }
                         });
                         // Disable các item không hợp lệ
-                        array_allow_click_attribute_values_id.forEach(function(item) {
-                            $('.able').each(function() {
-                                var id_item_btn_click = $(this).data('id');
-                                if (!array_allow_click_attribute_values_id.includes(
-                                        id_item_btn_click)) {
-                                    $(this).removeClass('able active');
-                                    $(this).addClass('disabled');
-                                }
-                            });
+                        $('.able').each(function() {
+                            var id_item_btn_click = $(this).data('id');
+                            if (!array_allow_click_attribute_values_id.includes(id_item_btn_click)) {
+                                $(this).removeClass('able active').addClass('disabled');
+                            }
                         });
                     } else {
-                        var current_item = $(this).closest('.attribute_group').find(
-                            '.attribute_item.active');
-                        if (current_item.hasClass('active')) {
+                        var current_item = $(this).closest('.attribute_group').find('.attribute_item.active');
+                        if (current_item.length && current_item.hasClass('active')) {
                             current_item.removeClass('active');
-                            current_item_id = current_item.data('id');
-                            // console.log('Id trước đó:' + current_item_id);
-                            attribute_value_ids = attribute_value_ids.filter(function(item) {
-                                return item != current_item_id;
-                            });
+                            var current_item_id = current_item.data('id');
+
+                            // Loại bỏ current_item_id khỏi attribute_value_ids
+                            attribute_value_ids = attribute_value_ids.filter(item => item !== current_item_id);
                         }
+                        // Thêm thuộc tính mới vào mảng
                         $(this).addClass('active');
                         attribute_value_ids.push(attributeValueId); // Thêm id thuộc tính vừa chọn vào mảng
                         // Hiển thị nút reset khi có thuộc tính được chọn
                         if (attribute_value_ids.length > 0) {
                             $('.reset_selected').show();
-                            $('#sale-price').show();
-                            $('#regular-price').show();
-                            $('#percent-discount').show();
                         }
                         //Xử lý lọc thuộc tính khi người dùng chọn
                         variants.forEach(function(variant) {
@@ -1436,6 +1129,7 @@
                                 attribute_value_ids);
                             if (variant_selected) {
                                 variant_id = variant['variant_id'];
+                                $('#sale-price, #regular-price, #percent-discount').show();
                             }
                             console.log('Trạng thái của variant_selected là: ' + variant_selected);
                             return variant_selected;
@@ -1453,95 +1147,55 @@
                         });
                         e.preventDefault();
                         $('.attribute_group').each(function() {
-                            var group = $(this);
-                            var groupId = group.data('id');
-                            if (groupId == 1) {
-                                attributeValues = group.find('.attribute_item');
-                                attributeValues.each(function() {
-                                    attributeValuesId = $(this).data('id');
-                                    if (attribute_value_ids.includes(attributeValuesId)) {
-                                        $.ajax({
-                                            url: "{{ route('userProductDetailFocused') }}",
-                                            type: "POST",
-                                            data: {
-                                                _token: "{{ csrf_token() }}",
-                                                attribute_value_ids: attribute_value_ids,
-                                                product_id: product_id
-                                            },
-                                            success: function(response) {
-                                                if (response.status ==
-                                                    "success") {
-                                                    var regular_price = response
-                                                        .data['regular_price'];
-                                                    var sale_price = response
-                                                        .data['sale_price'];
-                                                    var stock = response.data[
-                                                        'stock'];
-                                                    var percent_discount = (
-                                                        100 - (sale_price /
-                                                            regular_price *
-                                                            100)).toFixed(1);
-                                                    if (variant_selected) {
-                                                        if (sale_price &&
-                                                            sale_price > 0) {
-                                                            $('#regular-price')
-                                                                .text(
-                                                                    regular_price
-                                                                    ).addClass(
-                                                                    'regular-price-css'
-                                                                    )
-                                                                .removeClass(
-                                                                    'regular-price'
-                                                                    );
-                                                            $('#sale-price')
-                                                                .text(
-                                                                    sale_price);
-                                                            $('#update-stock')
-                                                                .text(stock);
-                                                            $('#percent-discount')
-                                                                .text("-" +
-                                                                    percent_discount +
-                                                                    "%");
-                                                        } else {
-                                                            $('#regular-price')
-                                                                .text(
-                                                                    regular_price
-                                                                    ).addClass(
-                                                                    'regular-price'
-                                                                    )
-                                                                .removeClass(
-                                                                    'regular-price-css'
-                                                                    );
-                                                            $('#sale-price')
-                                                                .hide();
-                                                            $('#percent-discount')
-                                                                .hide();
-                                                        }
-                                                        get_stock_variant_clicked
-                                                            = stock;
-                                                        currency();
-                                                    }
+                            attributeValuesId = $(this).data('id');
+                            if (attribute_value_ids.includes(attributeValuesId)) {
+                                $.ajax({
+                                    url: "{{ route('userProductDetailFocused') }}",
+                                    type: "POST",
+                                    data: {
+                                        _token: "{{ csrf_token() }}",
+                                        attribute_value_ids: attribute_value_ids,
+                                        product_id: product_id
+                                    },
+                                    success: function(response) {
+                                        if (response.status == "success") {
+                                            var regular_price = response.data['regular_price'];
+                                            var sale_price = response.data['sale_price'];
+                                            var stock = response.data['stock'];
+                                            var percent_discount = (100 - (sale_price /
+                                                regular_price * 100)).toFixed(1);
+                                            if (variant_selected) {
+                                                if (sale_price && sale_price > 0) {
+                                                    $('#regular-price').text(regular_price)
+                                                        .addClass('regular-price-css')
+                                                        .removeClass('regular-price');
+                                                    $('#sale-price').text(sale_price);
+                                                    $('#update-stock').text(stock);
+                                                    $('#percent-discount')
+                                                        .text("-" + percent_discount + "%");
                                                 } else {
-                                                    $('#update-stock').text(0);
-                                                    notification('error',
-                                                        'Sản phẩm không có sẵn',
-                                                        'Hết hàng');
-                                                    console.log(
-                                                        'Response status is not success'
-                                                        );
+                                                    $('#regular-price').text(regular_price)
+                                                        .addClass('regular-price')
+                                                        .removeClass('regular-price-css');
+                                                    $('#sale-price, #percent-discount').hide();
+                                                    $('#update-stock').text(stock);
                                                 }
-                                            },
-                                            error: function(xhr) {
-                                                alert(
-                                                    'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.');
+                                                get_stock_variant_clicked = stock;
+                                                currency();
                                             }
-                                        })
+                                        } else {
+                                            $('#update-stock').text(0);
+                                            notification('error', 'Sản phẩm không có sẵn', 'Hết hàng');
+                                            console.log('Response status is not success');
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        alert('Đã xảy ra lỗi trong quá trình xử lý yêu cầu.');
                                     }
                                 })
                             }
                         });
                     }
-
                 }
             });
             //------------------Handle increment and reduce quantity-------------------
@@ -1626,9 +1280,6 @@
                     if (!$(this).hasClass('able')) {
                         $(this).removeClass('disabled');
                         $(this).addClass('able active');
-                        if ($(this).hasClass('disableRadio')) {
-                            $(this).removeClass('disableRadio');
-                        }
                     }
                     if ($(this).hasClass('active')) {
                         $(this).removeClass('active');
@@ -1639,10 +1290,8 @@
                 $('#update-stock').text(total_stock);
                 $('#percent-discount').text(percent_discount);
                 get_stock_variant_clicked = null;
+                $('#sale-price, #regular-price, #percent-discount').hide();
                 $('.reset_selected').hide();
-                $('#sale-price').hide();
-                $('#regular-price').hide();
-                $('#percent-discount').hide();
                 variant_selected = false;
             })
 
