@@ -375,7 +375,6 @@ class FilterProductController extends Controller
             ->where('products.is_active', 1)
             ->select('products.*', 'product_files.file_name as image');
     // Tạo query builder để lấy danh sách sản phẩm
-    $query = Product::with('product_variants')->where('');
 
     switch ($sortBy) {
         case 'alphabetical_desc':

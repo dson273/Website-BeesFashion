@@ -15846,7 +15846,15 @@ body.skeleton_body {
 }
 
 
-
+.product-box-3:hover .product-image .pro-first {
+    opacity: 0;
+    visibility: hidden;
+}
+.product-box-3:hover .product-image .pro-sec {
+    left: 0;
+    opacity: 1;
+    visibility: visible;
+}
 .product-box-3:hover .img-wrapper .cart-info-icon a {
     opacity: 1
 }
@@ -18229,14 +18237,14 @@ body div canvas:first-child {
     transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
     width: 20px;
   }
-  .rating {
+  .ratingd {
     display: flex; /* Chuyển danh sách thành flex container */
     justify-content: space-between; /* Đẩy các phần tử con ra 2 bên */
     align-items: center; /* Đảm bảo các phần tử được căn giữa theo chiều dọc */
     width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
 }
 
-.rating li {
+.ratingd li {
     list-style-type: none; /* Loại bỏ dấu chấm đầu dòng */
 }
 

@@ -138,7 +138,7 @@ function renderProducts(products) {
                             <a href="">
                                 <h6>${product.name}</h6>
                             </a>
-                            <ul class="rating d-flex">
+                            <ul class="ratingd d-flex">
                                 <li><p id="price-range">Giá: ${displayPrice}</p></li>
                                 <li><i class="fa-solid fa-star"></i></li>
                             </ul>
