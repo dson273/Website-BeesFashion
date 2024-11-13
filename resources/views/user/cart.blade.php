@@ -236,7 +236,6 @@
                             </div>
                         </div>
                     </div>
-                    @endif
                 </div>
             </div>
             <!-- Box Chọn Biến Thể -->
