@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->comment('Tên sản phẩm');
             $table->integer('view')->default(0)->comment('Số lượt xem sản phẩm');
             $table->text('description')->comment('Mô tả sản phẩm');
-            $table->integer('fake-sales')->nullable()->comment('Tạo đơn ảo cho sản phẩm)');
+            $table->integer('fake_sales')->nullable()->comment('Tạo đơn ảo cho sản phẩm)');
             $table->foreignIdFor(Brand::class)->nullable()->comment('Sản phẩm này thuộc thương hiệu nào')->constrained();
             $table->tinyInteger('is_active')->default(1)->comment('Trạng thái hoạt động, mặc định là 1(đã kích hoạt)');
             $table->timestamps();
