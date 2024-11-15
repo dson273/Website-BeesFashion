@@ -59,7 +59,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('products/changestatusproductvariant/{id}', [ProductController::class, 'changeStatusProductVariant'])->name('products.show.changestatus');
     Route::resource('products', ProductController::class);
     Route::post('product/importingGoods', [ProductController::class, 'importingGoods'])->name('importingGoods');
-    //Create product
+    //Create and edit product
     Route::post('products/getAllCategories', action: [ProductController::class, 'getAllCategories'])->name('getAllCategories');
     Route::post('products/createNewCategory', action: [ProductController::class, 'createNewCategory'])->name('createNewCategory');
     Route::post('products/checkCategoryById', action: [ProductController::class, 'checkCategoryById'])->name('checkCategoryById');
@@ -70,12 +70,15 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::post('products/getAllAttributes', action: [ProductController::class, 'getAllAttributes'])->name('getAllAttributes');
 
-    Route::post('products/getSkuProduct', action: [ProductController::class, 'getSkuProduct'])->name('getSkuProduct');
+    Route::post('products/getProductSku', action: [ProductController::class, 'getProductSku'])->name('getProductSku');
 
-    Route::post('products/getSkuProductVariation', action: [ProductController::class, 'getSkuProductVariation'])->name('getSkuProductVariation');
+    Route::post('products/getProductVariationSku', action: [ProductController::class, 'getProductVariationSku'])->name('getProductVariationSku');
 
-    Route::post('products/getAllAttributeValuesById/{id}', action: [ProductController::class, 'getAllAttributeValuesById'])->name('getAllAttributeValuesById');
-    Route::post('products/addNewAttributeValueById/{id}', action: [ProductController::class, 'addNewAttributeValueById'])->name('addNewAttributeValueById');
+    Route::post('products/getAllAttributeValuesById', action: [ProductController::class, 'getAllAttributeValuesById'])->name('getAllAttributeValuesById');
+    Route::post('products/addNewAttributeValueById', action: [ProductController::class, 'addNewAttributeValueById'])->name('addNewAttributeValueById');
+
+    //Edit product
+    Route::post('products/getOldProductData', action: [ProductController::class, 'getOldProductData'])->name('getOldProductData');
     // });
 
     //=======================================================Quản lý danh mục=======================================================

@@ -34,7 +34,10 @@
                     <div class="carousel-indicators">
                         @foreach ($sliders as $slider)
                             @foreach ($slider->banner_images as $key => $banner_image)
-                                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="{{ $key }}" class="{{ $key === 0 ? 'active' : '' }}"></button>
+                                <button type="button" data-bs-target="#bannerCarousel"
+                                    data-bs-slide-to="{{ $key }}"
+                                    class="{{ $key === 0 ? 'active' : '' }}"></button>
+
                             @endforeach
                         @endforeach
                     </div>
@@ -116,7 +119,12 @@
                         <div class="theme-tab-1">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#features-products" role="tab" aria-controls="features-products" aria-selected="true">
+                                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#seller-products" role="tab" aria-controls="seller-products" aria-selected="false">
+                                        <h6>Sản phẩm mới nhất</h6>
+                                    </a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-products" role="tab" aria-controls="features-products" aria-selected="true">
                                         <h6>Sản phẩm bán chạy</h6>
                                     </a>
                                 </li>
@@ -125,146 +133,19 @@
                                         <h6>Sản phẩm có lượt xem nhiều</h6>
                                     </a>
                                 </li>
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#seller-products" role="tab" aria-controls="seller-products" aria-selected="false">
-                                        <h6>Sản phẩm mới nhất</h6>
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                         <div class="row">
                             <div class="col-12 ratio_square">
                                 <div class="tab-content">
-                                    <!-- Sản phẩm bán chạy -->
-                                    <div class="tab-pane fade show active" id="features-products" role="tabpanel" tabindex="0">
-                                        <div class="row g-4">
-                                            <div class="col-xxl-3 col-md-4 col-6">
-                                                @foreach ($products as $product)
-                                                    <div class="product-box">
-                                                        <div class="img-wrapper">
-                                                            <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
-                                                            @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
-                                                                </a>
-                                                            @else
-                                                                <a href="#">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
-                                                                </a>
-                                                            @endif
-                                                            <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Quick View"></i></a></div>
-                                                        </div>
-                                                        <div class="product-detail">
-                                                            <div class="add-button"><a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="add product" tabindex="0"><i
-                                                                        class="fa-solid fa-plus"></i> Add To
-                                                                    Cart</a>
-                                                            </div>
-                                                            <div class="color-box">
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
-                                                                    @foreach ($product->product_variants as $variant)
-                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
-                                                                            @php
-                                                                                $attributeValue = $variantAttributeValue->attribute_value;
-                                                                            @endphp
-                                                                            @if (!empty($attributeValue->value))
-                                                                                <li style="background-color: #{{ $attributeValue->value }};">
-                                                                                </li>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    @endforeach
-                                                                </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
-                                                            </div>
-                                                            @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
-                                                                    <h6>{{ $product->name }}</h6>
-                                                                </a>
-                                                            @else
-                                                                <a href="#">
-                                                                    <h6>{{ $product->name }}</h6>
-                                                                </a>
-                                                            @endif
-                                                            <p>
-                                                                {{ $product->priceRange }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <!-- Sản phẩm có lượt xem nhiều -->
-                                    <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
-                                        <div class="row g-4">
-                                            <div class="col-xxl-3 col-md-4 col-6">
-                                                @foreach ($topProducts as $product)
-                                                    <div class="product-box">
-                                                        <div class="img-wrapper">
-                                                            <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
-                                                            @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
-                                                                </a>
-                                                            @else
-                                                                <a href="#">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
-                                                                </a>
-                                                            @endif
-                                                            <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Quick View"></i></a></div>
-                                                        </div>
-                                                        <div class="product-detail">
-                                                            <div class="add-button"><a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="add product" tabindex="0"><i
-                                                                        class="fa-solid fa-plus"></i> Add To
-                                                                    Cart</a>
-                                                            </div>
-                                                            <div class="color-box">
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
-                                                                    @foreach ($product->product_variants as $variant)
-                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
-                                                                            @php
-                                                                                $attributeValue = $variantAttributeValue->attribute_value;
-                                                                            @endphp
-                                                                            @if (!empty($attributeValue->value))
-                                                                                <li style="background-color: #{{ $attributeValue->value }};">
-                                                                                </li>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    @endforeach
-                                                                </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
-                                                            </div>
-                                                            @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
-                                                                    <h6>{{ $product->name }}</h6>
-                                                                </a>
-                                                            @else
-                                                                <a href="#">
-                                                                    <h6>{{ $product->name }}</h6>
-                                                                </a>
-                                                            @endif
-                                                            <p>
-                                                                {{ $product->priceRange }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
                                     <!-- Sản phẩm mới -->
-                                    <div class="tab-pane fade" id="seller-products" role="tabpanel" tabindex="0">
+                                    <div class="tab-pane fade show active" id="seller-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
-                                            <div class="col-xxl-3 col-md-4 col-6">
-                                                @foreach ($newProducts as $product)
+                                            @foreach ($newProducts as $product)
+                                                <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
+
                                                             <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
                                                             <div class="product-image">
                                                                 @if ($product)
@@ -286,15 +167,16 @@
                                                         </div>
                                                         <div class="product-detail">
                                                             <div class="add-button">
-                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="add product" tabindex="0"><i
-                                                                        class="fa-solid fa-plus"></i> Add To Cart</a>
+                                                                <a href="#"><i class="fa-regular fa-eye"></i> View details</a>
                                                             </div>
                                                             <div class="color-box">
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                <ul class="color-variant"
+                                                                    style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue = $variantAttributeValue->attribute_value;
+                                                                                $attributeValue =
+                                                                                    $variantAttributeValue->attribute_value;
                                                                             @endphp
                                                                             @if (!empty($attributeValue->value))
                                                                                 <li style="background-color: #{{ $attributeValue->value }};">
@@ -319,8 +201,145 @@
                                                             </p>
                                                         </div>
                                                     </div>
-                                                @endforeach
-                                            </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <!-- Sản phẩm bán chạy -->
+                                    <div class="tab-pane fade" id="features-products" role="tabpanel" tabindex="0">
+                                        <div class="row g-4">
+                                            @foreach ($products as $product)
+                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                </a>
+                                                            @endif
+                                                            <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i></a></div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            @if ($product)
+                                                                <div class="add-button">
+                                                                    <a href="{{ route('product.detail', $product) }}"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                </div>
+                                                            @else
+                                                                <div class="add-button">
+                                                                    <a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                </div>
+                                                            @endif
+                                                            <div class="color-box">
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                    @foreach ($product->product_variants as $variant)
+                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                            @php
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
+                                                                            @endphp
+                                                                            @if (!empty($attributeValue->value))
+                                                                                <li style="background-color: #{{ $attributeValue->value }};">
+
+                                                                                </li>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                            </div>
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                    <h6>{{ $product->name }}</h6>
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                    <h6>{{ $product->name }}</h6>
+                                                                </a>
+                                                            @endif
+
+                                                            <p>
+                                                                {{ $product->priceRange }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <!-- Sản phẩm có lượt xem nhiều -->
+                                    <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
+                                        <div class="row g-4">
+                                            @foreach ($topProducts as $product)
+                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                </a>
+                                                            @endif
+                                                            <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i></a></div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            @if ($product)
+                                                                <div class="add-button">
+                                                                    <a href="{{ route('product.detail', $product) }}"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                </div>
+                                                            @else
+                                                                <div class="add-button">
+                                                                    <a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                </div>
+                                                            @endif
+                                                            <div class="color-box">
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                    @foreach ($product->product_variants as $variant)
+                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                            @php
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
+                                                                            @endphp
+                                                                            @if (!empty($attributeValue->value))
+                                                                                <li style="background-color: #{{ $attributeValue->value }};">
+
+                                                                                </li>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                            </div>
+
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                    <h6>{{ $product->name }}</h6>
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                    <h6>{{ $product->name }}</h6>
+                                                                </a>
+                                                            @endif
+
+                                                            <p>
+                                                                {{ $product->priceRange }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -412,8 +431,7 @@
                                         tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="add product" tabindex="0"><i class="fa-solid fa-plus"></i> Add
-                                        To Cart</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -470,8 +488,7 @@
                                 </div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="add product" tabindex="0"><i class="fa-solid fa-plus"></i> Add
-                                        To Cart</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -500,8 +517,7 @@
                                         tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="add product" tabindex="0"><i class="fa-solid fa-plus"></i> Add
-                                        To Cart</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -558,8 +574,7 @@
                                 </div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="add product" tabindex="0"><i class="fa-solid fa-plus"></i> Add
-                                        To Cart</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -585,8 +600,7 @@
                                         tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="add product" tabindex="0"><i class="fa-solid fa-plus"></i> Add
-                                        To Cart</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -816,8 +830,9 @@
                                         </div>
                                         <h6 class="product-title">Quantity</h6>
                                         <div class="quantity"><button class="minus" type="button"><i class="fa-solid fa-minus"></i></button><input type="number" value="1" min="1"
-                                                max="20"><button class="plus" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                                                max="20"><button class="plus" type="button"><i class="fa-regular fa-eye"></i></button></div>
                                     </div>
+
                                     <div class="product-buttons"><a class="btn btn-solid" href="#">Add to
                                             cart</a><a class="btn btn-solid" href="#">View
                                             detail</a></div>

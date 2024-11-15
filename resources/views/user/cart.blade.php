@@ -33,8 +33,7 @@
                         <div class="col-xxl-9 col-xl-8">
                             <div class="cart-table">
                                 <div class="table-title">
-                                    <h5>Cart <span id="cartTitle">({{ count($cart_list) }} item)</span></h5><button id="clearAllButton">Clear
-                                        All</button>
+                                    <h5>Cart <span id="cartTitle">({{ count($cart_list) }} item)</span></h5><button class="btn-clear" id="clearAllButton">Clear All</button>
                                 </div>
                                 <div class="table-responsive theme-scrollbar">
                                     <table class="table" id="cart-table">
@@ -49,25 +48,28 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($cart_list as $item_cart)
-                                                <tr>
+                                                <tr data-cart-id="{{ $item_cart['id_cart'] }}" data-variant-id="{{ $item_cart['variant_id'] }}" data-product-id="{{ $item_cart['product_id'] }}"
+                                                    data-regular-price="{{ $item_cart['regular_price'] }}" data-sale-price="{{ $item_cart['sale_price'] }}" data-stock="{{ $item_cart['stock'] }}">
                                                     <td>
                                                         <div class="cart-box">
                                                             <a href="{{ route('product.detail', $item_cart['product_id']) }}">
-                                                                <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}" alt=""></a>
+                                                                <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}" alt="{{ $item_cart['product_name'] }}" class="product-image"></a>
                                                             <div class="cart-box-variant">
                                                                 <a href="{{ route('product.detail', $item_cart['product_id']) }}">
-                                                                    <h5 class="text-wrap">{{ $item_cart['product_name'] }}
-                                                                    </h5>
+                                                                    <h5 class="text-wrap">{{ $item_cart['product_name'] }}</h5>
                                                                 </a>
-                                                                <div class="box-edit-variant mb-2">
-                                                                    <button type="button" id="variantButton" class="text-start">Chọn phân loại<span class="ms-lg-5"><i
+                                                                <div class="box-edit-variant mb-2 variant-selector">
+                                                                    <button type="button" id="variantButton" class="variant-button text-start">Chọn phân loại<span class="ms-lg-5"><i
                                                                                 class="fa-solid fa-chevron-down"></i></span></button>
                                                                 </div>
-                                                                @foreach ($item_cart['attribute_values'] as $attribute)
-                                                                    <h6>{{ $attribute['attribute_name'] }}:
-                                                                        <span>{{ $attribute['value_name'] }}</span>
-                                                                    </h6>
-                                                                @endforeach
+                                                                <div class="variant-details">
+                                                                    @foreach ($item_cart['attribute_values'] as $attribute)
+                                                                        <h6 class="attribute-item">
+                                                                            {{ $attribute['attribute_name'] }}:
+                                                                            <span class="attribute-value">{{ $attribute['value_name'] }}</span>
+                                                                        </h6>
+                                                                    @endforeach
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -83,12 +85,13 @@
                                                     </td>
                                                     <td>
                                                         <div class="quantity">
-                                                            <button class="minus" type="button"><i class="fa-solid fa-minus"></i></button>
-                                                            <input type="number" value="{{ $item_cart['quantity'] }}" min="1" max="20">
-                                                            <button class="plus" type="button"><i class="fa-solid fa-plus"></i></button>
+                                                            <button class="quantity-btn minus" type="button"><i class="fa-solid fa-minus"></i></button>
+                                                            <input class="quantity-input" type="number" value="{{ $item_cart['quantity'] }}" min="1"
+                                                            max="{{ $item_cart['stock'] }}">
+                                                            <button class="quantity-btn plus" type="button"><i class="fa-solid fa-plus"></i></button>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td class="total-price">
                                                         {{ number_format(($item_cart['sale_price'] ?? $item_cart['regular_price']) * $item_cart['quantity'], 0, ',', '.') }}đ
                                                     </td>
                                                     <td>
@@ -237,23 +240,30 @@
             </div>
             <!-- Box Chọn Biến Thể -->
             <div id="variantBox" class="box-variant">
-                <div>
-                    <label class="form-label">Màu sắc: <span>Đen</span></label>
+                <div class="variant-container">
+                    <div class="varianr-content">
+                        <label class="form-label">Color: <span>Đen</span></label>
                     <div class="d-flex mb-2 color-options">
-                        <input type="radio" id="color-black" name="color" value="black">
+                        <input class="btn-color" type="radio" id="color-black" name="color" value="black">
                         <label for="color-black" title="black" class="color-label me-2" style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
 
-                        <input type="radio" id="color-gray" name="color" value="gray">
+                        <input class="btn-color" type="radio" id="color-gray" name="color" value="gray">
                         <label for="color-gray" class="color-label" style="background-image: url('{{ asset('assets/images/cart/2.jpg') }}');"></label>
 
                     </div>
-
                     <label class="form-label">Size: <span>S</span></label>
                     <div class="d-flex flex-wrap mb-2 wrap-vra">
                         <button class="btn-variant">S</button>
                         <button class="btn-variant">M</button>
                         <button class="btn-variant">L</button>
-                        <button class="btn-variant">L</button>
+                    </div>
+
+                    <label class="form-label">Vải: <span>Lụa</span></label>
+                    <div class="d-flex flex-wrap mb-2 wrap-vra">
+                        <button class="btn-variant-default">Lụa</button>
+                        <button class="btn-variant-default">Tơ</button>
+                        <button class="btn-variant-default">Jean</button>
+                    </div>
                     </div>
                     <div class="d-flex mt-3 justify-content-between box-variant-bottom">
                         <button type="button" id="backButton" class="btn-back">Trở lại</button>
@@ -271,12 +281,24 @@
     <script>
         //Lấy tất cả các nút có class 'btn-variant'
         const variantButtons = document.querySelectorAll('.btn-variant');
+        const variantDefault = document.querySelectorAll('.btn-variant-default');
+        const variantColors = document.querySelectorAll('.btn-color');
 
         variantButtons.forEach(button => {
             button.addEventListener('click', () => {
-                // Xóa lớp 'selected' khỏi tất cả các nút
                 variantButtons.forEach(btn => btn.classList.remove('selected'));
-                // Thêm lớp 'selected' vào nút hiện tại
+                button.classList.add('selected');
+            });
+        });
+        variantDefault.forEach(button => {
+            button.addEventListener('click', () => {
+                variantDefault.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+        variantColors.forEach(button => {
+            button.addEventListener('click', () => {
+                variantColors.forEach(btn => btn.classList.remove('selected'));
                 button.classList.add('selected');
             });
         });

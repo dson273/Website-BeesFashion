@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\Cart;
+use App\Models\Product;
+use App\Models\Attribute;
+use App\Models\Attribute_value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Product_variant;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product_variant_attribute_value;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $carts = Auth::user()->carts;
@@ -21,7 +22,6 @@ class CartController extends Controller
             $array_item_cart = [];
             $array_item_cart['quantity'] = $itemCart->quantity;
             $variants = $itemCart->product_variant;
-
             $array_item_cart['product_name'] = Product_variant::select('p.name')
                 ->rightJoin('products as p', 'product_variants.product_id', '=', 'p.id')
                 ->first()->name;
@@ -48,7 +48,6 @@ class CartController extends Controller
                     'value_code' => $attributeValue->value
                 ];
             }
-
             $array_item_cart['attribute_values'] = $array_item_attribute_values;
             $cart_list[] = $array_item_cart;
         }
@@ -67,51 +66,99 @@ class CartController extends Controller
         return view('user.cart', compact('cart_list', 'total_payment', 'total_discount'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    // public function getProductVariants($product_id)
+    // {
+    //     $product = Product::with(['product_variants' => function ($query) {
+    //         $query->where('is_active', 1)
+    //             ->where('stock', '>', 0);
+    //     }, 'product_variants.variant_attribute_values.attribute_value.attribute'])
+    //         ->findOrFail($product_id);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    //     // Mảng chứa các biến thể với các attribute_value_id liên quan
+    //     $array_variants = $product->product_variants->map(function ($variant) {
+    //         return [
+    //             'variant_id' => $variant->id,
+    //             'image' => $variant->image,
+    //             'regular_price' => $variant->regular_price,
+    //             'sale_price' => $variant->sale_price,
+    //             'stock' => $variant->stock,
+    //             'attribute_values' => $variant->variant_attribute_values->pluck('attribute_value_id')->toArray()
+    //         ];
+    //     })->toArray();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    //     // Lấy tất cả các attribute_value_id và attribute_id duy nhất
+    //     $attribute_value_ids = $product->product_variants
+    //         ->pluck('variant_attribute_values.*.attribute_value_id')
+    //         ->flatten()
+    //         ->unique()
+    //         ->toArray();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+    //     $attribute_ids = Attribute_value::whereIn('id', $attribute_value_ids)
+    //         ->pluck('attribute_id')
+    //         ->unique()
+    //         ->sort()
+    //         ->toArray();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    //     // Xây dựng mảng thuộc tính đã lọc
+    //     $array_attributes = Attribute::with([
+    //         'attribute_values' => function ($query) use ($attribute_value_ids) {
+    //             $query->whereIn('id', $attribute_value_ids);
+    //         },
+    //         'attribute_type' // Lấy thông tin loại thuộc tính
+    //     ])->whereIn('id', $attribute_ids)->get()->mapWithKeys(function ($attribute) {
+    //         return [
+    //             $attribute->id => [
+    //                 'id' => $attribute->id,
+    //                 'name' => $attribute->name,
+    //                 'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null, // Lấy tên loại thuộc tính
+    //                 'attribute_values' => $attribute->attribute_values->sortBy(function ($value) {
+    //                     // Sắp xếp theo thứ tự "S", "M", "L", "XL", nếu giá trị khác số
+    //                     $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
+    //                     return $sizes[$value->name] ?? $value->name; // Sắp xếp theo thứ tự định trước hoặc theo tên
+    //                 })->values()->map(function ($value) {
+    //                     return [
+    //                         'id' => $value->id,
+    //                         'name' => $value->name,
+    //                         'value' => $value->value
+    //                     ];
+    //                 })->toArray()
+    //             ]
+    //         ];
+    //     })->toArray();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'variants' =>  $array_variants,
+    //         'attributes' => $array_attributes
+    //     ]);
+    // }
+    // public function updateVariant(Request $request)
+    // {
+    //     $request->validate([
+    //         'cart_id' => 'required|exists:carts,id',
+    //         'variant_id' => 'required|exists:product_variants,id'
+    //     ]);
+
+    //     $cart = Cart::findOrFail($request->cart_id);
+    //     $newVariant = Product_variant::findOrFail($request->variant_id);
+
+    //     // Kiểm tra stock của variant mới
+    //     if ($cart->quantity > $newVariant->stock) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Số lượng vượt quá tồn kho của biến thể mới'
+    //         ], 422);
+    //     }
+
+    //     $cart->product_variant_id = $newVariant->id;
+    //     $cart->save();
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Cập nhật biến thể thành công',
+    //         'new_price' => $newVariant->sale_price ?? $newVariant->regular_price,
+    //         'new_total' => ($newVariant->sale_price ?? $newVariant->regular_price) * $cart->quantity,
+    //         'stock' => $newVariant->stock
+    //     ]);
+    // }
 }

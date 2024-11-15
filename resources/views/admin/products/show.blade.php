@@ -34,7 +34,7 @@ Chi tiết sản phẩm
     </h1>
     <p class="mb-2">Below is the product detail</p>
     <div class="mb-2 d-flex justify-content-start">
-        <a href="{{route('admin.products.index')}}" class="btn btn-secondary text-white text-decoration-none"><i class="fas fa-arrow-left mr-1"></i>Back</a>
+        <a href="javascript:history.back()" class="btn btn-secondary text-white text-decoration-none"><i class="fas fa-arrow-left mr-1"></i>Back</a>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -114,9 +114,9 @@ Chi tiết sản phẩm
                                 <td>{{$productDetail['name']}}</td>
                                 <td>
                                     @if($productDetail['is_active']==1)
-                                    <span class="text-success">Đang hoạt động</span>
+                                    <span class="text-white badge badge-success">Đang hoạt động</span>
                                     @else
-                                    <span class="text-danger">Ngừng bán</span>
+                                    <span class="text-white badge badge-danger">Ngừng bán</span>
                                     @endif
                                 </td>
                                 <td>{{$productDetail['created_at']}}</td>
@@ -238,9 +238,9 @@ Chi tiết sản phẩm
                             <td>{{$productVariant->stock}}</td>
                             <td>
                                 @if($productVariant->is_active==1)
-                                <span class="text-success">Đang hoạt động</span>
+                                <span class="text-white badge badge-success">Đang hoạt động</span>
                                 @else
-                                <span class="text-danger">Ngừng bán</span>
+                                <span class="text-white badge badge-danger">Ngừng bán</span>
                                 @endif
                             </td>
                             <td>{{$productVariant->created_at}}</td>

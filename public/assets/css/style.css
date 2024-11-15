@@ -15854,17 +15854,16 @@ body.skeleton_body {
     padding: 2px 8px
 }
 
+
 .product-box-3:hover .product-image .pro-first {
     opacity: 0;
-    visibility: hidden
+    visibility: hidden;
 }
-
 .product-box-3:hover .product-image .pro-sec {
     left: 0;
     opacity: 1;
-    visibility: visible
+    visibility: visible;
 }
-
 .product-box-3:hover .img-wrapper .cart-info-icon a {
     opacity: 1
 }
@@ -17983,9 +17982,57 @@ body div canvas:first-child {
     transition: all .4s ease-in-out;
 }
 
-/* Điều chỉnh kích thước nút cho màn hình nhỏ */
 @media (max-width: 576px) {
     .btn-variant {
+        min-width: calc(50% - 8px);
+    }
+}
+
+.btn-variant-default {
+    min-width: calc(30% - 5px);
+    padding: 7px 7px;
+    text-align: center;
+    border: 1px solid rgba(var(--light-border), 1);
+    background-color: #fff;
+    border-radius: 1px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Hiệu ứng khi chọn */
+.btn-variant-default.selected {
+    background-color: #ffffff;
+    color: rgba(var(--danger-color), 1);
+    border-color: rgba(var(--danger-color), 1);
+}
+
+/* Góc checkmark */
+.btn-variant-default.selected::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    background-color: rgba(var(--danger-color), 1);
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    transition: all .4s ease-in-out;
+}
+
+/* Biểu tượng checkmark */
+.btn-variant-default.selected::before {
+    content: '✔';
+    position: absolute;
+    bottom: 0;
+    right: 2px;
+    color: white;
+    font-size: 12px;
+    z-index: 2;
+    transition: all .4s ease-in-out;
+}
+
+@media (max-width: 576px) {
+    .btn-variant-default {
         min-width: calc(50% - 8px);
     }
 }
@@ -18014,7 +18061,35 @@ body div canvas:first-child {
 .color-options input[type="radio"]:checked+.color-label {
     border: 1px solid #ff0000;
     /* Màu viền khi được chọn */
+.color-options input[type="radio"].selected + .color-label {
+    border: 1px solid #ff0000; /* Màu viền khi được chọn */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Empty Cart Styles */
+.empty-cart-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-cart-image {
+    max-width: 200px;
+    margin-bottom: 1rem;
+}
+
+.btn-continue-shopping {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-continue-shopping:hover {
+    background: #333;
 }
 
 .border-bonus {
@@ -18310,3 +18385,43 @@ body div canvas:first-child {
 .nav-childmenu li a:hover {
     color: #007bff;
 }
+
+  }
+  .ratingd {
+    display: flex; /* Chuyển danh sách thành flex container */
+    justify-content: space-between; /* Đẩy các phần tử con ra 2 bên */
+    align-items: center; /* Đảm bảo các phần tử được căn giữa theo chiều dọc */
+    width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+}
+
+.ratingd li {
+    list-style-type: none; /* Loại bỏ dấu chấm đầu dòng */
+}
+
+#price-range {
+    color: #f99d21 ;
+    margin: 0; /* Loại bỏ margin cho p trong li */
+}
+
+.fa-star {
+    color: gold; /* Tùy chỉnh màu sao */
+}
+.bg-img {
+    width: 250px;
+    height: 300px;
+};
+
+/* Màu mặc định cho biểu tượng trái tim */
+.wishlist-icon i {
+    color: #ccc;  /* Màu xám khi chưa được chọn */
+    transition: color 0.3s ease-in-out;  /* Hiệu ứng chuyển màu */
+}
+
+/* Màu đỏ khi trái tim được chọn */
+.wishlist-icon.selected i {
+    color: red;  /* Màu đỏ khi được chọn */
+}
+.top-filter-menu{
+    height: 60px;
+}
+

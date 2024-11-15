@@ -1,3 +1,4 @@
+$('.container-spinner').removeClass('hidden');
 //---------------------------------------------------Show and hidden form---------------------------------------------------
 function switchShowHidden(form, dataForm, chevron) {
     var status = $(form).data(dataForm);
@@ -37,6 +38,518 @@ $(document).on('click', '.productBrandTitle', function () {
     switchShowHidden('#contentBrandContainer', 'productBrand', '#chevronProductBrand');
 });
 
+//||||||||||||||||||||||||||||||||||||||||||||||||OLD PRODUCT||||||||||||||||||||||||||||||||||||||||||||||||
+//==============================================LOAD ALL OLD DATA==============================================
+var oldDataProduct = null;
+var justLoaded = true;
+function getOldProductData() {
+    var productId = $('#oldProductId').val();
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: routeGetOldProductData,
+            method: "POST",
+            data: {
+                _token: csrf,
+                product_id: productId
+            },
+            success: function (response) {
+                if (response.status == 200) {
+                    oldDataProduct = response.data;
+                    return resolve(notification('success', response.message, 'Successfully!', '1000'));
+                } else {
+                    return resolve(notification('error', response.message, 'Error!', '1000'));
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+                reject(notification('error', 'Unable to get catalog data!', 'Error'));
+            }
+        })
+    })
+}
+//Initialize Select attributes
+var slimSelectAddExisting = new SlimSelect({
+    select: '#selectAddExisting',
+    settings: {
+        placeholderText: 'Add existing',
+        keepOrder: true
+    },
+});
+//====================================================LOAD OLD DATA PRODUCT====================================================
+var productId = null;
+var productSku = null;
+var productName = null;
+var productDescription = null;
+var productActive = null;
+var productCategory = null;
+var productBrand = null;
+var productMainImage = null;
+var productPhotoGallery = null;
+var productPhotoGalleryIds = [];
+var productVideos = null;
+var productVideoIds = [];
+var productAttributes = [];
+var productVariations = [];
+async function upLoadOldDataProduct() {
+    if (oldDataProduct === null) {
+        try {
+            await getOldProductData();
+            if (oldDataProduct !== null) {
+                console.log(oldDataProduct);
+                //---------Thiết lập biến phân chia dữ liệu----------
+                productId = oldDataProduct['base_information'].id;
+                productSku = oldDataProduct['base_information'].sku;
+                productName = oldDataProduct['base_information'].name;
+                productDescription = oldDataProduct['base_information'].description;
+                productActive = oldDataProduct['base_information'].is_active;
+                productCategory = oldDataProduct['category_ids'];
+                productBrand = oldDataProduct['base_information'].brand_id ? oldDataProduct['base_information'].brand_id : null;
+                productMainImage = oldDataProduct['base_information'].main_image;
+                productPhotoGallery = oldDataProduct['base_information'].photo_gallery ? oldDataProduct['base_information'].photo_gallery : null;
+                productVideos = oldDataProduct['base_information'].videos ? oldDataProduct['base_information'].videos : null;
+                productAttributes = oldDataProduct['attributes'];
+                productVariations = oldDataProduct['variations'];
+                console.log(productVariations);
+
+                if (productAttributes && !Array.isArray(productAttributes)) {
+                    productAttributes = Object.values(productAttributes);
+                }
+                if (productVariations && !Array.isArray(productVariations)) {
+                    productVariations = Object.values(productVariations);
+                }
+                //-----------Upload base information data-----------
+                $('.titleOldProductName').text(productName);
+                $('.oldProductSku').val(productSku);
+                $('.oldProductName').val(productName);
+                if (productActive == 1) {
+                    $('.oldProductActive').attr('checked', true);
+                }
+
+                //----------Thiết lập tinymce-----------
+                await tinymce.init({
+                    selector: '#oldProductDescription',
+                    plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount',
+                    automatic_uploads: true,
+                    license_key: 'gpl',
+                    setup: function (editor) {
+                        editor.on('init', function () {
+                            editor.setContent(productDescription);
+                        });
+                    }
+                });
+
+                // ---------Tải ảnh chính-------
+                await new Promise((resolve) => {
+                    loadOldMainImage(productMainImage['id'], productMainImage['name']);
+                    resolve();
+                });
+
+                //----------Lấy id của các ảnh cũ trong thư viện ảnh sp và tải thư viện ảnh lên giao diện-----------
+                if (productPhotoGallery.length > 0) {
+                    await Promise.all(
+                        productPhotoGallery.map((item) => {
+                            productPhotoGalleryIds.push(item['id']);
+                            return new Promise((resolve) => {
+                                loadOldPhotoGallery(item['id'], item['name']);
+                                resolve();
+                            })
+                        })
+                    )
+                }
+
+                //----------Lấy id của các videos cũ trong thư viện video sp-----------
+                if (productVideos && productVideos.length > 0) {
+                    await Promise.all(
+                        productVideos.map((item) => {
+                            productVideoIds.push(item['id']);
+                            return new Promise((resolve) => {
+                                loadOldVideos(item['id'], item['name']);
+                                resolve();
+                            })
+                        })
+                    )
+                }
+
+
+                //=========================================Tải thuộc tính đã lựa chọn của sp này===========================================
+                //--------Tải thuộc tính--------
+                const attributeData = await getAttributeData();
+                if (attributeData.length > 0) {
+                    //Initialize Select attributes
+                    const displayData = [];
+                    attributeData.forEach(function (item) {
+                        var option = {
+                            value: item['id'],
+                            text: item['name'],
+                            class: "optionSelectAddExisting"
+                        }
+                        // --------Đặt thuộc tính 'selected' nếu thuộc tính này đã được chọn-------
+                        if (productAttributes) {
+                            productAttributes.forEach(function (item2) {
+                                if (item2['id'] == item['id']) {
+                                    option.selected = true;
+                                }
+                            });
+                        }
+                        displayData.push(option);
+                    });
+                    await new Promise((resolve) => {
+                        slimSelectAddExisting.setData(displayData);
+                        resolve();
+                    })
+                    //Đợi tải xong dữ liệu rồi cho trạng thái vừa tải xong thành false
+
+                    //Lưu dữ liệu thuộc tính để tạo biến thể
+                }
+                setTimeout(function () {
+                    justLoaded = false;
+
+                    //--------Tải biến thể---------
+                    // var variations = [];
+                    // productVariations.forEach(function (variationItem) {
+                    //     variationItem['variant_attribute'].forEach(function (item) {
+                    //         var attributeValueIds = [];
+                    //         attributeValueIds['attributeId'] = item['attribute_id'];
+                    //         attributeValueIds['attributeName'] = item['attribute_id'];
+                    //     })
+                    // })
+                    // console.log(variations);
+
+                    var divVariations = document.getElementById('variations');
+                    productVariations.forEach(function (variationItem, index) {
+                        var divVariationItem = document.createElement('div');
+                        divVariationItem.className = 'cspt pb-2 variationItem';
+                        divVariationItem.setAttribute('data-id', variationItem['id']);
+
+                        var divVariationItemTitle = document.createElement('div');
+                        divVariationItemTitle.className = 'border-bottom d-flex flex-row justify-content-between pb-2 no-select variationItemTitle';
+                        divVariationItemTitle.setAttribute('data-status', 'hidden');
+
+                        var divSelects = document.createElement('div');
+                        divSelects.className = 'd-flex flex-row align-items-center listSelects';
+
+                        var strongIndex = document.createElement('strong');
+                        strongIndex.className = 'text-dark mr-2';
+                        strongIndex.textContent = '#' + (index + 1);
+
+                        divSelects.appendChild(strongIndex);
+
+                        productAttributes.forEach(function (item) {
+                            var select = document.createElement('select');
+                            select.className = 'form-control mr-2';
+                            select.id = item['id'];
+                            select.disabled = true;
+
+                            var optionDefault = document.createElement('option');
+                            optionDefault.textContent = 'Select ' + item['name'];
+                            optionDefault.value = '';
+                            select.appendChild(optionDefault);
+
+                            item['attribute_values'].forEach(function (attributeValueItem) {
+                                var option = document.createElement('option');
+                                option.value = attributeValueItem['id'];
+                                option.text = attributeValueItem['name'];
+
+                                variationItem['variant_attribute'].forEach(function (variationValueItem) {
+                                    if (variationValueItem['attribute_id'] == item['id'] && variationValueItem['attribute_value_id'] == attributeValueItem['id']) {
+                                        option.setAttribute('selected', '');
+                                    }
+                                })
+                                select.appendChild(option);
+                            })
+                            divSelects.appendChild(select);
+                        })
+                        divVariationItemTitle.appendChild(divSelects);
+
+                        var divActionButton = document.createElement('div');
+                        divActionButton.className = 'd-flex align-items-center flex-row';
+
+                        var iBars = document.createElement('i');
+                        iBars.className = 'fas fa-bars fa-sm';
+                        iBars.style.marginRight = '12px';
+
+                        divActionButton.appendChild(iBars);
+
+                        var spanRemoveButton = document.createElement('span');
+                        spanRemoveButton.className = 'text-secondary no-select mr-2';
+                        spanRemoveButton.style.fontSize = '14px';
+                        spanRemoveButton.textContent = 'Remove';
+
+                        divActionButton.appendChild(spanRemoveButton);
+
+                        var spanEditButton = document.createElement('span');
+                        spanEditButton.className = 'text-primary cspt no-select mr-2';
+                        spanEditButton.style.fontSize = '14px';
+                        spanEditButton.textContent = 'Edit';
+
+                        divActionButton.appendChild(spanEditButton);
+
+                        divVariationItemTitle.appendChild(divActionButton);
+
+                        var divVariationItemContent = document.createElement('div');
+                        divVariationItemContent.className = 'border-bottom p-3 variationItemContent hidden';
+
+                        var divPart1 = document.createElement('div');
+                        divPart1.className = 'd-flex flex-row justify-content-between';
+
+                        var divImage = document.createElement('div');
+                        divImage.className = 'w-50 mr-4 d-flex flex-row justify-content-around';
+
+                        var divCustomWidthHeightUploadImage = document.createElement('div');
+                        divCustomWidthHeightUploadImage.className = 'card d-flex';
+                        divCustomWidthHeightUploadImage.style.width = '100px';
+                        divCustomWidthHeightUploadImage.style.height = '100px';
+                        divCustomWidthHeightUploadImage.style.border = '2px dashed #6c757d';
+
+                        var divImageElements = document.createElement('div');
+                        divImageElements.className = 'form-group text-center';
+
+                        var labelImage = document.createElement('label');
+                        labelImage.className = 'form-label cspt';
+                        labelImage.setAttribute('for', 'variationImage' + (index + 1));
+
+                        var divIconUpload = document.createElement('div');
+                        divIconUpload.className = 'mt-2';
+
+                        var iIconUpload = document.createElement('i');
+                        iIconUpload.className = 'fas fa-upload fa-lg';
+
+                        divIconUpload.appendChild(iIconUpload);
+
+                        var divClickToUploadText = document.createElement('div');
+                        divClickToUploadText.className = 'mt-2';
+                        divClickToUploadText.textContent = 'Click to upload';
+                        labelImage.appendChild(divIconUpload);
+                        labelImage.appendChild(divClickToUploadText);
+
+                        var inputImage = document.createElement('input');
+                        inputImage.type = 'file';
+                        inputImage.className = 'form-control d-none variationImageInput';
+                        inputImage.id = 'variationImage' + (index + 1);
+                        inputImage.name = 'variation';
+                        inputImage.setAttribute('accept', 'image/*');
+                        inputImage.setAttribute('onchange', 'previewVariationImage(this)');
+
+                        divImageElements.appendChild(labelImage);
+                        divImageElements.appendChild(inputImage);
+                        divCustomWidthHeightUploadImage.appendChild(divImageElements);
+
+                        var divPreviewVariationImage = document.createElement('div');
+                        divPreviewVariationImage.className = 'position-relative previewVariationImage rounded';
+                        divPreviewVariationImage.style.width = '100px';
+                        divPreviewVariationImage.style.height = '100px';
+
+                        const variationImage = document.createElement('img');
+                        variationImage.src = `/uploads/products/images/${variationItem['image']}`;
+                        variationImage.className = 'rounded variationImage w-100 h-100';
+                        variationImage.style.objectFit = 'cover';
+                        variationImage.setAttribute('data-variationimagefilename', variationItem['image']);
+                        //Tạo một nút xóa
+                        const iRemoveVariationImage = document.createElement('i');
+                        iRemoveVariationImage.className = 'position-absolute fas fa-trash text-danger cspt';
+                        iRemoveVariationImage.style.cursor = 'pointer';
+                        iRemoveVariationImage.style.right = '-5px';
+                        iRemoveVariationImage.style.top = '-7px';
+                        iRemoveVariationImage.id = 'removeVariationImage';
+                        //Thêm ảnh và nút xóa vào khối
+                        divPreviewVariationImage.appendChild(variationImage);
+                        divPreviewVariationImage.appendChild(iRemoveVariationImage);
+
+                        divImage.appendChild(divCustomWidthHeightUploadImage);
+                        divImage.appendChild(divPreviewVariationImage);
+
+                        var divSkuInput = document.createElement('div');
+                        divSkuInput.className = 'w-50';
+
+                        var divSkuInputElements = document.createElement('div');
+                        divSkuInputElements.className = 'd-flex flex-column';
+
+                        var labelSku = document.createElement('label');
+                        labelSku.className = 'badge text-left';
+                        labelSku.textContent = 'SKU (Có thể bỏ trống để tạo tự động)';
+
+                        var inputSku = document.createElement('input');
+                        inputSku.type = 'text';
+                        inputSku.className = 'form-control skuInput';
+                        inputSku.placeholder = "Enter variation's SKU...";
+                        inputSku.disabled = true;
+                        inputSku.value = variationItem['sku'];
+
+                        divSkuInputElements.appendChild(labelSku);
+                        divSkuInputElements.appendChild(inputSku);
+                        divSkuInput.appendChild(divSkuInputElements);
+                        divPart1.appendChild(divImage);
+                        divPart1.appendChild(divSkuInput);
+
+                        var divPart2 = document.createElement('div');
+                        divPart2.className = 'mt-3';
+
+                        var divImportPrice = document.createElement('div');
+                        divImportPrice.className = "d-flex flex-column mt-3";
+
+                        var labelImportPrice = document.createElement('label');
+                        labelImportPrice.className = 'badge text-left d-flex flex-row';
+                        labelImportPrice.textContent = 'Import price (đ)';
+                        labelImportPrice.appendChild(createRequiredMark());
+
+                        var inputImportPrice = document.createElement('input');
+                        inputImportPrice.type = 'number';
+                        inputImportPrice.className = 'form-control importPriceInput';
+                        inputImportPrice.placeholder = "Enter variation's import price...";
+                        inputImportPrice.value = variationItem['import_price'];
+
+                        divImportPrice.appendChild(labelImportPrice);
+                        divImportPrice.appendChild(inputImportPrice);
+
+                        var divRegularAndSalePrice = document.createElement('div');
+                        divRegularAndSalePrice.className = 'd-flex flex-row justify-content-between mt-3';
+
+                        var divRegularPrice = document.createElement('div');
+                        divRegularPrice.className = 'd-flex flex-column w-50 mr-4';
+
+                        var labelRegularPrice = document.createElement('label');
+                        labelRegularPrice.className = 'badge text-left d-flex flex-row';
+                        labelRegularPrice.textContent = 'Regular price (đ)';
+                        labelRegularPrice.appendChild(createRequiredMark());
+
+                        var inputRegularPrice = document.createElement('input');
+                        inputRegularPrice.type = 'number';
+                        inputRegularPrice.className = 'form-control regularPriceInput';
+                        inputRegularPrice.placeholder = "Enter variation's regular price...";
+                        inputRegularPrice.value = variationItem['regular_price'];
+
+                        divRegularPrice.appendChild(labelRegularPrice);
+                        divRegularPrice.appendChild(inputRegularPrice);
+
+                        var divSalePrice = document.createElement('div');
+                        divSalePrice.className = 'd-flex flex-column w-50';
+
+                        var labelSalePrice = document.createElement('label');
+                        labelSalePrice.className = 'badge text-left';
+                        labelSalePrice.textContent = 'Sale price (đ)';
+
+                        var inputSalePrice = document.createElement('input');
+                        inputSalePrice.type = 'number';
+                        inputSalePrice.className = 'form-control salePriceInput';
+                        inputSalePrice.placeholder = "Enter variation's sale price...";
+                        inputSalePrice.value = variationItem['sale_price'];
+
+                        divSalePrice.appendChild(labelSalePrice);
+                        divSalePrice.appendChild(inputSalePrice);
+
+                        divRegularAndSalePrice.appendChild(divRegularPrice);
+                        divRegularAndSalePrice.appendChild(divSalePrice);
+
+                        var divStock = document.createElement('div');
+                        divStock.className = 'd-flex flex-column mt-3';
+
+                        var labelStock = document.createElement('label');
+                        labelStock.className = 'badge text-left d-flex flex-row';
+                        labelStock.textContent = 'Stock';
+                        labelStock.appendChild(createRequiredMark());
+
+                        var inputStock = document.createElement('input');
+                        inputStock.type = 'number';
+                        inputStock.className = 'form-control stockInput';
+                        inputStock.placeholder = "Enter variation's stock price...";
+                        inputStock.value = variationItem['stock'];
+
+                        divStock.appendChild(labelStock);
+                        divStock.appendChild(inputStock);
+
+                        var divActive = document.createElement('div');
+                        divActive.className = 'd-flex flex-column mt-3';
+
+                        var labelActive = document.createElement('label');
+                        labelActive.className = 'badge text-left';
+                        labelActive.textContent = 'Active';
+
+                        var selectActive = document.createElement('select');
+                        selectActive.className = 'form-control activeSelect';
+
+                        var optionYes = document.createElement('option');
+                        optionYes.value = 'true';
+                        optionYes.textContent = 'Yes';
+
+                        var optionNo = document.createElement('option');
+                        optionNo.value = 'false';
+                        optionNo.textContent = 'No';
+
+                        if (variationItem['is_active'] == 1) {
+                            optionYes.setAttribute('selected', '');
+                        } else {
+                            optionNo.setAttribute('selected', '');
+                        }
+
+                        selectActive.appendChild(optionYes);
+                        selectActive.appendChild(optionNo);
+
+                        divActive.appendChild(labelActive);
+                        divActive.appendChild(selectActive);
+
+                        divPart2.appendChild(divImportPrice);
+                        divPart2.appendChild(divRegularAndSalePrice);
+                        divPart2.appendChild(divStock);
+                        divPart2.appendChild(divActive);
+
+                        divVariationItemContent.appendChild(divPart1);
+                        divVariationItemContent.appendChild(divPart2);
+
+                        divVariationItem.appendChild(divVariationItemTitle);
+                        divVariationItem.appendChild(divVariationItemContent);
+
+                        divVariations.appendChild(divVariationItem);
+                    })
+                    pagination();
+
+                    //Lưu biến thể để ấn được nút publish
+                    $('.variationItem').each(function () {
+                        var variationData = {};
+                        variationData.id = $(this).data('id');
+
+                        const image = $(this).find('.variationImageInput')[0];
+                        if (image.files[0]) {
+                            variationData.image_data = image.files[0];
+                        }
+
+                        const importPrice = $(this).find('.importPriceInput');
+                        variationData.import_price = importPrice.val();
+
+                        const regularPrice = $(this).find('.regularPriceInput');
+                        variationData.regular_price = regularPrice.val();
+
+                        const salePrice = $(this).find('.salePriceInput');
+                        variationData.sale_price = salePrice.val();
+
+                        const stock = $(this).find('.stockInput');
+                        variationData.stock = stock.val();
+
+                        const active = $(this).find('.activeSelect');
+                        variationData.active = active.val();
+
+                        // if (parseFloat(regularPrice.val()) < parseFloat(salePrice.val())) {
+                        //     notification('warning', 'Giá bán đã giảm phải nhỏ hơn giá bán thông thường của!', 'Variation ' + index + '!');
+                        //     // notification('warning', 'Sale price need less than regular price!', 'Variation ' + index + '!');
+                        //     return false;
+                        // }
+                        variationDataHasBeenSaved.push(variationData);
+                    })
+
+                    $('#publishBtn').removeClass('hidden');
+                }, 1000);
+
+            } else {
+                notification('error', 'Vẫn chưa lấy được dữ liệu sản phẩm cũ, vui lòng tải lại trang web!', 'Error!', '2000');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            $('.container-spinner').addClass('hidden');
+        }
+    }
+}
+upLoadOldDataProduct();
+//||||||||||||||||||||||||||||||||||||||||||||||||||||||CATEGORY|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //---------------------------------------------Load all categoies--------------------------------------------
 var categories = [];
 function getAllCategories() {
@@ -71,6 +584,11 @@ function createCategoryList(categories, indent = 0) {
         checkbox.className = "categoryItem";
         checkbox.id = category.id;
         checkbox.style.transform = 'scale(1.2)';
+
+        if (productCategory.includes(category.id)) {
+            checkbox.setAttribute('checked', true);
+        }
+
 
         const label = document.createElement("label");
         label.classList.add("m-0", "ml-2");
@@ -233,6 +751,8 @@ function checkCategoryByAjax(categoryId) {
         })
     })
 }
+
+//||||||||||||||||||||||||||||||||||||||||||||||||||||||BRAND|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //-----------------------------------------------------Load brand by ajax-------------------------------------------------------------
 var brands = [];
 function getAllBrands() {
@@ -272,7 +792,9 @@ async function loadAllBrands() {
             checkbox.id = brand.id;
             checkbox.name = "brand";
             checkbox.style.transform = 'scale(1.2)';
-
+            if (productBrand === brand.id) {
+                checkbox.setAttribute('checked', true);
+            }
             const label = document.createElement("label");
             label.classList.add("m-0", "ml-2");
             label.textContent = brand.name;
@@ -379,13 +901,37 @@ $(document).on('click', '#btnOpenCloseFormAddBrand', function () {
         $(this).next('.formAddNewBrand').addClass('hidden');
     }
 })
-//---------------------------------------------------Upload images---------------------------------------------------
+//||||||||||||||||||||||||||||||||||||||||||||||||UPLOAD IMAGES||||||||||||||||||||||||||||||||||||||||||||||||
 var imageName;
 var mainImageFile = null;
-
-var imageNames = [];
-var selectedImages = [];
-//Xử lý xem trước ảnh sau khi chọn ảnh
+// ============================================Tải ảnh chính lên giao diện===========================================
+function loadOldMainImage(id, fileName) {
+    const previewContainer = document.getElementById('mainImagePreview');
+    const divBlock = document.createElement('div');
+    divBlock.className = 'position-relative divImg d-flex justify-content-center';
+    // Tạo một thẻ img mới
+    const img = document.createElement('img');
+    img.src = `/uploads/products/images/${fileName}`;
+    img.className = 'rounded p-1 col img ml-2 mb-2';
+    img.style.width = '100px';
+    img.style.height = '100px';
+    img.style.objectFit = 'cover';
+    img.setAttribute('data-id', id);
+    img.setAttribute('data-filename', fileName);
+    //Tạo một nút xóa
+    const removeImgBtn = document.createElement('i');
+    removeImgBtn.className = 'position-absolute fas fa-trash text-danger cs-pt';
+    removeImgBtn.style.cursor = 'pointer';
+    removeImgBtn.style.right = '-2px';
+    removeImgBtn.style.top = '-5px';
+    removeImgBtn.id = 'removeMainImgBtn';
+    //Thêm ảnh và nút xóa vào khối
+    divBlock.appendChild(img);
+    divBlock.appendChild(removeImgBtn);
+    // Thêm ảnh vào container
+    previewContainer.appendChild(divBlock);
+}
+//===========================================Xử lý xem trước ảnh sau khi chọn ảnh chính===========================================
 function previewImage(input) {
     const previewContainer = document.getElementById('mainImagePreview');
 
@@ -438,6 +984,7 @@ function previewImage(input) {
                     notification('warning', 'Image already exists', 'Warning');
                 };
             } else {
+                $('#mainImagePreview').find('.divImg').remove();
                 imageName = file.name;
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -479,6 +1026,39 @@ function previewImage(input) {
         imageName = '';
     }
     console.log(mainImageFile);
+}
+//=====================================Xử lý xem trước ảnh sau khi chọn ảnh ở thư viện ảnh=======================================
+var imageNames = [];
+var selectedImages = [];
+// ============================================Tải thư viện ảnh lên giao diện===========================================
+function loadOldPhotoGallery(id, fileName) {
+    const previewContainer = document.getElementById('imagePreview');
+    //Tạo một khối mới để bọc img
+    const divBlock = document.createElement('div');
+    divBlock.className = 'position-relative divImgs d-flex justify-content-center';
+    // Tạo một thẻ img mới
+    const img = document.createElement('img');
+    img.src = `/uploads/products/images/${fileName}`;
+    img.className = 'rounded p-1 col img ml-2 mb-2';
+    img.style.width = '100px';
+    img.style.height = '100px';
+    img.style.objectFit = 'cover';
+    img.setAttribute('data-id', id);
+    img.setAttribute('data-filename', fileName);
+    //Tạo một nút xóa
+    const removeImgBtn = document.createElement('i');
+    removeImgBtn.className = 'position-absolute fas fa-trash text-danger cs-pt';
+    removeImgBtn.style.cursor = 'pointer';
+    removeImgBtn.style.right = '-2px';
+    removeImgBtn.style.top = '-5px';
+    removeImgBtn.id = 'removeImgBtn';
+    //Thêm ảnh và nút xóa vào khối
+    divBlock.appendChild(img);
+    divBlock.appendChild(removeImgBtn);
+    // Thêm ảnh vào container
+    previewContainer.appendChild(divBlock);
+    const removeAllImagesBtn = document.getElementById('removeAllImagesBtn');
+    removeAllImagesBtn.style.display = 'block';
 }
 function previewImages(input) {
     const previewContainer = document.getElementById('imagePreview');
@@ -524,9 +1104,9 @@ function previewImages(input) {
                         previewContainer.appendChild(divBlock);
                     }
                     reader.readAsDataURL(file);
-                    notification('success', 'Image uploaded successfully', 'Successfully');
+                    notification('success', 'Image uploaded successfully', 'Successfully', '2000');
                 } else {
-                    notification('warning', 'Image already exists', 'Warning');
+                    notification('warning', 'Image already exists', 'Warning', '2000');
                 };
             });
             // Reset lại giá trị của thẻ input sau khi xử lý
@@ -543,42 +1123,15 @@ function previewImages(input) {
         $('.container-spinner').addClass('hidden');
     }
 }
-//------------------------------------------------------Xử lý xóa ảnh đơn (từng cái một)---------------------------------------------------
-$(document).on('click', '#removeImgBtn', function () {
-    $('.container-spinner').removeClass('hidden');
-    try {
-        //Lấy thẻ img được xóa
-        const imgElm = $(this).closest('.divImgs').find('.img');
-        //Lấy tên file
-        const imgSrcRemove = imgElm.data('filename');
-        //Xóa tên file khỏi mảng lưu trữ tên file
-        imageNames = imageNames.filter(function (item) {
-            return item != imgSrcRemove;
-        })
-        //Xóa đối tượng file trong mảng lưu trữ files
-        selectedImages = selectedImages.filter(function (item) {
-            return item.name != imgSrcRemove;
-        })
-        //Nếu mảng rỗng (không còn ảnh nào) thì ẩn nút 'xóa tất cả'
-        if (imageNames.length == 0) {
-            const removeAllImagesBtn = document.getElementById('removeAllImagesBtn');
-            removeAllImagesBtn.style.display = 'none';
-        }
-        //Xóa thẻ div bao bọc thẻ img được click xóa
-        imgElm.closest('.divImgs').remove();
-        notification('success', 'Image removed successfully', 'Successfully');
-    } catch (error) {
-        console.error('Error:', error);
-    } finally {
-        $('.container-spinner').addClass('hidden');
-    }
-})
 // -----------------------------------------------------Xóa ảnh chính của sản phẩm---------------------------------------------------
 $(document).on('click', '#removeMainImgBtn', function () {
     $('.container-spinner').removeClass('hidden');
     try {
         //Lấy thẻ img được xóa
         const imgElm = $(this).closest('.divImg').find('.img');
+        if (imgElm.data('id')) {
+            productMainImage = null;
+        }
         //Đặt biến lưu trữ file thành rỗng
         imageName = '';
         //Đặt giá trị của thẻ input thành rỗng
@@ -586,7 +1139,46 @@ $(document).on('click', '#removeMainImgBtn', function () {
         //Xóa thẻ div bao bọc thẻ img được click xóa
         imgElm.closest('.divImg').remove();
         mainImageFile = null;
+        notification('success', 'Image removed successfully', 'Successfully', '2000');
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+        $('.container-spinner').addClass('hidden');
+    }
+})
+
+//------------------------------------------------------Xử lý xóa ảnh đơn (từng cái một)---------------------------------------------------
+$(document).on('click', '#removeImgBtn', function () {
+    $('.container-spinner').removeClass('hidden');
+    try {
+        //Lấy thẻ img được xóa
+        const imgElm = $(this).closest('.divImgs').find('.img');
+        if (imgElm.data('id')) {
+            productPhotoGalleryIds = productPhotoGalleryIds.filter(function (item) {
+                return item != imgElm.data('id');
+            })
+        } else {
+            //Lấy tên file
+            const imgSrcRemove = imgElm.data('filename');
+            //Xóa tên file khỏi mảng lưu trữ tên file
+            imageNames = imageNames.filter(function (item) {
+                return item != imgSrcRemove;
+            })
+            //Xóa đối tượng file trong mảng lưu trữ files
+            selectedImages = selectedImages.filter(function (item) {
+                return item.name != imgSrcRemove;
+            })
+        }
+        //Nếu không còn ảnh nào thì ẩn nút 'xóa tất cả'
+        if ($('.divImgs').find('.img').length == 0) {
+            const removeAllImagesBtn = document.getElementById('removeAllImagesBtn');
+            removeAllImagesBtn.style.display = 'none';
+        }
+        //Xóa thẻ div bao bọc thẻ img được click xóa
+        imgElm.closest('.divImgs').remove();
         notification('success', 'Image removed successfully', 'Successfully');
+        console.log(productPhotoGalleryIds);
+
     } catch (error) {
         console.error('Error:', error);
     } finally {
@@ -601,6 +1193,7 @@ $(document).on('click', '#removeAllImagesBtn', function () {
         $('#imagePreview').find('.divImgs').remove();
         imageNames = [];
         selectedImages = [];
+        productPhotoGalleryIds = [];
         const removeAllImagesBtn = document.getElementById('removeAllImagesBtn');
         removeAllImagesBtn.style.display = 'none';
     } catch (error) {
@@ -614,6 +1207,35 @@ $(document).on('click', '#removeAllImagesBtn', function () {
 
 let videoNames = [];
 let selectedVideos = [];
+// ============================================Tải thư viện video lên giao diện===========================================
+function loadOldVideos(id, fileName) {
+    const previewContainer = document.getElementById('videoPreview');
+    const divBlock = document.createElement('div');
+    divBlock.className = 'position-relative divVideo d-flex justify-content-center';
+    // Tạo một thẻ video mới
+    const video = document.createElement('video');
+    video.src = `/uploads/products/videos/${fileName}`;
+    video.className = 'rounded p-1 col video ml-2 mb-2';
+    video.width = 600;
+    video.style.objectFit = 'cover';
+    video.controls = true;
+    video.setAttribute('data-id', id);
+    video.setAttribute('data-filename', fileName);
+    //Tạo một nút xóa
+    const removeVideoBtn = document.createElement('i');
+    removeVideoBtn.className = 'position-absolute fas fa-trash text-danger cs-pt';
+    removeVideoBtn.style.cursor = 'pointer';
+    removeVideoBtn.style.right = '-6px';
+    removeVideoBtn.style.top = '-5px';
+    removeVideoBtn.id = 'removeVideoBtn';
+    //Thêm video và nút xóa vào khối
+    divBlock.appendChild(video);
+    divBlock.appendChild(removeVideoBtn);
+    // Thêm video vào container
+    previewContainer.appendChild(divBlock);
+    const removeAllVideosBtn = document.getElementById('removeAllVideosBtn');
+    removeAllVideosBtn.style.display = 'block';
+}
 //Xử lý xem trước video sau khi chọn video
 function previewVideos(input) {
     const previewContainer = document.getElementById('videoPreview');
@@ -660,9 +1282,9 @@ function previewVideos(input) {
                         previewContainer.appendChild(divBlock);
                     }
                     reader.readAsDataURL(file);
-                    notification('success', 'Video uploaded successfully', 'Successfully');
+                    notification('success', 'Video uploaded successfully', 'Successfully', '1000');
                 } else {
-                    notification('warning', 'Video already exists', 'Warning');
+                    notification('warning', 'Video already exists', 'Warning', '2000');
                 };
             });
             // Reset lại giá trị của thẻ input sau khi xử lý
@@ -685,24 +1307,30 @@ $(document).on('click', '#removeVideoBtn', function () {
     try {
         //Lấy thẻ video được xóa
         const videoElm = $(this).closest('.divVideo').find('.video');
-        //Lấy tên file
-        const videoSrcRemove = videoElm.data('filename');
-        //Xóa tên file khỏi mảng lưu trữ tên file
-        videoNames = videoNames.filter(function (item) {
-            return item != videoSrcRemove;
-        })
-        //Xóa đối tượng file trong mảng lưu trữ files
-        selectedVideos = selectedVideos.filter(function (item) {
-            return item.name != videoSrcRemove;
-        })
+        if (videoElm.data('id')) {
+            productVideoIds = productVideoIds.filter((item) => {
+                return item != videoElm.data('id');
+            })
+        } else {
+            //Lấy tên file
+            const videoSrcRemove = videoElm.data('filename');
+            //Xóa tên file khỏi mảng lưu trữ tên file
+            videoNames = videoNames.filter(function (item) {
+                return item != videoSrcRemove;
+            })
+            //Xóa đối tượng file trong mảng lưu trữ files
+            selectedVideos = selectedVideos.filter(function (item) {
+                return item.name != videoSrcRemove;
+            })
+        }
         //Nếu mảng rỗng (không còn video nào) thì ẩn nút 'xóa tất cả'
-        if (videoNames.length == 0) {
+        if ($('.divVideo').find('.video').length == 0) {
             const removeAllVideosBtn = document.getElementById('removeAllVideosBtn');
             removeAllVideosBtn.style.display = 'none';
         }
         //Xóa thẻ div bao bọc thẻ video được click xóa
         videoElm.closest('.divVideo').remove();
-        notification('success', 'Video removed successfully', 'Thành công');
+        notification('success', 'Video removed successfully', 'Successfully!', '1000');
     } catch (error) {
         console.error('Error:', error);
     } finally {
@@ -717,6 +1345,7 @@ $(document).on('click', '#removeAllVideosBtn', function () {
         $('#videoPreview').find('.divVideo').remove();
         videoNames = [];
         selectedVideos = [];
+        productVideoIds = [];
         const removeAllVideosBtn = document.getElementById('removeAllVideosBtn');
         removeAllVideosBtn.style.display = 'none';
     } catch (error) {
@@ -728,53 +1357,47 @@ $(document).on('click', '#removeAllVideosBtn', function () {
 
 
 //---------------------------------------------------Variants---------------------------------------------------
-//Initialize Select attributes
-var slimSelectAddExisting;
-// var slimSelectExistingAttributeValues;
-$(function () {
-    slimSelectAddExisting = new SlimSelect({
-        select: '#selectAddExisting',
-        settings: {
-            placeholderText: 'Add existing',
-            keepOrder: true
-        },
-    });
-});
+
 //Load Attribute Data
 let attributeDataOptions = [];
 const seenAttributeIds = new Set();
 
 function getAttributeData() {
-    $.ajax({
-        url: routeGetAllAttributes,
-        method: "POST",
-        data: {
-            _token: csrf
-        },
-        success: function (response) {
-            if (attributeDataOptions.length > 0) {
-                response.data.forEach(function (item) {
-                    if (!seenAttributeIds.has(item.id)) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: routeGetAllAttributes,
+            method: "POST",
+            data: {
+                _token: csrf
+            },
+            success: function (response) {
+                if (attributeDataOptions.length > 0) {
+                    response.data.forEach(function (item) {
+                        if (!seenAttributeIds.has(item.id)) {
+                            seenAttributeIds.add(item.id);
+                            attributeDataOptions.push(item);
+                        }
+                    });
+                } else {
+                    response.data.forEach(function (item) {
                         seenAttributeIds.add(item.id);
                         attributeDataOptions.push(item);
-                    }
-                });
-            } else {
-                response.data.forEach(function (item) {
-                    seenAttributeIds.add(item.id);
-                    attributeDataOptions.push(item);
-                });
+                    });
+                }
+                resolve(attributeDataOptions);
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                notification('error', 'Unable to get attribute data!', 'Error');
+                reject();
             }
-        },
-        error: function (xhr) {
-            console.error(xhr.responseText);
-            notification('error', 'Unable to get attribute data!', 'Error');
-        }
+        })
     })
 }
 getAttributeData();
 setInterval(getAttributeData, 5000);
 
+//============================================Xử lý tải thuộc tính khi bấm vào thẻ chọn thuộc tính======================================
 $('#loadAttributeData').click(function () {
     var selectAddExisting = document.getElementById('selectAddExisting');
 
@@ -821,58 +1444,67 @@ $('#selectAddExisting').off('change').on('change', function () {
         //Nếu có ít nhất 1 thuộc tính được chọn thì chạy tiếp
         if (currentSelected.length > 0) {
             //Lặp qua từng khối giao diện tùy chỉnh thuộc tính hiện có trên giao diện
-            attributeItem.each(function () {
-                //Lấy id của thuộc tính ví dụ 1, 2 ,3
-                const attributeId = $(this).data('id');
+            if (attributeItem.length > 0) {
+                attributeItem.each(function () {
+                    //Lấy id của thuộc tính ví dụ 1, 2 ,3
+                    const attributeId = $(this).data('id');
 
-                //Nếu id thuộc tính tồn tại thì chạy tiếp
-                if (attributeId) {
-                    var attributeIdStr = attributeId.toString();
-                    //Tạo biến lưu trữ thuộc tính id của thẻ select của phần tử này
-                    var idAttribute = $(this).find('.selectExistingAttributeValues').attr('id');
-                    //Tạo biến để lưu trữ kết quả trả về, true nếu id của thuộc tính trong khối giao diện này nằm trong những giá trị đã chọn ở thẻ select, false nếu ngược lại
-                    const existsInCurrentSelected = currentSelected.includes(attributeIdStr);
-                    //Tạo biến để lưu trữ kết quả trả về, nếu true nếu id của thuộc tính trong khối giao diện này nằm trong biến lưu trữ những thuộc tính có sẵn trong db, false nếu ngược lại
-                    const existsInAttributeDataOptions = attributeDataOptions.some(function (item) {
-                        return item.id == attributeIdStr;
-                    });
-                    //Kiểm tra nếu phần tử này không nằm trong những giá trị ở thẻ select và nằm trong biến lưu trữ những thuộc tính có sẵn trong db thì xóa phần tử này đi
-                    if (!existsInCurrentSelected && existsInAttributeDataOptions) {
-                        //Nếu id thuộc tính của phần tử này tồn tại thì xóa nó khỏi đối tượng lưu trữ những thẻ select đã được khởi tạo bởi slim select
-                        if (idAttribute) {
-                            delete selectStorage[idAttribute];
-                            // Xóa khỏi selectStorage khi thuộc tính bị xóa
-                        }
-                        $(this).remove(); //Xóa phần tử
-                        var check = true;
-                        $('.selectExistingAttributeValues').each(function () {
-                            var getId = $(this).attr('id');
-                            if (getId) {
-                                var currentSelected = $(this).val();
-                                if (!currentSelected.length) {
-                                    check = false
-                                    return false;
-                                }
-                            }
+                    //Nếu id thuộc tính tồn tại thì chạy tiếp
+                    if (attributeId) {
+                        var attributeIdStr = attributeId.toString();
+                        //Tạo biến lưu trữ thuộc tính id của thẻ select của phần tử này
+                        var idAttribute = $(this).find('.selectExistingAttributeValues').attr('id');
+                        //Tạo biến để lưu trữ kết quả trả về, true nếu id của thuộc tính trong khối giao diện này nằm trong những giá trị đã chọn ở thẻ select, false nếu ngược lại
+                        const existsInCurrentSelected = currentSelected.includes(attributeIdStr);
+                        //Tạo biến để lưu trữ kết quả trả về, true nếu id của thuộc tính trong khối giao diện này nằm trong biến lưu trữ những thuộc tính có sẵn trong db, false nếu ngược lại
+                        const existsInAttributeDataOptions = attributeDataOptions.some(function (item) {
+                            return item.id == attributeIdStr;
                         });
+                        //Kiểm tra nếu phần tử này không nằm trong những giá trị ở thẻ select và nằm trong biến lưu trữ những thuộc tính có sẵn trong db thì xóa phần tử này đi
+                        if (!existsInCurrentSelected && existsInAttributeDataOptions) {
+                            //Nếu id thuộc tính của phần tử này tồn tại thì xóa nó khỏi đối tượng lưu trữ những thẻ select đã được khởi tạo bởi slim select
+                            if (idAttribute) {
+                                // Xóa khỏi selectStorage khi thuộc tính bị xóa
+                                delete selectStorage[idAttribute];
+                                // Xóa khỏi dữ liệu cũ
+                                productAttributes = productAttributes.filter(function (attributeItem) {
+                                    // console.log(typeof(attributeItem['id']));
+                                    // console.log(typeof(attributeIdStr));
+                                    return attributeItem['id'] != attributeIdStr;
+                                });
+                            }
+                            $(this).remove(); //Xóa phần tử
+                            var check = true;
+                            $('.selectExistingAttributeValues').each(function () {
+                                var getId = $(this).attr('id');
+                                if (getId) {
+                                    var currentSelected = $(this).val();
+                                    if (!currentSelected.length) {
+                                        check = false
+                                        return false;
+                                    }
+                                }
+                            });
 
-                        if (!check) {
-                            attributeValuesSelectStatus = false;
-                        } else {
-                            attributeValuesSelectStatus = true;
-                        }
-                        if (attributeValuesTextareaStatus && attributeTitleInputStatus && attributeValuesSelectStatus) {
-                            saveAttributesBtnStatus = true;
-                            saveAttributesBtn.classList.remove('disabledButton'); // Bỏ lớp vô hiệu hóa khỏi nút lưu
-                        } else {
-                            saveAttributesBtnStatus = false;
-                            saveAttributesBtn.classList.add('disabledButton'); // Thêm lớp vô hiệu hóa vào nút lưu
+                            if (!check) {
+                                attributeValuesSelectStatus = false;
+                            } else {
+                                attributeValuesSelectStatus = true;
+                            }
+                            if (attributeValuesTextareaStatus && attributeTitleInputStatus && attributeValuesSelectStatus) {
+                                saveAttributesBtnStatus = true;
+                                saveAttributesBtn.classList.remove('disabledButton'); // Bỏ lớp vô hiệu hóa khỏi nút lưu
+                            } else {
+                                saveAttributesBtnStatus = false;
+                                saveAttributesBtn.classList.add('disabledButton'); // Thêm lớp vô hiệu hóa vào nút lưu
+                            }
                         }
                     }
-                }
-            });
-            //lặp qua tất cả các thuộc tính đã được chọn
-            currentSelected.forEach(function (id) {
+                });
+            }
+
+            //Lặp qua tất cả các thuộc tính đã được chọn
+            currentSelected.forEach(async function (id) {
                 //Nếu không tìm thấy phần tử nào có id thuộc tính đã chọn trong những thuộc tính đã chọn thì chạy tiếp
                 if ($('#attributeItems').find(`.attributeItem[data-id="${id}"]`).length === 0) {
                     //Tạo biến lưu trữ tên thuộc tính được chọn nhưng chưa thêm vào giao diện
@@ -920,6 +1552,7 @@ $('#selectAddExisting').off('change').on('change', function () {
                     //Tạo biến lưu trữ thuộc tính id của phần từ vừa được thêm mới
                     var selectId = "selectExistingAttributeValues" + id;
                     // Kiểm tra nếu thẻ select của phần tử này trong selectStorage chưa được lưu thì khởi tạo slimselect cho phần tử này
+                    var allAttributeValues = await getAttributeValueData(id);
                     if (!selectStorage[selectId]) {
                         // Khởi tạo SlimSelect
                         var slimSelectInstance = new SlimSelect({
@@ -929,17 +1562,44 @@ $('#selectAddExisting').off('change').on('change', function () {
                             },
                         });
                         // Lưu SlimSelect vào selectStorage
+                        var displayAttributeValues = [];
+                        productAttributes.forEach(function (attributeItem) {
+                            if (attributeItem['id'] == id) {
+                                if (attributeItem['attribute_values'] && !Array.isArray(attributeItem['attribute_values'])) {
+                                    attributeItem['attribute_values'] = Object.values(attributeItem['attribute_values']);
+                                }
+                                if (allAttributeValues && !Array.isArray(allAttributeValues)) {
+                                    allAttributeValues = Object.values(allAttributeValues);
+                                }
+                                allAttributeValues.forEach(function (attributeValueItemInDb) {
+                                    var optionAttributeValue = {
+                                        value: attributeValueItemInDb['id'],
+                                        text: attributeValueItemInDb['name'],
+                                        class: "optionSelectAttributeValueAddExisting"
+                                    };
+                                    attributeItem['attribute_values'].forEach(function (attributeValueItemOfVariant) {
+                                        if (attributeValueItemOfVariant['id'] == attributeValueItemInDb['id']) {
+                                            return optionAttributeValue.selected = true;
+                                        }
+                                    })
+                                    displayAttributeValues.push(optionAttributeValue);
+                                })
+                            }
+                        })
                         selectStorage[selectId] = {
                             instance: slimSelectInstance,
                             options: [],// Mảng để lưu các tùy chọn đã thêm
                             selectedValues: []// Mảng để lưu các giá trị đã chọn
                         }
+                        slimSelectInstance.setData(displayAttributeValues);
                     }
 
                     //Tạo biến lưu trữ thẻ title của phần tử vừa được thêm
-                    const addedElement = $('.attributeItemTittle').last();
+                    // const addedElement = $('.attributeItemTittle').last();
+                    // console.log(addedElement.next('.attributeItemContent'));
+
                     //Chạy hàm thu và mở rộng
-                    switchShowHidden(addedElement.next('.attributeItemContent'), 'status', addedElement.find('#chevronAttributeItem'));
+                    // switchShowHidden(addedElement.next('.attributeItemContent'), 'status', addedElement.find('#chevronAttributeItem'));
                     console.log('Textarea:' + attributeValuesTextareaStatus);
                     console.log('Input:' + attributeTitleInputStatus);
                     console.log('Select:' + attributeValuesSelectStatus);
@@ -963,6 +1623,9 @@ $('#selectAddExisting').off('change').on('change', function () {
                     if (idAttribute) {
                         // Xóa khỏi selectStorage khi thuộc tính bị xóa
                         delete selectStorage[idAttribute];
+                        productAttributes = productAttributes.filter(function (attributeItem) {
+                            return attributeItem['id'] !== attributeId;
+                        });
                     }
                     $(this).remove();
                 }
@@ -1050,20 +1713,26 @@ $(document).on('click', '#removeAttributeItem', function () {
         var isConfirmed = confirm('If you remove this attribute, customers will no longer be able to purchase some variations of this product.');
         if (isConfirmed) {
             // Lấy thẻ chứa thuộc tính cần xóa
-            var $attributeItem = $(this).closest('.attributeItem');
+            var attributeItem = $(this).closest('.attributeItem');
             // Lấy id của thuộc tính
-            const attributeId = $attributeItem.data('id');
+            const attributeId = attributeItem.data('id');
             if (attributeId) {
                 // Kiểm tra nếu id thuộc tính tồn tại trong attributeDataOptions
                 var existed = attributeDataOptions.some(item => item.id == attributeId);
                 if (existed) {
                     // Lấy các giá trị thuộc tính đã được chọn trong SlimSelect
                     var selectedValues = slimSelectAddExisting.getSelected();
-                    if (selectedValues.includes(attributeId.toString())) {
+                    console.log(typeof (attributeId));
+                    selectedValues.filter((item) => {
+                        console.log(typeof (item));
+                    })
+
+                    if (selectedValues.includes(attributeId)) {
                         // Xóa attributeId khỏi danh sách các giá trị đã chọn
                         selectedValues = selectedValues.filter(function (item) {
-                            return item != attributeId.toString();
+                            return item != attributeId;
                         });
+
                         selectedValues = selectedValues ? selectedValues : [];
 
                         if (selectedValues) {
@@ -1073,8 +1742,8 @@ $(document).on('click', '#removeAttributeItem', function () {
                                 var itemAttribute = attributeDataOptions.find(dataItem => dataItem.id == item);
                                 if (itemAttribute) {
                                     newSelectedOptionData.push({
-                                        text: itemAttribute.name,
-                                        value: itemAttribute.id
+                                        value: itemAttribute.id,
+                                        text: itemAttribute.name
                                     });
                                 }
                             });
@@ -1092,8 +1761,8 @@ $(document).on('click', '#removeAttributeItem', function () {
                 }
             }
             // Kiểm tra nếu tồn tại thẻ attributeItem, xóa nó
-            if ($attributeItem.length) {
-                $attributeItem.remove();
+            if (attributeItem.length) {
+                attributeItem.remove();
             } else {
                 // Nếu không tìm thấy thẻ, thông báo lỗi
                 notification('error', 'Something went wrong', 'Error');
@@ -1187,8 +1856,8 @@ $(document).on('click', '#removeAttributeItem', function () {
 });
 
 //Biến toàn cục xử lý nhập thuộc tính và giá trị thuộc tính
-var attributeTitleInputStatus = false;
-var attributeValuesTextareaStatus = false;
+var attributeTitleInputStatus = true;
+var attributeValuesTextareaStatus = true;
 var attributeValuesSelectStatus = true;
 var saveAttributesBtnStatus = false;
 var saveAttributesBtn = document.getElementById('saveAttributesBtn');
@@ -1311,7 +1980,7 @@ $(document).on('change', '.attributeNameInput', function (event) {
     attributeDataOptions.forEach(function (item) {
         if (item.name == name) {
             resetValue = true;
-            notification('warning', 'Attribute name already exist, please select in "Add existing" form! Thank you', 'Warning');
+            notification('warning', 'Attribute name is already exist, please select in "Add existing" form! Thank you', 'Warning');
             attributeTitle.text('New attribute');
             attributeTitle.removeClass('font-weight-bold text-dark');
             // Nếu tên hoặc giá trị không hợp lệ, tắt nút lưu
@@ -1401,11 +2070,10 @@ function getAttributeValueData(attributeId) {
                         attributeValueDataOptionsMap[attributeId].push(item);
                     }
                 })
-                // console.log(attributeValueDataOptionsMap);
 
                 //resolve(): Được gọi khi tác vụ bất đồng bộ hoàn tất thành công. Khi gọi resolve(),
                 // promise chuyển sang trạng thái fulfilled, và bất kỳ logic nào được đính kèm với .then() sẽ được thực thi.
-                resolve();
+                resolve(response.data);
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
@@ -1512,8 +2180,9 @@ $(document).on('change', '.selectExistingAttributeValues', function () {
     console.log('Input:' + attributeTitleInputStatus);
     console.log('Select:' + attributeValuesSelectStatus);
     console.log('=====================XONG=====================');
+    console.log(justLoaded);
 
-    if (attributeValuesTextareaStatus && attributeTitleInputStatus && attributeValuesSelectStatus) {
+    if (attributeValuesTextareaStatus && attributeTitleInputStatus && attributeValuesSelectStatus && !justLoaded) {
         saveAttributesBtnStatus = true;
         saveAttributesBtn.classList.remove('disabledButton'); // Bỏ lớp vô hiệu hóa khỏi nút lưu
     } else {
@@ -1542,6 +2211,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
     var existingOptionIds = new Set();
 
     // Kiểm tra xem thẻ select đã có option nào chưa
+    console.log(existingOptions);
     if (existingOptions.length > 0) {
         // Nếu có, thêm các id của các option hiện tại vào tập hợp
         existingOptions.each(function () {
@@ -1687,7 +2357,7 @@ $('#saveAttributesBtn').click(function () {
                     attributeValues.forEach(function (item) {
                         $(this).find('.selectExistingAttributeValues option').each(function () {
                             if ($(this).text() != '' && $(this).val() == item) {
-                                attributeValue = {
+                                var attributeValue = {
                                     attributeValueId: item,
                                     attributeValueName: $(this).text()
                                 };
@@ -1706,53 +2376,56 @@ $('#saveAttributesBtn').click(function () {
                     }
                 }
             })
+            //Xử lý thêm thuộc tính hoặc giá trị thuộc tính cho các biến thể bị thiếu
             attributeData.forEach(function (attributeItem) {
                 var attributeIdOrName = attributeItem['attributeId'] ? attributeItem['attributeId'] : attributeItem['attributeName'];
                 var variationItems = $('#variations').find('.variationItem');
                 variationItems.each(function () {
-                    var listSelects = $(this).find('.listSelects');
-                    var selects = listSelects.find('select');
-                    var getSelectIdOrNameOfVariation = [];
-                    console.log(selects);
+                    if (!$(this).data('id')) {
+                        var listSelects = $(this).find('.listSelects');
+                        var selects = listSelects.find('select');
+                        var getSelectIdOrNameOfVariation = [];
+                        console.log(selects);
 
-                    selects.each(function () {
-                        var selectItem = $(this);
-                        var selectIdOrName = selectItem.attr('id') ? selectItem.attr('id') : selectItem.attr('name');
-                        getSelectIdOrNameOfVariation.push(selectIdOrName);
-                    })
-                    if (!getSelectIdOrNameOfVariation.includes(attributeIdOrName.toString())) {
-                        var newSelect = $('<select>').addClass('form-control mr-2');
-                        attributeItem['attributeId'] ? newSelect.attr('id', attributeItem['attributeId']) : newSelect.attr('name', attributeItem['attributeName']);
-                        var newOption = $('<option>').text("Select " + attributeItem['attributeName']);
-                        newSelect.append(newOption);
-                        attributeItem['attributeValues'].forEach(function (attributeValueItem) {
-                            var attributeValueIdOrName = attributeValueItem['attributeValueId'] ? attributeValueItem['attributeValueId'] : attributeValueItem;
-                            var attributeValueName = attributeValueItem['attributeValueName'] ? attributeValueItem['attributeValueName'] : attributeValueItem;
-                            newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName);
-                            newSelect.append(newOption);
-                        })
-                        listSelects.append(newSelect);
-                    } else {
                         selects.each(function () {
                             var selectItem = $(this);
-                            var options = selectItem.find('option');
-                            var optionIdOrName = [];
-                            options.each(function () {
-                                var optionItem = $(this);
-                                optionIdOrName.push(optionItem.val());
-                            })
-                            var getSelectIdOrName = selectItem.attr('id') ? selectItem.attr('id') : selectItem.attr('name');
-                            if (getSelectIdOrName == attributeIdOrName) {
-                                attributeItem['attributeValues'].forEach(function (attributeValueItem) {
-                                    var attributeValueIdOrName = attributeValueItem['attributeValueId'] ? attributeValueItem['attributeValueId'] : attributeValueItem;
-                                    var attributeValueName = attributeValueItem['attributeValueName'] ? attributeValueItem['attributeValueName'] : attributeValueItem;
-                                    if (!optionIdOrName.includes(attributeValueIdOrName)) {
-                                        var newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName);
-                                        selectItem.append(newOption);
-                                    }
-                                })
-                            }
+                            var selectIdOrName = selectItem.attr('id') ? selectItem.attr('id') : selectItem.attr('name');
+                            getSelectIdOrNameOfVariation.push(selectIdOrName);
                         })
+                        if (!getSelectIdOrNameOfVariation.includes(attributeIdOrName.toString())) {
+                            var newSelect = $('<select>').addClass('form-control mr-2');
+                            attributeItem['attributeId'] ? newSelect.attr('id', attributeItem['attributeId']) : newSelect.attr('name', attributeItem['attributeName']);
+                            var newOption = $('<option>').text("Select " + attributeItem['attributeName']);
+                            newSelect.append(newOption);
+                            attributeItem['attributeValues'].forEach(function (attributeValueItem) {
+                                var attributeValueIdOrName = attributeValueItem['attributeValueId'] ? attributeValueItem['attributeValueId'] : attributeValueItem;
+                                var attributeValueName = attributeValueItem['attributeValueName'] ? attributeValueItem['attributeValueName'] : attributeValueItem;
+                                newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName);
+                                newSelect.append(newOption);
+                            })
+                            listSelects.append(newSelect);
+                        } else {
+                            selects.each(function () {
+                                var selectItem = $(this);
+                                var options = selectItem.find('option');
+                                var optionIdOrName = [];
+                                options.each(function () {
+                                    var optionItem = $(this);
+                                    optionIdOrName.push(optionItem.val());
+                                })
+                                var getSelectIdOrName = selectItem.attr('id') ? selectItem.attr('id') : selectItem.attr('name');
+                                if (getSelectIdOrName == attributeIdOrName) {
+                                    attributeItem['attributeValues'].forEach(function (attributeValueItem) {
+                                        var attributeValueIdOrName = attributeValueItem['attributeValueId'] ? attributeValueItem['attributeValueId'] : attributeValueItem;
+                                        var attributeValueName = attributeValueItem['attributeValueName'] ? attributeValueItem['attributeValueName'] : attributeValueItem;
+                                        if (!optionIdOrName.includes(attributeValueIdOrName)) {
+                                            var newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName);
+                                            selectItem.append(newOption);
+                                        }
+                                    })
+                                }
+                            })
+                        }
                     }
                 })
             })
@@ -1766,6 +2439,7 @@ $('#saveAttributesBtn').click(function () {
                 document.getElementById('generateVariations').classList.remove('disabledButton');
                 document.getElementById('addManually').classList.remove('disabledButton');
                 notification('success', 'Save attributes successfully!', 'Successfully!', '1000');
+                console.log(generateVariationData);
             }
         }
     } else {
@@ -1779,12 +2453,37 @@ var controlVariationsSelect = $('.controlVariationsSelect');
 var deleteAllVariations = $('.deleteAllVariations');
 var checkVariationsStatus = $('.checkVariationsStatus');
 var saveVariations = $('.saveVariations');
-var saveVariationsStatus = false;
+var saveVariationsStatus = true;
 function createRequiredMark() {
     var p = document.createElement('p');
     p.className = "text-danger ml-1 mb-0";
     p.textContent = "(*)";
     return p;
+}
+function funcNotificationQuantityVariations() {
+    var variationItems = $('.variationItem');
+    var totalVariationsNoImportPriceYet = 0;
+    var totalVariationsNoRegularPriceYet = 0;
+    variationItems.each(function () {
+        var variationItem = $(this);
+        var importPrice = variationItem.find('.importPriceInput');
+        var regularPrice = variationItem.find('.regularPriceInput');
+        if (importPrice.val() == "") {
+            totalVariationsNoImportPriceYet++;
+        }
+        if (regularPrice.val() == "") {
+            totalVariationsNoRegularPriceYet++;
+        }
+    })
+    if (totalVariationsNoImportPriceYet > 0 && totalVariationsNoRegularPriceYet == 0) {
+        notificationQuantityVariations.text(totalVariationsNoImportPriceYet + ' biến thể chưa có giá nhập, vui lòng nhập đầy đủ các trường thông tin này!');
+    } else if (totalVariationsNoImportPriceYet == 0 && totalVariationsNoRegularPriceYet > 0) {
+        notificationQuantityVariations.text(totalVariationsNoRegularPriceYet + ' biến thể chưa có giá bán thông thường, vui lòng nhập đầy đủ các trường thông tin này.!');
+    } else if (totalVariationsNoImportPriceYet > 0 && totalVariationsNoRegularPriceYet > 0) {
+        notificationQuantityVariations.text(totalVariationsNoImportPriceYet + ' biến thể chưa có giá nhập và ' + totalVariationsNoRegularPriceYet + ' biến thể chưa có giá bán thông thường, vui lòng nhập đầy đủ các trường thông tin này.!');
+    } else {
+        notificationQuantityVariations.text('');
+    }
 }
 $('#generateVariations').click(function () {
     if (generateVariationData.length > 0) {
@@ -1792,10 +2491,8 @@ $('#generateVariations').click(function () {
         if (confirmGenerateVariation) {
             $('.container-spinner').removeClass('hidden');
             try {
-                var totalVariations = 1;
-                generateVariationData.forEach(function (attributeItem) {
-                    totalVariations = totalVariations * attributeItem.attributeValues.length;
-                })
+                var variationItems = $('#variations').find('.variationItem');
+                var totalVariations = variationItems.length;
                 var variations = [];
                 function createVariations(index, currentVariation) {
                     // Nếu đã đến cuối danh sách thuộc tính, lưu biến thể hiện tại vào mảng
@@ -1807,18 +2504,19 @@ $('#generateVariations').click(function () {
                     generateVariationData[index].attributeValues.forEach(function (attributeValueItem) {
                         // Tạo một biến thể mới dựa trên biến thể hiện tại
                         var newVariation = currentVariation.slice(); // sao chép mảng hiện tại
-
                         var valueToStore = attributeValueItem.attributeValueId || attributeValueItem;
-                        newVariation.push(valueToStore); // thêm giá trị mới // thêm giá trị mới
+                        newVariation.push(valueToStore); // thêm giá trị mới
                         createVariations(index + 1, newVariation); // gọi đệ quy cho thuộc tính tiếp theo
                     });
                 }
                 createVariations(0, []);
+
                 console.log(variations);
 
                 var divVariations = document.getElementById('variations');
-                divVariations.innerHTML = '';
-                for (var i = 0; i < totalVariations; i++) {
+
+                variations.forEach(function (variationItem, index) {
+                    totalVariations += 1;
                     var divVariationItem = document.createElement('div');
                     divVariationItem.className = 'cspt pb-2 variationItem';
 
@@ -1831,7 +2529,7 @@ $('#generateVariations').click(function () {
 
                     var strongIndex = document.createElement('strong');
                     strongIndex.className = 'text-dark mr-2';
-                    strongIndex.textContent = '#' + (i + 1);
+                    strongIndex.textContent = '#' + (totalVariations);
 
                     divSelects.appendChild(strongIndex);
 
@@ -1854,13 +2552,9 @@ $('#generateVariations').click(function () {
                             option.value = attributeValueItem.attributeValueId || attributeValueItem;
                             option.text = attributeValueItem.attributeValueName || attributeValueItem;
                             if (attributeValueItem.attributeValueId) {
-                                variations.forEach(function (variationItem, index) {
-                                    if (index === i) {
-                                        variationItem.forEach(function (item) {
-                                            if (item == attributeValueItem.attributeValueId) {
-                                                option.setAttribute('selected', '');
-                                            }
-                                        })
+                                variationItem.forEach(function (item) {
+                                    if (item == attributeValueItem.attributeValueId) {
+                                        option.setAttribute('selected', '');
                                     }
                                 })
                             } else {
@@ -1925,7 +2619,7 @@ $('#generateVariations').click(function () {
 
                     var labelImage = document.createElement('label');
                     labelImage.className = 'form-label cspt';
-                    labelImage.setAttribute('for', 'variationImage' + (i + 1));
+                    labelImage.setAttribute('for', 'variationImage' + (totalVariations));
 
                     var divIconUpload = document.createElement('div');
                     divIconUpload.className = 'mt-2';
@@ -1944,7 +2638,7 @@ $('#generateVariations').click(function () {
                     var inputImage = document.createElement('input');
                     inputImage.type = 'file';
                     inputImage.className = 'form-control d-none variationImageInput';
-                    inputImage.id = 'variationImage' + (i + 1);
+                    inputImage.id = 'variationImage' + (totalVariations);
                     inputImage.name = 'variation';
                     inputImage.setAttribute('accept', 'image/*');
                     inputImage.setAttribute('onchange', 'previewVariationImage(this)');
@@ -2091,25 +2785,16 @@ $('#generateVariations').click(function () {
                     divVariationItem.appendChild(divVariationItemContent);
 
                     divVariations.appendChild(divVariationItem);
-                }
-                //Ẩn chữ thông báo
-                console.log($('#variationImage'));
 
-                var variationItems = $('#variations').find('.variationItem');
+                })
+                //Ẩn chữ thông báo
+                variationItems = $('#variations').find('.variationItem');
                 if (variationItems.length > 0) {
                     $('.notificationNoVariationsYet').addClass('hidden');
                     notification('success', 'Generate variations successfully!', 'Successfully!', '1000');
                 }
-                if (totalVariations == 1) {
-                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
-                } else {
-                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
-                }
-                // if (totalVariations == 1) {
-                //     $('.notificationQuantityVariations').text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
-                // } else {
-                //     $('.notificationQuantityVariations').text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
-                // }
+                funcNotificationQuantityVariations();
+
                 controlVariationsSelect.removeClass('hidden');
                 deleteAllVariations.removeClass('hidden');
                 checkVariationsStatus.removeClass('hidden');
@@ -2222,18 +2907,7 @@ $(document).on('click', '.variationItem .removeVariationItemBtn', function (even
         var variationItems = $('.variationItem');
         var totalVariations = variationItems.length;
         if (totalVariations > 0) {
-            //Vietnamese version
-            if (totalVariations == 1) {
-                notificationQuantityVariations.text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
-            } else {
-                notificationQuantityVariations.text(totalVariations + ' biến thể chưa có giá, vui lòng nhập giá nhập cho các biến thể này.!');
-            }
-            //English version
-            // if (totalVariations == 1) {
-            //     notificationQuantityVariations.text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
-            // } else {
-            //     notificationQuantityVariations.text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
-            // }
+            funcNotificationQuantityVariations(variationItems);
 
             //Cập nhật lại số thứ tự
             variationItems.each(function (index) {
@@ -2258,290 +2932,278 @@ $(document).on('click', '.variationItemTitle', function () {
 })
 //--------------------------------------------Add 1 variation--------------------------------------
 $(document).on('click', '#addManually', function () {
-    if (!$(this).hasClass('disabledButton')) {
-        var totalVariations = 1;
-        generateVariationData.forEach(function (attributeItem) {
-            totalVariations = totalVariations * attributeItem.attributeValues.length;
-        })
+    if (generateVariationData.length > 0) {
         var totalVariationItems = $('.variationItem').length;
         $('.container-spinner').removeClass('hidden');
         try {
-            if (totalVariationItems < totalVariations) {
-                var divVariations = document.getElementById('variations');
+            // if (totalVariationItems < totalVariations) {
+            var divVariations = document.getElementById('variations');
 
-                var divVariationItem = document.createElement('div');
-                divVariationItem.className = 'cspt pb-2 variationItem';
+            var divVariationItem = document.createElement('div');
+            divVariationItem.className = 'cspt pb-2 variationItem';
 
-                var divVariationItemTitle = document.createElement('div');
-                divVariationItemTitle.className = 'border-bottom d-flex flex-row justify-content-between pb-2 no-select variationItemTitle';
-                divVariationItemTitle.setAttribute('data-status', 'hidden');
+            var divVariationItemTitle = document.createElement('div');
+            divVariationItemTitle.className = 'border-bottom d-flex flex-row justify-content-between pb-2 no-select variationItemTitle';
+            divVariationItemTitle.setAttribute('data-status', 'hidden');
 
-                var divSelects = document.createElement('div');
-                divSelects.className = 'd-flex flex-row align-items-center listSelects';
+            var divSelects = document.createElement('div');
+            divSelects.className = 'd-flex flex-row align-items-center listSelects';
 
-                var strongIndex = document.createElement('strong');
-                strongIndex.className = 'text-dark mr-2';
-                strongIndex.textContent = '#' + (totalVariationItems + 1);
+            var strongIndex = document.createElement('strong');
+            strongIndex.className = 'text-dark mr-2';
+            strongIndex.textContent = '#' + (totalVariationItems + 1);
 
-                divSelects.appendChild(strongIndex);
+            divSelects.appendChild(strongIndex);
 
-                generateVariationData.forEach(function (item) {
-                    var select = document.createElement('select');
-                    select.className = 'form-control mr-2';
-                    if (item.attributeId) {
-                        select.id = item.attributeId;
-                    } else {
-                        select.name = item.attributeName;
-                    }
-                    var optionDefault = document.createElement('option');
-                    optionDefault.textContent = 'Select ' + item.attributeName;
-                    optionDefault.value = '';
-                    select.appendChild(optionDefault);
-
-                    item.attributeValues.forEach(function (attributeValueItem) {
-                        var option = document.createElement('option');
-                        option.value = attributeValueItem.attributeValueId || attributeValueItem;
-                        option.text = attributeValueItem.attributeValueName || attributeValueItem;
-                        select.appendChild(option);
-                    })
-                    divSelects.appendChild(select);
-                })
-                divVariationItemTitle.appendChild(divSelects);
-
-                var divActionButton = document.createElement('div');
-                divActionButton.className = 'd-flex align-items-center flex-row';
-
-                var iBars = document.createElement('i');
-                iBars.className = 'fas fa-bars fa-sm';
-                iBars.style.marginRight = '12px';
-
-                divActionButton.appendChild(iBars);
-
-                var spanRemoveButton = document.createElement('span');
-                spanRemoveButton.className = 'text-danger cspt no-select mr-2 removeVariationItemBtn';
-                spanRemoveButton.style.fontSize = '14px';
-                spanRemoveButton.textContent = 'Remove';
-
-                divActionButton.appendChild(spanRemoveButton);
-
-                var spanEditButton = document.createElement('span');
-                spanEditButton.className = 'text-primary cspt no-select mr-2';
-                spanEditButton.style.fontSize = '14px';
-                spanEditButton.textContent = 'Edit';
-
-                divActionButton.appendChild(spanEditButton);
-
-                divVariationItemTitle.appendChild(divActionButton);
-
-                var divVariationItemContent = document.createElement('div');
-                divVariationItemContent.className = 'border-bottom p-3 variationItemContent hidden';
-
-                var divPart1 = document.createElement('div');
-                divPart1.className = 'd-flex flex-row justify-content-between';
-
-                var divImage = document.createElement('div');
-                divImage.className = 'w-50 mr-4 d-flex flex-row justify-content-around';
-
-                var divCustomWidthHeightUploadImage = document.createElement('div');
-                divCustomWidthHeightUploadImage.className = 'card d-flex';
-                divCustomWidthHeightUploadImage.style.width = '100px';
-                divCustomWidthHeightUploadImage.style.height = '100px';
-                divCustomWidthHeightUploadImage.style.border = '2px dashed #6c757d';
-
-                var divImageElements = document.createElement('div');
-                divImageElements.className = 'form-group text-center';
-
-                var labelImage = document.createElement('label');
-                labelImage.className = 'form-label cspt';
-                labelImage.setAttribute('for', 'variationImage' + (totalVariationItems + 1));
-
-                var divIconUpload = document.createElement('div');
-                divIconUpload.className = 'mt-2';
-
-                var iIconUpload = document.createElement('i');
-                iIconUpload.className = 'fas fa-upload fa-lg';
-
-                divIconUpload.appendChild(iIconUpload);
-
-                var divClickToUploadText = document.createElement('div');
-                divClickToUploadText.className = 'mt-2';
-                divClickToUploadText.textContent = 'Click to upload';
-                labelImage.appendChild(divIconUpload);
-                labelImage.appendChild(divClickToUploadText);
-
-                var inputImage = document.createElement('input');
-                inputImage.type = 'file';
-                inputImage.className = 'form-control d-none variationImageInput';
-                inputImage.id = 'variationImage' + (totalVariationItems + 1);
-                inputImage.name = 'variation';
-                inputImage.setAttribute('accept', 'image/*');
-                inputImage.setAttribute('onchange', 'previewVariationImage(this)');
-
-                divImageElements.appendChild(labelImage);
-                divImageElements.appendChild(inputImage);
-                divCustomWidthHeightUploadImage.appendChild(divImageElements);
-
-                var divPreviewVariationImage = document.createElement('div');
-                divPreviewVariationImage.className = 'previewVariationImage rounded position-relative';
-                divPreviewVariationImage.style.width = '100px';
-                divPreviewVariationImage.style.height = '100px';
-
-                divImage.appendChild(divCustomWidthHeightUploadImage);
-                divImage.appendChild(divPreviewVariationImage);
-
-                var divSkuInput = document.createElement('div');
-                divSkuInput.className = 'w-50';
-
-                var divSkuInputElements = document.createElement('div');
-                divSkuInputElements.className = 'd-flex flex-column';
-
-                var labelSku = document.createElement('label');
-                labelSku.className = 'badge text-left';
-                labelSku.textContent = 'SKU (Có thể bỏ trống để tạo tự động)';
-
-                var inputSku = document.createElement('input');
-                inputSku.type = 'text';
-                inputSku.className = 'form-control skuInput';
-                inputSku.placeholder = "Enter variation's SKU...";
-
-                divSkuInputElements.appendChild(labelSku);
-                divSkuInputElements.appendChild(inputSku);
-                divSkuInput.appendChild(divSkuInputElements);
-                divPart1.appendChild(divImage);
-                divPart1.appendChild(divSkuInput);
-
-                var divPart2 = document.createElement('div');
-                divPart2.className = 'mt-3';
-
-                var divImportPrice = document.createElement('div');
-                divImportPrice.className = "d-flex flex-column mt-3";
-
-                var labelImportPrice = document.createElement('label');
-                labelImportPrice.className = 'badge text-left d-flex flex-row';
-                labelImportPrice.textContent = 'Import price (đ)';
-                labelImportPrice.appendChild(createRequiredMark());
-
-                var inputImportPrice = document.createElement('input');
-                inputImportPrice.type = 'number';
-                inputImportPrice.className = 'form-control importPriceInput';
-                inputImportPrice.placeholder = "Enter variation's import price...";
-
-                divImportPrice.appendChild(labelImportPrice);
-                divImportPrice.appendChild(inputImportPrice);
-
-                var divRegularAndSalePrice = document.createElement('div');
-                divRegularAndSalePrice.className = 'd-flex flex-row justify-content-between mt-3';
-
-                var divRegularPrice = document.createElement('div');
-                divRegularPrice.className = 'd-flex flex-column w-50 mr-4';
-
-                var labelRegularPrice = document.createElement('label');
-                labelRegularPrice.className = 'badge text-left d-flex flex-row';
-                labelRegularPrice.textContent = 'Regular price (đ)';
-                labelRegularPrice.appendChild(createRequiredMark());
-
-                var inputRegularPrice = document.createElement('input');
-                inputRegularPrice.type = 'number';
-                inputRegularPrice.className = 'form-control regularPriceInput';
-                inputRegularPrice.placeholder = "Enter variation's regular price...";
-
-                divRegularPrice.appendChild(labelRegularPrice);
-                divRegularPrice.appendChild(inputRegularPrice);
-
-                var divSalePrice = document.createElement('div');
-                divSalePrice.className = 'd-flex flex-column w-50';
-
-                var labelSalePrice = document.createElement('label');
-                labelSalePrice.className = 'badge text-left';
-                labelSalePrice.textContent = 'Sale price (đ)';
-
-                var inputSalePrice = document.createElement('input');
-                inputSalePrice.type = 'number';
-                inputSalePrice.className = 'form-control salePriceInput';
-                inputSalePrice.placeholder = "Enter variation's sale price...";
-
-                divSalePrice.appendChild(labelSalePrice);
-                divSalePrice.appendChild(inputSalePrice);
-
-                divRegularAndSalePrice.appendChild(divRegularPrice);
-                divRegularAndSalePrice.appendChild(divSalePrice);
-
-                var divStock = document.createElement('div');
-                divStock.className = 'd-flex flex-column mt-3';
-
-                var labelStock = document.createElement('label');
-                labelStock.className = 'badge text-left d-flex flex-row';
-                labelStock.textContent = 'Stock';
-                labelStock.appendChild(createRequiredMark());
-
-                var inputStock = document.createElement('input');
-                inputStock.type = 'number';
-                inputStock.className = 'form-control stockInput';
-                inputStock.placeholder = "Enter variation's stock price...";
-
-                divStock.appendChild(labelStock);
-                divStock.appendChild(inputStock);
-
-                var divActive = document.createElement('div');
-                divActive.className = 'd-flex flex-column mt-3';
-
-                var labelActive = document.createElement('label');
-                labelActive.className = 'badge text-left';
-                labelActive.textContent = 'Active';
-
-                var selectActive = document.createElement('select');
-                selectActive.className = 'form-control activeSelect';
-
-                var optionYes = document.createElement('option');
-                optionYes.value = 'true';
-                optionYes.setAttribute('selected', '');
-                optionYes.textContent = 'Yes';
-
-                var optionNo = document.createElement('option');
-                optionNo.value = 'false';
-                optionNo.textContent = 'No';
-
-                selectActive.appendChild(optionYes);
-                selectActive.appendChild(optionNo);
-
-                divActive.appendChild(labelActive);
-                divActive.appendChild(selectActive);
-
-                divPart2.appendChild(divImportPrice);
-                divPart2.appendChild(divRegularAndSalePrice);
-                divPart2.appendChild(divStock);
-                divPart2.appendChild(divActive);
-
-                divVariationItemContent.appendChild(divPart1);
-                divVariationItemContent.appendChild(divPart2);
-
-                divVariationItem.appendChild(divVariationItemTitle);
-                divVariationItem.appendChild(divVariationItemContent);
-
-                divVariations.appendChild(divVariationItem);
-                pagination();
-                $('.notificationNoVariationsYet').addClass('hidden');
-                totalVariations = $('.variationItem').length;
-                if (totalVariations == 1) {
-                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá nhập và giá bán thông thường, vui lòng nhập đầy đủ các trường thông tin cho các biến thể này.!');
+            generateVariationData.forEach(function (item) {
+                var select = document.createElement('select');
+                select.className = 'form-control mr-2';
+                if (item.attributeId) {
+                    select.id = item.attributeId;
                 } else {
-                    $('.notificationQuantityVariations').text(totalVariations + ' biến thể chưa có giá nhập và giá bán thông thường, vui lòng nhập đầy đủ các trường thông tin cho các biến thể này.!');
+                    select.name = item.attributeName;
                 }
-                // if (totalVariations == 1) {
-                //     $('.notificationQuantityVariations').text(totalVariations + ' variation do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
-                // } else {
-                //     $('.notificationQuantityVariations').text(totalVariations + ' variations do not have prices. Variations (and their attributes) that do not have prices will not be shown in your store.');
-                // }
-                controlVariationsSelect.removeClass('hidden');
-                deleteAllVariations.removeClass('hidden');
-                checkVariationsStatus.removeClass('hidden');
-                saveVariations.removeClass('hidden');
-                saveVariations.addClass('disabledButton');
-                saveVariationsStatus = false;
-            } else {
-                notification('warning', 'Đã đạt đến số lượng biến thể tối đa có thể tạo ra!', 'Has reached its maximum!')
-                // notification('warning', 'Maximum number of variants that can be created has been reached!', 'Has reached its maximum!')
-            }
+                var optionDefault = document.createElement('option');
+                optionDefault.textContent = 'Select ' + item.attributeName;
+                optionDefault.value = '';
+                select.appendChild(optionDefault);
+
+                item.attributeValues.forEach(function (attributeValueItem) {
+                    var option = document.createElement('option');
+                    option.value = attributeValueItem.attributeValueId || attributeValueItem;
+                    option.text = attributeValueItem.attributeValueName || attributeValueItem;
+                    select.appendChild(option);
+                })
+                divSelects.appendChild(select);
+            })
+            divVariationItemTitle.appendChild(divSelects);
+
+            var divActionButton = document.createElement('div');
+            divActionButton.className = 'd-flex align-items-center flex-row';
+
+            var iBars = document.createElement('i');
+            iBars.className = 'fas fa-bars fa-sm';
+            iBars.style.marginRight = '12px';
+
+            divActionButton.appendChild(iBars);
+
+            var spanRemoveButton = document.createElement('span');
+            spanRemoveButton.className = 'text-danger cspt no-select mr-2 removeVariationItemBtn';
+            spanRemoveButton.style.fontSize = '14px';
+            spanRemoveButton.textContent = 'Remove';
+
+            divActionButton.appendChild(spanRemoveButton);
+
+            var spanEditButton = document.createElement('span');
+            spanEditButton.className = 'text-primary cspt no-select mr-2';
+            spanEditButton.style.fontSize = '14px';
+            spanEditButton.textContent = 'Edit';
+
+            divActionButton.appendChild(spanEditButton);
+
+            divVariationItemTitle.appendChild(divActionButton);
+
+            var divVariationItemContent = document.createElement('div');
+            divVariationItemContent.className = 'border-bottom p-3 variationItemContent hidden';
+
+            var divPart1 = document.createElement('div');
+            divPart1.className = 'd-flex flex-row justify-content-between';
+
+            var divImage = document.createElement('div');
+            divImage.className = 'w-50 mr-4 d-flex flex-row justify-content-around';
+
+            var divCustomWidthHeightUploadImage = document.createElement('div');
+            divCustomWidthHeightUploadImage.className = 'card d-flex';
+            divCustomWidthHeightUploadImage.style.width = '100px';
+            divCustomWidthHeightUploadImage.style.height = '100px';
+            divCustomWidthHeightUploadImage.style.border = '2px dashed #6c757d';
+
+            var divImageElements = document.createElement('div');
+            divImageElements.className = 'form-group text-center';
+
+            var labelImage = document.createElement('label');
+            labelImage.className = 'form-label cspt';
+            labelImage.setAttribute('for', 'variationImage' + (totalVariationItems + 1));
+
+            var divIconUpload = document.createElement('div');
+            divIconUpload.className = 'mt-2';
+
+            var iIconUpload = document.createElement('i');
+            iIconUpload.className = 'fas fa-upload fa-lg';
+
+            divIconUpload.appendChild(iIconUpload);
+
+            var divClickToUploadText = document.createElement('div');
+            divClickToUploadText.className = 'mt-2';
+            divClickToUploadText.textContent = 'Click to upload';
+            labelImage.appendChild(divIconUpload);
+            labelImage.appendChild(divClickToUploadText);
+
+            var inputImage = document.createElement('input');
+            inputImage.type = 'file';
+            inputImage.className = 'form-control d-none variationImageInput';
+            inputImage.id = 'variationImage' + (totalVariationItems + 1);
+            inputImage.name = 'variation';
+            inputImage.setAttribute('accept', 'image/*');
+            inputImage.setAttribute('onchange', 'previewVariationImage(this)');
+
+            divImageElements.appendChild(labelImage);
+            divImageElements.appendChild(inputImage);
+            divCustomWidthHeightUploadImage.appendChild(divImageElements);
+
+            var divPreviewVariationImage = document.createElement('div');
+            divPreviewVariationImage.className = 'previewVariationImage rounded position-relative';
+            divPreviewVariationImage.style.width = '100px';
+            divPreviewVariationImage.style.height = '100px';
+
+            divImage.appendChild(divCustomWidthHeightUploadImage);
+            divImage.appendChild(divPreviewVariationImage);
+
+            var divSkuInput = document.createElement('div');
+            divSkuInput.className = 'w-50';
+
+            var divSkuInputElements = document.createElement('div');
+            divSkuInputElements.className = 'd-flex flex-column';
+
+            var labelSku = document.createElement('label');
+            labelSku.className = 'badge text-left';
+            labelSku.textContent = 'SKU (Có thể bỏ trống để tạo tự động)';
+
+            var inputSku = document.createElement('input');
+            inputSku.type = 'text';
+            inputSku.className = 'form-control skuInput';
+            inputSku.placeholder = "Enter variation's SKU...";
+
+            divSkuInputElements.appendChild(labelSku);
+            divSkuInputElements.appendChild(inputSku);
+            divSkuInput.appendChild(divSkuInputElements);
+            divPart1.appendChild(divImage);
+            divPart1.appendChild(divSkuInput);
+
+            var divPart2 = document.createElement('div');
+            divPart2.className = 'mt-3';
+
+            var divImportPrice = document.createElement('div');
+            divImportPrice.className = "d-flex flex-column mt-3";
+
+            var labelImportPrice = document.createElement('label');
+            labelImportPrice.className = 'badge text-left d-flex flex-row';
+            labelImportPrice.textContent = 'Import price (đ)';
+            labelImportPrice.appendChild(createRequiredMark());
+
+            var inputImportPrice = document.createElement('input');
+            inputImportPrice.type = 'number';
+            inputImportPrice.className = 'form-control importPriceInput';
+            inputImportPrice.placeholder = "Enter variation's import price...";
+
+            divImportPrice.appendChild(labelImportPrice);
+            divImportPrice.appendChild(inputImportPrice);
+
+            var divRegularAndSalePrice = document.createElement('div');
+            divRegularAndSalePrice.className = 'd-flex flex-row justify-content-between mt-3';
+
+            var divRegularPrice = document.createElement('div');
+            divRegularPrice.className = 'd-flex flex-column w-50 mr-4';
+
+            var labelRegularPrice = document.createElement('label');
+            labelRegularPrice.className = 'badge text-left d-flex flex-row';
+            labelRegularPrice.textContent = 'Regular price (đ)';
+            labelRegularPrice.appendChild(createRequiredMark());
+
+            var inputRegularPrice = document.createElement('input');
+            inputRegularPrice.type = 'number';
+            inputRegularPrice.className = 'form-control regularPriceInput';
+            inputRegularPrice.placeholder = "Enter variation's regular price...";
+
+            divRegularPrice.appendChild(labelRegularPrice);
+            divRegularPrice.appendChild(inputRegularPrice);
+
+            var divSalePrice = document.createElement('div');
+            divSalePrice.className = 'd-flex flex-column w-50';
+
+            var labelSalePrice = document.createElement('label');
+            labelSalePrice.className = 'badge text-left';
+            labelSalePrice.textContent = 'Sale price (đ)';
+
+            var inputSalePrice = document.createElement('input');
+            inputSalePrice.type = 'number';
+            inputSalePrice.className = 'form-control salePriceInput';
+            inputSalePrice.placeholder = "Enter variation's sale price...";
+
+            divSalePrice.appendChild(labelSalePrice);
+            divSalePrice.appendChild(inputSalePrice);
+
+            divRegularAndSalePrice.appendChild(divRegularPrice);
+            divRegularAndSalePrice.appendChild(divSalePrice);
+
+            var divStock = document.createElement('div');
+            divStock.className = 'd-flex flex-column mt-3';
+
+            var labelStock = document.createElement('label');
+            labelStock.className = 'badge text-left d-flex flex-row';
+            labelStock.textContent = 'Stock';
+            labelStock.appendChild(createRequiredMark());
+
+            var inputStock = document.createElement('input');
+            inputStock.type = 'number';
+            inputStock.className = 'form-control stockInput';
+            inputStock.placeholder = "Enter variation's stock price...";
+
+            divStock.appendChild(labelStock);
+            divStock.appendChild(inputStock);
+
+            var divActive = document.createElement('div');
+            divActive.className = 'd-flex flex-column mt-3';
+
+            var labelActive = document.createElement('label');
+            labelActive.className = 'badge text-left';
+            labelActive.textContent = 'Active';
+
+            var selectActive = document.createElement('select');
+            selectActive.className = 'form-control activeSelect';
+
+            var optionYes = document.createElement('option');
+            optionYes.value = 'true';
+            optionYes.setAttribute('selected', '');
+            optionYes.textContent = 'Yes';
+
+            var optionNo = document.createElement('option');
+            optionNo.value = 'false';
+            optionNo.textContent = 'No';
+
+            selectActive.appendChild(optionYes);
+            selectActive.appendChild(optionNo);
+
+            divActive.appendChild(labelActive);
+            divActive.appendChild(selectActive);
+
+            divPart2.appendChild(divImportPrice);
+            divPart2.appendChild(divRegularAndSalePrice);
+            divPart2.appendChild(divStock);
+            divPart2.appendChild(divActive);
+
+            divVariationItemContent.appendChild(divPart1);
+            divVariationItemContent.appendChild(divPart2);
+
+            divVariationItem.appendChild(divVariationItemTitle);
+            divVariationItem.appendChild(divVariationItemContent);
+
+            divVariations.appendChild(divVariationItem);
+            pagination();
+            $('.notificationNoVariationsYet').addClass('hidden');
+
+            funcNotificationQuantityVariations();
+
+            controlVariationsSelect.removeClass('hidden');
+            deleteAllVariations.removeClass('hidden');
+            checkVariationsStatus.removeClass('hidden');
+            saveVariations.removeClass('hidden');
+            saveVariations.addClass('disabledButton');
+            saveVariationsStatus = false;
+            // } else {
+            //     notification('warning', 'Đã đạt đến số lượng biến thể tối đa có thể tạo ra!', 'Has reached its maximum!')
+            //     // notification('warning', 'Maximum number of variants that can be created has been reached!', 'Has reached its maximum!')
+            // }
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -2558,15 +3220,16 @@ $(document).on('click', '.deleteAllVariations', function () {
     $('.container-spinner').removeClass('hidden');
     try {
         if (confirmDeleteAllVariations) {
-            $('.variationItem').each(function () {
-                $(this).remove();
+            var variationItems = $('.variationItem');
+            variationItems.each(function () {
+                if (!$(this).data('id')) {
+                    $(this).remove();
+                }
             })
-            notificationQuantityVariations.text('');
-            notificationNoVariationsYet.removeClass('hidden');
-            controlVariationsSelect.addClass('hidden');
+            funcNotificationQuantityVariations();
             deleteAllVariations.addClass('hidden');
-            checkVariationsStatus.addClass('hidden');
-            saveVariations.addClass('hidden disabledButton');
+            // checkVariationsStatus.addClass('hidden');
+            saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
             pagination();
             notification('success', 'Đã xóa tất cả biến thể thành công!', 'Successfully!', '1000');
@@ -2631,6 +3294,7 @@ function previewVariationImage(input) {
                     // notification('warning', 'Image already exists', 'Warning', '2000');
                 }
             } else {
+                variationItem.find('.previewVariationImage').html('');
                 reader.onload = function (e) {
                     const divPreviewVariationImage = variationItem.find('.previewVariationImage')[0];
                     console.log(divPreviewVariationImage);
@@ -2980,7 +3644,7 @@ $(document).on('click', '.checkVariationsStatus', function () {
                 return false;
             }
             var index = $(this).find('strong').text();
-            var imageInput = $(this).find('.variationImageInput').val();
+            var imageInput = $(this).find('.variationImage');
             var importPriceInput = $(this).find('.importPriceInput').val();
             var regularPriceInput = $(this).find('.regularPriceInput').val();
             var salePriceInput = $(this).find('.salePriceInput').val();
@@ -3010,7 +3674,7 @@ $(document).on('click', '.checkVariationsStatus', function () {
                 importSaleVariationsIndex.push(index);
             }
 
-            if (!imageInput || !regularPriceInput || !stockInput || !importPriceInput) {
+            if (imageInput.length == 0 || !regularPriceInput || !stockInput || !importPriceInput) {
                 check = false;
                 variationsIndex.push(index);
             }
@@ -3046,44 +3710,53 @@ var variationDataHasBeenSaved = [];
 $(document).on('click', '.saveVariations', function () {
     $('.container-spinner').removeClass('hidden');
     try {
-        if (saveVariationsStatus) {
+        if (saveVariationsStatus && !$(this).hasClass('disabledButton')) {
             variationDataHasBeenSaved = [];
             $('.variationItem').each(function () {
                 var variationData = {};
                 variationData.variationAttributeData = [];
                 var selects = $(this).find('.variationItemTitle').find('select');
-                var name = '';
-                selects.each(function (index) {
-                    var variationValue = {};
-                    if ($(this).attr('id')) {
-                        variationValue.attributeId = $(this).attr('id');
-                        variationValue.attributeValueId = $(this).val();
-                    } else {
-                        variationValue.attributeName = $(this).attr('name');
-                        variationValue.attributeValue = $(this).val();
-                    }
-                    variationData.variationAttributeData.push(variationValue);
-                    if (index > 0 && $(this).val() != '') {
-                        name += '-';
-                    }
-                    var selectedText = $(this).find('option:selected').text();
-                    if ($(this).val() != '') {
-                        name += selectedText;
-                    }
+                if (!$(this).data('id')) {
+                    var name = '';
+                    selects.each(function (index) {
+                        var variationValue = {};
+                        if ($(this).attr('id')) {
+                            variationValue.attributeId = $(this).attr('id');
+                            variationValue.attributeValueId = $(this).val();
+                        } else {
+                            variationValue.attributeName = $(this).attr('name');
+                            variationValue.attributeValue = $(this).val();
+                        }
+                        variationData.variationAttributeData.push(variationValue);
+                        if (index > 0 && $(this).val() != '') {
+                            name += '-';
+                        }
+                        var selectedText = $(this).find('option:selected').text();
+                        if ($(this).val() != '') {
+                            name += selectedText;
+                        }
+                    })
 
-                    console.log(selectedText);
+                    if (name.startsWith('-')) {
+                        name = name.slice(1);
+                    }
+                    variationData.name = name;
 
-                })
+                    const image = $(this).find('.variationImageInput')[0];
+                    variationData.image_data = image.files[0];
+
+                    var sku = $(this).find('.skuInput');
+                    sku = sku.val() ? sku.val() : '';
+                    variationData.sku = sku;
+                } else {
+                    variationData.id = $(this).data('id');
+
+                    const image = $(this).find('.variationImageInput')[0];
+                    if (image.files[0]) {
+                        variationData.image_data = image.files[0];
+                    }
+                }
                 const index = $(this).find('strong').text();
-
-                variationData.name = name;
-
-                const image = $(this).find('.variationImageInput')[0];
-                variationData.image_data = image.files[0];
-
-                var sku = $(this).find('.skuInput');
-                sku = sku.val() ? sku.val() : '';
-                variationData.sku = sku;
 
                 const importPrice = $(this).find('.importPriceInput');
                 variationData.import_price = importPrice.val();
@@ -3099,9 +3772,6 @@ $(document).on('click', '.saveVariations', function () {
 
                 const active = $(this).find('.activeSelect');
                 variationData.active = active.val();
-
-                console.log(regularPrice.val());
-                console.log(salePrice.val());
 
                 if (parseFloat(regularPrice.val()) < parseFloat(salePrice.val())) {
                     notification('warning', 'Giá bán đã giảm phải nhỏ hơn giá bán thông thường của!', 'Variation ' + index + '!');
@@ -3123,7 +3793,7 @@ $(document).on('click', '.saveVariations', function () {
 })
 //----------------------------------------SUBMIT FORM---------------------------------------
 //-------------------------------------Create product by ajax-------------------------------------
-function createNewProduct(productData) {
+function updateProduct(productData) {
     return new Promise((resolve, reject) => {
         var formData = new FormData();
 
@@ -3137,17 +3807,29 @@ function createNewProduct(productData) {
         formData.append('brandId', productData.brandId);
 
         // Thêm main image
-        formData.append('mainImage', productData.image);
+        if (productData.image) {
+            formData.append('mainImage', productData.image);
+        }
 
         // Thêm hình ảnh khác
-        productData.images.forEach((image, index) => {
-            formData.append(`images[${index}]`, image);
-        });
+        if (productData.images.length > 0) {
+            productData.images.forEach((image, index) => {
+                formData.append(`images[${index}]`, image);
+            });
+        }
+
+        //Thêm id của những ảnh cũ còn lại
+        formData.append('oldPhotoGalleryIds', productData.oldPhotoGalleryIds);
 
         // Thêm video
-        productData.videos.forEach((video, index) => {
-            formData.append(`videos[${index}]`, video);
-        });
+        if (productData.videos.length > 0) {
+            productData.videos.forEach((video, index) => {
+                formData.append(`videos[${index}]`, video);
+            });
+        }
+
+        //Thêm id của những video cũ còn lại
+        formData.append('oldVideoIds', productData.oldVideoIds);
 
         // Thêm các danh mục ID
         productData.categoriesId.forEach((categoryId, index) => {
@@ -3156,39 +3838,47 @@ function createNewProduct(productData) {
 
         // Thêm các biến thể
         productData.variations.forEach((variation, index) => {
+            if (variation.id) {
+                formData.append(`variations[${index}][id]`, variation.id);
+            } else {
+                formData.append(`variations[${index}][name]`, variation.name);
+                if (variation.variationAttributeData.length > 0) {
+                    // Thêm variationAttributeData
+                    variation.variationAttributeData.forEach((attribute, attrIndex) => {
+                        if (attribute.attributeId) {
+                            formData.append(`variations[${index}][variationAttributeData][${attrIndex}][attributeId]`, attribute.attributeId);
+                        } else {
+                            formData.append(`variations[${index}][variationAttributeData][${attrIndex}][attributeName]`, attribute.attributeName);
+                        }
+                        if (attribute.attributeValueId) {
+                            formData.append(`variations[${index}][variationAttributeData][${attrIndex}][attributeValueId]`, attribute.attributeValueId);
+                        } else {
+                            formData.append(`variations[${index}][variationAttributeData][${attrIndex}][attributeValue]`, attribute.attributeValue);
+                        }
+                    });
+                }
+            }
             // Thêm các thuộc tính khác của biến thể
-            formData.append(`variations[${index}][active]`, variation.active);
             formData.append(`variations[${index}][import_price]`, variation.import_price);
             formData.append(`variations[${index}][regular_price]`, variation.regular_price);
-            formData.append(`variations[${index}][name]`, variation.name);
             formData.append(`variations[${index}][sale_price]`, variation.sale_price);
-            formData.append(`variations[${index}][sku]`, variation.sku);
             formData.append(`variations[${index}][stock]`, variation.stock);
+            formData.append(`variations[${index}][active]`, variation.active);
 
             // Thêm image_data nếu có
             if (variation.image_data) {
                 formData.append(`variations[${index}][image_data]`, variation.image_data);
             }
+            if (variation.sku && !variation.id) {
+                formData.append(`variations[${index}][sku]`, variation.sku);
+            }
 
-            // Thêm variationAttributeData
-            variation.variationAttributeData.forEach((attribute, attrIndex) => {
-                if (attribute.attributeId) {
-                    formData.append(`variations[${index}][variationAttributeData][${attrIndex}][attributeId]`, attribute.attributeId);
-                } else {
-                    formData.append(`variations[${index}][variationAttributeData][${attrIndex}][attributeName]`, attribute.attributeName);
-                }
-                if (attribute.attributeValueId) {
-                    formData.append(`variations[${index}][variationAttributeData][${attrIndex}][attributeValueId]`, attribute.attributeValueId);
-                } else {
-                    formData.append(`variations[${index}][variationAttributeData][${attrIndex}][attributeValue]`, attribute.attributeValue);
-                }
-            });
         });
         // Thêm CSRF token
         formData.append('_token', csrf);
-
+        formData.append('_method', 'PATCH');
         $.ajax({
-            url: routeStoreProduct,
+            url: returnRouteUpdateProduct(productId),
             method: 'POST',
             data: formData,
             processData: false, // Không xử lý `formData`
@@ -3198,9 +3888,10 @@ function createNewProduct(productData) {
                     notification('error', response.message, 'Error');
                 } else {
                     notification('success', response.message, 'Successfully');
+                    console.log(response.data);
                     setTimeout(function () {
                         location.reload();
-                    }, 1000);
+                    }, 500);
                 }
                 resolve();
             },
@@ -3209,6 +3900,9 @@ function createNewProduct(productData) {
                 notification('error', 'Something went wrong!', 'Error');
                 reject();
             }
+        });
+        formData.forEach((value, key) => {
+            console.log(key + ': ' + value);
         });
     });
 }
@@ -3220,11 +3914,14 @@ function checkProductSku(input) {
             method: "POST",
             data: {
                 sku: input,
+                product_id: productId,
                 _token: csrf
             },
             success: function (response) {
                 if (response.status == 400) {
                     statusProductSku = false;
+                } else {
+                    console.log(response.data);
                 }
                 resolve();
             },
@@ -3236,12 +3933,12 @@ function checkProductSku(input) {
         });
     })
 }
-$(document).on('change', 'productSku', async function () {
+$(document).on('change', '.oldProductSku', async function () {
     await checkProductSku($(this).val());
     if (!statusProductSku) {
         notification('warning', 'Sku is already exists!', 'Warning!', '3000');
         statusProductSku = true;
-        $(this).val('');
+        $(this).val(productSku);
     }
 })
 var statusProductSkuVariation = true;
@@ -3294,10 +3991,10 @@ $(document).on('click', '#publishBtn', async function () {
     var checkData = true;
 
     // Lấy dữ liệu các trường đầu vào
-    var productSku = $('.productSku').val();
-    var productName = $('.productName').val();
-    var productDescription = tinymce.get('productDescription').getContent();
-    var productActive = $('.productActive').prop("checked");
+    var productSku = $('.oldProductSku').val();
+    var productName = $('.oldProductName').val();
+    var productDescription = tinymce.get('oldProductDescription').getContent();
+    var productActive = $('.oldProductActive').prop("checked");
 
     // Kiểm tra tính hợp lệ của các trường
     if (!productSku) {
@@ -3314,7 +4011,8 @@ $(document).on('click', '#publishBtn', async function () {
     }
 
     // Kiểm tra hình ảnh chính
-    if (mainImageFile == null) {
+    var checkMainImage = $('#mainImagePreview').find('.img');
+    if (mainImageFile == null && checkMainImage.length == 0) {
         checkData = false;
         notification('warning', 'Please upload product image!', 'Warning!', '3000');
     }
@@ -3346,35 +4044,27 @@ $(document).on('click', '#publishBtn', async function () {
             }
         }
     }
-
-    $('.brandItem').each(async function () {
-        if ($(this).prop("checked")) {
-            var getBrandId = $(this).attr('id');
-            productData.brandId = getBrandId;
-        }
-    });
-
-    // Kiểm tra biến thể sản phẩm
-    if (!variationDataHasBeenSaved.length || !saveVariationsStatus) {
+    if (!saveVariationsStatus) {
         checkData = false;
-        notification('warning', "Add at least one variation if you haven't already. If you make any changes to the variation, click the save variations button.", 'Warning!', '3000');
+        notification('warning', "Chưa lưu biến thể, đã có một thay đổi nào đó trong tùy chỉnh biến thể, trước khi cập nhật bạn cần lưu biến thể!", 'Warning!', '3000');
     }
-
     // Nếu tất cả các dữ liệu hợp lệ, thêm chúng vào `productData`
     if (checkData) {
         productData.baseInformation.sku = productSku;
         productData.baseInformation.name = productName;
         productData.baseInformation.description = productDescription;
         productData.baseInformation.status = productActive;
-        productData.image = mainImageFile;
+        productData.image = mainImageFile != null ? mainImageFile : null;
         productData.images = selectedImages;
+        productData.oldPhotoGalleryIds = productPhotoGalleryIds;
         productData.videos = selectedVideos;
+        productData.oldVideoIds = productVideoIds;
         productData.variations = variationDataHasBeenSaved;
         console.log(productData);
         $('.container-spinner').removeClass('hidden');
 
         try {
-            await createNewProduct(productData);
+            await updateProduct(productData);
         } catch (error) {
             console.error('Error:', error);
         } finally {

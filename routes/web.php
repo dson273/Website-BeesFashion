@@ -7,9 +7,12 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\user\CollectionController;
+use App\Http\Controllers\User\WishlistControllerr;
 use App\Http\Controllers\user\FilterProductController;
 use App\Http\Controllers\User\ProductDetailController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\user\WishlistController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
 //Trang chi tiết sản phẩm
@@ -50,6 +53,7 @@ Route::post('product/getMinMaxPriceProduct', [FilterProductController::class], '
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
 
 
+Route::get('wishlist', [WishlistController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //Chức năng đăng xuất
@@ -63,6 +67,10 @@ Route::middleware('auth')->group(function () {
     // Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
 
     //Trang giỏ hàng
+
     Route::get('cart', [CartController::class, 'index'])->name('cart');
-    Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
+    Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart');//Add cart
+    //Trang yêu thích
+    Route::get('wishlist/{product_id}', [WishlistController::class, 'index']);
+
 });
