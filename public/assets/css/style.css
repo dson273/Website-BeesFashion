@@ -18387,7 +18387,7 @@ body div canvas:first-child {
 }
 
   }
-  .ratingd {
+.ratingd {
     display: flex; /* Chuyển danh sách thành flex container */
     justify-content: space-between; /* Đẩy các phần tử con ra 2 bên */
     align-items: center; /* Đảm bảo các phần tử được căn giữa theo chiều dọc */
@@ -18406,7 +18406,7 @@ body div canvas:first-child {
 .fa-star {
     color: gold; /* Tùy chỉnh màu sao */
 }
-.bg-img {
+.bg-imgd {
     width: 250px;
     height: 300px;
 };

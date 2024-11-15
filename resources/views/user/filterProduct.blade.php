@@ -65,13 +65,31 @@
                         <div class="left-accordion">
                             <h5>Back </h5><i class="back-button fa-solid fa-xmark"></i>
                         </div>
-                        <h3><i class="fa-solid fa-filter h6"></i>Bộ lọc tìm kiếm</h3>
                         <div class="accordion" id="accordionPanelsStayOpenExample">
                             {{-- tìm kiếm sản phẩm theo tên --}}
                             <div class="search-box">
                                 <input type="search" id="search-input" name="text" placeholder="Tìm kiếm sản phẩm..."
                                     onkeyup="filterProducts()">
                                 <i class="iconsax" data-icon="search-normal-2"></i>
+                            </div>
+                            {{-- lọc theo khoảng giá --}}
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsStayOpen-collapseFour"><span>Sắp xếp khoảng giá</span></button></h2>
+                                <div class="accordion-collapse collapse show" id="panelsStayOpen-collapseFour">
+                                    <div class="accordion-body">
+                                        <div class="range-slider">
+                                            <input class="range-slider-input" type="range" min="0"
+                                                max="{{ $maxPriceProduct }}" step="1"
+                                                value="0">
+                                            <input class="range-slider-input" type="range"
+                                                min="0" max="{{ $maxPriceProduct }}"
+                                                step="1" value="{{ $maxPriceProduct }}">
+                                            <div class="range-slider-display"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {{-- Lọc theo danh mục --}}
                             <div class="accordion-item">
@@ -149,25 +167,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- lọc theo giá --}}
-
-                            <div class="accordion-item">
-                                <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
-                                        data-bs-target="#panelsStayOpen-collapseFour"><span>Filter</span></button></h2>
-                                <div class="accordion-collapse collapse show" id="panelsStayOpen-collapseFour">
-                                    <div class="accordion-body">
-                                        <div class="range-slider">
-                                            <input class="range-slider-input" type="range" min="{{ $minPriceProduct }}"
-                                                max="{{ $maxPriceProduct }}" step="1"
-                                                value="{{ $minPriceProduct }}">
-                                            <input class="range-slider-input" type="range"
-                                                min="{{ $minPriceProduct }}" max="{{ $maxPriceProduct }}"
-                                                step="1" value="{{ $maxPriceProduct }}">
-                                            <div class="range-slider-display"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                             {{-- màu --}}
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -252,10 +252,7 @@
                                 <label class="m-2" for="priceSort">Sắp xếp theo :</label>
                                 <div class="d-flex">
                                     <div class="filter-option m-3">
-                                        <button class="btn btn-outline-secondary" id="filterBestSelling">Bán chạy</button>
-                                    </div>
-                                    <div class="filter-option m-3">
-                                        <button class="btn btn-outline-secondary" id="filterNewArrivals">Mới nhất</button>
+                                        <button class="btn btn-outline-secondary" id="filterBestSelling">Bán chạy nhất</button>
                                     </div>
                                     <div class="filter-option m-3">
                                         <button class="btn btn-outline-secondary" id="filterNewArrivals">Mới nhất</button>
@@ -272,8 +269,7 @@
                             </div>
                         </div>
                         <div class="product-tab-content ratio1_3">
-                            <div
-                                class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 justify-content-center">
+                            <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 ">
                                 <!-- Sản phẩm sẽ được hiển thị ở đây -->
                             </div>
                         </div>
@@ -288,7 +284,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>                 
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-xs-12">
                             <div class="quick-view-img">
@@ -334,7 +330,7 @@
                         </div>
                         <div class="col-lg-6 rtl-text">
                             <div class="product-right">
-                                <h3>Women Pink Shirt</h3>
+                                <h3>khó vcl</h3>
                                 <h5>$32.96<del>$50.12</del></h5>
                                 <ul class="color-variant">
                                     <li class="bg-color-brown"></li>
