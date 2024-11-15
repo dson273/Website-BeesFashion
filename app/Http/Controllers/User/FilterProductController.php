@@ -9,6 +9,7 @@ use App\Models\Attribute_value;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Product_file;
+use App\Models\Product_category;
 use App\Models\Product_variant;
 
 class FilterProductController extends Controller
@@ -16,91 +17,79 @@ class FilterProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
-        // Lấy tất cả các danh mục cha cùng các danh mục con của chúng
-        $listCategory = Category::whereNull('parent_category_id')->with('categoryChildrent')->get();
 
-        // Lấy danh sách sản phẩm kèm theo danh mục và thương hiệu của sản phẩm
+        function priceProduct($product)
+        {
+            // Lấy giá sale và giá nhập của sản phẩm từ product_variants
+            $salePrices = $product->product_variants->pluck('sale_price');
+            $importPrices = $product->product_variants->pluck('regular_price');
+
+            $minSalePrice = $salePrices->min();
+            $maxSalePrice = $salePrices->max();
+            $minImportPrice = $importPrices->min();
+            $maxImportPrice = $importPrices->max();
+
+            // Kiểm tra và trả về giá
+            if ($salePrices->every(fn($price) => $price === null)) {
+                // Tất cả sale_price đều là null
+                return "$" . number_format($minImportPrice) . " - $" . number_format($maxImportPrice);
+            } elseif ($salePrices->contains(null)) {
+                // Có sale_price là null
+                if ($minSalePrice === null) {
+                    return "$" . number_format($minImportPrice) . " - $" . number_format($maxSalePrice);
+                } elseif ($maxSalePrice === null) {
+                    return "$" . number_format($minSalePrice) . " - $" . number_format($maxImportPrice);
+                } else {
+                    return "$" . number_format($minSalePrice) . " - $" . number_format($maxSalePrice);
+                }
+            } else {
+                // Tất cả có sale_price
+                return "$" . number_format($minSalePrice) . " - $" . number_format($maxSalePrice);
+            }
+        }
+
+        // Lấy danh sách các danh mục cha
+        $listCategory = Category::whereNull('parent_category_id')->where('categories.fixed', 1)->with('categoryChildrent')->get();
+
+        // Lấy danh sách sản phẩm và danh sách thương hiệu
         $listProduct = Product::with(['categories', 'brand'])->get();
         $listBrand = Brand::all();
+
+        // Lấy danh sách màu sắc (attributes) cho sản phẩm
         $listColor = Attribute_value::all();
-        //lấy ảnh sản phẩm
-        // Kiểm tra nếu yêu cầu là Ajax, trả về JSON cho Ajax
-        if ($request->ajax()) {
-            return response()->json(['listProduct' => $listProduct]);
+
+
+        $productsQuery = Product::join('product_categories', 'products.id', '=', 'product_categories.product_id')
+            ->join('categories', 'product_categories.category_id', '=', 'categories.id')
+            ->where('categories.fixed', 0)
+            ->where('products.is_active', 1) // Lọc sản phẩm đang hoạt động
+            ->with(['product_files', 'product_variants'])
+            ->select('products.*');
+        if ($request->has('brand_id')) {
+            $productsQuery->where('brand_id', $request->brand_id);
         }
-        $img = Product_file::where('is_default', 1);
-        // Lấy sản phẩm và các biến thể của nó
-        $products = Product::where('is_active', 1)->with('product_variants')->get();
-        
-        $newProducts = Product::with(['product_files'])
-            ->orderBy('created_at', 'DESC')
-            ->take(4)
-            ->get()
-            ->map(function ($product) {
-                $salePrices = $product->product_variants->pluck('sale_price'); // Lấy giá sale_price của tất cả biến thể
-                $importPrices = $product->product_variants->pluck('display_import_price'); // Lấy giá display_import_price
 
-                $minSalePrice = $salePrices->min(); // Giá sale thấp nhất
-                $maxSalePrice = $salePrices->max(); // Giá sale cao nhất
-
-                $minImportPrice = $importPrices->min(); // Giá nhập thấp nhất
-                $maxImportPrice = $importPrices->max(); // Giá nhập cao nhất
-
-                // Điều kiện hiển thị giá
-                if ($salePrices->every(function ($price) {
-                    return $price === null;
-                })) {
-                    // Tất cả sale_price đều là null
-                    $product->priceRange = "$" . number_format($minImportPrice) . " - $" . number_format($maxImportPrice);
-                } elseif ($salePrices->contains(null)) {
-                    if ($minSalePrice === null) {
-                        // Giá sale_price thấp nhất là null
-                        if ($maxSalePrice === $minImportPrice) {
-                            $product->priceRange = "$" . number_format($maxSalePrice);
-                        } else {
-                            $product->priceRange = "$" . number_format($minImportPrice) . " - $" . number_format($maxSalePrice);
-                        }
-                    } elseif ($maxSalePrice === null) {
-                        // Giá sale_price cao nhất là null
-                        if ($minSalePrice === $maxImportPrice) {
-                            $product->priceRange = "$" . number_format($minSalePrice);
-                        } else {
-                            $product->priceRange = "$" . number_format($minSalePrice) . " - $" . number_format($maxImportPrice);
-                        }
-                    } else {
-                        // Có sale_price nhưng có giá null
-                        if ($minImportPrice === $maxSalePrice) {
-                            $product->priceRange = "$" . number_format($minImportPrice);
-                        } else {
-                            $product->priceRange = "$" . number_format($maxSalePrice) . " - $" . number_format($maxImportPrice);
-                        }
-                    }
-                } else {
-                    // Có sale_price cho tất cả
-                    if ($minSalePrice === $maxSalePrice) {
-                        // Giá sale_price đều bằng nhau
-                        $product->priceRange = "$" . number_format($minSalePrice);
-                    } elseif ($minSalePrice === $maxImportPrice) {
-                        // Giá sale_price thấp nhất bằng giá display_import_price cao nhất
-                        $product->priceRange = "$" . number_format($minSalePrice);
-                    } elseif ($maxSalePrice === $minImportPrice) {
-                        // Giá sale_price cao nhất bằng giá display_import_price thấp nhất
-                        $product->priceRange = "$" . number_format($maxSalePrice);
-                    } else {
-                        // Giá sale_price khác nhau
-                        $product->priceRange = "$" . number_format($minSalePrice) . " - $" . number_format($maxSalePrice);
-                    }
-                }
-                return $product;
-            });
-        // Tính toán giá nhỏ nhất và lớn nhất của các sản phẩm
-        list($minPriceProduct, $maxPriceProduct) = $this->calculatePriceRange($products);
-
-        // Trả về view cùng với các biến dữ liệu
-        return view('user.filterProduct', compact('listCategory', 'listProduct', 'listBrand', 'maxPriceProduct', 'minPriceProduct', 'listColor','newProducts'));
+        $products = $productsQuery->paginate(12);
+        $minPriceProduct = $products->map(function ($product) {
+            return priceProduct($product);
+        })->min();
+        $maxPriceProduct = $products->map(function ($product) {
+            return priceProduct($product);
+        })->max();
+        return view('user.filterProduct', compact(
+            'listCategory',
+            'listProduct',
+            'listBrand',
+            'maxPriceProduct',
+            'minPriceProduct',
+            'listColor',
+            'products' // Truyền danh sách sản phẩm đã phân trang
+        ));
     }
+
 
 
 
@@ -178,7 +167,7 @@ class FilterProductController extends Controller
             })
             ->where('products.is_active', 1)
             ->select('products.*', 'product_files.file_name as image');
-        
+
         if ($request->has('color') && $request->color != '') {
             $query->whereHas('product_files', function ($query) use ($request) {
                 $query->where('value', $request->color); // Lọc theo màu
@@ -297,6 +286,10 @@ class FilterProductController extends Controller
 
             return $product;
         });
+        $products = $products->map(function ($product) {
+            $product->productID = route('product.detail', ['product' => $product->id]);
+            return $product;
+        });
 
         return response()->json([
 
@@ -305,6 +298,88 @@ class FilterProductController extends Controller
             'maxPrice' => $maxPriceProduct,
         ]);
     }
+
+    public function getBestSellingProducts()
+    {
+
+
+        $products = Product::join('product_categories', 'products.id', '=', 'product_categories.product_id')
+            ->join('categories', 'product_categories.category_id', '=', 'categories.id')
+            ->leftJoin('product_files', function ($join) {
+                $join->on('product_files.product_id', '=', 'products.id')
+                    ->where('product_files.is_default', 1)
+                    ->where('product_files.file_type', 'image');
+            })
+            ->where('categories.fixed', 0)
+            ->with(['product_files', 'product_variants'])
+            ->select('products.*', 'product_files.file_name as image')
+            ->get();
+        // Tính toán giá trị min và max từ các sản phẩm
+        list($minPriceProduct, $maxPriceProduct) = $this->calculatePriceRange($products);
+
+        // Xử lý đường dẫn ảnh cho mỗi sản phẩm
+        $products = $products->map(function ($product) {
+            $product->productURL = route('product.detail', ['product' => $product->id]);
+            // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
+            if ($product->image) {
+                $product->image_url = asset('uploads/products/images/' . $product->image);
+            } else {
+                $product->image_url = null; // Nếu không có ảnh thì để null
+            }
+
+            return $product;
+        });
+
+        // Trả về dữ liệu JSON
+        return response()->json([
+            'products' => $products,
+            'minPrice' => $minPriceProduct,
+            'maxPrice' => $maxPriceProduct,
+        ]);
+    }
+
+    public function getProductDetails($id)
+    {
+        // Lấy thông tin sản phẩm
+        $product = Product::with(['product_variants', 'product_files'])
+            ->leftJoin('product_files', function ($join) {
+                $join->on('product_files.product_id', '=', 'products.id')
+                    ->where('product_files.is_default', 1)
+                    ->where('product_files.file_type', 'image');
+            })
+            ->where('products.id', $id)
+            ->where('products.is_active', 1)
+            ->select('products.*', 'product_files.file_name as image')
+            ->first();
+
+        // Nếu không tìm thấy sản phẩm
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        // Xử lý các hình ảnh sản phẩm
+        $productImages = Product_file::where('product_id', $product->id)
+            ->where('file_type', 'image')
+            ->get();
+
+        $imageUrls = $productImages->map(function ($image) {
+            return asset('uploads/products/images/' . $image->file_name);
+        });
+
+        // Trả về dữ liệu sản phẩm cùng với danh sách hình ảnh
+        return response()->json([
+            'product' => [
+                'name' => $product->name,
+                'price' => $product->price,
+                'old_price' => $product->old_price,
+                'description' => $product->description,
+                'images' => $imageUrls, // Trả về danh sách ảnh
+                'sizes' => ['S', 'M', 'L', 'XL'], // Ví dụ về kích thước (nên lấy từ cơ sở dữ liệu)
+                'colors' => ['red', 'blue', 'green'], // Ví dụ về màu sắc (nên lấy từ cơ sở dữ liệu)
+            ],
+        ]);
+    }
+
 
 
     public function getProductsByCategory($id)
@@ -324,49 +399,14 @@ class FilterProductController extends Controller
             'products' => $products,
         ]);
     }
-    function priceProduct($product)
-    {
-        $salePrices = $product->product_variants->pluck('sale_price');
-        $importPrices = $product->product_variants->pluck('regular_price');
 
-        $minSalePrice = $salePrices->min();
-        $maxSalePrice = $salePrices->max();
-        $minImportPrice = $importPrices->min();
-        $maxImportPrice = $importPrices->max();
-
-        if ($salePrices->every(fn($price) => $price === null)) {
-            // Tất cả sale_price đều là null
-            return "$" . number_format($minImportPrice) . " - $" . number_format($maxImportPrice);
-        } elseif ($salePrices->contains(null)) {
-            // Có sale_price null
-            if ($minSalePrice === null) {
-                return $maxSalePrice === $minImportPrice
-                    ? "$" . number_format($maxSalePrice)
-                    : "$" . number_format($minImportPrice) . " - $" . number_format($maxSalePrice);
-            } elseif ($maxSalePrice === null) {
-                return $minSalePrice === $maxImportPrice
-                    ? "$" . number_format($minSalePrice)
-                    : "$" . number_format($minSalePrice) . " - $" . number_format($maxImportPrice);
-            } else {
-                return $minImportPrice === $maxSalePrice
-                    ? "$" . number_format($minImportPrice)
-                    : "$" . number_format($maxSalePrice) . " - $" . number_format($maxImportPrice);
-            }
-        } else {
-            // Có sale_price cho tất cả
-            if ($minSalePrice === $maxSalePrice || $minSalePrice === $maxImportPrice || $maxSalePrice === $minImportPrice) {
-                return "$" . number_format(min($minSalePrice, $maxSalePrice, $minImportPrice, $maxImportPrice));
-            }
-            return "$" . number_format($minSalePrice) . " - $" . number_format($maxSalePrice);
-        }
-    }
 
     public function sortProducts(Request $request)
-{
-    // Mặc định sắp xếp theo "Sản phẩm bán chạy"
-    $sortBy = $request->input('sort_by', 'best_selling');
-    
-    $query = Product::with(['product_variants', 'product_files'])
+    {
+        // Mặc định sắp xếp theo "Sản phẩm bán chạy"
+        $sortBy = $request->input('sort_by', 'best_selling');
+
+        $query = Product::with(['product_variants', 'product_files'])
             ->leftJoin('product_files', function ($join) {
                 $join->on('product_files.product_id', '=', 'products.id')
                     ->where('product_files.is_default', 1)
@@ -374,26 +414,35 @@ class FilterProductController extends Controller
             })
             ->where('products.is_active', 1)
             ->select('products.*', 'product_files.file_name as image');
-    // Tạo query builder để lấy danh sách sản phẩm
+        // Tạo query builder để lấy danh sách sản phẩm
 
-    switch ($sortBy) {
-        case 'alphabetical_desc':
-            $query->orderByDesc('name');
-            break;
-        default:
-            // Sắp xếp theo mặc định (sản phẩm bán chạy hoặc tiêu chí khác)
-            $query->orderByDesc('sales_count');
-            break;
+        switch ($sortBy) {
+            case 'alphabetical_desc':
+                $query->orderByDesc('name');
+                break;
+            default:
+                // Sắp xếp theo mặc định (sản phẩm bán chạy hoặc tiêu chí khác)
+                $query->orderByDesc('sales_count');
+                break;
+        }
+
+        // Lấy danh sách sản phẩm đã sắp xếp
+        $products = $query->get();
+
+        // Trả về kết quả dưới dạng JSON để cập nhật giao diện người dùng
+        return response()->json([
+            'products' => $products
+        ]);
     }
 
-    // Lấy danh sách sản phẩm đã sắp xếp
-    $products = $query->get();
+    // public function showProductDetails($id)
+    // {
+    //     $product = Product::with(['images', 'sizes', 'colors'])->findOrFail($id);  // Tải thông tin sản phẩm và các mối quan hệ
 
-    // Trả về kết quả dưới dạng JSON để cập nhật giao diện người dùng
-    return response()->json([
-        'products' => $products
-    ]);
-}
+    //     return response()->json([
+    //         'product' => $product
+    //     ]);
+    // }
 
     public function getColor() {}
     /**

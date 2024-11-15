@@ -104,14 +104,15 @@ class AttributeValueController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Attribute_valueRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         if ($request->isMethod('PUT')) {
             $params = $request->except('_token', '_method');
             $attribute_value = Attribute_value::findOrFail($id);
-            dd($attribute_value);
+            // dd($attribute_value);
             $attribute_value->update($params);
-            return redirect()->route('admin.attribute_values.edit', $attribute_value->id)
+            $attribute_id = $attribute_value->attribute_id;
+            return redirect()->route('admin.attribute_values.show', $attribute_id)
                 ->with('statusSuccess', 'Cập nhật giá trị thuộc tính thành công!');
         }
     }
