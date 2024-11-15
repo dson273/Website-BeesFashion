@@ -268,21 +268,18 @@ class CategoryController extends Controller
     }
     public function fake_sales(Request $request, $id)
     {
-        // Kiểm tra và xác nhận dữ liệu
+
         $validated = $request->validate([
-            'fake_sales' => 'required|integer|min:1', 
+            'fake_sales' => 'required|integer|min:1',
         ]);
     
         try {
-            $getQuantity = $validated['fake_sales'];
+            $newFakeSales = $validated['fake_sales']; // Lấy số lượng nhập từ request
     
             $product = Product::findOrFail($id);
     
-            $currentFakeSales = $product->fake_sales; // Lấy số lượng ảo hiện tại
-            $newFakeSales = $currentFakeSales + $getQuantity; // Cộng số lượng mới vào
-    
             $product->update([
-                'fake_sales' => $newFakeSales
+                'fake_sales' => $newFakeSales,
             ]);
     
             // Trả về thông báo thành công
@@ -292,5 +289,4 @@ class CategoryController extends Controller
             return redirect()->back()->with('statusError', 'Có lỗi xảy ra, vui lòng thử lại!');
         }
     }
-    
 }
