@@ -11,10 +11,10 @@ function loadAllProducts() {
             renderProducts(products, globalMinPrice, globalMaxPrice);
 
             // Hiển thị giá toàn cục
-            const priceRangeElement = document.getElementById("price-range");
-            priceRangeElement.innerHTML = globalMinPrice === globalMaxPrice
-                ? `Giá: $${globalMinPrice}`
-                : `Giá: $${globalMinPrice} - $${globalMaxPrice}`;
+            // const priceRangeElement = document.getElementById("price-range");
+            // priceRangeElement.innerHTML = globalMinPrice === globalMaxPrice
+            //     ? `Giá: $${globalMinPrice}`
+            //     : `Giá: $${globalMinPrice} - $${globalMaxPrice}`;
         },
         error: function (error) {
             console.error("Có lỗi xảy ra khi lấy sản phẩm:", error);
@@ -92,11 +92,11 @@ addEventListener("DOMContentLoaded", (event) => {
 
 
 
-
 // Hàm hiển thị sản phẩm
 function renderProducts(products) {
     const productGrid = $('.grid-section');
     productGrid.empty(); // Xóa nội dung hiện tại
+
     if (!Array.isArray(products) || products.length === 0) {
         productGrid.html(`
             <div class="justify-content-center">
@@ -106,6 +106,8 @@ function renderProducts(products) {
         `);
         return;
     }
+
+  
     products.forEach(product => {
         const minPrice = product.variant_sale_price_min !== null
             ? Number(product.variant_sale_price_min).toLocaleString()
@@ -113,7 +115,7 @@ function renderProducts(products) {
         const maxPrice = product.variant_sale_price_max !== null
             ? Number(product.variant_sale_price_max).toLocaleString()
             : "N/A";
-        
+
         const displayPrice = minPrice === maxPrice ? `${minPrice}đ` : `${minPrice}đ - ${maxPrice}đ`;
         
         const productHTML = `
@@ -323,11 +325,11 @@ function filterProducts() {
 
 }
 
+
 // document.querySelector('.wishlist-icon').addEventListener('click', function () {
 //     alert(123);
 //     this.classList.toggle('selected');
 // });
-
 
 // $(document).ready(function() {
 //     // Bắt sự kiện click cho các nút "Bán chạy" và "Mới nhất"

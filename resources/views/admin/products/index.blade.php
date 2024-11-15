@@ -84,7 +84,9 @@ Danh sách sản phẩm
                             <td>
                                 <img src="{{asset('uploads/products/images/'.$product->mainImage)}}" alt="" width="100" height="100">
                             </td>
-                            <td>{{$product->name}}</td>
+                            <td>
+                                <a class="cspt" href="{{route('admin.products.show',$product->id)}}">{{$product->name}}</a>
+                            </td>
                             <td>{{$product->view}}</td>
                             <td>{{$product->product_variants_count}}</td>
                             <td>{{$product->total_sold}}</td>
