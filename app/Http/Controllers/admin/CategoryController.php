@@ -274,7 +274,7 @@ class CategoryController extends Controller
         ]);
     
         try {
-            $newFakeSales = $validated['fake_sales']; // Lấy số lượng mới từ request
+            $newFakeSales = $validated['fake_sales']; // Lấy số lượng nhập từ request
     
             $product = Product::findOrFail($id);
     
