@@ -246,6 +246,7 @@ function getAllBrands() {
             success: function (response) {
                 if (response.status == 200) {
                     brands = response.data;
+                    console.log(brands);
                 } else {
                     console.log(response.message);
                 }
@@ -262,7 +263,7 @@ function getAllBrands() {
 //-------------------------------------------------------Load all brand to html-----------------------------------------------------------
 async function loadAllBrands() {
     await getAllBrands();
-    if (brands.length) {
+    if (brands.length > 0) {
         const container = document.createElement("div");
         container.classList.add("listBrands");
         brands.forEach(function (brand) {
@@ -286,6 +287,8 @@ async function loadAllBrands() {
             container.appendChild(item);
         })
         document.getElementById("contentBrandContainer").appendChild(container);
+    } else {
+        console.log("Không có thương hiệu nào để hiển thị!");
     }
 }
 loadAllBrands();
@@ -355,8 +358,11 @@ $(document).on('click', '#addNewBrandBtn', async function () {
         $('.container-spinner').removeClass('hidden');
         try {
             const result = await createNewBrandByAjax(brandName);
-            if (result && checkNewBrandName) {  // Chỉ thực hiện nếu `result` là true
-                $('#contentBrandContainer').find('.listBrands')[0].remove();
+            if (result && checkNewBrandName) {
+                var listBrands = $('#contentBrandContainer').find('.listBrands')[0];
+                if (listBrands) {
+                    listBrands.remove();
+                }
                 loadAllBrands();
                 $('.brandName').val('');
                 notification('success', 'Create new brand successfully!', 'Successfully!', '1000');
@@ -3362,23 +3368,29 @@ $(document).on('click', '#publishBtn', async function () {
 
     // Nếu tất cả các dữ liệu hợp lệ, thêm chúng vào `productData`
     if (checkData) {
-        productData.baseInformation.sku = productSku;
-        productData.baseInformation.name = productName;
-        productData.baseInformation.description = productDescription;
-        productData.baseInformation.status = productActive;
-        productData.image = mainImageFile;
-        productData.images = selectedImages;
-        productData.videos = selectedVideos;
-        productData.variations = variationDataHasBeenSaved;
-        console.log(productData);
-        $('.container-spinner').removeClass('hidden');
+        var checkNumberOfUploadedFiles = 1;
+        checkNumberOfUploadedFiles += selectedImages.length + selectedVideos.length + variationDataHasBeenSaved.length;
+        if (checkNumberOfUploadedFiles >= 20) {
+            notification('warning', 'Số lượng file gửi lên quá giới hạn, mỗi lần chỉ được gửi tối đa 20 files', 'Quá nhiều files được gửi lên!', '5000');
+        } else {
+            productData.baseInformation.sku = productSku;
+            productData.baseInformation.name = productName;
+            productData.baseInformation.description = productDescription;
+            productData.baseInformation.status = productActive;
+            productData.image = mainImageFile;
+            productData.images = selectedImages;
+            productData.videos = selectedVideos;
+            productData.variations = variationDataHasBeenSaved;
+            console.log(productData);
+            $('.container-spinner').removeClass('hidden');
 
-        try {
-            await createNewProduct(productData);
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            $('.container-spinner').addClass('hidden');
+            try {
+                await createNewProduct(productData);
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                $('.container-spinner').addClass('hidden');
+            }
         }
     } else {
         notification('error', 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại!', 'Error!', '3000');
