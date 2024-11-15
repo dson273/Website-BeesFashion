@@ -43,7 +43,7 @@
                                     <th>Tên sản phẩm</th>
                                     <th>Hình Ảnh</th>
                                     <th>Mô tả sản phẩm</th>
-                                    <th>Số đơn hiện tại</th>
+                                    <th>Số đơn ảo</th>
                                     <th>Tạo đơn ảo</th>
                                     <th>Thao tác</th>
                                 </tr>
@@ -66,7 +66,6 @@
                                                 <button type="submit" class="btn btn-success btn-sm d-inline-block w-25">Xác nhận</button>
                                             </form>
                                         </td>
-
                                         <td>
                                             <form action="{{ route('admin.categories.remove', $item->id) }}" method="POST"
                                                 onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
