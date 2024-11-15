@@ -25,11 +25,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //lấy toàn bộ sản phẩm
 Route::get('products/all', [FilterProductController::class, 'getAllProducts']);
+Route::get('products/bestselingproduct', [FilterProductController::class, 'getBestSellingProducts']);
 //lọc theo danh mục
 
 //hiển thị sản phẩm sau khi lọc
 Route::get('products/filter', [FilterProductController::class, 'filterProduct']);
 Route::get('/products/sort', [FilterProductController::class, 'sortProducts']);
+Route::get('/product/{id}', [FilterProductController::class, 'getProductDetails']);
 Route::get('/favorite', [WishlistController::class, 'getAllFavotited']);
-
 
