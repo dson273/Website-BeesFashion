@@ -11,6 +11,8 @@ class CategoryComposer
     {
         $categoryLimit = Category::whereNull('parent_category_id')
             ->where('fixed', 1)
+            ->where('is_active', 1)
+            ->orderBy('created_at', 'DESC')
             ->get();
         $view->with('categoryLimit', $categoryLimit);
     }

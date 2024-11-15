@@ -1,5 +1,5 @@
   @if ($parentCategory->categoryChildrent->count())
-      <ul class="nav-submenu">
+
           @foreach ($parentCategory->categoryChildrent as $categoryChild)
               <li>
                   <a href="#">{{ $categoryChild->name }}</a>
@@ -8,5 +8,5 @@
                   @endif
               </li>
           @endforeach
-      </ul>
+    
   @endif

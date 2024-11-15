@@ -3,7 +3,7 @@
     @csrf
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Danh sách sản phẩm</h5>
@@ -28,13 +28,12 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $item->name }}</td>
-                                        <td><img src="{{ asset('uploads/products/images/' . $item->product_files[0]->file_name) }}" width="50px"
-                                                alt=""></td>
+                                        <td><img src="{{ asset('uploads/products/images/' . $item->product_files[0]->file_name) }}"
+                                                width="50px" alt=""></td>
                                         <td>{{ $item->description }}</td>
                                         <td>
                                             @if (in_array($item->id, $bestSellingProductIds))
-                                            <i class="fa-solid fa-x text-danger"></i>
-
+                                                <i class="fa-solid fa-x text-danger"></i>
                                             @else
                                                 <input type="checkbox" name="product_ids[]" value="{{ $item->id }}">
                                             @endif

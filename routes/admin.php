@@ -84,6 +84,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('categories/product/{id}', [CategoryController::class, 'product'])->name('categories.product');
     Route::post('categories/updateBestSelling', [CategoryController::class, 'updateBestSelling'])->name('categories.updateBestSelling');
     Route::delete('categories/{id}/remove', [CategoryController::class, 'remove'])->name('categories.remove');
+    Route::post('categories/{id}/fake_sales', [CategoryController::class, 'fake_sales'])->name('categories.fake_sales');
     // });
 
     //=======================================================Quản lý thuộc tính=======================================================
@@ -116,7 +117,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('import_history', ImportHistoryController::class);
     Route::post('import_history/update', [ImportHistoryController::class, 'updateQuantity'])
-    ->name('import_history.update');
+        ->name('import_history.update');
 
 
 
