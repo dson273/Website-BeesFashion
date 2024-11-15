@@ -273,7 +273,7 @@
                         </div>
                         <div class="product-tab-content ratio1_3">
                             <div
-                                class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 justify-content-center">
+                                class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4">
                                 <!-- Sản phẩm sẽ được hiển thị ở đây -->
                             </div>
                         </div>
