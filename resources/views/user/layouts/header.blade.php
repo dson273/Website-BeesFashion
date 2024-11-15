@@ -55,22 +55,30 @@
                                 {{-- <li>
                                     <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
                                     </li> --}}
-
-                                @foreach ($categoryLimit as $parentCategory)
-                                    <li class="has-submenu">
-                                        <a class="nav-link" href="#">{{ $parentCategory->name }}
+                                    <li>
+                                        <a class="nav-link" href="{{ route('/') }}">Shop
                                             <i class="fa-solid fa-angle-down"></i>
                                         </a>
-                                      @include('user.layouts.child_menu',['parentCategory' => $parentCategory])
+                                        <ul class="nav-submenu">
+                                            @foreach ($categoryLimit as $parentCategory)
+                                                <li class="has-submenu">
+                                                    <a href="#">{{ $parentCategory->name }}
+                                                    </a>
+                                                    <ul class="nav-childmenu">
+                                                        @include('user.layouts.child_menu', ['parentCategory' => $parentCategory])
+                                                    </ul>
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                     </li>
-                                @endforeach
-
+                              
+                                  
 
                                 {{-- <li>
                                     <a class="nav-link" href="product-detail.html">Product <span> <i
                                                 class="fa-solid fa-angle-down"></i></span></a>
-                                    </li> --}}
-                                {{-- <li>
+                                    </li>
+                                <li>
                                         <a class="nav-link" href="#">Page <span> <i
                                                     class="fa-solid fa-angle-down"></i></span></a>
                                         <ul class="nav-submenu">
@@ -82,8 +90,8 @@
                                             <li> <a href="order-success.html">Order Success</a></li>
                                             <li> <a href="order-tracking.html">Order Tracking</a></li>
 
-                                    </li> --}}
-                                {{-- <li> <a href="check-out.html">Check Out</a></li>
+                                    </li>
+                                <li> <a href="check-out.html">Check Out</a></li>
                                     <li> <a href="about-us.html">About Us</a></li>
                                     <li> <a href="404.html">404 </a></li>
                                     <li> <a href="cart.html">cart </a></li>
@@ -101,6 +109,7 @@
                             </ul>
 
                         </nav>
+  
 
                         <div class="sub_header">
                             <div class="toggle-nav" id="toggle-nav"><i

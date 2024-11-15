@@ -4,10 +4,10 @@ function loadAllProducts() {
         method: 'GET',
         success: function (response) {
             const products = response.products; // Danh sách sản phẩm
-            const globalMinPrice = response.minPriceProduct; // Giá nhỏ nhất toàn cục
-            const globalMaxPrice = response.maxPriceProduct; // Giá lớn nhất toàn cục
+            const globalMinPrice = response.minPrice; // Giá nhỏ nhất toàn cục
+            const globalMaxPrice = response.maxPrice; // Giá lớn nhất toàn cục
 
-            // Gọi hàm renderProducts và truyền vào các tham số
+            console.log(response.products);
             renderProducts(products, globalMinPrice, globalMaxPrice);
 
             // Hiển thị giá toàn cục
@@ -21,7 +21,6 @@ function loadAllProducts() {
         }
     });
 }
-
 $(document).ready(function () {
 
 
@@ -29,70 +28,71 @@ $(document).ready(function () {
 });
 //hiển thị thanh trượt theo giá
 const onInput = (parent, e) => {
-    const slides = parent.querySelectorAll("input[type='range']");
+    const slides = parent.querySelectorAll("input");
     const min = parseFloat(slides[0].min);
     const max = parseFloat(slides[1].max);
-
+  
     let slide1 = parseFloat(slides[0].value);
     let slide2 = parseFloat(slides[1].value);
-
-    // Tính phần trăm vị trí của giá trị trên thanh kéo
-    const percentageMin = ((slide1 - min) / (max - min)) * 100;
-    const percentageMax = ((slide2 - min) / (max - min)) * 100;
-
-    // Đặt giá trị CSS cho thanh kéo
+  
+    const percentageMin = (slide1 / (max - min)) * 100;
+    const percentageMax = (slide2 / (max - min)) * 100;
+  
+    console.log("percentageMin", percentageMin, "slide1", slide1);
     parent.style.setProperty("--range-slider-value-low", percentageMin);
     parent.style.setProperty("--range-slider-value-high", percentageMax);
-
-    // Đảm bảo slide1 <= slide2
+  
     if (slide1 > slide2) {
-        const tmp = slide2;
-        slide2 = slide1;
-        slide1 = tmp;
-
-        if (e?.currentTarget === slides[0]) {
-            slides[0].insertAdjacentElement("beforebegin", slides[1]);
-        } else {
-            slides[1].insertAdjacentElement("afterend", slides[0]);
-        }
+      const tmp = slide2;
+      slide2 = slide1;
+      slide1 = tmp;
+  
+      if (e?.currentTarget === slides[0]) {
+        slides[0].insertAdjacentElement("beforebegin", slides[1]);
+      } else {
+        slides[1].insertAdjacentElement("afterend", slides[0]);
+      }
     }
-
-    // Cập nhật hiển thị giá trị trên giao diện
+  
     const displayElement = parent.querySelector(".range-slider-display");
     if (displayElement) {
-        displayElement.setAttribute("data-low", slide1);
-        displayElement.setAttribute("data-high", slide2);
+      displayElement.setAttribute("data-low", slide1);
+      displayElement.setAttribute("data-high", slide2);
     }
-
-    // Cập nhật hiển thị giá trên thanh trượt
-    $('#price-display').text(`Giá: $${slide1} - $${slide2}`);
-
-    // Gọi hàm lọc sản phẩm
-    filterProducts(slide1, slide2);
-};
-
-addEventListener("DOMContentLoaded", (event) => {
+  };
+  
+  addEventListener("DOMContentLoaded", (event) => {
     document.querySelectorAll(".range-slider").forEach((range) =>
-        range.querySelectorAll("input").forEach((input) => {
-            if (input.type === "range") {
-                input.oninput = (e) => onInput(range, e);
-                onInput(range);
-            }
-        })
+      range.querySelectorAll("input").forEach((input) => {
+        if (input.type === "range") {
+          input.oninput = (e) => onInput(range, e);
+          onInput(range);
+        }
+      })
     );
-});
+  });
 
 
 
 // Hàm hiển thị sản phẩm
-function renderProducts(products, globalMinPrice, globalMaxPrice) {
+function renderProducts(products) {
     const productGrid = $('.grid-section');
     productGrid.empty(); // Xóa nội dung hiện tại
+    
 
     if (!Array.isArray(products) || products.length === 0) {
-        productGrid.html('<p>Không có sản phẩm nào</p>');
+        productGrid.html(`
+            
+                <div>
+                    <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/search/a60759ad1dabe909c46a.png" alt="timmm" >
+                    <p >Hic. Không có sản phẩm nào. Bạn thử tắt điều kiện lọc và tìm lại nhé?</p>
+                </div>
+            
+        `);
         return;
     }
+    
+    
 
     products.forEach(product => {
         const minPrice = product.variant_sale_price_min !== null
@@ -103,48 +103,47 @@ function renderProducts(products, globalMinPrice, globalMaxPrice) {
             : "N/A";
 
         const displayPrice = minPrice === maxPrice ? `$${minPrice}` : `$${minPrice} - $${maxPrice}`;
-
         const productHTML = `
                 <div>
                     <div class="product-box-3">
                         <div class="img-wrapper">
-                            <div class="label-block"><a class="label-2 wishlist-icon"
-                                    href="javascript:void(0)" tabindex="0"><i class="iconsax"
-                                        data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip"
-                                        data-bs-title="Add to Wishlist"></i></a></div>
-                            <div class="product-image">
-                                <a class="pro-first" href="product.html"> 
-                                    <img class="bg-img" src="../assets/images/product/product-3/1.jpg" alt="product">
+                            <div class="label-block">
+                                <a class="label-2 wishlist-icon"  >
+                                    <i title="Thêm vào yêu thích" class="fa-regular fa-heart"   data-bs-title="Add to Wishlist"></i>
+                                    <i title="Thêm vào yêu thích" class="fa-solid fa-heartt"  data-bs-title="Add to Wishlist"></i>
                                 </a>
                             </div>
+
+                            <div class="product-image">
+                                <a class="pro-first" href="${ product.productURL }"> 
+                                    <img class="bg-img" src="${product.image_url}"alt="product">
+                                </a>
+                                <a class="pro-sec" href="${ product.productURL }"> 
+                                    <img class="bg-img" src="${product.image_url}"alt="product">
+                                 </a>
+                            </div>
+                            
                             <div class="cart-info-icon"> 
                                 <a href="#" data-bs-toggle="modal"data-bs-target="#addtocart" tabindex="0">
-                                    <i class="iconsax"data-icon="basket-2" aria-hidden="true" data-bs-toggle="tooltip"data-bs-title="Add to card"></i>
+                                    <i title="Thêm vào giỏ hàng" class="fa-solid fa-cart-shopping"data-icon="basket-2" aria-hidden="true" data-bs-toggle="tooltip"data-bs-title="Add to card"></i>
                                 </a>
-                                <a href="compare.html"tabindex="0">                                          
-                                    <i class="iconsax" data-icon="arrow-up-down"aria-hidden="true" data-bs-toggle="tooltip"data-bs-title="Compare"></i>                                     
-                                </a>
-                                <a href="#"
-                                    data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i
-                                        class="iconsax" data-icon="eye" aria-hidden="true"
-                                        data-bs-toggle="tooltip" data-bs-title="Quick View"></i>
-                                </a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0">
+                                    <i title="Chi tiết sản phẩm" class="fa-regular fa-eye" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i>
+                                </a>                               
                             </div>
+                            
                         </div>
                         <div class="product-detail">
-                            <ul class="rating">
-                                <li><i class="fa-solid fa-star"></i></li>
-                                <li><i class="fa-solid fa-star"></i></li>
-                                <li><i class="fa-solid fa-star"></i></li>
-                                <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                <li><i class="fa-regular fa-star"></i></li>
-                                <li>4.3</li>
-                            </ul>
+                            
                             <a href="">
                                 <h6>${product.name}</h6>
                             </a>
-                            <p class="list-per">${product.description}</p>
-                            <p id="price-range">Giá: ${displayPrice}</p>
+                            <ul class="ratingd d-flex">
+                                <li><p id="price-range">Giá: ${displayPrice}</p></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                            </ul>
+
+                            
                             <div class="listing-button"> <a class="btn" href="cart.html">Quick Shop </a>
                             </div>
                         </div>
@@ -154,8 +153,8 @@ function renderProducts(products, globalMinPrice, globalMaxPrice) {
         productGrid.append(productHTML); // Thêm sản phẩm vào lưới
     });
 
-    console.log(`Giá nhỏ nhất toàn cục: $${Number(globalMinPrice).toLocaleString()}`);
-    console.log(`Giá lớn nhất toàn cục: $${Number(globalMaxPrice).toLocaleString()}`);
+    // console.log(`Giá nhỏ nhất toàn cục: $${Number(globalMinPrice).toLocaleString()}`);
+    // console.log(`Giá lớn nhất toàn cục: $${Number(globalMaxPrice).toLocaleString()}`);
 }
 
 
@@ -170,6 +169,8 @@ function toggleChildCategories(parentId) {
     });
     filterProducts();
 }
+
+
 
 
 // Hàm lọc sản phẩm
@@ -190,6 +191,10 @@ function filterProducts() {
         selectedBrands.push($(this).val());
     });
 
+    // Lấy giá trị màu đã chọn
+    $('.color-option').on('click', function() {
+        var selectedColor = $(this).data('color');
+    });
     // lấy giá 
     $('.range-slider-input').on('change', function () {
         const currentMinPrice = $('#range-slider-min').val();
@@ -199,7 +204,7 @@ function filterProducts() {
         $('.price-display').text(`Giá: ${currentMinPrice} - ${currentMaxPrice}`);
 
         // Gọi hàm filterProducts để lọc sản phẩm dựa trên giá trị thanh kéo mới
-        filterProducts(currentMinPrice, currentMaxPrice);
+        // filterProducts(currentMinPrice, currentMaxPrice);
     });
 
 
@@ -219,26 +224,27 @@ function filterProducts() {
             name: searchInput,
             categories: selectedCategories.join(','), // Nối các ID danh mục
             brands: selectedBrands.join(','), // Danh sách ID thương hiệu
-            minPriceProduct: minPrice, // Sử dụng giá min từ thanh kéo
-            maxPriceProduct: maxPrice  // Sử dụng giá max từ thanh kéo
+            //color: selectedColor,// Truyền màu vào
+            // minPriceProduct: minPrice, // Sử dụng giá min từ thanh kéo
+            // maxPriceProduct: maxPrice  // Sử dụng giá max từ thanh kéo
         },
         success: function (response) {
             // Kiểm tra cấu trúc của response để đảm bảo dữ liệu cần thiết tồn tại
             console.log("Response:", response);
 
             // Sử dụng default nếu không tồn tại
-            const globalMinPrice = response.data?.minPriceProduct ?? minPrice;
-            const globalMaxPrice = response.data?.maxPriceProduct ?? maxPrice;
+            // const globalMinPrice = response.data?.minPriceProduct ?? minPrice;
+            // const globalMaxPrice = response.data?.maxPriceProduct ?? maxPrice;
             const products = response.listProduct || response;
 
             // Cập nhật lại giá trị của thanh kéo nếu cần
-            $('#range-slider-min').attr('min', globalMinPrice).attr('max', globalMaxPrice).val(minPrice);
-            $('#range-slider-max').attr('min', globalMinPrice).attr('max', globalMaxPrice).val(maxPrice);
+            // $('#range-slider-min').attr('min', globalMinPrice).attr('max', globalMaxPrice).val(minPrice);
+            // $('#range-slider-max').attr('min', globalMinPrice).attr('max', globalMaxPrice).val(maxPrice);
 
             // Gọi hàm renderProducts và truyền vào các tham số
-            console.log(globalMinPrice, ' - ', globalMaxPrice);
+            // console.log(globalMinPrice, ' - ', globalMaxPrice);
             console.log("Sản phẩm sau khi lọc:", products);
-            renderProducts(products, globalMinPrice, globalMaxPrice); // Hiển thị sản phẩm đã lọc
+            renderProducts(products); // Hiển thị sản phẩm đã lọc, globalMinPrice, globalMaxPrice
         },
         error: function (xhr) {
             console.error("Có lỗi xảy ra: ", xhr);
@@ -247,11 +253,84 @@ function filterProducts() {
 
 }
 
+document.querySelector('.wishlist-icon').addEventListener('click', function() {
+    alert(123);
+    this.classList.toggle('selected');
+});
+// $(document).ready(function() {
+//     // Bắt sự kiện click cho các nút "Bán chạy" và "Mới nhất"
+//     $('#filterBestSelling').on('click', function() {
+//         sortProducts('best_selling');
+//     });
 
+//     $('#filterNewArrivals').on('click', function() {
+//         sortProducts('new_arrivals');
+//     });
 
+//     // Bắt sự kiện thay đổi giá trong dropdown
+//     $('#priceSort').on('change', function() {
+//         var sortOption = $(this).val();
+//         sortProducts(sortOption);
+//     });
+
+//     // Hàm sắp xếp sản phẩm
+//     function sortProducts(sortOption) {
+//         let productsUrl = '/api/products';  // Đường dẫn API hoặc URL chứa sản phẩm
+//         let sortBy = '';
+
+//         // Kiểm tra lựa chọn
+//         if (sortOption === 'best_selling') {
+//             sortBy = 'best_selling';
+//         } else if (sortOption === 'new_arrivals') {
+//             sortBy = 'new_arrivals';
+//         } else if (sortOption === 'price_asc') {
+//             sortBy = 'price_asc';
+//         } else if (sortOption === 'price_desc') {
+//             sortBy = 'price_desc';
+//         }
+
+//         // Gọi API hoặc cập nhật lại danh sách sản phẩm
+//         $.ajax({
+//             url: productsUrl,
+//             method: 'GET',
+//             data: {
+//                 sort: sortBy
+//             },
+//             success: function(response) {
+//                 // Cập nhật giao diện với sản phẩm mới
+//                 updateProductGrid(response.products);
+//             },
+//             error: function(error) {
+//                 console.error("Có lỗi xảy ra khi tải sản phẩm", error);
+//             }
+//         });
+//     }
+// });
+
+// function updateProductList(products) {
+//     // Cập nhật DOM với danh sách sản phẩm mới
+//      // Xóa danh sách sản phẩm hiện tại
+
+//     renderProducts(products);
+// }
+
+// document.getElementById('priceSort').addEventListener('change', function() {
+//     const priceSortValue = this.value;
+//     const priceDefaultOption = document.querySelector('option[value="price_default"]');
+
+//     // Kiểm tra giá trị đã chọn và ẩn/hiển thị tùy chọn 'Giá'
+//     if (priceSortValue === 'price_asc' || priceSortValue === 'price_desc') {
+//         // Nếu chọn "Giá Thấp - Cao" hoặc "Giá Cao - Thấp", ẩn tùy chọn "Giá"
+//         priceDefaultOption.style.display = 'none';
+//     } else {
+//         // Nếu quay lại lựa chọn "Giá", hiển thị lại tùy chọn này
+//         priceDefaultOption.style.display = 'block';
+//     }
+// });
 
 //, #min-price, #max-price
 // Event listeners cho các bộ lọc
 $('#search-input').on('keyup', filterProducts); // Thay 'change' bằng 'keyup'
 $('.custom-checkbox, .color-checkbox, .brand-checkbox').on('change', filterProducts);
+
 
