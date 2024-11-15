@@ -36,36 +36,50 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Hình Ảnh</th>
-                                <th>Mô tả sản phẩm</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach ($bestSellingProducts as $index => $item)
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td><img src="{{ asset('uploads/products/images/' . $item->product_files[0]->file_name) }}" width="100px" alt="">
-                                    </td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>
-                                        <form action="{{ route('admin.categories.remove', $item->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                        </form>
-                                    </td>
+                                    <th>#</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Hình Ảnh</th>
+                                    <th>Mô tả sản phẩm</th>
+                                    <th>Số đơn hiện tại</th>
+                                    <th>Tạo đơn ảo</th>
+                                    <th>Thao tác</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+
+                            <tbody>
+                                @foreach ($bestSellingProducts as $index => $item)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td><img src="{{ asset('uploads/products/images/' . $item->product_files[0]->file_name) }}"
+                                                width="100px" alt="">
+                                        </td>
+                                        <td>{{ $item->description }}</td>
+                                        <td>{{ $item->fake_sales }} đơn</td>
+                                        <td>
+                                            <form action="{{ route('admin.categories.fake_sales', $item->id) }}" method="POST" onsubmit="return confirm('Bạn có muốn thay đổi không?')">
+                                                @csrf
+                                                <input type="number" name="fake_sales" class="form-control form-control-sm d-inline-block w-50" placeholder="Số lượng" min="1">
+                                                <button type="submit" class="btn btn-success btn-sm d-inline-block w-25">Xác nhận</button>
+                                            </form>
+                                        </td>
+
+                                        <td>
+                                            <form action="{{ route('admin.categories.remove', $item->id) }}" method="POST"
+                                                onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"><i
+                                                        class="fa fa-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                 </div>
             </div>
         </div>
