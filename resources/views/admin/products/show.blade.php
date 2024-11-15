@@ -34,7 +34,7 @@ Chi tiết sản phẩm
     </h1>
     <p class="mb-2">Below is the product detail</p>
     <div class="mb-2 d-flex justify-content-start">
-        <a href="{{route('admin.products.index')}}" class="btn btn-secondary text-white text-decoration-none"><i class="fas fa-arrow-left mr-1"></i>Back</a>
+        <a href="javascript:history.back()" class="btn btn-secondary text-white text-decoration-none"><i class="fas fa-arrow-left mr-1"></i>Back</a>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">

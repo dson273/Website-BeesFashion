@@ -5,25 +5,24 @@ Tạo mới sản phẩm
 @endsection
 
 @section('style-libs')
-<link rel="stylesheet" href="{{asset('css/admin/product/create.css')}}">
+<link rel="stylesheet" href="{{asset('css/admin/product/edit.css')}}">
 @endsection
 
 
 @section('script-libs')
-<script src="{{asset('js/admin/product/create.js')}}"></script>
+<script src="{{asset('js/admin/product/edit.js')}}"></script>
 @endsection
 
 @section('content')
 <div class="mb-2 ml-3">
     <a href="{{route('admin.products.index')}}" class="btn btn-dark text-white text-decoration-none"><i class="fas fa-arrow-left"></i> Quay lại</a>
-    <!-- <a href="{{route('admin.getAllAttributes')}}" class="btn btn-dark text-white text-decoration-none"><i class="fas fa-arrow-left"></i> Quay lại</a> -->
 </div>
 <div class="card shadow mb-4">
-    <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Create new product</h1>
+    <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Edit product <b class="titleOldProductName"></b></h1>
     <div class="card-body">
-        <form id="uploadForm" action="{{route('admin.products.store')}}" method="POST" enctype="multipart/form-data">
+        <form id="uploadForm" method="POST" enctype="multipart/form-data">
             <div class="mt-1 d-flex justify-content-end">
-                <span class="btn btn-success" id="publishBtn">Publish</span>
+                <span class="btn btn-success hidden" id="publishBtn">Publish</span>
             </div>
             @csrf
             <div class="mt-3 shadow mb-3 bg-body-tertiary rounded">
@@ -33,21 +32,25 @@ Tạo mới sản phẩm
                 </div>
                 <div class="d-flex flex-row mt-2 p-3 justify-content-between" id="baseProduct" data-baseProduct="show">
                     <div class="w-50">
+                        <div class="mb-3" hidden>
+                            <label for="" class="form-label">ID</label>
+                            <input type="text" name="id" class="form-control" id="oldProductId" placeholder="Enter Id for product" value="{{$id}}">
+                        </div>
                         <div class="mb-3">
                             <label for="" class="form-label">SKU</label>
-                            <input type="text" name="sku" class="form-control productSku" placeholder="Enter SKU for product">
+                            <input type="text" name="sku" class="form-control oldProductSku" placeholder="Enter SKU for product">
                         </div>
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Product name</label>
-                            <input type="text" name="name" class="form-control productName" placeholder="Enter name for product">
+                            <input type="text" name="name" class="form-control oldProductName" placeholder="Enter name for product">
                         </div>
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Description</label>
-                            <textarea name="description" id="productDescription" cols="40" rows="4" class="form-control descriptionProduct" placeholder="Enter description for product"></textarea>
+                            <textarea name="description" class="form-control oldProductDescription" id="oldProductDescription" cols="40" rows="4" placeholder="Enter description for product"></textarea>
                         </div>
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Status</label>
-                            <input type="checkbox" name="is_active" class="productActive" checked>
+                            <input type="checkbox" name="is_active" class="oldProductActive">
                         </div>
                         <div class="shadow bg-body-tertiary rounded mb-3" id="category-container">
                             <div class="w-100 border-bottom p-2 d-flex justify-content-between align-items-center cspt no-select hoverTextBlack productCategoryTitle">
@@ -167,7 +170,7 @@ Tạo mới sản phẩm
                             </div>
                         </div>
                         <div id="attributeItems">
-                            <div class="border-bottom attributeItem" data-status="show">
+                            <!-- <div class="border-bottom attributeItem" data-status="show">
                                 <div class="d-flex justify-content-between cspt border-bottom align-items-center p-1 attributeItemTittle no-select">
                                     <span class="d-flex align-items-center attributeTitle commonTitle">New attribute</span>
                                     <div class="d-flex align-items-center">
@@ -187,7 +190,7 @@ Tạo mới sản phẩm
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="mt-3">
                             <span class="btn btn-primary btn-sm disabledButton" id="saveAttributesBtn">Save attributes</span>
@@ -199,17 +202,17 @@ Tạo mới sản phẩm
                         <li class="text-primary">Variations</li>
                         <div class="mt-2 border-bottom d-flex flex-row pb-3 align-items-center justify-content-between">
                             <div class="d-flex flex-row">
-                                <span class="btn btn-primary btn-sm mr-2 no-wrap disabledButton" id="generateVariations">Generate variations</span>
-                                <span class="btn btn-primary btn-sm mr-2 no-wrap disabledButton" id="addManually"> Add manually</span>
+                                <span class="btn btn-primary btn-sm mr-2 no-wrap" id="generateVariations">Generate variations</span>
+                                <span class="btn btn-primary btn-sm mr-2 no-wrap" id="addManually"> Add manually</span>
                             </div>
                         </div>
-                        <p align="center" class="notificationNoVariationsYet">No variations yet. Generate them from all added attributes or add a new variation manually.</p>
+                        <p align="center" class="notificationNoVariationsYet hidden">No variations yet. Generate them from all added attributes or add a new variation manually.</p>
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div>
                                 <p class="notificationQuantityVariations mr-5"></p>
                             </div>
                             <div class="d-flex flex-column align-items-end w-25">
-                                <select name="" id="" class="form-control controlVariationsSelect bg-primary btn-sm text-white hidden">
+                                <select name="" id="" class="form-control controlVariationsSelect bg-primary btn-sm text-white">
                                     <option value="">Control</option>
                                     <option value="1" class="addImportPriceForVariationsNoHaveValue">Nhập "giá nhập" cho tất cả các biến thể chưa có giá nhập</option>
                                     <option value="2" class="addRegularPriceForVariationsNoHaveValue">Nhập "giá bán thông thường" cho tất cả các biến thể chưa có giá bán thông thường</option>
@@ -229,7 +232,7 @@ Tạo mới sản phẩm
                                     <option value="7" class="addSalePriceForAllVariations">Enter "sale price" for all variants</option>
                                     <option value="8" class="addStockForAllVariations">Enter "quantity" for all variants</option> -->
                                 </select>
-                                <span class="btn btn-danger btn-sm mt-2 no-wrap deleteAllVariations hidden">Delete all variations</span>
+                                <span class="btn btn-danger btn-sm mt-2 no-wrap deleteAllVariations">Delete all variations</span>
                             </div>
                         </div>
                         <div id="variations" class="pt-2">
@@ -318,8 +321,8 @@ Tạo mới sản phẩm
                             </div>
                         </div>
                         <div>
-                            <span class="btn btn-primary btn-sm checkVariationsStatus hidden">Check</span>
-                            <span class="btn btn-success btn-sm disabledButton saveVariations hidden">Save variations</span>
+                            <span class="btn btn-primary btn-sm checkVariationsStatus">Check</span>
+                            <span class="btn btn-success btn-sm disabledButton saveVariations">Save variations</span>
                         </div>
                     </div>
                 </div>
