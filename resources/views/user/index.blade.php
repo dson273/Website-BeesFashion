@@ -208,7 +208,6 @@
                                     <!-- Sản phẩm bán chạy -->
                                     <div class="tab-pane fade" id="features-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
-
                                             @foreach ($products as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
@@ -271,14 +270,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             @endforeach
                                         </div>
                                     </div>
                                     <!-- Sản phẩm có lượt xem nhiều -->
                                     <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
-
                                             @foreach ($topProducts as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">

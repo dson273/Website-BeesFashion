@@ -116,7 +116,7 @@
                 </div>
             </div>
         </div>
-
+      
     </div>
     <!-- /.container-fluid -->
     @include('admin.vouchers.create')

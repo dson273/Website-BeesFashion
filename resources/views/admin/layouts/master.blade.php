@@ -131,7 +131,7 @@
         };
         //Route variable SHOW
         const routeImportingGoods = "{{route('admin.importingGoods')}}";
-        //Route variable CREATE
+        //Route variable CREATE and EDIT
         const routeGetAllAttributes = "{{route('admin.getAllAttributes')}}";
 
         const routeGetAllCategories = "{{route('admin.getAllCategories')}}";
@@ -142,20 +142,22 @@
         const routeCreateNewBrand = "{{route('admin.createNewBrand')}}";
         const routeCheckBrandById = "{{route('admin.checkBrandById')}}";
 
-        const routeGetSkuProduct = "{{route('admin.getSkuProduct')}}";
-        const routeGetSkuProductVariation = "{{route('admin.getSkuProductVariation')}}";
+        const routeGetProductSku = "{{route('admin.getProductSku')}}";
+        const routeGetProductVariationSku = "{{route('admin.getProductVariationSku')}}";
 
-        const routeStoreProduct = "{{route('admin.products.store')}}";
-
-        function routeReturnGetAllAttributeValuesById(id) {
-            return "{{ route('admin.getAllAttributeValuesById', ':id') }}".replace(':id', id);
-        }
-
-        function routeReturnAddNewAttributeValueById(id) {
-            return "{{ route('admin.addNewAttributeValueById', ':id') }}".replace(':id', id);
-        }
-
+        const routeGetAllAttributeValuesById = "{{ route('admin.getAllAttributeValuesById') }}";
+        const routeAddNewAttributeValueById = "{{ route('admin.addNewAttributeValueById') }}";
         const csrf = "{{ csrf_token() }}";
+
+        //Route variable CREATE
+        const routeStoreProduct = "{{route('admin.products.store')}}";
+        //Route variable EDIT
+        const routeGetOldProductData = "{{route('admin.getOldProductData')}}";
+
+        function returnRouteUpdateProduct(id) {
+            return "{{route('admin.products.update',':id')}}".replace(':id', id);
+        }
+
         //Thông báo cố định
     </script>
 
@@ -166,18 +168,24 @@
         })
     </script>
 
-    <!-- AnimeJs -->
+    <!-- AnimeJs 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.js"></script>-->
 
     <!-- Tinymce -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.0.0/tinymce.min.js"></script>
     <script>
         tinymce.init({
-            selector: '#descriptionProduct',
-            plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            selector: '#productDescription',
+            plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount',
             automatic_uploads: true,
+            license_key: 'gpl'
         });
+        // tinymce.init({
+        //     selector: '#oldProductDescription',
+        //     plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+        //     automatic_uploads: true,
+        // });
     </script>
 
     <!-- RateYo -->

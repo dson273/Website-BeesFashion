@@ -253,9 +253,9 @@ class CategoryController extends Controller
         return back()->with('statusError', 'Không có sản phẩm nào được chọn.');
     }
 
-    public function remove($productId)
+    public function remove($id)
     {
-        $product = Product::find($productId);
+        $product = Product::find($id);
 
         if ($product) {
             // Gỡ sản phẩm khỏi danh mục bán chạy
@@ -266,4 +266,31 @@ class CategoryController extends Controller
 
         return back()->with('statusError', 'Không tìm thấy danh mục bán chạy.');
     }
+    public function fake_sales(Request $request, $id)
+    {
+        // Kiểm tra và xác nhận dữ liệu
+        $validated = $request->validate([
+            'fake_sales' => 'required|integer|min:1', 
+        ]);
+    
+        try {
+            $getQuantity = $validated['fake_sales'];
+    
+            $product = Product::findOrFail($id);
+    
+            $currentFakeSales = $product->fake_sales; // Lấy số lượng ảo hiện tại
+            $newFakeSales = $currentFakeSales + $getQuantity; // Cộng số lượng mới vào
+    
+            $product->update([
+                'fake_sales' => $newFakeSales
+            ]);
+    
+            // Trả về thông báo thành công
+            return redirect()->back()->with('statusSuccess', 'Số lượng ảo đã được cập nhật!');
+        } catch (\Exception $e) {
+            // Nếu có lỗi, trả về thông báo lỗi
+            return redirect()->back()->with('statusError', 'Có lỗi xảy ra, vui lòng thử lại!');
+        }
+    }
+    
 }

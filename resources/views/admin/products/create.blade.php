@@ -35,19 +35,19 @@ Tạo mới sản phẩm
                     <div class="w-50">
                         <div class="mb-3">
                             <label for="" class="form-label">SKU</label>
-                            <input type="text" name="sku" class="form-control skuProduct" placeholder="Enter SKU for product">
+                            <input type="text" name="sku" class="form-control productSku" placeholder="Enter SKU for product">
                         </div>
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Product name</label>
-                            <input type="text" name="name" class="form-control nameProduct" placeholder="Enter name for product">
+                            <input type="text" name="name" class="form-control productName" placeholder="Enter name for product">
                         </div>
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Description</label>
-                            <textarea name="description" id="descriptionProduct" cols="40" rows="4" class="form-control descriptionProduct" placeholder="Enter description for product"></textarea>
+                            <textarea name="description" id="productDescription" cols="40" rows="4" class="form-control descriptionProduct" placeholder="Enter description for product"></textarea>
                         </div>
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Status</label>
-                            <input type="checkbox" name="is_active" class="activeProduct" checked>
+                            <input type="checkbox" name="is_active" class="productActive" checked>
                         </div>
                         <div class="shadow bg-body-tertiary rounded mb-3" id="category-container">
                             <div class="w-100 border-bottom p-2 d-flex justify-content-between align-items-center cspt no-select hoverTextBlack productCategoryTitle">
@@ -160,7 +160,7 @@ Tạo mới sản phẩm
                         <li class="text-primary">Attributes</li>
                         <div class="mt-2 border-bottom d-flex flex-row pb-3">
                             <span class="btn btn-primary btn-sm mr-2 no-wrap" id="addNewAttribute">Add new</span>
-                            <div class="w-50" id="loadAttributeDatas">
+                            <div class="w-50" id="loadAttributeData">
                                 <select name="selectAddExisting" id="selectAddExisting" multiple>
                                     <option data-placeholder="true"></option>
                                 </select>

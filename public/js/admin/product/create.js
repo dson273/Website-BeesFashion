@@ -246,6 +246,7 @@ function getAllBrands() {
             success: function (response) {
                 if (response.status == 200) {
                     brands = response.data;
+                    console.log(brands);
                 } else {
                     console.log(response.message);
                 }
@@ -262,7 +263,7 @@ function getAllBrands() {
 //-------------------------------------------------------Load all brand to html-----------------------------------------------------------
 async function loadAllBrands() {
     await getAllBrands();
-    if (brands.length) {
+    if (brands.length > 0) {
         const container = document.createElement("div");
         container.classList.add("listBrands");
         brands.forEach(function (brand) {
@@ -286,6 +287,8 @@ async function loadAllBrands() {
             container.appendChild(item);
         })
         document.getElementById("contentBrandContainer").appendChild(container);
+    } else {
+        console.log("Không có thương hiệu nào để hiển thị!");
     }
 }
 loadAllBrands();
@@ -355,8 +358,11 @@ $(document).on('click', '#addNewBrandBtn', async function () {
         $('.container-spinner').removeClass('hidden');
         try {
             const result = await createNewBrandByAjax(brandName);
-            if (result && checkNewBrandName) {  // Chỉ thực hiện nếu `result` là true
-                $('#contentBrandContainer').find('.listBrands')[0].remove();
+            if (result && checkNewBrandName) {
+                var listBrands = $('#contentBrandContainer').find('.listBrands')[0];
+                if (listBrands) {
+                    listBrands.remove();
+                }
                 loadAllBrands();
                 $('.brandName').val('');
                 notification('success', 'Create new brand successfully!', 'Successfully!', '1000');
@@ -740,11 +746,11 @@ $(function () {
         },
     });
 });
-//Load Attribute Datas
+//Load Attribute Data
 let attributeDataOptions = [];
 const seenAttributeIds = new Set();
 
-function getAttributeDatas() {
+function getAttributeData() {
     $.ajax({
         url: routeGetAllAttributes,
         method: "POST",
@@ -772,10 +778,10 @@ function getAttributeDatas() {
         }
     })
 }
-getAttributeDatas();
-setInterval(getAttributeDatas, 5000);
+getAttributeData();
+setInterval(getAttributeData, 5000);
 
-$('#loadAttributeDatas').click(function () {
+$('#loadAttributeData').click(function () {
     var selectAddExisting = document.getElementById('selectAddExisting');
 
     var checkOption = $('#selectAddExisting').find('.optionSelectAddExisting');
@@ -1376,12 +1382,12 @@ var attributeValueDataOptionsMap = {};
 //Tạo đối tượng lưu trữ id của các giá trị thuộc tính
 const seenAttributeValueIds = new Set();
 //Hàm lấy dữ liệu giá trị thuộc tính từ db
-function getAttributeValueDatas(id, attributeId) {
+function getAttributeValueData(attributeId) {
     //Một Promise là một đối tượng đại diện cho một giá trị có thể chưa có sẵn ngay lập tức, nhưng sẽ có vào một thời điểm nào đó trong tương lai (ví dụ như kết quả của một cuộc gọi AJAX).
     //resolve và reject là hai hàm được truyền vào bên trong Promise để báo hiệu rằng công việc bất đồng bộ (ở đây là cuộc gọi AJAX) đã hoàn tất
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: routeReturnGetAllAttributeValuesById(id),
+            url: routeGetAllAttributeValuesById,
             method: "POST",
             data: {
                 attribute_id: attributeId,
@@ -1428,7 +1434,7 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
         var attributeId = parseInt(elementId.match(/\d+/)[0]);
 
         // Gọi hàm lấy dữ liệu giá trị thuộc tính từ DB và đợi kết quả trả về
-        await getAttributeValueDatas(attributeId, attributeId);
+        await getAttributeValueData(attributeId);
 
         // Lấy thẻ select bằng id đã lấy trước đó
         var selectExistingAttributeValues = document.getElementById(elementId);
@@ -1453,11 +1459,11 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
                     // Nếu id của giá trị thuộc tính chưa có trong tập hợp existingOptionIds thì tạo và thêm option mới
                     if (!existingOptionIds.has(item.id.toString())) {
                         console.log(item['id']);
-                        console.log(item['value']);
+                        console.log(item['name']);
 
                         var option = document.createElement('option');
                         option.value = item['id'];
-                        option.text = item['value'];
+                        option.text = item['name'];
                         option.className = 'optionSelectAttributeValueAddExisting';
                         selectExistingAttributeValues.appendChild(option);
                     }
@@ -1472,7 +1478,7 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
                 attributeValueDataOptionsMap[attributeId].forEach(function (item) {
                     var option = document.createElement('option');
                     option.value = item['id'];
-                    option.text = item['value'];
+                    option.text = item['name'];
                     option.className = 'optionSelectAttributeValueAddExisting';
                     selectExistingAttributeValues.appendChild(option);
                 });
@@ -1529,7 +1535,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
     //Tạo biến lưu trữ id của thẻ select trong phần tử đang được click
     var selectElementId = $(this).closest('.attributeItemContent').find('.selectExistingAttributeValues').attr('id');
     var attributeId = parseInt(selectElementId.match(/\d+/)[0]);
-    await getAttributeValueDatas(attributeId, attributeId);
+    await getAttributeValueData(attributeId);
     console.log(attributeValueDataOptionsMap);
 
     // Lấy thẻ select bằng id đã lấy trước đó
@@ -1556,7 +1562,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
                 if (!existingOptionIds.has(item.id.toString())) {
                     var option = document.createElement('option');
                     option.value = item['id'];
-                    option.text = item['value'];
+                    option.text = item['name'];
                     option.className = 'optionSelectAttributeValueAddExisting';
                     selectExistingAttributeValues.appendChild(option);
                 }
@@ -1571,7 +1577,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
             attributeValueDataOptionsMap[attributeId].forEach(function (item) {
                 var option = document.createElement('option');
                 option.value = item['id'];
-                option.text = item['value'];
+                option.text = item['name'];
                 option.className = 'optionSelectAttributeValueAddExisting';
                 selectExistingAttributeValues.appendChild(option);
             });
@@ -1599,7 +1605,7 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
     var newSelectedOptionData = [];
     attributeValueDataOptionsMap[attributeId].forEach(function (item) {
         newSelectedOptionData.push({
-            text: item.value,
+            text: item.name,
             value: item.id
         });
     })
@@ -1613,13 +1619,13 @@ $(document).on('click', '.selectNoneAttributeValuesBtn', function () {
     selectStorage[selectElementId].instance.setSelected([]);
 })
 //-----------------------------------Hàm thêm mới giá trị thuộc tính-----------------------------------
-function addNewAttributeValue(id, newAttributeValue) {
+function addNewAttributeValue(attributeId, newAttributeValue) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: routeReturnAddNewAttributeValueById(id),
+            url: routeAddNewAttributeValueById,
             method: 'POST',
             data: {
-                attribute_id: id,
+                attribute_id: attributeId,
                 new_attribute_value: newAttributeValue,
                 _token: csrf
             },
@@ -1627,10 +1633,10 @@ function addNewAttributeValue(id, newAttributeValue) {
                 if (response.status == 400) {
                     notification('error', response.message, 'Error');
                 } else {
-                    if (!attributeValueDataOptionsMap[id]) {
-                        attributeValueDataOptionsMap[id] = [];
+                    if (!attributeValueDataOptionsMap[attributeId]) {
+                        attributeValueDataOptionsMap[attributeId] = [];
                     }
-                    attributeValueDataOptionsMap[id].push(response.data);
+                    attributeValueDataOptionsMap[attributeId].push(response.data);
                     notification('success', response.message, 'Successfully');
                 }
                 resolve();
@@ -1706,6 +1712,56 @@ $('#saveAttributesBtn').click(function () {
                     }
                 }
             })
+            attributeData.forEach(function (attributeItem) {
+                var attributeIdOrName = attributeItem['attributeId'] ? attributeItem['attributeId'] : attributeItem['attributeName'];
+                var variationItems = $('#variations').find('.variationItem');
+                variationItems.each(function () {
+                    var listSelects = $(this).find('.listSelects');
+                    var selects = listSelects.find('select');
+                    var getSelectIdOrNameOfVariation = [];
+                    console.log(selects);
+
+                    selects.each(function () {
+                        var selectItem = $(this);
+                        var selectIdOrName = selectItem.attr('id') ? selectItem.attr('id') : selectItem.attr('name');
+                        getSelectIdOrNameOfVariation.push(selectIdOrName);
+                    })
+                    if (!getSelectIdOrNameOfVariation.includes(attributeIdOrName.toString())) {
+                        var newSelect = $('<select>').addClass('form-control mr-2');
+                        attributeItem['attributeId'] ? newSelect.attr('id', attributeItem['attributeId']) : newSelect.attr('name', attributeItem['attributeName']);
+                        var newOption = $('<option>').text("Select " + attributeItem['attributeName']);
+                        newSelect.append(newOption);
+                        attributeItem['attributeValues'].forEach(function (attributeValueItem) {
+                            var attributeValueIdOrName = attributeValueItem['attributeValueId'] ? attributeValueItem['attributeValueId'] : attributeValueItem;
+                            var attributeValueName = attributeValueItem['attributeValueName'] ? attributeValueItem['attributeValueName'] : attributeValueItem;
+                            newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName);
+                            newSelect.append(newOption);
+                        })
+                        listSelects.append(newSelect);
+                    } else {
+                        selects.each(function () {
+                            var selectItem = $(this);
+                            var options = selectItem.find('option');
+                            var optionIdOrName = [];
+                            options.each(function () {
+                                var optionItem = $(this);
+                                optionIdOrName.push(optionItem.val());
+                            })
+                            var getSelectIdOrName = selectItem.attr('id') ? selectItem.attr('id') : selectItem.attr('name');
+                            if (getSelectIdOrName == attributeIdOrName) {
+                                attributeItem['attributeValues'].forEach(function (attributeValueItem) {
+                                    var attributeValueIdOrName = attributeValueItem['attributeValueId'] ? attributeValueItem['attributeValueId'] : attributeValueItem;
+                                    var attributeValueName = attributeValueItem['attributeValueName'] ? attributeValueItem['attributeValueName'] : attributeValueItem;
+                                    if (!optionIdOrName.includes(attributeValueIdOrName)) {
+                                        var newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName);
+                                        selectItem.append(newOption);
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            })
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -1777,7 +1833,7 @@ $('#generateVariations').click(function () {
                     divVariationItemTitle.setAttribute('data-status', 'hidden');
 
                     var divSelects = document.createElement('div');
-                    divSelects.className = 'd-flex flex-row align-items-center';
+                    divSelects.className = 'd-flex flex-row align-items-center listSelects';
 
                     var strongIndex = document.createElement('strong');
                     strongIndex.className = 'text-dark mr-2';
@@ -2227,7 +2283,7 @@ $(document).on('click', '#addManually', function () {
                 divVariationItemTitle.setAttribute('data-status', 'hidden');
 
                 var divSelects = document.createElement('div');
-                divSelects.className = 'd-flex flex-row align-items-center';
+                divSelects.className = 'd-flex flex-row align-items-center listSelects';
 
                 var strongIndex = document.createElement('strong');
                 strongIndex.className = 'text-dark mr-2';
@@ -3073,39 +3129,39 @@ $(document).on('click', '.saveVariations', function () {
 })
 //----------------------------------------SUBMIT FORM---------------------------------------
 //-------------------------------------Create product by ajax-------------------------------------
-function createNewProduct(productDatas) {
+function createNewProduct(productData) {
     return new Promise((resolve, reject) => {
         var formData = new FormData();
 
-        // Duyệt qua `productDatas` và thêm vào `formData`
-        formData.append('baseInformation[sku]', productDatas.baseInformation.sku);
-        formData.append('baseInformation[name]', productDatas.baseInformation.name);
-        formData.append('baseInformation[description]', productDatas.baseInformation.description);
-        formData.append('baseInformation[status]', productDatas.baseInformation.status);
+        // Duyệt qua `productData` và thêm vào `formData`
+        formData.append('baseInformation[sku]', productData.baseInformation.sku);
+        formData.append('baseInformation[name]', productData.baseInformation.name);
+        formData.append('baseInformation[description]', productData.baseInformation.description);
+        formData.append('baseInformation[status]', productData.baseInformation.status);
 
         //Thêm thương hiệu
-        formData.append('brandId', productDatas.brandId);
+        formData.append('brandId', productData.brandId);
 
         // Thêm main image
-        formData.append('mainImage', productDatas.image);
+        formData.append('mainImage', productData.image);
 
         // Thêm hình ảnh khác
-        productDatas.images.forEach((image, index) => {
+        productData.images.forEach((image, index) => {
             formData.append(`images[${index}]`, image);
         });
 
         // Thêm video
-        productDatas.videos.forEach((video, index) => {
+        productData.videos.forEach((video, index) => {
             formData.append(`videos[${index}]`, video);
         });
 
         // Thêm các danh mục ID
-        productDatas.categoriesId.forEach((categoryId, index) => {
+        productData.categoriesId.forEach((categoryId, index) => {
             formData.append(`categoriesId[${index}]`, categoryId);
         });
 
         // Thêm các biến thể
-        productDatas.variations.forEach((variation, index) => {
+        productData.variations.forEach((variation, index) => {
             // Thêm các thuộc tính khác của biến thể
             formData.append(`variations[${index}][active]`, variation.active);
             formData.append(`variations[${index}][import_price]`, variation.import_price);
@@ -3162,11 +3218,11 @@ function createNewProduct(productDatas) {
         });
     });
 }
-var statusSkuProduct = true;
-function checkSkuProduct(input) {
+var statusProductSku = true;
+function checkProductSku(input) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: routeGetSkuProduct,
+            url: routeGetProductSku,
             method: "POST",
             data: {
                 sku: input,
@@ -3174,7 +3230,7 @@ function checkSkuProduct(input) {
             },
             success: function (response) {
                 if (response.status == 400) {
-                    statusSkuProduct = false;
+                    statusProductSku = false;
                 }
                 resolve();
             },
@@ -3186,19 +3242,19 @@ function checkSkuProduct(input) {
         });
     })
 }
-$(document).on('change', '.skuProduct', async function () {
-    await checkSkuProduct($(this).val());
-    if (!statusSkuProduct) {
+$(document).on('change', 'productSku', async function () {
+    await checkProductSku($(this).val());
+    if (!statusProductSku) {
         notification('warning', 'Sku is already exists!', 'Warning!', '3000');
-        statusSkuProduct = true;
+        statusProductSku = true;
         $(this).val('');
     }
 })
-var statusSkuProductVariation = true;
-function checkSkuProductVariation(input) {
+var statusProductSkuVariation = true;
+function checkProductSkuVariation(input) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: routeGetSkuProductVariation,
+            url: routeGetProductVariationSku,
             method: "POST",
             data: {
                 sku: input,
@@ -3206,7 +3262,7 @@ function checkSkuProductVariation(input) {
             },
             success: function (response) {
                 if (response.status == 400) {
-                    statusSkuProductVariation = false;
+                    statusProductSkuVariation = false;
                 }
                 resolve();
             },
@@ -3219,15 +3275,15 @@ function checkSkuProductVariation(input) {
     })
 }
 $(document).on('change', '.skuInput', async function () {
-    await checkSkuProductVariation($(this).val());
-    if (!statusSkuProductVariation) {
+    await checkProductSkuVariation($(this).val());
+    if (!statusProductSkuVariation) {
         notification('warning', 'Sku is already exists!', 'Warning!', '3000');
-        statusSkuProductVariation = true;
+        statusProductSkuVariation = true;
         $(this).val('');
     }
 })
 $(document).on('click', '#publishBtn', async function () {
-    var productDatas = {
+    var productData = {
         baseInformation: {
             sku: '',
             name: '',
@@ -3241,31 +3297,31 @@ $(document).on('click', '#publishBtn', async function () {
         brandId: '', // Để rỗng vì đây là mảng
         variations: [] // Để rỗng vì đây là mảng
     };
-    var checkDatas = true;
+    var checkData = true;
 
     // Lấy dữ liệu các trường đầu vào
-    var skuProduct = $('.skuProduct').val();
-    var nameProduct = $('.nameProduct').val();
-    var descriptionProduct = tinymce.get('descriptionProduct').getContent();
-    var activeProduct = $('.activeProduct').prop("checked");
+    var productSku = $('.productSku').val();
+    var productName = $('.productName').val();
+    var productDescription = tinymce.get('productDescription').getContent();
+    var productActive = $('.productActive').prop("checked");
 
     // Kiểm tra tính hợp lệ của các trường
-    if (!skuProduct) {
-        checkDatas = false;
+    if (!productSku) {
+        checkData = false;
         notification('warning', 'Please enter SKU for product!', 'Warning!', '3000');
     }
-    if (!nameProduct) {
-        checkDatas = false;
+    if (!productName) {
+        checkData = false;
         notification('warning', 'Please enter name for product!', 'Warning!', '3000');
     }
-    if (!descriptionProduct) {
-        checkDatas = false;
+    if (!productDescription) {
+        checkData = false;
         notification('warning', 'Please enter description for product!', 'Warning!', '3000');
     }
 
     // Kiểm tra hình ảnh chính
     if (mainImageFile == null) {
-        checkDatas = false;
+        checkData = false;
         notification('warning', 'Please upload product image!', 'Warning!', '3000');
     }
 
@@ -3275,9 +3331,9 @@ $(document).on('click', '#publishBtn', async function () {
             var getCategoryId = $(element).attr('id');
             var checkCategory = await checkCategoryByAjax(getCategoryId);
             if (checkCategory) {
-                productDatas.categoriesId.push(getCategoryId);
+                productData.categoriesId.push(getCategoryId);
             } else {
-                checkDatas = false;
+                checkData = false;
                 notification('error', 'Một danh mục được chọn không tồn tại trong cơ sở dữ liệu!', 'Error!', '3000');
                 break;
             }
@@ -3288,9 +3344,9 @@ $(document).on('click', '#publishBtn', async function () {
             var getBrandId = $(element).attr('id');
             var checkBrand = await checkBrandByAjax(getBrandId);
             if (checkBrand) {
-                productDatas.brandId = getBrandId;
+                productData.brandId = getBrandId;
             } else {
-                checkDatas = false;
+                checkData = false;
                 notification('error', 'Thương hiệu được chọn không tồn tại trong cơ sở dữ liệu!', 'Error!', '3000');
                 break;
             }
@@ -3300,35 +3356,41 @@ $(document).on('click', '#publishBtn', async function () {
     $('.brandItem').each(async function () {
         if ($(this).prop("checked")) {
             var getBrandId = $(this).attr('id');
-            productDatas.brandId = getBrandId;
+            productData.brandId = getBrandId;
         }
     });
 
     // Kiểm tra biến thể sản phẩm
     if (!variationDataHasBeenSaved.length || !saveVariationsStatus) {
-        checkDatas = false;
+        checkData = false;
         notification('warning', "Add at least one variation if you haven't already. If you make any changes to the variation, click the save variations button.", 'Warning!', '3000');
     }
 
-    // Nếu tất cả các dữ liệu hợp lệ, thêm chúng vào `productDatas`
-    if (checkDatas) {
-        productDatas.baseInformation.sku = skuProduct;
-        productDatas.baseInformation.name = nameProduct;
-        productDatas.baseInformation.description = descriptionProduct;
-        productDatas.baseInformation.status = activeProduct;
-        productDatas.image = mainImageFile;
-        productDatas.images = selectedImages;
-        productDatas.videos = selectedVideos;
-        productDatas.variations = variationDataHasBeenSaved;
-        console.log(productDatas);
-        $('.container-spinner').removeClass('hidden');
+    // Nếu tất cả các dữ liệu hợp lệ, thêm chúng vào `productData`
+    if (checkData) {
+        var checkNumberOfUploadedFiles = 1;
+        checkNumberOfUploadedFiles += selectedImages.length + selectedVideos.length + variationDataHasBeenSaved.length;
+        if (checkNumberOfUploadedFiles >= 20) {
+            notification('warning', 'Số lượng file gửi lên quá giới hạn, mỗi lần chỉ được gửi tối đa 20 files', 'Quá nhiều files được gửi lên!', '5000');
+        } else {
+            productData.baseInformation.sku = productSku;
+            productData.baseInformation.name = productName;
+            productData.baseInformation.description = productDescription;
+            productData.baseInformation.status = productActive;
+            productData.image = mainImageFile;
+            productData.images = selectedImages;
+            productData.videos = selectedVideos;
+            productData.variations = variationDataHasBeenSaved;
+            console.log(productData);
+            $('.container-spinner').removeClass('hidden');
 
-        try {
-            await createNewProduct(productDatas);
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            $('.container-spinner').addClass('hidden');
+            try {
+                await createNewProduct(productData);
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                $('.container-spinner').addClass('hidden');
+            }
         }
     } else {
         notification('error', 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại!', 'Error!', '3000');

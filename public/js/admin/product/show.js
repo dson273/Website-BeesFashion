@@ -65,6 +65,9 @@ $(document).on('click', '#doneImportingGoods', function () {
             success: function (response) {
                 if (response.status == 200) {
                     notification('success', response.message, 'Importing gooods successfully!', '1000');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
                 } else {
                     notification('error', response.message, 'Error!', '1000');
                 }

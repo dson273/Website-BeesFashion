@@ -13,6 +13,7 @@ class Product extends Model
         'name',
         'view',
         'description',
+        'fake_sales',
         'is_active',
         'brand_id'
     ];
@@ -61,4 +62,41 @@ class Product extends Model
     {
         return $this->hasMany(Product_view_history::class);
     }
+    public function priceProduct()
+    {
+        $salePrices = $this->product_variants->pluck('sale_price');
+        $importPrices = $this->product_variants->pluck('regular_price');
+
+        $minSalePrice = $salePrices->min();
+        $maxSalePrice = $salePrices->max();
+        $minImportPrice = $importPrices->min();
+        $maxImportPrice = $importPrices->max();
+
+        if ($salePrices->every(fn($price) => $price === null)) {
+            // Tất cả sale_price đều là null
+            return "$" . number_format($minImportPrice) . " - $" . number_format($maxImportPrice);
+        } elseif ($salePrices->contains(null)) {
+            // Có sale_price null
+            if ($minSalePrice === null) {
+                return $maxSalePrice === $minImportPrice
+                    ? "$" . number_format($maxSalePrice)
+                    : "$" . number_format($minImportPrice) . " - $" . number_format($maxSalePrice);
+            } elseif ($maxSalePrice === null) {
+                return $minSalePrice === $maxImportPrice
+                    ? "$" . number_format($minSalePrice)
+                    : "$" . number_format($minSalePrice) . " - $" . number_format($maxImportPrice);
+            } else {
+                return $minImportPrice === $maxSalePrice
+                    ? "$" . number_format($minImportPrice)
+                    : "$" . number_format($maxSalePrice) . " - $" . number_format($maxImportPrice);
+            }
+        } else {
+            // Có sale_price cho tất cả
+            if ($minSalePrice === $maxSalePrice || $minSalePrice === $maxImportPrice || $maxSalePrice === $minImportPrice) {
+                return "$" . number_format(min($minSalePrice, $maxSalePrice, $minImportPrice, $maxImportPrice));
+            }
+            return "$" . number_format($minSalePrice) . " - $" . number_format($maxSalePrice);
+        }
+    }
+
 }

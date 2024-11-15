@@ -1,7 +1,7 @@
 /*!***************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js!./assets/scss/style.scss ***!
   \***************************************************************************************************************************************************************************************/
-  :root {
+:root {
     --light-white: 255, 255, 255;
     --white: 255, 255, 255;
     --black: 0, 0, 0;
@@ -2290,7 +2290,7 @@ header .sub_header .sub_header_dropdown select:focus {
     outline: none
 }
 
-header .box-header{
+header .box-header {
     background-color: #fff;
     box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.2);
 }
@@ -2434,19 +2434,27 @@ header .header-1 .main-menu nav .nav-menu>li .nav-link .lable-nav:before {
     }
 }
 
+/* Minh fix lại css 15/11 */
 header .header-1 .main-menu nav .nav-menu>li .nav-submenu {
     background-color: rgba(var(--light-white), 1);
     border-radius: 6px;
     box-shadow: 0 0 10px 2px rgba(var(--light-color), .05);
-    left: 0;
-    min-width: 260px;
+    left: 50%;
+    min-width: 800px;
     opacity: 0;
-    padding: 10px 0;
+    padding: 10px 20px;
     position: absolute;
     top: 110%;
+    transform: translateX(-50%);
     transition: all .4s ease-in-out;
-    visibility: hidden
+    visibility: hidden;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Chia thành 4 cột */
+    gap: 20px;
 }
+
+
 
 @media screen and (max-width:1199px) {
     header .header-1 .main-menu nav .nav-menu>li .nav-submenu {
@@ -7598,12 +7606,12 @@ footer .footer-1 .social-icon>li:hover a i {
     margin: 20px 0 15px
 }
 
-.selected-variant{
+.selected-variant {
     color: var(--bs-heading-color);
     font-size: calc(10px + .30vw);
 }
 
-.selected-variant p{
+.selected-variant p {
     color: var(--bs-heading-color);
     font-size: calc(10px + .30vw);
 }
@@ -9022,7 +9030,7 @@ footer .footer-1 .social-icon>li:hover a i {
     width: 195px;
 }
 
-.cart-box .box-edit-variant  button{
+.cart-box .box-edit-variant button {
     width: 100%;
     border: none;
     color: rgba(var(--light-color), 1);
@@ -9058,13 +9066,13 @@ footer .footer-1 .social-icon>li:hover a i {
     text-align: center
 }
 
-.cart-progress h6{
+.cart-progress h6 {
     font-weight: bold;
     margin: 4px 0;
     font-size: 20px;
 }
 
-.cart-progress h6 span{
+.cart-progress h6 span {
     font-weight: 500;
     margin: 4px 0;
     Color: rgba(var(--danger-color), 1);
@@ -9164,6 +9172,7 @@ footer .footer-1 .social-icon>li:hover a i {
     Color: rgba(var(--danger-color), 1);
     font-size: 17px;
 }
+
 .cart-bottom p span {
     font-weight: bold;
     Color: rgba(var(--danger-color), 1);
@@ -17776,13 +17785,14 @@ body div canvas:first-child {
 
 /* Custom thêm */
 
-.carousel-item{
+.carousel-item {
     height: 100%;
 }
 
 /* Định dạng cho indicators */
 .carousel-indicators {
-    bottom: 20px; /* Căn dưới */
+    bottom: 20px;
+    /* Căn dưới */
 }
 
 .carousel-indicators button {
@@ -17856,6 +17866,7 @@ body div canvas:first-child {
     color: #fff;
     border-radius: 3px;
 }
+
 .product-detail-box .product-option .reset-button button:hover {
     border: 1px solid rgb(234, 20, 20);
     padding: 0 8px;
@@ -17884,7 +17895,7 @@ body div canvas:first-child {
     display: block;
 }
 
-.box-variant .box-variant-bottom .btn-back{
+.box-variant .box-variant-bottom .btn-back {
     min-width: calc(50% - 5px);
     padding: 7px 7px;
     text-align: center;
@@ -17895,14 +17906,14 @@ body div canvas:first-child {
     font-weight: 500;
 }
 
-.box-variant .box-variant-bottom .btn-back:hover{
+.box-variant .box-variant-bottom .btn-back:hover {
     border: 1px solid rgba(var(--danger-color), 1);
     background-color: rgba(var(--danger-color), 1);
     color: #fff;
     transition: all .4s ease-in-out;
 }
 
-.box-variant .box-variant-bottom .btn-confirm{
+.box-variant .box-variant-bottom .btn-confirm {
     min-width: calc(50% - 5px);
     padding: 7px 7px;
     text-align: center;
@@ -17913,9 +17924,12 @@ body div canvas:first-child {
     cursor: pointer;
     font-weight: 500;
 }
-.box-variant .box-variant-bottom .btn-confirm:hover{
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bóng đổ dưới nút */
-    transform: translateY(-2px); /* Đẩy nút lên một chút khi hover */
+
+.box-variant .box-variant-bottom .btn-confirm:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Bóng đổ dưới nút */
+    transform: translateY(-2px);
+    /* Đẩy nút lên một chút khi hover */
     transition: all .4s ease-in-out;
 }
 
@@ -18036,12 +18050,17 @@ body div canvas:first-child {
     display: inline-block;
     cursor: pointer;
     border: 1px solid rgba(var(--light-border), 1);
-    background-size: cover;      /* Đảm bảo ảnh phủ kín nút */
-    background-position: center; /* Căn giữa ảnh */
+    background-size: cover;
+    /* Đảm bảo ảnh phủ kín nút */
+    background-position: center;
+    /* Căn giữa ảnh */
     transition: border 0.3s;
 }
 
 /* Hiệu ứng khi được chọn */
+.color-options input[type="radio"]:checked+.color-label {
+    border: 1px solid #ff0000;
+    /* Màu viền khi được chọn */
 .color-options input[type="radio"].selected + .color-label {
     border: 1px solid #ff0000; /* Màu viền khi được chọn */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
@@ -18104,30 +18123,32 @@ body div canvas:first-child {
 }
 
 /*  */
-.custom-set-address{
-    border:none;
-    color:rgba(var(--theme-default), 1);
+.custom-set-address {
+    border: none;
+    color: rgba(var(--theme-default), 1);
     background-color: rgba(var(--box-background), 1);
 }
 
 .custom-set-address {
     transition: text-decoration 0.5s ease, color 0.5s ease;
 }
-.custom-set-address:hover{
-    border:none;
-    color:#c28f51;
+
+.custom-set-address:hover {
+    border: none;
+    color: #c28f51;
     background-color: rgba(var(--box-background), 1);
     text-decoration: underline;
 }
-.custom-set-address:disabled{
-    border:none;
+
+.custom-set-address:disabled {
+    border: none;
     color: #b1b1b1;
     background-color: rgba(var(--box-background), 1);
     cursor: no-drop;
     text-decoration: none;
 }
 
-.custom-status-set-address{
+.custom-status-set-address {
     border: 1px solid rgb(234, 20, 20);
     padding: 1px 4px;
     color: rgb(234, 20, 20);
@@ -18136,26 +18157,21 @@ body div canvas:first-child {
 
 /*  */
 .range-slider {
-    --range-slider-value-low-fallback: calc(
-      var(--range-slider-value-low, 0) * 1%
-    );
-    --range-slider-value-high-fallback: calc(
-      var(--range-slider-value-high, 100) * 1%
-    );
+    --range-slider-value-low-fallback: calc(var(--range-slider-value-low, 0) * 1%);
+    --range-slider-value-high-fallback: calc(var(--range-slider-value-high, 100) * 1%);
     height: 24px;
     margin-block: 27px;
     position: relative;
     width: 100%;
-  }
-  .range-slider:before {
+}
+
+.range-slider:before {
     background-color: rgba(var(--theme-default), 0.2);
-    background-image: linear-gradient(
-      to right,
-      transparent var(--range-slider-value-low-fallback),
-      rgba(var(--theme-default), 1) var(--range-slider-value-low-fallback),
-      rgba(var(--theme-default)) var(--range-slider-value-high-fallback),
-      transparent var(--range-slider-value-high-fallback)
-    );
+    background-image: linear-gradient(to right,
+            transparent var(--range-slider-value-low-fallback),
+            rgba(var(--theme-default), 1) var(--range-slider-value-low-fallback),
+            rgba(var(--theme-default)) var(--range-slider-value-high-fallback),
+            transparent var(--range-slider-value-high-fallback));
     border-radius: 4px;
     content: "";
     height: 4px;
@@ -18165,34 +18181,39 @@ body div canvas:first-child {
     position: absolute;
     top: 50%;
     width: 100%;
-  }
-  .range-slider-display {
+}
+
+.range-slider-display {
     pointer-events: none;
-  }
-  .range-slider-display:before {
+}
+
+.range-slider-display:before {
     content: attr(data-span);
     --pos: var(--range-slider-value-low);
     bottom: 100%;
     content: attr(data-low);
     left: var(--range-slider-value-low-fallback);
-  }
-  .range-slider-display:after,
-  .range-slider-display:before {
+}
+
+.range-slider-display:after,
+.range-slider-display:before {
     color: rgba(var(--theme-font-color), 1);
     font-size: calc(15.6px + 0.125vw);
     position: absolute;
     transform: translateX(-50%) translateX(calc(10px * (var(--pos) * -0.04 + 1)));
     white-space: nowrap;
     z-index: 0;
-  }
-  .range-slider-display:after {
+}
+
+.range-slider-display:after {
     content: attr(data-span);
     --pos: var(--range-slider-value-high);
     content: attr(data-high);
     left: var(--range-slider-value-high-fallback);
     top: 100%;
-  }
-  .range-slider-input {
+}
+
+.range-slider-input {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -18206,23 +18227,27 @@ body div canvas:first-child {
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
-  }
-  .range-slider-input:focus,
-  .range-slider-input:focus-visible {
+}
+
+.range-slider-input:focus,
+.range-slider-input:focus-visible {
     border: none;
     outline: none;
-  }
-  .range-slider-input:active::-webkit-slider-thumb {
+}
+
+.range-slider-input:active::-webkit-slider-thumb {
     cursor: grabbing;
     transform: scale(1.2);
-  }
-  .range-slider-input::-webkit-slider-runnable-track {
+}
+
+.range-slider-input::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     appearance: none;
     background-color: transparent;
     border-radius: 0;
-  }
-  .range-slider-input::-webkit-slider-thumb {
+}
+
+.range-slider-input::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     background-color: rgba(var(--theme-default), 1);
@@ -18236,6 +18261,131 @@ body div canvas:first-child {
     -webkit-transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
     transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
     width: 20px;
+}
+
+/* CSS Styling */
+.navbar {
+    position: relative;
+    background-color: #fff;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.menu-item {
+    position: relative;
+    margin-right: 20px;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 600px;
+    /* Tùy chỉnh độ rộng */
+    z-index: 1000;
+    display: flex;
+    gap: 20px;
+    /* Khoảng cách giữa các nhóm danh mục */
+}
+
+.category-group h4 {
+    margin: 0;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.category-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-group ul li {
+    padding: 5px 0;
+}
+
+.menu-item:hover .dropdown {
+    display: flex;
+}
+
+
+/* //csss */
+/* Main container for the dropdown */
+.nav-submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    /* Arrange parent categories in columns */
+    flex-wrap: wrap;
+    width: auto;
+    /* Adjust width as needed */
+}
+
+/* Display submenu on hover */
+.nav-menu>li:hover>.nav-submenu {
+    display: flex;
+}
+
+/* Styling each parent category (column) */
+.has-submenu {
+    margin-right: 20px;
+    min-width: 150px;
+    /* Set minimum width for each column */
+}
+
+/* Styling for parent category links */
+.has-submenu>a {
+    font-weight: bold;
+    color: #333;
+    padding-bottom: 5px;
+    display: block;
+    text-decoration: none;
+}
+
+/* Styling for child categories */
+.nav-childmenu {
+    margin-top: 10px;
+    /* Space between parent and child categories */
+    list-style: none;
+    padding: 0;
+}
+
+/* Styling for each child category item */
+.nav-childmenu li {
+    margin-bottom: 5px;
+}
+
+/* Link styles for child categories */
+.nav-childmenu li a {
+    color: #555;
+    text-decoration: none;
+}
+
+.nav-childmenu li a:hover {
+    color: #007bff;
+}
+
   }
 .ratingd {
     display: flex; /* Chuyển danh sách thành flex container */
@@ -18274,3 +18424,4 @@ body div canvas:first-child {
 .top-filter-menu{
     height: 60px;
 }
+
