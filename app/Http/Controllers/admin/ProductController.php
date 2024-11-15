@@ -166,7 +166,7 @@ class ProductController extends Controller
             $name = $baseInformation['name'] ?? null;
             $description = $baseInformation['description'] ?? null;
             $status = $baseInformation['status'] ?? null;
-            $status = $status ? 1 : 0;
+            $status = $status == "true" ? 1 : 0;
             $brandId = $request->input('brandId');
 
             if ($sku && $name && $description) {
@@ -253,7 +253,7 @@ class ProductController extends Controller
                     $regularPriceVariation = $request->input("variations.$index.regular_price");
                     $salePriceVariation = $request->input("variations.$index.sale_price");
                     $stockVariation = $request->input("variations.$index.stock");
-                    $activeVariation = $request->input("variations.$index.active") ? 1 : 0;
+                    $activeVariation = $request->input("variations.$index.active") == "true" ? 1 : 0;
 
                     // Kiểm tra và lưu ảnh biến thể nếu tồn tại
                     $imageNameHashed = null;
