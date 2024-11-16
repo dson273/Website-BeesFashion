@@ -114,6 +114,8 @@ Route::prefix('admin')->as('admin.')->group(function () {
     //=======================================================Quản lý vouchers=======================================================
     // Route::middleware(['checkPermission:Quản lý vouchers'])->group(function () {
     Route::resource('vouchers', VoucherController::class);
+    Route::post('vouchers/addProductVoucher', [VoucherController::class, 'addProductVoucher'])->name('vouchers.addProductVoucher');
+    Route::delete('vouchers/remove/{productId}/{voucherId}', [VoucherController::class, 'remove'])->name('vouchers.remove');
     Route::get('vouchers/onactive/{id}', [VoucherController::class, 'onActive'])->name('vouchers.onactive');
     Route::get('vouchers/offactive/{id}', [VoucherController::class, 'offActive'])->name('vouchers.offactive');
     // });

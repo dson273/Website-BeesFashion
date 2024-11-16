@@ -46,7 +46,7 @@
                                 <th>Giá Trị Giảm</th>
                                 <th>Số Lượng</th>
                                 <th>Loại Voucher</th>
-                                <th>Giá Tối Thiểu Đơn Hàng</th>
+                                <th>Giá Tối Thiểu</th>
                                 <th>Ngày Bắt Đầu</th>
                                 <th>Ngày Hết Hạn</th>
                                 <th>Trạng thái</th>
@@ -62,7 +62,7 @@
                                 <th>Giá Trị Giảm</th>
                                 <th>Số Lượng</th>
                                 <th>Loại Voucher</th>
-                                <th>Giá Tối Thiểu Đơn Hàng</th>
+                                <th>Giá Tối Thiểu</th>
                                 <th>Ngày Bắt Đầu</th>
                                 <th>Ngày Hết Hạn</th>
                                 <th>Trạng thái</th>
@@ -95,9 +95,11 @@
                                     <td>{{ $item->end_date }}</td>
                                     <td>{{ $item->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
+                                        <a href="{{ route('admin.vouchers.show', $item->id) }}" class="btn btn-success"><i
+                                                class="fa fa-eye"></i></a>
                                         <a href="{{ route($item->is_active ? 'admin.vouchers.offactive' : 'admin.vouchers.onactive', $item->id) }}"
                                             class="btn {{ $item->is_active ? 'btn-danger' : 'btn-success' }}">
-                                            <i class="fa {{ $item->is_active ? 'fa-eye-slash' : 'fa-eye' }}"></i>
+                                            <i class="fa {{ $item->is_active ? 'fa-power-off' : 'fa-power-off' }}"></i>
                                         </a>
                                         <a href="{{ route('admin.vouchers.edit', $item->id) }}" class="btn btn-warning"><i
                                                 class="fa fa-wrench"></i></a>
@@ -116,7 +118,7 @@
                 </div>
             </div>
         </div>
-      
+
     </div>
     <!-- /.container-fluid -->
     @include('admin.vouchers.create')
