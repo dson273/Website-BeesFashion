@@ -21,6 +21,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class, 'product_categories');
     }
+    public function vouchers()
+    {
+        return $this->belongsToMany(Voucher::class, 'product_vouchers');
+    }
     public function brand()
     {
         return $this->belongsTo(Brand::class);

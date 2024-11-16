@@ -24,4 +24,8 @@ class Voucher extends Model
     {
         return $this->hasMany(Product_voucher::class);
     }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_vouchers');
+    }
 }

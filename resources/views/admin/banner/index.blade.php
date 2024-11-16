@@ -69,10 +69,10 @@
                                     <td>
                                         @if ($banner->is_active == 1)
                                             <a href="{{ route('admin.banner.offactive', $banner->id) }}"
-                                                class="btn btn-danger"><i class="fa fa-eye-slash"></i></a>
+                                                class="btn btn-danger"><i class="fa fa-power-off"></i></a>
                                         @else
                                             <a href="{{ route('admin.banner.onactive', $banner->id) }}"
-                                                class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                                class="btn btn-success"><i class="fa fa-power-off"></i></a>
                                         @endif
                                         <a href="{{ route('admin.banner.edit', $banner->id) }}" class="btn btn-warning"><i
                                                 class="fa fa-wrench"></i></a>
