@@ -7550,23 +7550,16 @@ footer .footer-1 .social-icon>li:hover a i {
 }
 
 .product-detail-box .product-option>.box-price-top {
-    margin: 12px 0
+    margin: 0
 }
 
 .product-detail-box .product-option>.box-price-top #price {
     color: rgb(201, 33, 39);
-    font-size: calc(17px + .625vw);
+    font-size: calc(15px + .625vw);
     font-weight: 650;
 }
 
-
-.product-detail-box .product-option>.box-price #sale-price {
-    color: rgb(201, 33, 39);
-    font-size: calc(10px + .625vw);
-    font-weight: 650;
-}
-
-.product-detail-box .product-option>.box-price .regular-price-css {
+.product-detail-box .product-option>.box-price-top #regular {
     color: rgb(163, 163, 163);
     font-size: calc(7px + .525vw);
     padding-bottom: 1px;
@@ -7574,14 +7567,21 @@ footer .footer-1 .social-icon>li:hover a i {
     text-decoration: line-through;
 }
 
-.product-detail-box .product-option>.box-price .regular-price {
+.product-detail-box .product-option>.box-price-top #sale-price {
     color: rgb(201, 33, 39);
-    font-size: calc(10px + .625vw);
+    font-size: calc(15px + .625vw);
     font-weight: 650;
-    text-decoration: none;
 }
 
-.product-detail-box .product-option>.box-price #percent-discount {
+.product-detail-box .product-option>.box-price-top #regular-price {
+    color: rgb(163, 163, 163);
+    font-size: calc(7px + .525vw);
+    padding-bottom: 1px;
+    font-weight: normal;
+    text-decoration: line-through;
+}
+
+.product-detail-box .product-option>.box-price-top #percent-discount {
     background-color: rgba(var(--danger-color), .1);
     border-radius: 4px;
     color: rgba(var(--danger-color), 1);
@@ -7676,7 +7676,6 @@ footer .footer-1 .social-icon>li:hover a i {
 .product-detail-box .product-option .rating ul {
     display: flex;
     gap: 10px;
-    margin: 6px 0 10px
 }
 
 .product-detail-box .product-option .rating ul li {
@@ -17783,9 +17782,32 @@ body div canvas:first-child {
     width: 70%
 }
 
-/* Custom thêm */
-
-.carousel-item {
+/* --------------------------------Custom thêm--------------------------------------------- */
+.css-w60u47{
+    margin: 0px;
+    text-transform: none;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 24px;
+}
+.product-sku{
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+}
+.total-rating{
+    border-left: 2px solid rgb(82, 82, 82);
+    font-weight: 450;
+    padding-left: 5px;
+    color: rgb(82, 82, 82);
+}
+.total-rating span{
+    color: rgb(0, 0, 0);
+}
+.number-star{
+    font-size: 14px;
+    font-weight: 600;
+}
+.carousel-item{
     height: 100%;
 }
 

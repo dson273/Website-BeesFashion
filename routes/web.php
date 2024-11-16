@@ -22,6 +22,7 @@ Route::post('productDetail', [ProductDetailController::class, 'updateInformation
 //Trang thanh toán
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 
+Route::middleware('guest')->group(function () {
 //Đăng ký
 Route::get('register', [RegisterController::class, 'index'])->name('register'); //Trang đăng ký
 Route::post('register', [RegisterController::class, 'register'])->name('register'); //Chức năng đăng ký
@@ -31,7 +32,7 @@ Route::post('login', [LoginController::class, 'login'])->name('login'); //Chức
 //Quên mật khẩu
 Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword'); //Trang quên mật khẩu
 Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
-
+});
 // Route::get('/', action: function () {
 //     return view(view: 'user/index');
 // });
