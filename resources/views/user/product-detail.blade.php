@@ -60,13 +60,17 @@
                                 <div class="move-fast-box d-flex align-items-center gap-1"><img src="../assets/images/gif/fire.gif" alt="">
                                     <p>Move fast!</p>
                                 </div>
-                                <h3>{{ $product->name }} {{ $product->SKU }}</h3>
-
-                                <div class="box-price-top d-flex align-items-end gap-2">
+                                <h1 class="css-w60u47">{{ $product->name }}</h1>
+                                <div class="product-sku mt-1">SKU: {{ $product->SKU }}</div>
+                                <div class="box-price-top d-flex align-items-center gap-2">
                                     <div id="price">{{ $product->priceRange }}</div>
-                                    <div id="discount" class="offer-btn">Hot!</div>
+                                    <div id="regular" class="currency">{{ $product->regularPrice }}</div>
+                                    <div id="discount" class="offer-btn">{{ $product->discountPercent }}</div>
+                                    <div class="currency" id="sale-price"></div>
+                                    <div class="currency" id="regular-price"></div>
+                                    <div class="" id="percent-discount"></div>
                                 </div>
-                                <div class="rating">
+                                <div class="rating mt-2">
                                     <ul>
                                         <li><i class="fa-solid fa-star"> </i>
                                             <i class="fa-solid fa-star"> </i>
@@ -74,7 +78,20 @@
                                             <i class="fa-solid fa-star-half-stroke"></i>
                                             <i class="fa-regular fa-star"></i>
                                         </li>
-                                        <li>(4.7) Rating</li>
+                                        <li>
+                                            <h5 class="number-star">(4.7) Rating</h5>
+                                        </li>
+                                        <li>
+                                            <h5 class="total-rating">
+                                                <span style="font-weight: 800">1</span> đánh giá
+                                            </h5>
+
+                                        </li>
+                                        <li>
+                                            <h5 class="total-rating">
+                                                <span style="font-weight: 800">244</span> đã bán
+                                            </h5>
+                                        </li>
                                     </ul>
                                     <p>Dressing up. People just don't do it anymore. We have to change that. Give me time
                                         and I'll give you a revolution.</p>
@@ -147,29 +164,21 @@
                                         <button class="increment" type="button"><i class="fa-solid fa-plus"></i></button>
                                     </div>
                                     <div class="selected-variant d-flex">
-                                        <p id="update-stock" class="me-1">{{ $total_stock }} </p> sản phẩm có sẵn
+                                        <p id="update-stock" class="me-1" style="color: rgb(0, 181, 120)">{{ $total_stock }} </p> sản phẩm có sẵn
                                     </div>
                                     <!-- Nút "Chọn lại" -->
                                     <div class="reset-button">
                                         <button class="reset_selected">Reset</button>
                                     </div>
                                 </div>
-                                <span class="box-price d-flex align-items-end gap-2">
-                                    <p class="currency mb-3" id="sale-price"></p>
-                                    <p class="currency mb-3" id="regular-price"></p>
-                                    <p class="mb-3" id="percent-discount"></p>
-                                </span>
                                 <div class="d-flex align-items-center w-100 add-cart-box mb-3 gap-2">
-                                    <a class="btn btn_black sm add-to-cart" href="#" title="add product">Add To
-                                        Cart</a>
+                                    <a class="btn btn_black sm add-to-cart" href="#" title="add product">Add To Cart</a>
                                     <a class="btn btn_outline sm" href="#">Buy Now</a>
                                 </div>
                                 <div class="buy-box">
                                     <ul>
-                                        <li> <a href="#"> <i class="fa-regular fa-heart me-2"></i>Add To
-                                                Wishlist</a></li>
-                                        <li> <a href="#"> <i class="fa-solid fa-arrows-rotate me-2"></i>Add To
-                                                Compare</a></li>
+                                        <li> <a href="#"> <i class="fa-regular fa-heart me-2"></i>Add To Wishlist</a></li>
+                                        <li> <a href="#"> <i class="fa-solid fa-arrows-rotate me-2"></i>Add To Compare</a></li>
                                         <li> <a href="#" data-bs-toggle="modal" data-bs-target="#social-box" title="Quick View" tabindex="0"><i
                                                     class="fa-solid fa-share-nodes me-2"></i>Share</a></li>
                                     </ul>
@@ -374,7 +383,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                
+
                                 {{-- Q&A --}}
                                 <div class="tab-pane fade" id="question-tab-pane" role="tabpanel" aria-labelledby="question-tab" tabindex="0">
                                     <div class="question-main-box">
@@ -473,7 +482,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                
+
                                 {{-- Đánh giá --}}
                                 <div class="tab-pane fade" id="Reviews-tab-pane" role="tabpanel" aria-labelledby="Reviews-tab" tabindex="0">
                                     <div class="row gy-4">
@@ -991,216 +1000,171 @@
 @section('script-libs')
     <script src="{{ asset('assets/js/grid-option.js') }}"></script>
     <script>
-        $(document).ready(function(e) {
+        $(document).ready(function() {
             //-----------------------currency------------------------------
             function currency() {
-                var status = true;
                 try {
                     $('.currency').each(function() {
-                        var value = $(this).text();
-                        // Loại bỏ các ký tự không phải số
-                        var numericValue = parseFloat(value.replace(/[^0-9]/g, ''));
-                        // Định dạng số theo định dạng tiền tệ
-                        var formattedValue = new Intl.NumberFormat('vi-VN', {
-                            style: 'currency',
-                            currency: 'VND'
-                        }).format(numericValue);
-                        // Cập nhật giá trị định dạng vào phần tử
-                        $(this).text(formattedValue);
+                        // Lấy giá trị hiện tại
+                        const value = $(this).text().trim();
+                        // Lọc bỏ các ký tự không phải số và dấu phân cách
+                        const numericValue = parseFloat(value.replace(/[^\d]/g, ''));
+                        // Kiểm tra giá trị hợp lệ
+                        if (!isNaN(numericValue)) {
+                            // Định dạng giá trị sang VND
+                            let formattedValue = new Intl.NumberFormat('vi-VN', {
+                                style: 'currency',
+                                currency: 'VND',
+                            }).format(numericValue);
+                            formattedValue = formattedValue.replace(/\s?₫/, 'đ');
+                            $(this).text(formattedValue);
+                        } else {
+                            console.warn('Không thể định dạng giá trị:', value);
+                        }
                     });
-                } catch (e) {
-                    status = false;
+                    return true;
+                } catch (error) {
+                    console.error('Lỗi định dạng tiền tệ:', error);
+                    return false;
                 }
-                return status;
             }
             currency();
 
-            // Biến lưu trữ các biến thể của sản phẩm
-            var variants = @json($array_variants) || [];
-            var attribute_value_ids = [];
-            var current_item_id = 0;
-            var product_id = $('.product_id').val();
-            var total_attributes = $('.total_attributes').val();
-            var total_stock = $("#update-stock").text();
-            var sale_price = $("#sale-price").text();
-            var regular_price = $("#regular-price").text();
-            var percent_discount = $("#percent-discount").text();
-            var variant_selected = false;
-            var variant_id = null;
-            var get_stock_variant_clicked = null;
-            $('#sale-price, #regular-price, #percent-discount').hide();
-            // Khi người dùng chọn một giá trị thuộc tính
-            $(".attribute_item").click(function(e) {
-                if ($(this).hasClass('able')) {
-                    var array_allow_click_attribute_values_id = [];
-                    var attributeValueId = $(this).data("id");
-                    // Kiểm tra nếu đang ở trạng thái active (được chọn)
-                    if ($(this).hasClass('active')) {
-                        $(this).removeClass('active'); // Xóa class active khi bỏ chọn
-                        // Xoá id của thuộc tính được bỏ chọn khỏi mảng
-                        attribute_value_ids = attribute_value_ids.filter(function(item) {
-                            return item != attributeValueId;
-                        });
-                        // Nếu không còn thuộc tính nào được chọn, reset variant_selected
-                        if (attribute_value_ids.length == 0 || variant_selected == true) {
-                            variant_selected = false;
-                            variant_id = null;
-                        }
-                        // Ẩn nút reset khi không còn thuộc tính nào được chọn
-                        if (attribute_value_ids.length == 0) {
-                            $('.reset_selected').hide();
-                        }
-                        // Cập nhật lại giá và số lượng sản phẩm
-                        $('#sale-price, #regular-price, #percent-discount').hide();
-                        $('#update-stock').text(total_stock);
-                        get_stock_variant_clicked = null;
-                        console.log(get_stock_variant_clicked);
-                        //kiểm tra từng phần tử
-                        $('.attribute_item').each(function() {
-                            if (!$(this).hasClass('able')) {
-                                $(this).removeClass('disabled');
-                                $(this).addClass('able');
-                            }
-                        });
-                        // Lọc các biến thể hợp lệ
-                        variants.forEach(function(variant) {
-                            var isSubset = attribute_value_ids.every(function(item) {
-                                return variant['attribute_values'].includes(item);
-                            });
-                            if (isSubset && variant['stock'] > 0) {
-                                variant['attribute_values'].forEach(function(
-                                    item_variant_attribute_value_id) {
-                                    if (!array_allow_click_attribute_values_id.includes(
-                                            item_variant_attribute_value_id)) {
-                                        array_allow_click_attribute_values_id.push(
-                                            item_variant_attribute_value_id);
-                                    }
-                                });
-                            }
-                        });
-                        // Disable các item không hợp lệ
-                        $('.able').each(function() {
-                            var id_item_btn_click = $(this).data('id');
-                            if (!array_allow_click_attribute_values_id.includes(id_item_btn_click)) {
-                                $(this).removeClass('able active').addClass('disabled');
-                            }
-                        });
-                    } else {
-                        var current_item = $(this).closest('.attribute_group').find('.attribute_item.active');
-                        if (current_item.length && current_item.hasClass('active')) {
-                            current_item.removeClass('active');
-                            var current_item_id = current_item.data('id');
+            //------------------------ Global Variables ----------------------
+            const variants = @json($array_variants) || [];
+            let attributeValueIds = [];
+            let variantSelected = false;
+            let variantId = null;
+            let getStockVariantClicked = null;
+            const totalStock = $("#update-stock").text();
+            const productId = $('.product_id').val();
+            $('#sale-price, #regular-price, #percent-discount, .reset_selected').hide()
+            //------------- Đặt lại trạng thái khi bấm nút reset --------------
+            function resetAttributes() {
+                attributeValueIds = [];
+                $('.attribute_item').removeClass('active disabled').addClass('able');
+                $('#update-stock').text(totalStock);
+                $('#sale-price, #regular-price, #percent-discount').hide();
+                $('#price, #regular, #discount').show();
+                $('.reset_selected').hide();
+                variantSelected = false;
+                getStockVariantClicked = null;
+            }
+            //------------- Cập nhật giá và số lượng --------------
+            function updatePrices(response) {
+                const {
+                    sale_price,
+                    regular_price,
+                    stock
+                } = response.data;
+                const percentDiscount = (100 - (sale_price / regular_price * 100)).toFixed(1);
 
-                            // Loại bỏ current_item_id khỏi attribute_value_ids
-                            attribute_value_ids = attribute_value_ids.filter(item => item !== current_item_id);
+                if (variantSelected) {
+                    if (sale_price > 0) {
+                        $('#regular-price').text(regular_price);
+                        $('#sale-price').text(sale_price);
+                        $('#update-stock').text(stock);
+                        $('#percent-discount').text(`-${percentDiscount}%`);
+                    } else {
+                        $('#sale-price').text(regular_price);
+                        $('#regular-price').text(regular_price);
+                        $('#percent-discount').hide();
+                        $('#update-stock').text(stock);
+                    }
+                    currency();
+                }
+            }
+            //-------- Lấy thông tin biến thể dựa trên thuộc tính đã chọn ----------
+            function handleAjax(attributeValueIds) {
+                $.ajax({
+                    url: "{{ route('userProductDetailFocused') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        attribute_value_ids: attributeValueIds,
+                        product_id: productId,
+                    },
+                    success(response) {
+                        if (response.status === "success") {
+                            updatePrices(response);
+                        } else {
+                            $('#update-stock').text(0);
+                            notification('error', 'Sản phẩm không có sẵn', 'Hết hàng');
                         }
-                        // Thêm thuộc tính mới vào mảng
-                        $(this).addClass('active');
-                        attribute_value_ids.push(attributeValueId); // Thêm id thuộc tính vừa chọn vào mảng
-                        // Hiển thị nút reset khi có thuộc tính được chọn
-                        if (attribute_value_ids.length > 0) {
-                            $('.reset_selected').show();
-                        }
-                        //Xử lý lọc thuộc tính khi người dùng chọn
-                        variants.forEach(function(variant) {
-                            var isSubset = attribute_value_ids.every(function(item) {
-                                return variant['attribute_values'].includes(item);
-                            });
-                            if (isSubset && variant['stock'] > 0) {
-                                variant['attribute_values'].forEach(function(
-                                    item_variant_attribute_value_id) {
-                                    if (!array_allow_click_attribute_values_id.includes(
-                                            item_variant_attribute_value_id)) {
-                                        array_allow_click_attribute_values_id.push(
-                                            item_variant_attribute_value_id);
-                                    }
-                                });
-                            }
-                        });
-                        //Kiểm tra xem biến thể có liên kết với nhau không
-                        function arraysEqualUnordered(arr1, arr2) {
-                            if (arr1.length !== arr2.length) return false;
-                            let sortedArr1 = arr1.slice().sort();
-                            let sortedArr2 = arr2.slice().sort();
-                            return sortedArr1.every((value, index) => value === sortedArr2[index]);
-                        }
-                        variants.some(function(variant) {
-                            variant_selected = arraysEqualUnordered(variant['attribute_values'],
-                                attribute_value_ids);
-                            if (variant_selected) {
-                                variant_id = variant['variant_id'];
-                                $('#sale-price, #regular-price, #percent-discount').show();
-                            }
-                            console.log('Trạng thái của variant_selected là: ' + variant_selected);
-                            return variant_selected;
-                        });
-                        // Disable các item không hợp lệ
-                        array_allow_click_attribute_values_id.forEach(function(item) {
-                            $('.able').each(function() {
-                                var id_item_btn_click = $(this).data('id');
-                                if (!array_allow_click_attribute_values_id.includes(
-                                        id_item_btn_click)) {
-                                    $(this).removeClass('able active');
-                                    $(this).addClass('disabled');
-                                }
-                            });
-                        });
-                        e.preventDefault();
-                        $('.attribute_group').each(function() {
-                            attributeValuesId = $(this).data('id');
-                            if (attribute_value_ids.includes(attributeValuesId)) {
-                                $.ajax({
-                                    url: "{{ route('userProductDetailFocused') }}",
-                                    type: "POST",
-                                    data: {
-                                        _token: "{{ csrf_token() }}",
-                                        attribute_value_ids: attribute_value_ids,
-                                        product_id: product_id
-                                    },
-                                    success: function(response) {
-                                        if (response.status == "success") {
-                                            var regular_price = response.data['regular_price'];
-                                            var sale_price = response.data['sale_price'];
-                                            var stock = response.data['stock'];
-                                            var percent_discount = (100 - (sale_price /
-                                                regular_price * 100)).toFixed(1);
-                                            if (variant_selected) {
-                                                if (sale_price && sale_price > 0) {
-                                                    $('#regular-price').text(regular_price)
-                                                        .addClass('regular-price-css')
-                                                        .removeClass('regular-price');
-                                                    $('#sale-price').text(sale_price);
-                                                    $('#update-stock').text(stock);
-                                                    $('#percent-discount')
-                                                        .text("-" + percent_discount + "%");
-                                                } else {
-                                                    $('#regular-price').text(regular_price)
-                                                        .addClass('regular-price')
-                                                        .removeClass('regular-price-css');
-                                                    $('#sale-price, #percent-discount').hide();
-                                                    $('#update-stock').text(stock);
-                                                }
-                                                get_stock_variant_clicked = stock;
-                                                currency();
-                                            }
-                                        } else {
-                                            $('#update-stock').text(0);
-                                            notification('error', 'Sản phẩm không có sẵn', 'Hết hàng');
-                                            console.log('Response status is not success');
-                                        }
-                                    },
-                                    error: function(xhr) {
-                                        alert('Đã xảy ra lỗi trong quá trình xử lý yêu cầu.');
-                                    }
-                                })
+                    },
+                    error(xhr) {
+                        console.error('AJAX error:', xhr);
+                        alert('Đã xảy ra lỗi trong quá trình xử lý yêu cầu.');
+                    },
+                });
+            }
+
+            //----------Khi 1 thuộc tính được chọn-----------------
+            $(".attribute_item").click(function() {
+                if (!$(this).hasClass('able')) return;
+                // Lấy và cập nhật danh sách các giá trị thuộc tính đã chọn
+                const attributeValueId = $(this).data("id");
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                    attributeValueIds = attributeValueIds.filter((id) => id !== attributeValueId);
+                } else {
+                    $(this).addClass('active');
+                    attributeValueIds.push(attributeValueId);
+                }
+                if (attributeValueIds.length > 0) {
+                    $('.reset_selected').show();
+                } else {
+                    $('.reset_selected').hide();
+                }
+                // Xác định các thuộc tính khác có thể chọn được
+                const arrayAllowClickAttributeValueIds = [];
+                variants.forEach((variant) => {
+                    const isSubset = attributeValueIds.every((id) => variant.attribute_values.includes(id));
+                    if (isSubset && variant.stock > 0) {
+                        variant.attribute_values.forEach((id) => {
+                            if (!arrayAllowClickAttributeValueIds.includes(id)) {
+                                arrayAllowClickAttributeValueIds.push(id);
                             }
                         });
                     }
+                });
+                // Cập nhật trạng thái các thuộc tính trên giao diện
+                $('.attribute_item').each(function() {
+                    const id = $(this).data('id');
+                    if (arrayAllowClickAttributeValueIds.includes(id)) {
+                        $(this).removeClass('disabled').addClass('able');
+                    } else {
+                        $(this).removeClass('able active').addClass('disabled');
+                    }
+                });
+                // Tìm biến thể phù hợp với thuộc tính đã chọn
+                const variant = variants.find((v) =>
+                    v.attribute_values.length === attributeValueIds.length &&
+                    v.attribute_values.every((id) => attributeValueIds.includes(id))
+                );
+                // Cập nhật trạng thái sản phẩm và hiển thị giá
+                if (variant) {
+                    variantSelected = true;
+                    variantId = variant.variant_id;
+                    getStockVariantClicked = variant.stock;
+                    handleAjax(attributeValueIds);
+                    $('#price, #regular, #discount').hide();
+                    $('#sale-price, #regular-price, #percent-discount').show();
+                } else {
+                    variantSelected = false;
+                    variantId = null;
+                    $('#update-stock').text(totalStock);
+                    $('#price, #regular, #discount').show();
+                    $('#sale-price, #regular-price, #percent-discount').hide();
                 }
             });
-            //------------------Handle increment and reduce quantity-------------------
+
+            //----------------------- Reset Button ----------------------
+            $('.reset_selected').click(resetAttributes);
+
+            //----------------------- Quantity Handlers ----------------------
             $('.reduce').click(function() {
-                if (!variant_selected) {
+                if (!variantSelected) {
                     $('.blink-border').addClass('animation-blink-border');
                     setTimeout(() => {
                         $('.blink-border').removeClass('animation-blink-border');
@@ -1213,31 +1177,17 @@
                         $('.quantity').val($('.quantity').val() - 1);
                     }
                 }
-            })
-            $('.quantity').on('input', function() {
-                if (!variant_selected) {
-                    $(this).val(1);
-                    $('.blink-border').addClass('animation-blink-border');
-                    setTimeout(() => {
-                        $('.blink-border').removeClass('animation-blink-border');
-                    }, 950);
-                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
-                } else {
-                    if (!Number($(this).val())) {
-                        $(this).val(1);
-                        notification('error', 'Vui lòng nhập số!', 'Lỗi');
-                    }
-                }
-            })
+            });
+
             $('.increment').click(function() {
-                if (!variant_selected) {
+                if (!variantSelected) {
                     $('.blink-border').addClass('animation-blink-border');
                     setTimeout(() => {
                         $('.blink-border').removeClass('animation-blink-border');
                     }, 950);
                     notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
                 } else {
-                    if ($('.quantity').val() >= get_stock_variant_clicked) {
+                    if ($('.quantity').val() >= getStockVariantClicked) {
                         $('.blink-border-text').addClass('animation-blink-border');
                         setTimeout(() => {
                             $('.blink-border-text').removeClass('animation-blink-border');
@@ -1252,49 +1202,23 @@
                         });
                     }
                 }
-            })
+            });
+
             $('.add-to-cart').click(function() {
-                if (!variant_selected) {
+                if (!variantSelected) {
                     $('.blink-border').addClass('animation-blink-border');
                     setTimeout(() => {
                         $('.blink-border').removeClass('animation-blink-border');
                     }, 950);
                     notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
                 } else {
-                    var quantity = $('.quantity').val();
-                    const url =
-                        "{{ route('addToCart', ['variant_id' => ':variant_id', 'quantity' => ':quantity']) }}"
-                        .replace(':variant_id', variant_id)
+                    const quantity = $('.quantity').val();
+                    const url = `{{ route('addToCart', ['variant_id' => ':variant_id', 'quantity' => ':quantity']) }}`
+                        .replace(':variant_id', variantId)
                         .replace(':quantity', quantity);
                     window.location.href = url;
                 }
-            })
-
-            //------------Xử lý reset selected-----------------------
-            if (attribute_value_ids.length == 0) {
-                $('.reset_selected').hide();
-            }
-            $('.reset_selected').click(function() {
-                attribute_value_ids = [];
-                $('.attribute_item').each(function() {
-                    if (!$(this).hasClass('able')) {
-                        $(this).removeClass('disabled');
-                        $(this).addClass('able active');
-                    }
-                    if ($(this).hasClass('active')) {
-                        $(this).removeClass('active');
-                    }
-                });
-                $('#regular-price').text(regular_price);
-                $('#sale-price').text(sale_price);
-                $('#update-stock').text(total_stock);
-                $('#percent-discount').text(percent_discount);
-                get_stock_variant_clicked = null;
-                $('#sale-price, #regular-price, #percent-discount').hide();
-                $('.reset_selected').hide();
-                variant_selected = false;
-            })
-
+            });
         });
     </script>
 @endsection
