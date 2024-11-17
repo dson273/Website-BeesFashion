@@ -2483,6 +2483,7 @@ header .header-1 .main-menu nav .nav-menu>li .nav-submenu li {
     position: relative;
     width: 100%
 }
+
 /* minh them css ngay 15/11 */
 header .header-1 .main-menu nav .nav-menu>li .has-submenu>a {
     font-weight: bold;
@@ -17800,31 +17801,36 @@ body div canvas:first-child {
 }
 
 /* --------------------------------Custom thêm--------------------------------------------- */
-.css-w60u47{
+.css-w60u47 {
     margin: 0px;
     text-transform: none;
     font-size: 22px;
     font-weight: 600;
     line-height: 24px;
 }
-.product-sku{
+
+.product-sku {
     font-size: 14px;
     color: rgb(85, 85, 85);
 }
-.total-rating{
+
+.total-rating {
     border-left: 2px solid rgb(82, 82, 82);
     font-weight: 450;
     padding-left: 5px;
     color: rgb(82, 82, 82);
 }
-.total-rating span{
+
+.total-rating span {
     color: rgb(0, 0, 0);
 }
-.number-star{
+
+.number-star {
     font-size: 14px;
     font-weight: 600;
 }
-.carousel-item{
+
+.carousel-item {
     height: 100%;
 }
 
@@ -18101,67 +18107,67 @@ body div canvas:first-child {
     border: 1px solid #ff0000;
 }
 
+/* Màu viền khi được chọn */
+.color-options input[type="radio"].selected+.color-label {
+    border: 1px solid #ff0000;
     /* Màu viền khi được chọn */
-    .color-options input[type="radio"].selected+.color-label {
-        border: 1px solid #ff0000;
-        /* Màu viền khi được chọn */
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Empty Cart Styles */
+.empty-cart-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-cart-image {
+    max-width: 200px;
+    margin-bottom: 1rem;
+}
+
+.btn-continue-shopping {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-continue-shopping:hover {
+    background: #333;
+}
+
+.border-bonus {
+    border: 3px solid transparent;
+}
+
+.blink-border {
+    border: 3px solid transparent;
+}
+
+.blink-border-text {
+    border: 3px solid transparent;
+}
+
+.animation-blink-border {
+    border-color: red;
+    animation: blink 1s ease-in-out;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        border-color: transparent;
     }
 
-    /* Empty Cart Styles */
-    .empty-cart-container {
-        text-align: center;
-        padding: 2rem;
-    }
-
-    .empty-cart-image {
-        max-width: 200px;
-        margin-bottom: 1rem;
-    }
-
-    .btn-continue-shopping {
-        display: inline-block;
-        padding: 0.75rem 1.5rem;
-        background: #000;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 4px;
-        margin-top: 1rem;
-        transition: all 0.3s;
-    }
-
-    .btn-continue-shopping:hover {
-        background: #333;
-    }
-
-    .border-bonus {
-        border: 3px solid transparent;
-    }
-
-    .blink-border {
-        border: 3px solid transparent;
-    }
-
-    .blink-border-text {
-        border: 3px solid transparent;
-    }
-
-    .animation-blink-border {
+    50% {
         border-color: red;
-        animation: blink 1s ease-in-out;
-       }
-
-    @keyframes blink {
-
-        0%,
-        100% {
-            border-color: transparent;
-        }
-
-        50% {
-            border-color: red;
-        }
     }
+}
 
 /*  */
 .custom-set-address {
@@ -18173,24 +18179,29 @@ body div canvas:first-child {
     font-size: 15px;
     font-weight: 450;
 }
-.address-action{
+
+.address-action {
     padding: 4px 4px 2px 4px;
 }
+
 .custom-set-address:hover {
     border: none;
     color: #c28f51;
     background-color: rgba(var(--box-background), 1);
     text-decoration: underline;
 }
-.btn_edit_address{
+
+.btn_edit_address {
     font-size: 15px;
     font-weight: 600;
 }
-.btn_delete_address{
+
+.btn_delete_address {
     font-size: 15px;
     font-weight: 600;
     color: rgb(234, 20, 20);
 }
+
 .custom-status-set-address {
     border: 1px solid rgb(234, 20, 20);
     padding: 1px 4px;
@@ -18198,181 +18209,178 @@ body div canvas:first-child {
     border-radius: 2px;
 }
 
-    /*  */
-    .range-slider {
-        --range-slider-value-low-fallback: calc(var(--range-slider-value-low, 0) * 1%);
-        --range-slider-value-high-fallback: calc(var(--range-slider-value-high, 100) * 1%);
-        height: 24px;
-        margin-block: 27px;
-        position: relative;
-        width: 100%;
-    }
-
-    .range-slider:before {
-        background-color: rgba(var(--theme-default), 0.2);
-        background-image: linear-gradient(to right,
-                transparent var(--range-slider-value-low-fallback),
-                rgba(var(--theme-default), 1) var(--range-slider-value-low-fallback),
-                rgba(var(--theme-default)) var(--range-slider-value-high-fallback),
-                transparent var(--range-slider-value-high-fallback));
-        border-radius: 4px;
-        content: "";
-        height: 4px;
-        left: 0;
-        margin-top: -2px;
-        pointer-events: none;
-        position: absolute;
-        top: 50%;
-        width: 100%;
-    }
-
-    .range-slider-display {
-        pointer-events: none;
-    }
-
-    .range-slider-display:before {
-        content: attr(data-span);
-        --pos: var(--range-slider-value-low);
-        bottom: 100%;
-        content: attr(data-low);
-        left: var(--range-slider-value-low-fallback);
-    }
-
-    .range-slider-display:after,
-    .range-slider-display:before {
-        color: rgba(var(--theme-font-color), 1);
-        font-size: calc(15.6px + 0.125vw);
-        position: absolute;
-        transform: translateX(-50%) translateX(calc(10px * (var(--pos) * -0.04 + 1)));
-        white-space: nowrap;
-        z-index: 0;
-    }
-
-    .range-slider-display:after {
-        content: attr(data-span);
-        --pos: var(--range-slider-value-high);
-        content: attr(data-high);
-        left: var(--range-slider-value-high-fallback);
-        top: 100%;
-    }
-
-    .range-slider-input {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background-color: transparent;
-        display: block;
-        left: 0;
-        margin: 0;
-        padding: 0;
-        pointer-events: none;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 100%;
-    }
-
-    .range-slider-input:focus,
-    .range-slider-input:focus-visible {
-        border: none;
-        outline: none;
-    }
-
-    .range-slider-input:active::-webkit-slider-thumb {
-        cursor: grabbing;
-        transform: scale(1.2);
-    }
-
-    .range-slider-input::-webkit-slider-runnable-track {
-        -webkit-appearance: none;
-        appearance: none;
-        background-color: transparent;
-        border-radius: 0;
-    }
-
-    .range-slider-input::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        background-color: rgba(var(--theme-default), 1);
-        border: none;
-        border-radius: 50%;
-        box-shadow: none;
-        cursor: grab;
-        height: 20px;
-        pointer-events: all;
-        position: relative;
-        -webkit-transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
-        transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
-        width: 20px;
-    }
-
-    /* CSS Styling */
-    .navbar {
-        position: relative;
-        background-color: #fff;
-    }
-
-    .menu {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-    }
-
-    .menu-item {
-        position: relative;
-        margin-right: 20px;
-    }
-
-    .menu-item a {
-        text-decoration: none;
-        color: black;
-        padding: 10px;
-    }
-
-    .dropdown {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 15px;
-        width: 600px;
-        /* Tùy chỉnh độ rộng */
-        z-index: 1000;
-        display: flex;
-        gap: 20px;
-        /* Khoảng cách giữa các nhóm danh mục */
-    }
-
-    .category-group h4 {
-        margin: 0;
-        padding-bottom: 5px;
-        font-weight: bold;
-    }
-
-    .category-group ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .category-group ul li {
-        padding: 5px 0;
-    }
-
-    .menu-item:hover .dropdown {
-        display: flex;
-    }
-
-
-    /* Main container for the dropdown */
-
-    /* Styling each parent category (column) */
-
-
+/*  */
+.range-slider {
+    --range-slider-value-low-fallback: calc(var(--range-slider-value-low, 0) * 1%);
+    --range-slider-value-high-fallback: calc(var(--range-slider-value-high, 100) * 1%);
+    height: 24px;
+    margin-block: 27px;
+    position: relative;
+    width: 100%;
 }
+
+.range-slider:before {
+    background-color: rgba(var(--theme-default), 0.2);
+    background-image: linear-gradient(to right,
+            transparent var(--range-slider-value-low-fallback),
+            rgba(var(--theme-default), 1) var(--range-slider-value-low-fallback),
+            rgba(var(--theme-default)) var(--range-slider-value-high-fallback),
+            transparent var(--range-slider-value-high-fallback));
+    border-radius: 4px;
+    content: "";
+    height: 4px;
+    left: 0;
+    margin-top: -2px;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+}
+
+.range-slider-display {
+    pointer-events: none;
+}
+
+.range-slider-display:before {
+    content: attr(data-span);
+    --pos: var(--range-slider-value-low);
+    bottom: 100%;
+    content: attr(data-low);
+    left: var(--range-slider-value-low-fallback);
+}
+
+.range-slider-display:after,
+.range-slider-display:before {
+    color: rgba(var(--theme-font-color), 1);
+    font-size: calc(15.6px + 0.125vw);
+    position: absolute;
+    transform: translateX(-50%) translateX(calc(10px * (var(--pos) * -0.04 + 1)));
+    white-space: nowrap;
+    z-index: 0;
+}
+
+.range-slider-display:after {
+    content: attr(data-span);
+    --pos: var(--range-slider-value-high);
+    content: attr(data-high);
+    left: var(--range-slider-value-high-fallback);
+    top: 100%;
+}
+
+.range-slider-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    display: block;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+
+.range-slider-input:focus,
+.range-slider-input:focus-visible {
+    border: none;
+    outline: none;
+}
+
+.range-slider-input:active::-webkit-slider-thumb {
+    cursor: grabbing;
+    transform: scale(1.2);
+}
+
+.range-slider-input::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.range-slider-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: rgba(var(--theme-default), 1);
+    border: none;
+    border-radius: 50%;
+    box-shadow: none;
+    cursor: grab;
+    height: 20px;
+    pointer-events: all;
+    position: relative;
+    -webkit-transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+    transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+    width: 20px;
+}
+
+/* CSS Styling */
+.navbar {
+    position: relative;
+    background-color: #fff;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.menu-item {
+    position: relative;
+    margin-right: 20px;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 600px;
+    /* Tùy chỉnh độ rộng */
+    z-index: 1000;
+    display: flex;
+    gap: 20px;
+    /* Khoảng cách giữa các nhóm danh mục */
+}
+
+.category-group h4 {
+    margin: 0;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.category-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-group ul li {
+    padding: 5px 0;
+}
+
+.menu-item:hover .dropdown {
+    display: flex;
+}
+
+
+/* Main container for the dropdown */
+
+/* Styling each parent category (column) */
 
 .ratingd {
     display: flex;
