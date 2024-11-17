@@ -9535,7 +9535,6 @@ footer .footer-1 .social-icon>li:hover a i {
     background-color: rgba(var(--light-white), 1);
     border: 1px solid rgba(var(--light-border), 1);
     border-radius: 4px;
-    cursor: pointer;
     display: flex;
     gap: 20px;
     padding: 20px
@@ -9550,7 +9549,11 @@ footer .footer-1 .social-icon>li:hover a i {
 }
 
 .address-option .delivery-address-box .address-detail {
-    width: calc(100% - 38px)
+    width: calc(100% - 120px)
+}
+
+.address-option .delivery-address-box .address-action {
+    width: 100px
 }
 
 .address-option .delivery-address-box .address-detail .address {
@@ -9562,11 +9565,18 @@ footer .footer-1 .social-icon>li:hover a i {
 .address-option .delivery-address-box .address-detail .address .address-title {
     color: rgba(var(--theme-font-color), 1);
     font-size: calc(14.8px + .375vw);
-    font-weight: 500;
-    margin-bottom: 0
+    font-weight: bold;
+    margin-bottom: 3px
 }
 
 .address-option .delivery-address-box .address-detail .address .address-tag {
+    color: rgba(var(--theme-font-color), 1);
+    font-size: calc(13.2px + .25vw);
+    font-weight: 500;
+    padding-right: 6px
+}
+
+.address-option .delivery-address-box .address-detail .address .address-tag-office {
     color: rgba(var(--theme-font-color), 1);
     font-size: calc(13.2px + .25vw);
     font-weight: 500;
@@ -10656,7 +10666,7 @@ footer .footer-1 .social-icon>li:hover a i {
 }
 
 .dashboard-right-box .my-dashboard-tab .profile-about .profile-information {
-    margin-bottom: 45px
+    margin-bottom: 30px
 }
 
 .dashboard-right-box .my-dashboard-tab .profile-about .profile-information li {
@@ -18089,6 +18099,7 @@ body div canvas:first-child {
 /* Hiệu ứng khi được chọn */
 .color-options input[type="radio"]:checked+.color-label {
     border: 1px solid #ff0000;
+}
 
     /* Màu viền khi được chọn */
     .color-options input[type="radio"].selected+.color-label {
@@ -18138,8 +18149,7 @@ body div canvas:first-child {
     .animation-blink-border {
         border-color: red;
         animation: blink 1s ease-in-out;
-
-    }
+       }
 
     @keyframes blink {
 
@@ -18153,38 +18163,40 @@ body div canvas:first-child {
         }
     }
 
-    /*  */
-    .custom-set-address {
-        border: none;
-        color: rgba(var(--theme-default), 1);
-        background-color: rgba(var(--box-background), 1);
-    }
-
-    .custom-set-address {
-        transition: text-decoration 0.5s ease, color 0.5s ease;
-    }
-
-    .custom-set-address:hover {
-        border: none;
-        color: #c28f51;
-        background-color: rgba(var(--box-background), 1);
-        text-decoration: underline;
-    }
-
-    .custom-set-address:disabled {
-        border: none;
-        color: #b1b1b1;
-        background-color: rgba(var(--box-background), 1);
-        cursor: no-drop;
-        text-decoration: none;
-    }
-
-    .custom-status-set-address {
-        border: 1px solid rgb(234, 20, 20);
-        padding: 1px 4px;
-        color: rgb(234, 20, 20);
-        border-radius: 2px;
-    }
+/*  */
+.custom-set-address {
+    border: none;
+    color: rgba(var(--theme-default), 1);
+    background-color: rgba(var(--box-background), 1);
+    padding: 0;
+    transition: text-decoration 0.5s ease, color 0.5s ease;
+    font-size: 15px;
+    font-weight: 450;
+}
+.address-action{
+    padding: 4px 4px 2px 4px;
+}
+.custom-set-address:hover {
+    border: none;
+    color: #c28f51;
+    background-color: rgba(var(--box-background), 1);
+    text-decoration: underline;
+}
+.btn_edit_address{
+    font-size: 15px;
+    font-weight: 600;
+}
+.btn_delete_address{
+    font-size: 15px;
+    font-weight: 600;
+    color: rgb(234, 20, 20);
+}
+.custom-status-set-address {
+    border: 1px solid rgb(234, 20, 20);
+    padding: 1px 4px;
+    color: rgb(234, 20, 20);
+    border-radius: 2px;
+}
 
     /*  */
     .range-slider {
@@ -18393,8 +18405,6 @@ body div canvas:first-child {
     width: 250px;
     height: 300px;
 }
-
-;
 
 /* Màu mặc định cho biểu tượng trái tim */
 .wishlist-icon i {
