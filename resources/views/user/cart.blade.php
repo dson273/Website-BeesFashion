@@ -86,8 +86,7 @@
                                                     <td>
                                                         <div class="quantity">
                                                             <button class="quantity-btn minus" type="button"><i class="fa-solid fa-minus"></i></button>
-                                                            <input class="quantity-input" type="number" value="{{ $item_cart['quantity'] }}" min="1"
-                                                            max="{{ $item_cart['stock'] }}">
+                                                            <input class="quantity-input" type="number" value="{{ $item_cart['quantity'] }}" min="1" max="{{ $item_cart['stock'] }}">
                                                             <button class="quantity-btn plus" type="button"><i class="fa-solid fa-plus"></i></button>
                                                         </div>
                                                     </td>
@@ -147,9 +146,14 @@
                             </div>
                         </div>
                     @else
-                        <h5 class="text-center">Giỏ hàng của bạn đang trống!</h5>
-                        <div class="text-center mt-3">
-                            <button><a href="{{ route('/') }}">Tiếp tục mua sắm</a></button>
+                        <div class="text-center">
+                            <h5 class="text-center">Giỏ hàng của bạn đang trống!</h5>
+                            <div>
+                                <img class="img-fluid" src="{{ asset('assets/images/user/empty-cart.jpg') }}" width="190">
+                            </div>
+                            <div class="text-center mt-3">
+                                <a href="{{ route('/') }}" class="btn btn_black rounded sm">Tiếp tục mua sắm</a>
+                            </div>
                         </div>
                     @endif
 
@@ -243,27 +247,27 @@
                 <div class="variant-container">
                     <div class="varianr-content">
                         <label class="form-label">Color: <span>Đen</span></label>
-                    <div class="d-flex mb-2 color-options">
-                        <input class="btn-color" type="radio" id="color-black" name="color" value="black">
-                        <label for="color-black" title="black" class="color-label me-2" style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
+                        <div class="d-flex mb-2 color-options">
+                            <input class="btn-color" type="radio" id="color-black" name="color" value="black">
+                            <label for="color-black" title="black" class="color-label me-2" style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
 
-                        <input class="btn-color" type="radio" id="color-gray" name="color" value="gray">
-                        <label for="color-gray" class="color-label" style="background-image: url('{{ asset('assets/images/cart/2.jpg') }}');"></label>
+                            <input class="btn-color" type="radio" id="color-gray" name="color" value="gray">
+                            <label for="color-gray" class="color-label" style="background-image: url('{{ asset('assets/images/cart/2.jpg') }}');"></label>
 
-                    </div>
-                    <label class="form-label">Size: <span>S</span></label>
-                    <div class="d-flex flex-wrap mb-2 wrap-vra">
-                        <button class="btn-variant">S</button>
-                        <button class="btn-variant">M</button>
-                        <button class="btn-variant">L</button>
-                    </div>
+                        </div>
+                        <label class="form-label">Size: <span>S</span></label>
+                        <div class="d-flex flex-wrap mb-2 wrap-vra">
+                            <button class="btn-variant">S</button>
+                            <button class="btn-variant">M</button>
+                            <button class="btn-variant">L</button>
+                        </div>
 
-                    <label class="form-label">Vải: <span>Lụa</span></label>
-                    <div class="d-flex flex-wrap mb-2 wrap-vra">
-                        <button class="btn-variant-default">Lụa</button>
-                        <button class="btn-variant-default">Tơ</button>
-                        <button class="btn-variant-default">Jean</button>
-                    </div>
+                        <label class="form-label">Vải: <span>Lụa</span></label>
+                        <div class="d-flex flex-wrap mb-2 wrap-vra">
+                            <button class="btn-variant-default">Lụa</button>
+                            <button class="btn-variant-default">Tơ</button>
+                            <button class="btn-variant-default">Jean</button>
+                        </div>
                     </div>
                     <div class="d-flex mt-3 justify-content-between box-variant-bottom">
                         <button type="button" id="backButton" class="btn-back">Trở lại</button>
