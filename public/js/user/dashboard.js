@@ -13,7 +13,6 @@ $(document).ready(function () {
         let full_name = $('#edit-profile-form').find('input[name="full_name"]').val().trim();
         let phone = $('#edit-profile-form').find('input[name="phone"]').val().trim();
         let email = $('#edit-profile-form').find('input[name="email"]').val().trim();
-        let address = $('#edit-profile-form').find('textarea[name="address"]').val().trim();
         let _token = $('input[name="_token"]').val();
         let url = $(this).attr('action');
 
@@ -25,7 +24,6 @@ $(document).ready(function () {
                 full_name: full_name,
                 phone: phone,
                 email: email,
-                address: address,
                 _token: _token
             },
             dataType: 'json',
@@ -37,13 +35,10 @@ $(document).ready(function () {
                         .full_name || 'Not updated yet');
                     $('.profile-information li:contains("Phone") p').text(response.data
                         .phone || 'Not updated yet');
-                    $('.profile-information li:contains("Address") p').text(response
-                        .data.address || 'Not updated yet');
                     $('.profile-information li:contains("Email") p').text(response.data
                         .email);
                     $('.dashboard-user-name b').text(response.data.full_name ? response
                         .data.full_name : response.data.username);
-
                     // Đóng modal sau khi thành công
                     $('#edit-profile').modal('hide');
                     // Hiển thị thông báo thành công
@@ -61,16 +56,11 @@ $(document).ready(function () {
                     $('.form-control').removeClass('is-invalid');
                     for (let key in errors) {
                         let input = $('input[name="' + key + '"]');
-                        let textarea = $('textarea[name="' + key + '"]');
                         let errMsg = errors[key][0];
-
                         // Hiển thị thông báo lỗi
                         if (input.length) {
                             input.addClass('is-invalid');
                             input.next('.invalid-feedback').text(errMsg);
-                        } else if (textarea.length) {
-                            textarea.addClass('is-invalid');
-                            textarea.next('.invalid-feedback').text(errMsg);
                         }
                     }
                 } else {
@@ -183,11 +173,11 @@ $(document).ready(function () {
                 if (response.success) {
                     // Đóng modal sau khi thành công
                     $('#add-address').modal('hide');
-                    // Hiển thị thông báo thành công
-                    notification('success', response.message, 'Successfully!');
                     // Xóa dữ liệu trong các ô input
                     $('#add-address-form')[0].reset();
                     window.location.reload();
+                    // Hiển thị thông báo thành công
+                    notification('success', response.message, 'Successfully!');
                 }
             },
             error: function (error) {
@@ -252,14 +242,15 @@ $(document).ready(function () {
         let url = '/dashboard/edit-address/' + addressId;
 
         // Lấy thông tin hiện tại từ các thẻ HTML và điền vào form
-        let fullName = $(this).data('full_name');
-        let phoneNumber = $(this).data('phone_number');
+        let full_name = $(this).data('full_name');
+        let phone_number = $(this).data('phone_number');
         let address = $(this).data('address');
 
-        $('#edit-address-form').find('input[name="full_name"]').val(fullName);
-        $('#edit-address-form').find('input[name="phone_number"]').val(phoneNumber);
+        $('#edit-address-form').find('input[name="full_name"]').val(full_name);
+        $('#edit-address-form').find('input[name="phone_number"]').val(phone_number);
         $('#edit-address-form').find('textarea[name="address"]').val(address);
         $('#edit-address-form').attr('action', url);
+        $('#edit-address-form').data('box', $(this).closest('.delivery-address-box'));
     });
 
     // Gửi form qua AJAX khi nhấn Submit
@@ -268,15 +259,18 @@ $(document).ready(function () {
 
         let formData = $(this).serialize();
         let url = $(this).attr('action');
-
+        let addressBox = $(this).data('box');
         $.ajax({
             url: url,
             type: 'PUT',
             data: formData,
             success: function (response) {
+                //Thay đổi dữ liệu trên address
+                addressBox.find('.address-title').text(response.data.full_name);
+                addressBox.find('.address-tag-office:contains("Address:")').next('p').text(response.data.address);
+                addressBox.find('.address-tag-office:contains("Phone:")').next('p').text(response.data.phone_number);
                 $('#edit-address').modal('hide');
                 notification('success', response.message, 'Successfully!');
-                window.location.reload();
             },
             error: function (error) {
                 if (error.responseJSON && error.responseJSON.errors) {

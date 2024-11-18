@@ -22,6 +22,7 @@ Route::post('productDetail', [ProductDetailController::class, 'updateInformation
 //Trang thanh toán
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 
+Route::middleware('guest')->group(function () {
 //Đăng ký
 Route::get('register', [RegisterController::class, 'index'])->name('register'); //Trang đăng ký
 Route::post('register', [RegisterController::class, 'register'])->name('register'); //Chức năng đăng ký
@@ -31,7 +32,7 @@ Route::post('login', [LoginController::class, 'login'])->name('login'); //Chức
 //Quên mật khẩu
 Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword'); //Trang quên mật khẩu
 Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
-
+});
 // Route::get('/', action: function () {
 //     return view(view: 'user/index');
 // });
@@ -58,13 +59,13 @@ Route::get('wishlist', [WishlistController::class, 'index']);
 Route::middleware('auth')->group(function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //Chức năng đăng xuất
     //Dashboard người dùng
-    Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::put('dashboard/edit-profile', [DashboardController::class, 'editProfile'])->name('dashboard.editProfile'); // Cập nhật thông tin profile
     Route::put('dashboard/edit-password', [DashboardController::class, 'editPassword'])->name('dashboard.editPassword'); // Edit password
     Route::post('dashboard/add-address', [DashboardController::class, 'addAddress'])->name('dashboard.addAddress'); //Thêm địa chỉ giao hàng
     Route::put('dashboard/edit-address/{id}', [DashboardController::class, 'editAddress'])->name('dashboard.editAddress'); // Sửa địa chỉ
     Route::delete('dashboard/delete-address/{id}', [DashboardController::class, 'deleteAddress'])->name('dashboard.deleteAddress'); // Xoá địa chỉ
-    // Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
+    Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
 
     //Trang giỏ hàng
 

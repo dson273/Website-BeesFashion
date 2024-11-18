@@ -8,6 +8,7 @@ use App\Models\Attribute;
 use Illuminate\Http\Request;
 use App\Models\Attribute_value;
 use App\Models\Product_variant;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product_variant_attribute_value;
@@ -80,29 +81,72 @@ class ProductDetailController extends Controller
                 ]
             ];
         })->toArray();
+
         // Tính tổng số lượng hàng tồn kho của sản phẩm
         $total_stock = Product_variant::where('product_id', $id)->sum('stock');
 
         // Lấy giá của biến thể
         if ($product) {
-            $minPrice = $product->product_variants->min('sale_price');
-            $maxPrice = $product->product_variants->max('sale_price');
-
+            $variants = $product->product_variants;
+            // Lọc các biến thể có `sale_price` không null
+            $variantsWithSalePrice = $variants->filter(function ($variant) {
+                return $variant->sale_price !== null;
+            });
+            // Lọc các biến thể chỉ có `regular_price`
+            $variantsWithoutSalePrice = $variants->filter(function ($variant) {
+                return $variant->sale_price === null;
+            });
+            // Tìm giá trị thấp nhất và cao nhất
+            if ($variantsWithSalePrice->isNotEmpty()) {
+                $minPrice = $variantsWithSalePrice->min('sale_price');
+                $maxPrice = $variantsWithoutSalePrice->isNotEmpty()
+                    ? $variantsWithoutSalePrice->max('regular_price')
+                    : $variantsWithSalePrice->max('sale_price');
+            } else {
+                $minPrice = $variantsWithoutSalePrice->min('regular_price');
+                $maxPrice = $variantsWithoutSalePrice->max('regular_price');
+            }
             // Gán giá trị khoảng giá vào thuộc tính mới
             $product->priceRange = $minPrice === $maxPrice
                 ? number_format($minPrice, 0, ',', '.') . 'đ'
                 : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
+            $product->regularPrice = $variants->max('regular_price');
+            // Tính phần trăm giảm giá
+            $maxRegularPrice = $variants->max('regular_price');
+            $minSalePrice = $variantsWithSalePrice->min('sale_price');
+
+            if ($maxRegularPrice && $minSalePrice) {
+                $discountPercent = round((($maxRegularPrice - $minSalePrice) / $maxRegularPrice) * 100);
+                $product->discountPercent = '-' . $discountPercent . '%';
+            } else {
+                $product->discountPercent = 'Hot!';
+            }
         }
+
         // Lấy danh sách sản phẩm liên quan qua danh mục
         $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
             $query->whereIn('category_id', $product->categories->pluck('id'));
         })->where('id', '!=', $product->id)
-          ->take(8)
-          ->get();
+            ->take(8)
+            ->get();
 
         $relatedProducts = $relatedProducts->map(function ($relatedProduct) {
-            $minPrice = $relatedProduct->product_variants->min('sale_price');
-            $maxPrice = $relatedProduct->product_variants->max('sale_price');
+            $variants = $relatedProduct->product_variants;
+            $variantsWithSalePrice = $variants->filter(function ($variant) {
+                return $variant->sale_price !== null;
+            });
+            $variantsWithoutSalePrice = $variants->filter(function ($variant) {
+                return $variant->sale_price === null;
+            });
+            if ($variantsWithSalePrice->isNotEmpty()) {
+                $minPrice = $variantsWithSalePrice->min('sale_price');
+                $maxPrice = $variantsWithoutSalePrice->isNotEmpty()
+                    ? $variantsWithoutSalePrice->max('regular_price')
+                    : $variantsWithSalePrice->max('sale_price');
+            } else {
+                $minPrice = $variantsWithoutSalePrice->min('regular_price');
+                $maxPrice = $variantsWithoutSalePrice->max('regular_price');
+            }
             $relatedProduct->priceRange = $minPrice === $maxPrice
                 ? number_format($minPrice, 0, ',', '.') . 'đ'
                 : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
@@ -122,34 +166,38 @@ class ProductDetailController extends Controller
         $array_attribute_value_ids = $request->input('attribute_value_ids');
         $product_id = $request->input('product_id');
 
-        $productFocusQuery = Product_variant_attribute_value::query()
-            ->join('product_variants as pv', 'product_variant_attribute_values.product_variant_id', '=', 'pv.id')
-            ->select('pv.*')
+        // Tìm product_variant phù hợp với attribute_value_ids
+        $productFocusQuery = DB::table('product_variants as pv')
             ->where('pv.product_id', $product_id)
-            ->whereIn('product_variant_attribute_values.attribute_value_id', $array_attribute_value_ids)
-            ->groupBy('pv.id')
-            ->havingRaw('COUNT(DISTINCT product_variant_attribute_values.attribute_value_id) = ?', [count($array_attribute_value_ids)])
-            ->get();
+            ->whereIn('pv.id', function ($query) use ($array_attribute_value_ids) {
+                $query->select('product_variant_id')
+                    ->from('product_variant_attribute_values')
+                    ->whereIn('attribute_value_id', $array_attribute_value_ids)
+                    ->groupBy('product_variant_id')
+                    ->havingRaw('COUNT(attribute_value_id) = ?', [count($array_attribute_value_ids)]);
+            })->first();
 
-        if ($productFocusQuery->isNotEmpty()) {
-            $productDetailUpdate = $productFocusQuery->first();
-            $response = [
+        if ($productFocusQuery) {
+            return response()->json([
                 'status' => 'success',
-                'data' => $productDetailUpdate
-            ];
-            return response()->json($response);
+                'data' => $productFocusQuery
+            ]);
         }
     }
     public function addToCart(string $variant_id, string $quantity)
     {
-        $checkCart = Cart::with('product_variant')->where('product_variant_id', $variant_id)->where('user_id', Auth::user()->id)->first();
+        $checkCart = Cart::with('product_variant')
+            ->where('product_variant_id', $variant_id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
         if ($checkCart) {
-            if ($checkCart->product_variant->stock < $checkCart->quantity + $quantity) {
+            $newQuantity = $checkCart->quantity + $quantity;
+            if ($newQuantity > $checkCart->product_variant->stock) {
                 $checkCart->quantity = $checkCart->product_variant->stock;
-            } else if ($checkCart->quantity + $quantity > 10) {
-                $checkCart->quantity = 10;
+            } elseif ($newQuantity > 10) {
+                $checkCart->quantity = 10; //Giới hạn chỉ thêm được 10 vào cart
             } else {
-                $checkCart->quantity = $checkCart->quantity + $quantity;
+                $checkCart->quantity = $newQuantity;
             }
             $checkCart->updated_at->now();
             $checkCart->save();
@@ -157,7 +205,7 @@ class ProductDetailController extends Controller
             $variant = Product_variant::select('stock')->where('id', $variant_id)->first();
             if ($variant) {
                 Cart::create([
-                    'quantity' => $quantity <= $variant->stock ? $quantity : $variant->stock,
+                    'quantity' => $quantity <= min($variant->stock, 10) ? $quantity : min($variant->stock, 10),
                     'product_variant_id' => $variant_id,
                     'user_id' => Auth::user()->id,
                     'created_at' => now()

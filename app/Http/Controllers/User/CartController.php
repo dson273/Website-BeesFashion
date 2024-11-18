@@ -22,10 +22,10 @@ class CartController extends Controller
             $array_item_cart = [];
             $array_item_cart['quantity'] = $itemCart->quantity;
             $variants = $itemCart->product_variant;
-            $array_item_cart['product_name'] = Product_variant::select('p.name')
-                ->rightJoin('products as p', 'product_variants.product_id', '=', 'p.id')
-                ->first()->name;
-
+            $product_variant_id = $itemCart['product_variant_id'];
+            $array_item_cart['product_name'] = Product_variant::with('product')
+                ->where('id', $product_variant_id)
+                ->first()?->product?->name ?? 'Tên sản phẩm không tồn tại';
             $array_item_cart['image'] = Product_variant::where('id', $variants->id)->value('image');
             $array_item_cart['regular_price'] = $variants->regular_price;
             $array_item_cart['sale_price'] = $variants->sale_price;
@@ -58,7 +58,7 @@ class CartController extends Controller
             if ($item_cart['sale_price'] != null) {
                 $discount = $item_cart['regular_price'] - $item_cart['sale_price'];
                 $total_discount += $discount * $item_cart['quantity'];
-                $total_payment += $item_cart['sale_price'] * $item_cart['quantity'];
+                $total_payment += $item_cart['regular_price'] * $item_cart['quantity'];
             } else {
                 $total_payment += $item_cart['regular_price'] * $item_cart['quantity'];
             }

@@ -15,7 +15,9 @@
                                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                                     <div class="row">
                                         <a href="#">
-                                            <img class="img-fluid" src="{{ asset('storage/uploads/banners/images/id_' . $slider->id . '/' . $banner_image->file_name) }}" alt="Banner Image">
+                                            <img class="img-fluid"
+                                                src="{{ asset('storage/uploads/banners/images/id_' . $slider->id . '/' . $banner_image->file_name) }}"
+                                                alt="Banner Image">
                                         </a>
                                     </div>
                                 </div>
@@ -37,16 +39,17 @@
                                 <button type="button" data-bs-target="#bannerCarousel"
                                     data-bs-slide-to="{{ $key }}"
                                     class="{{ $key === 0 ? 'active' : '' }}"></button>
-
                             @endforeach
                         @endforeach
                     </div>
                     <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
+                        data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
+                        data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
@@ -62,42 +65,50 @@
                 <div class="swiper fashion-images-slide">
                     <div class="swiper-wrapper ratio_square-2">
                         <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid" src="{{ asset('assets/images/fashion/category/1.png') }}" alt=""></a>
+                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/fashion/category/1.png') }}" alt=""></a>
                             </div>
                             <h5>Top Wear</h5>
                         </div>
                         <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid" src="{{ asset('assets/images/fashion/category/2.png') }}" alt=""></a>
+                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/fashion/category/2.png') }}" alt=""></a>
                             </div>
                             <h5>dresses</h5>
                         </div>
                         <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid" src="{{ asset('assets/images/fashion/category/3.png') }}" alt=""></a>
+                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/fashion/category/3.png') }}" alt=""></a>
                             </div>
                             <h5>bottom</h5>
                         </div>
                         <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid" src="{{ asset('assets/images/fashion/category/4.png') }}" alt=""></a>
+                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/fashion/category/4.png') }}" alt=""></a>
                             </div>
                             <h5>inner/sleep</h5>
                         </div>
                         <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid" src="{{ asset('assets/images/fashion/category/5.png') }}" alt=""></a>
+                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/fashion/category/5.png') }}" alt=""></a>
                             </div>
                             <h5>footwear</h5>
                         </div>
                         <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid" src="{{ asset('assets/images/fashion/category/6.png') }}" alt=""></a>
+                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/fashion/category/6.png') }}" alt=""></a>
                             </div>
                             <h5>sports/active</h5>
                         </div>
                         <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid" src="{{ asset('assets/images/fashion/category/7.png') }}" alt=""></a>
+                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/fashion/category/7.png') }}" alt=""></a>
                             </div>
                             <h5>Mini dresses</h5>
                         </div>
                         <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid" src="{{ asset('assets/images/fashion/category/3.png') }}" alt=""></a>
+                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/fashion/category/3.png') }}" alt=""></a>
                             </div>
                             <h5>footwear</h5>
                         </div>
@@ -106,7 +117,84 @@
             </div>
         </section>
         <!-- End category -->
-
+        <section class="section-t-space">
+            <div class="custom-container container product-contain">
+                <div class="title">
+                    <h3>Ma Voucher</h3>
+                </div>
+                <div class="detail-content MuiBox-root css-0">
+                    <div class="block-voucher">
+                        <div class="voucher-items-list">
+                            <div class="voucher-item">
+                                <div class="voucher-item-info">
+                                    <div class="voucher-item-detail">
+                                        <div class="voucher-item-des"><strong><span style="font-size: 12pt;"><span
+                                                        style="color: #ba372a;">GIẢM THÊM 10% ĐẾN
+                                                        100K</span><br></span></strong></div>
+                                        <div class="voucher-item-des"><span style="font-size: 10pt;">Nhập mã <strong><span
+                                                        style="font-size: 12pt;">LUCKY11</span></strong><span
+                                                    style="color: #e03e2d;"><strong><br></strong></span></span></div>
+                                        <div class="voucher-item-des"><span style="font-size: 10pt;">Cho đơn hàng từ
+                                                333</span><span style="font-size: 10pt;">K</span></div>
+                                        <div class="voucher-item-date"><span class="expire" style="font-size: 10pt;">Hạn
+                                                sử dụng: 21/11/2024</span></div>
+                                    </div>
+                                    <div class="voucher-item-action">
+                                        <div class="action"><span class="copy-content"
+                                                style="cursor: pointer; font-size: 10pt;" data-code="LUCKY11"
+                                                data-copied-text="Đã chép">Sao Chép</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="voucher-item">
+                                <div class="voucher-item-info">
+                                    <div class="voucher-item-detail">
+                                        <div class="voucher-item-title"><strong><span style="font-size: 12pt;"><span
+                                                        style="color: #ba372a;">GIẢM THÊM 111K</span><br></span></strong>
+                                        </div>
+                                        <div class="voucher-item-des"><span style="font-size: 10pt;">Nhập mã <strong><span
+                                                        style="font-size: 12pt;">HPBD111</span></strong><span
+                                                    style="color: #e03e2d;"><strong><br></strong></span></span></div>
+                                        <div class="voucher-item-des"><span style="font-size: 10pt;">Cho đơn hàng từ
+                                                888K</span></div>
+                                        <div class="voucher-item-date"><span class="expire" style="font-size: 10pt;">Hạn
+                                                sử dụng: 21/11/2024</span></div>
+                                    </div>
+                                    <div class="voucher-item-action">
+                                        <div class="action"><span class="copy-content"
+                                                style="cursor: pointer; font-size: 10pt;" data-code="HPBD111"
+                                                data-copied-text="Đã chép">Sao Chép</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="voucher-item">
+                                <div class="voucher-item-info">
+                                    <div class="voucher-item-detail">
+                                        <div class="voucher-item-title"><strong><span style="font-size: 12pt;"><span
+                                                        style="color: #ba372a;">TẶNG NGAY 80K</span><br></span></strong>
+                                        </div>
+                                        <div class="voucher-item-des"><span style="font-size: 10pt;">Nhập mã
+                                            </span><strong><span style="font-size: 10pt;"><span
+                                                        style="font-size: 12pt;">HAPPY80</span></span></strong><span
+                                                style="color: #e03e2d;"><strong><span
+                                                        style="font-size: 10pt;"><br></span></strong></span></div>
+                                        <div class="voucher-item-des"><span style="font-size: 10pt;">Cho đơn hàng từ
+                                                650K</span></div>
+                                        <div class="voucher-item-date"><span class="expire" style="font-size: 10pt;">Hạn
+                                                sử dụng: 21/11/2024</span></div>
+                                    </div>
+                                    <div class="voucher-item-action">
+                                        <div class="action"><span class="copy-content"
+                                                style="cursor: pointer; font-size: 10pt;" data-code="HAPPY80"
+                                                data-copied-text="Đã chép">Sao Chép</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <!-- Fashikart specials -->
         <section class="section-t-space">
             <div class="custom-container container product-contain">
@@ -119,17 +207,20 @@
                         <div class="theme-tab-1">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#seller-products" role="tab" aria-controls="seller-products" aria-selected="false">
+                                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#seller-products"
+                                        role="tab" aria-controls="seller-products" aria-selected="false">
                                         <h6>Sản phẩm mới nhất</h6>
                                     </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-products" role="tab" aria-controls="features-products" aria-selected="true">
+                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-products"
+                                        role="tab" aria-controls="features-products" aria-selected="true">
                                         <h6>Sản phẩm bán chạy</h6>
                                     </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#latest-products" role="tab" aria-controls="latest-products" aria-selected="false">
+                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#latest-products"
+                                        role="tab" aria-controls="latest-products" aria-selected="false">
                                         <h6>Sản phẩm có lượt xem nhiều</h6>
                                     </a>
                                 </li>
@@ -139,35 +230,48 @@
                             <div class="col-12 ratio_square">
                                 <div class="tab-content">
                                     <!-- Sản phẩm mới -->
-                                    <div class="tab-pane fade show active" id="seller-products" role="tabpanel" tabindex="0">
+                                    <div class="tab-pane fade show active" id="seller-products" role="tabpanel"
+                                        tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($newProducts as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
 
-                                                            <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
+                                                            <div class="label-block"><img
+                                                                    src="{{ asset('assets/images/product/3.png') }}"
+                                                                    alt="lable"><span>on <br>Sale!</span></div>
                                                             <div class="product-image">
                                                                 @if ($product)
                                                                     <a href="{{ route('product.detail', $product) }}">
-                                                                        <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                        <img class="bg-img"
+                                                                            src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                            alt="Product Image">
                                                                     </a>
                                                                 @else
                                                                     <a href="#">
-                                                                        <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                        <img class="bg-img"
+                                                                            src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                            alt="Product Image">
                                                                     </a>
                                                                 @endif
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                                                        data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a>
-                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a>
+                                                                <a class="wishlist-icon" href="javascript:void(0)"
+                                                                    tabindex="0"><i class="iconsax" data-icon="heart"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Add to Wishlist"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view" tabindex="0"><i
+                                                                        class="iconsax" data-icon="eye"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i></a>
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
                                                             <div class="add-button">
-                                                                <a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                <a href="#"><i class="fa-regular fa-eye"></i> View
+                                                                    details</a>
                                                             </div>
                                                             <div class="color-box">
                                                                 <ul class="color-variant"
@@ -179,7 +283,8 @@
                                                                                     $variantAttributeValue->attribute_value;
                                                                             @endphp
                                                                             @if (!empty($attributeValue->value))
-                                                                                <li style="background-color: #{{ $attributeValue->value }};">
+                                                                                <li
+                                                                                    style="background-color: #{{ $attributeValue->value }};">
                                                                                 </li>
                                                                             @endif
                                                                         @endforeach
@@ -212,40 +317,57 @@
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
-                                                            <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
+                                                            <div class="label-block"><img
+                                                                    src="{{ asset('assets/images/product/3.png') }}"
+                                                                    alt="lable"><span>on <br>Sale!</span></div>
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                        alt="Product Image">
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                        alt="Product Image">
                                                                 </a>
                                                             @endif
-                                                            <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
+                                                            <div class="cart-info-icon"> <a class="wishlist-icon"
+                                                                    href="javascript:void(0)" tabindex="0"><i
+                                                                        class="iconsax" data-icon="heart"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Add to Wishlist"></i></a><a
+                                                                    href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view" tabindex="0"><i
+                                                                        class="iconsax" data-icon="eye"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
                                                                         data-bs-title="Quick View"></i></a></div>
                                                         </div>
                                                         <div class="product-detail">
                                                             @if ($product)
                                                                 <div class="add-button">
-                                                                    <a href="{{ route('product.detail', $product) }}"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                    <a href="{{ route('product.detail', $product) }}"><i
+                                                                            class="fa-regular fa-eye"></i> View details</a>
                                                                 </div>
                                                             @else
                                                                 <div class="add-button">
-                                                                    <a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                    <a href="#"><i class="fa-regular fa-eye"></i>
+                                                                        View details</a>
                                                                 </div>
                                                             @endif
                                                             <div class="color-box">
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                <ul class="color-variant"
+                                                                    style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue = $variantAttributeValue->attribute_value;
+                                                                                $attributeValue =
+                                                                                    $variantAttributeValue->attribute_value;
                                                                             @endphp
                                                                             @if (!empty($attributeValue->value))
-                                                                                <li style="background-color: #{{ $attributeValue->value }};">
+                                                                                <li
+                                                                                    style="background-color: #{{ $attributeValue->value }};">
 
                                                                                 </li>
                                                                             @endif
@@ -280,40 +402,57 @@
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
-                                                            <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on <br>Sale!</span></div>
+                                                            <div class="label-block"><img
+                                                                    src="{{ asset('assets/images/product/3.png') }}"
+                                                                    alt="lable"><span>on <br>Sale!</span></div>
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                        alt="Product Image">
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}" alt="Product Image">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                        alt="Product Image">
                                                                 </a>
                                                             @endif
-                                                            <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip"
+                                                            <div class="cart-info-icon"> <a class="wishlist-icon"
+                                                                    href="javascript:void(0)" tabindex="0"><i
+                                                                        class="iconsax" data-icon="heart"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Add to Wishlist"></i></a><a
+                                                                    href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view" tabindex="0"><i
+                                                                        class="iconsax" data-icon="eye"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
                                                                         data-bs-title="Quick View"></i></a></div>
                                                         </div>
                                                         <div class="product-detail">
                                                             @if ($product)
                                                                 <div class="add-button">
-                                                                    <a href="{{ route('product.detail', $product) }}"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                    <a href="{{ route('product.detail', $product) }}"><i
+                                                                            class="fa-regular fa-eye"></i> View details</a>
                                                                 </div>
                                                             @else
                                                                 <div class="add-button">
-                                                                    <a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                                                    <a href="#"><i class="fa-regular fa-eye"></i>
+                                                                        View details</a>
                                                                 </div>
                                                             @endif
                                                             <div class="color-box">
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                                                <ul class="color-variant"
+                                                                    style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue = $variantAttributeValue->attribute_value;
+                                                                                $attributeValue =
+                                                                                    $variantAttributeValue->attribute_value;
                                                                             @endphp
                                                                             @if (!empty($attributeValue->value))
-                                                                                <li style="background-color: #{{ $attributeValue->value }};">
+                                                                                <li
+                                                                                    style="background-color: #{{ $attributeValue->value }};">
 
                                                                                 </li>
                                                                             @endif
@@ -358,7 +497,9 @@
                     <div class="col-xl-9">
                         <div class="row g-4">
                             <div class="col-md-5">
-                                <div class="best-seller-img ratio_square-3"><a href="product-select.html"> <img class="bg-img" src="{{ asset('assets/images/layout-4/main-category/1.png') }}"
+                                <div class="best-seller-img ratio_square-3"><a href="product-select.html"> <img
+                                            class="bg-img"
+                                            src="{{ asset('assets/images/layout-4/main-category/1.png') }}"
                                             alt=""></a>
                                 </div>
                             </div>
@@ -368,15 +509,19 @@
                                     <h2>Create New Version Of Yourself</h2>
                                     <h4>About Online Fashion Purchases</h4>
                                     <div class="link-hover-anim underline">
-                                        <a class="btn btn_underline link-strong link-strong-unhovered" href="product-select.html">
+                                        <a class="btn btn_underline link-strong link-strong-unhovered"
+                                            href="product-select.html">
                                             Shop Collection
                                         </a>
-                                        <a class="btn btn_underline link-strong link-strong-hovered" href="product-select.html">
+                                        <a class="btn btn_underline link-strong link-strong-hovered"
+                                            href="product-select.html">
                                             Shop Collection
                                         </a>
                                     </div>
                                 </div>
-                                <a href="product-select.html"> <img class="bg-img" src="{{ asset('assets/images/layout-4/main-category/2.jpg') }}" alt=""></a>
+                                <a href="product-select.html"> <img class="bg-img"
+                                        src="{{ asset('assets/images/layout-4/main-category/2.jpg') }}"
+                                        alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -396,10 +541,12 @@
                                 <h3>Make You Look Comfortable and Luxurious</h3>
                                 <span> </span>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="product-select.html">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered"
+                                        href="product-select.html">
                                         Shop Collection
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="product-select.html">
+                                    <a class="btn btn_underline link-strong link-strong-hovered"
+                                        href="product-select.html">
                                         Shop Collection
                                     </a>
                                 </div>
@@ -421,17 +568,26 @@
                     <div class="swiper-wrapper trending-products ratio_square">
                         <div class="swiper-slide product-box">
                             <div class="img-wrapper">
-                                <div class="label-block"><img src="{{ asset('assets/images/product/2.png') }}" alt="lable"><span>on
+                                <div class="label-block"><img src="{{ asset('assets/images/product/2.png') }}"
+                                        alt="lable"><span>on
                                         <br>Sale!</span>
                                 </div>
-                                <div class="product-image"><a href="#"> <img class="bg-img" src="{{ asset('assets/images/product/product-4/7.jpg') }}" alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
-                                        tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
+                                <div class="product-image"><a href="#"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-4/7.jpg') }}"
+                                            alt="product"></a></div>
+                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
+                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
+                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
+                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Quick View"></i></a></div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
+                                        details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -450,11 +606,18 @@
                         </div>
                         <div class="swiper-slide product-box">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="#"> <img class="bg-img" src="{{ asset('assets/images/product/product-4/8.jpg') }}" alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
-                                        tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
+                                <div class="product-image"><a href="#"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-4/8.jpg') }}"
+                                            alt="product"></a></div>
+                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
+                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
+                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
+                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Quick View"></i></a></div>
                                 <div class="countdown">
                                     <ul class="clockdiv4">
                                         <li>
@@ -488,7 +651,8 @@
                                 </div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
+                                        details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -507,17 +671,26 @@
                         </div>
                         <div class="swiper-slide product-box">
                             <div class="img-wrapper">
-                                <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}" alt="lable"><span>on
+                                <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}"
+                                        alt="lable"><span>on
                                         <br>Sale!</span>
                                 </div>
-                                <div class="product-image"><a href="#"> <img class="bg-img" src="{{ asset('assets/images/product/product-4/9.jpg') }}" alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
-                                        tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
+                                <div class="product-image"><a href="#"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-4/9.jpg') }}"
+                                            alt="product"></a></div>
+                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
+                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
+                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
+                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Quick View"></i></a></div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
+                                        details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -536,11 +709,18 @@
                         </div>
                         <div class="swiper-slide product-box">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="#"> <img class="bg-img" src="{{ asset('assets/images/product/product-4/10.jpg') }}" alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
-                                        tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
+                                <div class="product-image"><a href="#"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-4/10.jpg') }}"
+                                            alt="product"></a></div>
+                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
+                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
+                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
+                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Quick View"></i></a></div>
                                 <div class="countdown">
                                     <ul class="clockdiv5">
                                         <li>
@@ -574,7 +754,8 @@
                                 </div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
+                                        details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -593,14 +774,22 @@
                         </div>
                         <div class="swiper-slide product-box">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="#"> <img class="bg-img" src="{{ asset('assets/images/product/product-4/3.jpg') }}" alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
-                                        tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a></div>
+                                <div class="product-image"><a href="#"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-4/3.jpg') }}"
+                                            alt="product"></a></div>
+                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
+                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
+                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
+                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
+                                            aria-hidden="true" data-bs-toggle="tooltip"
+                                            data-bs-title="Quick View"></i></a></div>
                             </div>
                             <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View details</a>
+                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
+                                        details</a>
                                 </div>
                                 <div class="color-box">
                                     <ul class="color-variant">
@@ -638,7 +827,8 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="blog-main">
-                                <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img" src="{{ asset('assets/images/blog/layout-4/1.jpg') }}" alt=""></a>
+                                <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
+                                            src="{{ asset('assets/images/blog/layout-4/1.jpg') }}" alt=""></a>
                                 </div>
                                 <div class="blog-txt">
                                     <p>By: Admin / 26th aug 2020</p>
@@ -650,14 +840,16 @@
                                             Read
                                             More
                                             <svg>
-                                                <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                                <use
+                                                    href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
                                                 </use>
                                             </svg>
                                         </a>
                                         <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                             Read More
                                             <svg>
-                                                <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                                <use
+                                                    href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
                                                 </use>
                                             </svg>
                                         </a>
@@ -666,7 +858,8 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img" src="{{ asset('assets/images/blog/layout-4/2.jpg') }}" alt=""></a></div>
+                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
+                                        src="{{ asset('assets/images/blog/layout-4/2.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
                                 <a href="#">
@@ -676,7 +869,8 @@
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
                                         <svg>
-                                            <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                            <use
+                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
                                             </use>
                                         </svg>
                                     </a>
@@ -684,7 +878,8 @@
                                         Read
                                         More
                                         <svg>
-                                            <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                            <use
+                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
                                             </use>
                                         </svg>
                                     </a>
@@ -692,7 +887,8 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img" src="{{ asset('assets/images/blog/layout-4/3.jpg') }}" alt=""></a></div>
+                            <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
+                                        src="{{ asset('assets/images/blog/layout-4/3.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
                                 <a href="#">
@@ -702,7 +898,8 @@
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
                                         <svg>
-                                            <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                            <use
+                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
                                             </use>
                                         </svg>
                                     </a>
@@ -710,7 +907,8 @@
                                         Read
                                         More
                                         <svg>
-                                            <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                            <use
+                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
                                             </use>
                                         </svg>
                                     </a>
@@ -718,7 +916,8 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img" src="{{ asset('assets/images/blog/layout-4/4.jpg') }}" alt=""></a></div>
+                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
+                                        src="{{ asset('assets/images/blog/layout-4/4.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
                                 <a href="#">
@@ -728,7 +927,8 @@
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
                                         <svg>
-                                            <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                            <use
+                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
                                             </use>
                                         </svg>
                                     </a>
@@ -736,7 +936,8 @@
                                         Read
                                         More
                                         <svg>
-                                            <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
+                                            <use
+                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
                                             </use>
                                         </svg>
                                     </a>
@@ -754,14 +955,22 @@
             <div class="custom-container container">
                 <div class="swiper logo-slider">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/1.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/2.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/3.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/4.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/5.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/6.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/7.png') }}" alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/3.png') }}" alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/1.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/2.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/3.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/4.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/5.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/6.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/7.png') }}"
+                                    alt="logo"></a></div>
+                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/3.png') }}"
+                                    alt="logo"></a></div>
                     </div>
                 </div>
             </div>
@@ -779,25 +988,33 @@
                                 <div class="quick-view-img">
                                     <div class="swiper modal-slide-1">
                                         <div class="swiper-wrapper ratio_square-2">
-                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('assets/images/pro/1.jpg') }}" alt="">
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('assets/images/pro/1.jpg') }}" alt="">
                                             </div>
-                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('assets/images/pro/2.jpg') }}" alt="">
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('assets/images/pro/2.jpg') }}" alt="">
                                             </div>
-                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('assets/images/pro/3.jpg') }}" alt="">
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('assets/images/pro/3.jpg') }}" alt="">
                                             </div>
-                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('assets/images/pro/4.jpg') }}" alt="">
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('assets/images/pro/4.jpg') }}" alt="">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="swiper modal-slide-2">
                                         <div class="swiper-wrapper ratio3_4">
-                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('assets/images/pro/5.jpg') }}" alt="">
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('assets/images/pro/5.jpg') }}" alt="">
                                             </div>
-                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('assets/images/pro/6.jpg') }}" alt="">
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('assets/images/pro/6.jpg') }}" alt="">
                                             </div>
-                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('assets/images/pro/7.jpg') }}" alt="">
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('assets/images/pro/7.jpg') }}" alt="">
                                             </div>
-                                            <div class="swiper-slide"><img class="bg-img" src="{{ asset('assets/images/pro/8.jpg') }}" alt="">
+                                            <div class="swiper-slide"><img class="bg-img"
+                                                    src="{{ asset('assets/images/pro/8.jpg') }}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -829,8 +1046,10 @@
                                             </ul>
                                         </div>
                                         <h6 class="product-title">Quantity</h6>
-                                        <div class="quantity"><button class="minus" type="button"><i class="fa-solid fa-minus"></i></button><input type="number" value="1" min="1"
-                                                max="20"><button class="plus" type="button"><i class="fa-regular fa-eye"></i></button></div>
+                                        <div class="quantity"><button class="minus" type="button"><i
+                                                    class="fa-solid fa-minus"></i></button><input type="number"
+                                                value="1" min="1" max="20"><button class="plus"
+                                                type="button"><i class="fa-regular fa-eye"></i></button></div>
                                     </div>
 
                                     <div class="product-buttons"><a class="btn btn-solid" href="#">Add to

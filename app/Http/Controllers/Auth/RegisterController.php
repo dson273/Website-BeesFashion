@@ -10,16 +10,18 @@ use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         //View trang đăng ký
         return view('user.auth.register');
     }
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         //Xử lý logic đăng ký
         $data = $request->validate([
-            'username' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'string','unique:users', 'max:100'],
+            'username' => ['required', 'string', 'unique:users', 'max:50'],
+            'email' => ['required', 'string', 'unique:users', 'max:100'],
             'password' => ['required', 'string', 'min:6', 'confirmed']
         ]);
         //Tạo user mới

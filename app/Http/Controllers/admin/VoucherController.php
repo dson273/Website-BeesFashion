@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Product;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -39,7 +40,6 @@ class VoucherController extends Controller
             'start_date' => 'required|date|before_or_equal:end_date', // Ngày bắt đầu phải có và trước hoặc bằng ngày hết hạn
             'end_date' => 'required|date|after_or_equal:start_date',   // Ngày hết hạn phải có và sau hoặc bằng ngày bắt đầu
             'minimum_order_value' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Kiểm tra file ảnh nếu có
         ], [
             'name.required' => 'Tên voucher là bắt buộc.',
             'code.required' => 'Mã voucher là bắt buộc.',
@@ -63,7 +63,7 @@ class VoucherController extends Controller
         ]);
 
         if ($request->amount >= $request->minimum_order_value) {
-            return back()->withErrors(['discount_value' => 'Giá trị giảm phải nhỏ hơn giá tối thiểu đơn hàng.'])->withInput();
+            return back()->with(['statusError' => 'Giá trị giảm phải nhỏ hơn giá tối thiểu đơn hàng.']);
         }
 
         $params = $request->except('_token');
@@ -79,7 +79,7 @@ class VoucherController extends Controller
         $params['is_active'] = $request->has('is_active') ? 1 : 0;
         Voucher::create($params);
 
-        return back()->with('statusSuccess', 'Thêm danh mục thành công');
+        return back()->with('statusSuccess', 'Thêm voucher thành công');
     }
 
     /**
@@ -87,7 +87,63 @@ class VoucherController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Lấy voucher dựa trên ID được truyền vào
+        $getVoucher = Voucher::where('id', $id)->first();
+
+        // Lấy danh sách sản phẩm liên kết với voucher hoặc mảng rỗng nếu không có voucher
+        $showProductVoucher = $getVoucher ? $getVoucher->products : [];
+
+        // Lấy tất cả sản phẩm đang hoạt động
+        $allProducts = Product::where('is_active', 1)->get();
+
+        // Lấy danh sách ID của các sản phẩm liên kết với voucher
+        $showProductVoucherIds = $showProductVoucher->pluck('id')->toArray();
+        return view('admin.vouchers.detail', compact('allProducts', 'getVoucher', 'showProductVoucher', 'showProductVoucherIds'));
+    }
+    public function addProductVoucher(Request $request)
+    {
+        // Lấy ID của voucher từ request
+        $voucherId = $request->input('id');
+
+        // Lấy voucher cụ thể
+        $getVoucher = Voucher::find($voucherId);
+
+        if (!$getVoucher || !$getVoucher->is_active) {
+            return back()->with('statusError', 'Voucher không tồn tại hoặc không hoạt động.');
+        }
+
+        // Kiểm tra nếu có sản phẩm được chọn
+        if ($request->has('product_ids')) {
+            // Lấy danh sách ID sản phẩm được chọn
+            $productIds = $request->input('product_ids');
+
+            // Gắn sản phẩm vào voucher, bỏ qua các sản phẩm đã tồn tại
+            $getVoucher->products()->syncWithoutDetaching($productIds);
+
+            return back()->with('statusSuccess', 'Sản phẩm đã được thêm vào voucher.');
+        }
+
+        return back()->with('statusError', 'Không có sản phẩm nào được chọn.');
+    }
+
+    public function remove($productId, $voucherId)
+    {
+        // Tìm sản phẩm
+        $product = Product::find($productId);
+
+        if ($product) {
+            $voucher = $product->vouchers()->where('voucher_id', $voucherId)->first();
+
+            if ($voucher) {
+                $product->vouchers()->detach($voucherId);
+
+                return back()->with('statusSuccess', 'Sản phẩm đã được gỡ khỏi voucher hiện tại.');
+            }
+
+            return back()->with('statusError', 'Sản phẩm không thuộc voucher này.');
+        }
+
+        return back()->with('statusError', 'Không tìm thấy sản phẩm.');
     }
 
     /**
@@ -124,7 +180,7 @@ class VoucherController extends Controller
 
             $vouchers->update($params);
 
-            return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Cập nhật danh mục thành công');
+            return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Cập nhật voucher thành công');
         }
     }
 
@@ -154,7 +210,7 @@ class VoucherController extends Controller
         $vouchers->save();
 
 
-        return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Banner đã được bật');
+        return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Voucher đã được bật');
     }
 
     public function offActive($id)
@@ -164,6 +220,6 @@ class VoucherController extends Controller
         $voucher->is_active = 0;
         $voucher->save();
 
-        return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Banner đã được tắt');
+        return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Voucher đã được tắt');
     }
 }
