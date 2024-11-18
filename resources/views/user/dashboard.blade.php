@@ -31,7 +31,7 @@
                                 <div class="profile-bg-img"></div>
                                 <div class="dashboard-left-sidebar-close"><i class="fa-solid fa-xmark"></i></div>
                                 <div class="profile-contain">
-                                    <div class="profile-image"> <img class="img-fluid" src="../assets/images/user/12.jpg" alt=""></div>
+                                    <div class="profile-image"> <img class="img-fluid" src="{{asset('assets/images/user/user-icon.jpg')}}" alt=""></div>
                                     {{-- Profile --}}
                                     <div class="profile-name">
                                         <h4>{{ Auth::user()->username }}</h4>

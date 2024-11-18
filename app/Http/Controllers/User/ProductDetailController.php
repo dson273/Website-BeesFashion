@@ -38,9 +38,11 @@ class ProductDetailController extends Controller
                 'regular_price' => $variant->regular_price,
                 'sale_price' => $variant->sale_price,
                 'stock' => $variant->stock,
+                'is_active' => $variant->is_active,
                 'attribute_values' => $variant->variant_attribute_values->pluck('attribute_value_id')->toArray()
             ];
         })->toArray();
+        // dd($array_variants);
 
         // Lấy tất cả các attribute_value_id và attribute_id duy nhất
         $attribute_value_ids = $product->product_variants
@@ -116,7 +118,7 @@ class ProductDetailController extends Controller
             $minSalePrice = $variantsWithSalePrice->min('sale_price');
 
             if ($maxRegularPrice && $minSalePrice) {
-                $discountPercent = round((($maxRegularPrice - $minSalePrice) / $maxRegularPrice) * 100);
+                $discountPercent = number_format((100 - ($minSalePrice / $maxRegularPrice * 100)), 1, '.', '');
                 $product->discountPercent = '-' . $discountPercent . '%';
             } else {
                 $product->discountPercent = 'Hot!';
@@ -186,12 +188,27 @@ class ProductDetailController extends Controller
     }
     public function addToCart(string $variant_id, string $quantity)
     {
+        // Lấy thông tin biến thể
+        $variant = Product_variant::select('stock', 'is_active')
+            ->where('id', $variant_id)
+            ->first();
+
+        // Kiểm tra biến thể có tồn tại và đang hoạt động
+        if (!$variant || $variant->is_active == 0) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sản phẩm này đã ngưng bán. Vui lòng chọn mẫu khác.'
+            ], 400);
+        }
+        // Kiểm tra nếu biến thể đã có trong giỏ hàng
         $checkCart = Cart::with('product_variant')
             ->where('product_variant_id', $variant_id)
             ->where('user_id', Auth::user()->id)
             ->first();
         if ($checkCart) {
+            // Tính toán số lượng mới
             $newQuantity = $checkCart->quantity + $quantity;
+            // Đảm bảo không vượt quá tồn kho hoặc giới hạn 10 sản phẩm
             if ($newQuantity > $checkCart->product_variant->stock) {
                 $checkCart->quantity = $checkCart->product_variant->stock;
             } elseif ($newQuantity > 10) {
@@ -202,7 +219,6 @@ class ProductDetailController extends Controller
             $checkCart->updated_at->now();
             $checkCart->save();
         } else {
-            $variant = Product_variant::select('stock')->where('id', $variant_id)->first();
             if ($variant) {
                 Cart::create([
                     'quantity' => $quantity <= min($variant->stock, 10) ? $quantity : min($variant->stock, 10),
@@ -212,7 +228,14 @@ class ProductDetailController extends Controller
                 ]);
             }
         }
-        return redirect()->back()->with('statusSuccess', 'Thêm sản phẩm vào giỏ hàng thành công.');
+        // Tính tổng số lượng giỏ hàng
+        $cartCount = Cart::where('user_id', Auth::id())->count();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Thêm sản phẩm vào giỏ hàng thành công.',
+            'cartCount' => $cartCount
+        ]);
     }
 
     /**
