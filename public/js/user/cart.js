@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#total-payment').text("0đ");
         $('#total-discount').text("0đ");
         $('#total-price').text("0đ");
-        $('#cart-details span').text('(0 Sản phẩm)');
+        $('#cart-progress span').text('(0 Sản phẩm)');
         $(document).on('change', '.product_checkbox', function () {
             updateTotalPrice();
             updateCartItemCount();  // Cập nhật số lượng sản phẩm được chọn
@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (selected_cart_item) {
             var cart_ids = [];
-            $('.product_item').each(function () {
+            $('.cart_item').each(function () {
                 var product_item = $(this);
                 var cart_id = product_item.data('cart-id');
                 cart_ids.push(cart_id);
