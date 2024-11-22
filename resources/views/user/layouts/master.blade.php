@@ -8,8 +8,6 @@
     <meta name="description" content="BeesFashion">
     <meta name="keywords" content="BeesFashion">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <title>BeesFashion - Online Fashion Store </title>
     <!-- Favicon icon-->
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
@@ -26,7 +24,6 @@
     <link rel="stylesheet" type="text/css" id="rtl-link" href="{{ asset('assets/css/vendors/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/swiper-slider/swiper-bundle.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/toastify.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <script defer src="{{ asset('assets/css/landing_page.js') }}"></script>
     <script defer src="{{ asset('assets/css/style.js') }}"></script>
@@ -105,8 +102,6 @@
                 };
             });
         };
-        var routeGetMinMaxPriceProduct = "{{ route('getMinMaxPriceProduct') }}";
-        var csrf = "{{ csrf_token() }}";
         const csrf = "{{ csrf_token() }}";
         //Filler product
         const routeGetMinMaxPriceProduct = "{{route('getMinMaxPriceProduct')}}";

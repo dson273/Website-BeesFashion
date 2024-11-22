@@ -50,16 +50,16 @@ async function loadListAddresses() {
 
         const label = document.createElement("label");
         label.setAttribute("for", "address-billing-1");
-        label.classList.add("labelAddressItem");
+        label.classList.add("labelAddressItem", "cspt", "w-100", "h-100");
 
         const deliveryBox = document.createElement("span");
-        deliveryBox.classList.add("delivery-address-box", "d-flex", "flex-column");
+        deliveryBox.classList.add("delivery-address-box", "d-flex", "flex-column", "w-100", "h-100", "justify-content-between");
 
         const flexRow = document.createElement("div");
-        flexRow.classList.add("d-flex", "flex-row", "justify-content-between");
+        flexRow.classList.add("d-flex", "flex-row", "w-100");
 
         const formCheck = document.createElement("span");
-        formCheck.classList.add("form-check");
+        formCheck.classList.add("form-check", "me-4");
 
         const radioInput = document.createElement("input");
         radioInput.classList.add("custom-radio");
@@ -73,7 +73,7 @@ async function loadListAddresses() {
         formCheck.appendChild(radioInput);
 
         const addressDetail = document.createElement("span");
-        addressDetail.classList.add("address-detail");
+        addressDetail.classList.add("address-detail", "w-100", "h-100");
 
         const addressInfo = [
             { tag: "span", class: "address-title no-select", content: "Default address" },
@@ -166,16 +166,16 @@ async function loadListAddresses() {
 
                 const label = document.createElement("label");
                 label.setAttribute("for", "address-billing-" + index + 2);
-                label.classList.add("labelAddressItem");
+                label.classList.add("labelAddressItem", "cspt", "w-100", "h-100");
 
                 const deliveryBox = document.createElement("span");
-                deliveryBox.classList.add("delivery-address-box", "d-flex", "flex-column");
+                deliveryBox.classList.add("delivery-address-box", "d-flex", "flex-column", "w-100", "h-100", "justify-content-between");
 
                 const flexRow = document.createElement("div");
-                flexRow.classList.add("d-flex", "flex-row", "justify-content-between");
+                flexRow.classList.add("d-flex", "flex-row", "w-100");
 
                 const formCheck = document.createElement("span");
-                formCheck.classList.add("form-check");
+                formCheck.classList.add("form-check", "me-4");
 
                 const radioInput = document.createElement("input");
                 radioInput.classList.add("custom-radio");
@@ -189,7 +189,7 @@ async function loadListAddresses() {
                 formCheck.appendChild(radioInput);
 
                 const addressDetail = document.createElement("span");
-                addressDetail.classList.add("address-detail");
+                addressDetail.classList.add("address-detail", "w-100", "h-100");
 
                 const addressInfo = [
                     { tag: "span", class: "address-title no-select", content: "Other address" },
