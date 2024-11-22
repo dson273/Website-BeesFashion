@@ -13,17 +13,21 @@ class Order extends Model
         'shipping_price',
         'shipping_voucher',
         'voucher',
+        'tax',
         'total_payment',
-        'user_id',
-        'user_shipping_address_id'
+        'full_name',
+        'phone_number',
+        'address',
+        'payment_method',
+        'user_id'
     ];
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function user_shipping_address()
+    public function order_details()
     {
-        return $this->belongsTo(User_shipping_address::class);
+        return $this->hasMany(Order_detail::class);
     }
     public function status_orders()
     {

@@ -19,9 +19,13 @@ return new class extends Migration
             $table->integer('shipping_price')->comment('Số tiền vận chuyển');
             $table->integer('shipping_voucher')->default(0)->comment('Số tiền vận chuyện được giảm');
             $table->integer('voucher')->default(0)->comment('Số tiền được giảm từ voucher');
+            $table->float('tax')->comment('Thuế');
             $table->integer('total_payment')->comment('Tổng tiền thanh toán cuối cùng');
+            $table->string('full_name')->nullable()->comment('Nếu người dùng chọn địa chỉ thanh toán mặc định ở bảng user thì không thể lấy thông tin địa chỉ giao hàng qua id của bảng user_shipping_address');
+            $table->string('phone_number')->nullable()->comment('Nếu người dùng chọn địa chỉ thanh toán mặc định ở bảng user thì không thể lấy thông tin địa chỉ giao hàng qua id của bảng user_shipping_address');
+            $table->string('address')->nullable()->comment('Nếu người dùng chọn địa chỉ thanh toán mặc định ở bảng user thì không thể lấy thông tin địa chỉ giao hàng qua id của bảng user_shipping_address');
+            $table->enum('payment_method', ['cod,vnpay,momo'])->default('cod')->comment('Thanh toán bằng hình thức nào');
             $table->foreignIdFor(User::class)->comment('Xác định người dùng nào đã đặt hàng')->constrained();
-            $table->foreignIdFor(User_shipping_address::class)->comment('Xác định địa chỉ nào mà người dùng chọn để đặt hàng')->constrained();
             $table->timestamps();
         });
     }
