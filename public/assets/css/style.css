@@ -19175,7 +19175,7 @@ body div canvas:first-child {
 
 @media screen and (max-width: 768px) {
     .block-voucher .voucher-items-list .voucher-item {
-        width: 100% !important
+        width:100%!important
     }
 }
 
@@ -19393,4 +19393,3 @@ body div canvas:first-child {
         font-size: 14px;
     }
 }
-
