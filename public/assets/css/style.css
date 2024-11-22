@@ -18490,7 +18490,7 @@ body div canvas:first-child {
 
 .block-voucher .voucher-item {
     padding: 5px 12px;
-    display: flex!important
+    display: flex !important
 }
 
 .block-voucher .voucher-item-action .action {
@@ -18528,7 +18528,7 @@ body div canvas:first-child {
     display: flex
 }
 
-.block-voucher .slick-track:after,.block-voucher .slick-track:before {
+.block-voucher .slick-track:after, .block-voucher .slick-track:before {
     content: none
 }
 
@@ -18603,7 +18603,7 @@ body div canvas:first-child {
     flex-grow: 1;
     padding: 16px;
     background-color: #fff;
-    box-shadow: 0 0 5px rgba(40,41,61,.08),0 .5px 6px rgba(96,97,112,.16);
+    box-shadow: 0 0 5px rgba(40, 41, 61, .08), 0 .5px 6px rgba(96, 97, 112, .16);
     width: calc(100% - 141px);
     width: -o-calc(100% - 141px);
     border-radius: 4px 0 0 4px;
@@ -18681,7 +18681,7 @@ body div canvas:first-child {
     justify-content: center;
     order: 4;
     background-color: #fff;
-    box-shadow: 0 0 5px rgba(40,41,61,.08),0 .5px 6px rgba(96,97,112,.16);
+    box-shadow: 0 0 5px rgba(40, 41, 61, .08), 0 .5px 6px rgba(96, 97, 112, .16);
     position: relative;
     border-radius: 0 4px 4px 0;
     padding: 0 17px 0 2px
@@ -18704,7 +18704,7 @@ body div canvas:first-child {
     border-radius: 2px
 }
 
-.voucher-item-action:after,.voucher-item-action:before {
+.voucher-item-action:after, .voucher-item-action:before {
     content: "";
     height: 17px;
     width: 30px;
@@ -18784,11 +18784,11 @@ body div canvas:first-child {
     opacity: .4
 }
 
-.voucher-item.active .voucher-item-action,.voucher-item.active .voucher-item-detail,.voucher-item.active .voucher-item-info:after {
+.voucher-item.active .voucher-item-action, .voucher-item.active .voucher-item-detail, .voucher-item.active .voucher-item-info:after {
     background-color: #edf1f5
 }
 
-.voucher-item.active .voucher-item-action,.voucher-item.active .voucher-item-detail {
+.voucher-item.active .voucher-item-action, .voucher-item.active .voucher-item-detail {
     border: 1px solid #63b1bc;
     box-shadow: none
 }
@@ -18875,7 +18875,6 @@ body div canvas:first-child {
 
 @media screen and (max-width: 768px) {
     .block-voucher .voucher-items-list .voucher-item {
-        width:100%!important
+        width: 100% !important
     }
 }
-

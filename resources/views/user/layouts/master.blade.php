@@ -105,7 +105,7 @@
                 };
             });
         };
-        var routeGetMinMaxPriceProduct = "{{route('getMinMaxPriceProduct')}}";
+        var routeGetMinMaxPriceProduct = "{{ route('getMinMaxPriceProduct') }}";
         var csrf = "{{ csrf_token() }}";
     </script>
 
