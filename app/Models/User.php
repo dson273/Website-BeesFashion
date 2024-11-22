@@ -87,6 +87,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Import_history::class);
     }
+    public function user_vouchers()
+    {
+        return $this->hasMany(User_voucher::class);
+    }
 
     // Lấy tất cả quyền của người dùng
     public function permissions()
