@@ -2111,6 +2111,23 @@ header .sub_header ul li .shoping-prize span {
     padding-left: 8px
 }
 
+header .sub_header ul li .shoping-prize .cart-count {
+    background-color: rgba(var(--theme-default));
+    ;
+    border-radius: 20px;
+    color: rgba(var(--white), 1);
+    font-size: 12px;
+    font-weight: 500;
+    height: 18px;
+    line-height: 14px;
+    padding: 2px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: -7px;
+    width: 18px;
+}
+
 header .sub_header ul .onhover-div .cart_qty_cls,
 header .sub_header ul li .cart_qty_cls {
     background: rgba(var(--theme-default));
@@ -7593,6 +7610,7 @@ footer .footer-1 .social-icon>li:hover a i {
     color: rgba(var(--danger-color), 1);
     font-weight: 500;
     font-size: calc(7px + .525vw);
+    margin-bottom: 5px;
     padding: 4px 12px;
 }
 
@@ -7601,6 +7619,7 @@ footer .footer-1 .social-icon>li:hover a i {
     border-radius: 4px;
     color: rgba(var(--danger-color), 1);
     font-weight: 500;
+    font-size: calc(7px + .525vw);
     margin-bottom: 5px;
     padding: 4px 12px;
     width: -moz-fit-content;
@@ -18382,6 +18401,282 @@ body div canvas:first-child {
 
 /* Styling each parent category (column) */
 
+
+/* Màu viền khi được chọn */
+.color-options input[type="radio"].selected+.color-label {
+    border: 1px solid #ff0000;
+    /* Màu viền khi được chọn */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Empty Cart Styles */
+.empty-cart-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-cart-image {
+    max-width: 200px;
+    margin-bottom: 1rem;
+}
+
+.btn-continue-shopping {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-continue-shopping:hover {
+    background: #333;
+}
+
+.border-bonus {
+    border: 3px solid transparent;
+}
+
+.blink-border {
+    border: 3px solid transparent;
+}
+
+.blink-border-text {
+    border: 3px solid transparent;
+}
+
+.animation-blink-border {
+    border-color: red;
+    animation: blink 1s ease-in-out;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: red;
+    }
+}
+
+/*  */
+.custom-set-address {
+    border: none;
+    color: rgba(var(--theme-default), 1);
+    background-color: rgba(var(--box-background), 1);
+    padding: 0;
+    transition: text-decoration 0.5s ease, color 0.5s ease;
+    font-size: 15px;
+    font-weight: 450;
+}
+
+.address-action {
+    padding: 4px 4px 2px 4px;
+}
+
+.custom-set-address:hover {
+    border: none;
+    color: #c28f51;
+    background-color: rgba(var(--box-background), 1);
+    text-decoration: underline;
+}
+
+.btn_edit_address {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.btn_delete_address {
+    font-size: 15px;
+    font-weight: 600;
+    color: rgb(234, 20, 20);
+}
+
+.custom-status-set-address {
+    border: 1px solid rgb(234, 20, 20);
+    padding: 1px 4px;
+    color: rgb(234, 20, 20);
+    border-radius: 2px;
+}
+
+/*  */
+.range-slider {
+    --range-slider-value-low-fallback: calc(var(--range-slider-value-low, 0) * 1%);
+    --range-slider-value-high-fallback: calc(var(--range-slider-value-high, 100) * 1%);
+    height: 24px;
+    margin-block: 27px;
+    position: relative;
+    width: 100%;
+}
+
+.range-slider:before {
+    background-color: rgba(var(--theme-default), 0.2);
+    background-image: linear-gradient(to right,
+            transparent var(--range-slider-value-low-fallback),
+            rgba(var(--theme-default), 1) var(--range-slider-value-low-fallback),
+            rgba(var(--theme-default)) var(--range-slider-value-high-fallback),
+            transparent var(--range-slider-value-high-fallback));
+    border-radius: 4px;
+    content: "";
+    height: 4px;
+    left: 0;
+    margin-top: -2px;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+}
+
+.range-slider-display {
+    pointer-events: none;
+}
+
+.range-slider-display:before {
+    content: attr(data-span);
+    --pos: var(--range-slider-value-low);
+    bottom: 100%;
+    content: attr(data-low);
+    left: var(--range-slider-value-low-fallback);
+}
+
+.range-slider-display:after,
+.range-slider-display:before {
+    color: rgba(var(--theme-font-color), 1);
+    font-size: calc(15.6px + 0.125vw);
+    position: absolute;
+    transform: translateX(-50%) translateX(calc(10px * (var(--pos) * -0.04 + 1)));
+    white-space: nowrap;
+    z-index: 0;
+}
+
+.range-slider-display:after {
+    content: attr(data-span);
+    --pos: var(--range-slider-value-high);
+    content: attr(data-high);
+    left: var(--range-slider-value-high-fallback);
+    top: 100%;
+}
+
+.range-slider-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    display: block;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+
+.range-slider-input:focus,
+.range-slider-input:focus-visible {
+    border: none;
+    outline: none;
+}
+
+.range-slider-input:active::-webkit-slider-thumb {
+    cursor: grabbing;
+    transform: scale(1.2);
+}
+
+.range-slider-input::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.range-slider-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: rgba(var(--theme-default), 1);
+    border: none;
+    border-radius: 50%;
+    box-shadow: none;
+    cursor: grab;
+    height: 20px;
+    pointer-events: all;
+    position: relative;
+    -webkit-transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+    transition: transform 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+    width: 20px;
+}
+
+/* CSS Styling */
+.navbar {
+    position: relative;
+    background-color: #fff;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.menu-item {
+    position: relative;
+    margin-right: 20px;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 600px;
+    /* Tùy chỉnh độ rộng */
+    z-index: 1000;
+    display: flex;
+    gap: 20px;
+    /* Khoảng cách giữa các nhóm danh mục */
+}
+
+.category-group h4 {
+    margin: 0;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.category-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-group ul li {
+    padding: 5px 0;
+}
+
+.menu-item:hover .dropdown {
+    display: flex;
+}
+
+
+/* Main container for the dropdown */
+
+/* Styling each parent category (column) */
+
 .ratingd {
     display: flex;
     /* Chuyển danh sách thành flex container */
@@ -18529,6 +18824,8 @@ body div canvas:first-child {
 }
 
 .block-voucher .slick-track:after, .block-voucher .slick-track:before {
+.block-voucher .slick-track:after,
+.block-voucher .slick-track:before {
     content: none
 }
 
@@ -18704,7 +19001,10 @@ body div canvas:first-child {
     border-radius: 2px
 }
 
+
 .voucher-item-action:after, .voucher-item-action:before {
+.voucher-item-action:after,
+.voucher-item-action:before {
     content: "";
     height: 17px;
     width: 30px;
@@ -18784,11 +19084,20 @@ body div canvas:first-child {
     opacity: .4
 }
 
+
 .voucher-item.active .voucher-item-action, .voucher-item.active .voucher-item-detail, .voucher-item.active .voucher-item-info:after {
     background-color: #edf1f5
 }
 
 .voucher-item.active .voucher-item-action, .voucher-item.active .voucher-item-detail {
+.voucher-item.active .voucher-item-action,
+.voucher-item.active .voucher-item-detail,
+.voucher-item.active .voucher-item-info:after {
+    background-color: #edf1f5
+}
+
+.voucher-item.active .voucher-item-action,
+.voucher-item.active .voucher-item-detail {
     border: 1px solid #63b1bc;
     box-shadow: none
 }
@@ -18876,5 +19185,220 @@ body div canvas:first-child {
 @media screen and (max-width: 768px) {
     .block-voucher .voucher-items-list .voucher-item {
         width: 100% !important
+    }
+}
+
+/* Login + logout */
+.onhover-div .login-register-box {
+    background-color: rgba(var(--light-white), 1);
+    border-radius: 6px;
+    box-shadow: 0 1px 5px 0 rgba(var(--light-color), .4);
+    opacity: 0;
+    transition: all .4s ease-in-out;
+    visibility: hidden;
+    z-index: 10;
+    width: 300px;
+    padding: 20px;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    text-align: center;
+}
+
+.onhover-div:hover .login-register-box {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Tiêu đề box */
+.login-register-box h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(var(--theme-font-color), 1);
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Nội dung mô tả */
+.login-register-box .title-login {
+    font-size: 14px;
+    color: #666;
+}
+
+.login-register-box .title-register {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Nút đăng nhập */
+.login-register-box .btn-login {
+    background-color: #E60012;
+    color: #fff;
+    width: 130px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    transition: all .4s ease-in-out
+}
+
+.login-register-box .btn-login:hover {
+    background-color: #ff0015;
+    /* Màu đỏ đậm hơn khi hover */
+}
+
+/* Nút đăng ký */
+.login-register-box .btn-register {
+    background-color: #fff;
+    width: 130px;
+    color: rgba(var(--theme-font-color), 1);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px;
+    border: 1px solid #d4d4d4;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    transition: all .4s ease-in-out
+}
+
+.login-register-box .btn-register:hover {
+    border: 1px solid #E60012;
+    background-color: #E60012;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .login-register-box {
+        width: 90%;
+        /* Thu nhỏ box cho màn hình nhỏ */
+        top: 40px;
+    }
+
+    .login-register-box h2 {
+        font-size: 16px;
+        /* Giảm kích thước font */
+    }
+
+    .login-register-box p {
+        font-size: 12px;
+        /* Giảm kích thước font */
+    }
+
+    .login-register-box .btn-login,
+    .login-register-box .btn-register {
+        font-size: 12px;
+        /* Giảm kích thước nút */
+        padding: 8px 15px;
+        /* Giảm padding nút */
+    }
+}
+
+/* Box hiển thị sau đăng nhập */
+.onhover-div .user-box {
+    background-color: rgba(var(--light-white), 1);
+    border-radius: 6px;
+    box-shadow: 0 1px 5px 0 rgba(var(--light-color), .4);
+    opacity: 0;
+    transition: all .4s ease-in-out;
+    visibility: hidden;
+    z-index: 10;
+    width: 300px;
+    padding: 20px;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    text-align: center;
+}
+
+/* Hiển thị box khi hover */
+.onhover-div:hover .user-box {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Phần thông tin người dùng */
+.onhover-div .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.onhover-div .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #f0f0f0;
+}
+
+.onhover-div .user-info h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+/* Danh sách các hành động */
+.user-actions a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.user-actions .act-dash {
+    padding: 7px 12px;
+}
+
+.user-actions .act-logout {
+    padding: 7px 12px;
+}
+
+.user-actions a:hover {
+    background-color: #f9f9f9;
+    text-decoration: none;
+}
+
+.user-actions a[title="Logout"] {
+    color: #b70010;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .user-box {
+        width: 90%;
+        /* Co giãn trên màn hình nhỏ */
+        top: 40px;
+        right: 5%;
+    }
+
+    .user-info h3 {
+        font-size: 14px;
+    }
+
+    .user-actions a {
+        font-size: 13px;
+    }
+
+    .user-actions a i {
+        font-size: 14px;
     }
 }

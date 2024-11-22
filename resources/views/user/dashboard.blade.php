@@ -1,16 +1,16 @@
 @extends('user.layouts.master')
 
 @section('content')
-    <!-- Container content -->
-    <main>
-        <section class="section-b-space pt-0">
-            <div class="heading-banner">
-                <div class="custom-container container">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6">
-                            <h4>Dashboard</h4>
-                        </div>
-                        {{-- <div class="col-sm-6">
+<!-- Container content -->
+<main>
+    <section class="section-b-space pt-0">
+        <div class="heading-banner">
+            <div class="custom-container container">
+                <div class="row align-items-center">
+                    <div class="col-sm-6">
+                        <h4>Dashboard</h4>
+                    </div>
+                    {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="{{route('/')}}">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Dashboard</a></li>
@@ -31,7 +31,7 @@
                                 <div class="profile-bg-img"></div>
                                 <div class="dashboard-left-sidebar-close"><i class="fa-solid fa-xmark"></i></div>
                                 <div class="profile-contain">
-                                    <div class="profile-image"> <img class="img-fluid" src="../assets/images/user/12.jpg" alt=""></div>
+                                    <div class="profile-image"> <img class="img-fluid" src="{{asset('assets/images/user/user-icon.jpg')}}" alt=""></div>
                                     {{-- Profile --}}
                                     <div class="profile-name">
                                         <h4>{{ Auth::user()->username }}</h4>
@@ -1070,8 +1070,8 @@
             </div>
         </div>
 
-    </main>
-    <!-- End container content -->
+</main>
+<!-- End container content -->
 @endsection
 
 @section('script-libs')

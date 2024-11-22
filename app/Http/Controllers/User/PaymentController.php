@@ -3,22 +3,25 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\User_shipping_address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function vnpay_payment()
     {
-        
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function momo_payment()
     {
         //
     }

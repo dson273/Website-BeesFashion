@@ -1,32 +1,8 @@
 @extends('user.layouts.master')
+@section('css-libs')
+    <link rel="stylesheet" href="{{ asset('css/user/filterProduct.css') }}">
+@endsection
 @section('content')
-    <style>
-        .top-filter-menu {
-            background-color: rgb(226, 226, 226);
-        }
-
-        option {
-            transition: opacity 0.3s ease;
-        }
-
-        option[style*="display: none"] {
-            opacity: 0;
-
-        }
-
-        .grid-section .product-box-3 {
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .grid-section .product-box-3:hover {
-            border-color: #ffa733;
-            box-shadow: 0 4px 10px rgba(166, 166, 167, 0.3);
-            transform: scale(1.05);
-        }
-    </style>
     <div class="tap-top">
         <div><i class="fa-solid fa-angle-up"></i></div>
     </div>
@@ -66,26 +42,33 @@
                             <h5>Back </h5><i class="back-button fa-solid fa-xmark"></i>
                         </div>
                         <div class="accordion" id="accordionPanelsStayOpenExample">
+                            {{-- Hiển thị những phần đã chọn bên dưới --}}
+                            <div class="div_selected_items d-flex flex-column">
+                                <div id="title_selected">
+
+                                </div>
+                                <div id="selected_items" class="row ps-2 pe-2 mb-3 ">
+
+                                </div>
+                            </div>
                             {{-- tìm kiếm sản phẩm theo tên --}}
                             <div class="search-box">
-                                <input type="search" id="search-input" name="text" placeholder="Tìm kiếm sản phẩm..."
-                                    onkeyup="filterProducts()">
+                                <input type="search" id="search-input" name="text" placeholder="Tìm kiếm sản phẩm...">
                                 <i class="iconsax" data-icon="search-normal-2"></i>
                             </div>
                             {{-- lọc theo khoảng giá --}}
 
                             <div class="accordion-item">
                                 <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
-                                        data-bs-target="#panelsStayOpen-collapseFour"><span>Sắp xếp khoảng giá</span></button></h2>
+                                        data-bs-target="#panelsStayOpen-collapseFour"><span>Sắp xếp khoảng
+                                            giá</span></button></h2>
                                 <div class="accordion-collapse collapse show" id="panelsStayOpen-collapseFour">
                                     <div class="accordion-body">
                                         <div class="range-slider">
                                             <input class="range-slider-input" type="range" min="0"
-                                                max="{{ $maxPriceProduct }}" step="1"
-                                                value="0">
-                                            <input class="range-slider-input" type="range"
-                                                min="0" max="{{ $maxPriceProduct }}"
-                                                step="1" value="{{ $maxPriceProduct }}">
+                                                max="{{ $maxPriceProduct }}" step="1" value="0">
+                                            <input class="range-slider-input" type="range" min="0"
+                                                max="{{ $maxPriceProduct }}" step="1" value="{{ $maxPriceProduct }}">
                                             <div class="range-slider-display"></div>
                                         </div>
                                     </div>
@@ -167,7 +150,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             {{-- màu --}}
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -252,7 +235,8 @@
                                 <label class="m-2" for="priceSort">Sắp xếp theo :</label>
                                 <div class="d-flex">
                                     <div class="filter-option m-3">
-                                        <button class="btn btn-outline-secondary" id="filterBestSelling">Bán chạy nhất</button>
+                                        <button class="btn btn-outline-secondary" id="filterBestSelling">Bán chạy
+                                            nhất</button>
                                     </div>
                                     <div class="filter-option m-3">
                                         <button class="btn btn-outline-secondary" id="filterNewArrivals">Mới nhất</button>
@@ -270,7 +254,7 @@
                         </div>
                         <div class="product-tab-content ratio1_3">
                             <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 ">
-                                <!-- Sản phẩm sẽ được hiển thị ở đây -->
+                                <!-- Sản phẩm sẽ được hiển thị ở đây --
                             </div>
                         </div>
                     </div>
@@ -284,7 +268,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>                 
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-xs-12">
                             <div class="quick-view-img">

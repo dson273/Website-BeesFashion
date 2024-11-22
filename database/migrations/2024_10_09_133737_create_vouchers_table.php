@@ -22,7 +22,9 @@ return new class extends Migration
             $table->date('start_date')->nullable()->comment('Thời gian bắt đầu có thể sử dụng được voucher');
             $table->date('end_date')->nullable()->comment('Thời gian voucher hết hiệu lực');
             $table->integer('minimum_order_value')->nullable()->comment('Giá tiền tối thiểu của đơn hàng');
+            $table->integer('maximum_reduction')->nullable()->comment('Giá tiền được giảm tối đa của đơn hàng/sản phẩm (khi loại voucher này là phần trăm)');
             $table->tinyInteger('is_active')->default(1)->comment('Trạng thái kích hoạt voucher, mặc định là 1(đã kích hoạt)');
+            $table->tinyInteger('is_public')->default(1)->comment('Xác định voucher này cho phép tất cả tài sử dụng được hay chỉ những tài khoản nào sở hữu voucher này mới có!');
             $table->timestamps();
         });
     }

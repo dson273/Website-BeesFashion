@@ -164,6 +164,10 @@ class DashboardController extends Controller
         $defaultAddress->is_active = 1;
         $defaultAddress->save();
 
-        return redirect()->back()->with('statusSuccess', 'Địa chỉ mặc định đã được cập nhật thành công.');
+        return redirect()->back()->with('success', 'Địa chỉ mặc định đã được cập nhật thành công.');
+    }
+    public function orderTracking()
+    {
+        return view('user.order-tracking');
     }
 }
