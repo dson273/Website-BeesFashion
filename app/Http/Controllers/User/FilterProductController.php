@@ -338,6 +338,45 @@ class FilterProductController extends Controller
         ]);
     }
 
+    public function getNewProduct(){
+        $products = Product::with(['product_variants', 'product_files'])
+            ->leftJoin('product_files', function ($join) {
+                $join->on('product_files.product_id', '=', 'products.id')
+                    ->where('product_files.is_default', 1)
+                    ->where('product_files.file_type', 'image');
+            })
+            ->where('products.is_active', 1)
+            ->select('products.*', 'product_files.file_name as image')
+            ->orderBy('products.created_at', 'desc') 
+            ->get();
+
+        // Tính toán giá trị min và max
+        list($minPriceProduct, $maxPriceProduct) = $this->calculatePriceRange($products);
+
+        // Xử lý đường dẫn ảnh cho mỗi sản phẩm
+        $products = $products->map(function ($product) {
+            $product->productURL = route('product.detail', ['product' => $product->id]);
+            // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
+            if ($product->image) {
+                $product->image_url = asset('uploads/products/images/' . $product->image);
+            } else {
+                $product->image_url = null; // Nếu không có ảnh thì để null
+            }
+
+            return $product;
+        });
+        $products = $products->map(function ($product) {
+            $product->productID = route('product.detail', ['product' => $product->id]);
+            return $product;
+        });
+
+        return response()->json([
+
+            'products' => $products,
+            'minPrice' => $minPriceProduct,
+            'maxPrice' => $maxPriceProduct,
+        ]);
+    }
     public function getProductDetails($id)
     {
         // Lấy thông tin sản phẩm

@@ -105,8 +105,12 @@
                 };
             });
         };
-        var routeGetMinMaxPriceProduct = "{{route('getMinMaxPriceProduct')}}";
+        var routeGetMinMaxPriceProduct = "{{ route('getMinMaxPriceProduct') }}";
         var csrf = "{{ csrf_token() }}";
+
+        //Cart
+        //route UpdateQuatity
+        const routeUpdateQuantity = "{{ route('cart.updateQuantity') }}";
     </script>
 
     <!-- Short notification commands -->

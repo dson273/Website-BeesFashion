@@ -23,15 +23,15 @@ Route::post('productDetail', [ProductDetailController::class, 'updateInformation
 Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 
 Route::middleware('guest')->group(function () {
-//Đăng ký
-Route::get('register', [RegisterController::class, 'index'])->name('register'); //Trang đăng ký
-Route::post('register', [RegisterController::class, 'register'])->name('register'); //Chức năng đăng ký
-//Đăng nhập
-Route::get('login', [LoginController::class, 'index'])->name('login'); //Trang đăng nhập
-Route::post('login', [LoginController::class, 'login'])->name('login'); //Chức năng đăng nhập
-//Quên mật khẩu
-Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword'); //Trang quên mật khẩu
-Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
+    //Đăng ký
+    Route::get('register', [RegisterController::class, 'index'])->name('register'); //Trang đăng ký
+    Route::post('register', [RegisterController::class, 'register'])->name('register'); //Chức năng đăng ký
+    //Đăng nhập
+    Route::get('login', [LoginController::class, 'index'])->name('login'); //Trang đăng nhập
+    Route::post('login', [LoginController::class, 'login'])->name('login'); //Chức năng đăng nhập
+    //Quên mật khẩu
+    Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword'); //Trang quên mật khẩu
+    Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
 });
 // Route::get('/', action: function () {
 //     return view(view: 'user/index');
@@ -65,13 +65,16 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/add-address', [DashboardController::class, 'addAddress'])->name('dashboard.addAddress'); //Thêm địa chỉ giao hàng
     Route::put('dashboard/edit-address/{id}', [DashboardController::class, 'editAddress'])->name('dashboard.editAddress'); // Sửa địa chỉ
     Route::delete('dashboard/delete-address/{id}', [DashboardController::class, 'deleteAddress'])->name('dashboard.deleteAddress'); // Xoá địa chỉ
-    Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
+    Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default'); //Set địa chỉ mặc định
 
     //Trang giỏ hàng
 
     Route::get('cart', [CartController::class, 'index'])->name('cart');
-    Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart');//Add cart
+    Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
+    Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
+    Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
+    Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     //Trang yêu thích
     Route::get('wishlist/{product_id}', [WishlistController::class, 'index']);
-
 });
