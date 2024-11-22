@@ -274,24 +274,31 @@
                                                                     details</a>
                                                             </div>
                                                             <div class="color-box">
-                                                                <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                            
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue =
-                                                                                    $variantAttributeValue->attribute_value;
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
                                                                             @endphp
-                                                                            @if (!empty($attributeValue->value))
-                                                                                <li
-                                                                                    style="background-color: #{{ $attributeValue->value }};">
-                                                                                </li>
+                                                            
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                                                @php
+                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                @endphp
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                               
                                                             </div>
+                                                            
+                                                            
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product) }}">
                                                                     <h6>{{ $product->name }}</h6>
@@ -357,24 +364,28 @@
                                                                 </div>
                                                             @endif
                                                             <div class="color-box">
-                                                                <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                            
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue =
-                                                                                    $variantAttributeValue->attribute_value;
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
                                                                             @endphp
-                                                                            @if (!empty($attributeValue->value))
-                                                                                <li
-                                                                                    style="background-color: #{{ $attributeValue->value }};">
-
-                                                                                </li>
+                                                            
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                                                @php
+                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                @endphp
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                               
                                                             </div>
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product) }}">
@@ -442,24 +453,28 @@
                                                                 </div>
                                                             @endif
                                                             <div class="color-box">
-                                                                <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                            
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue =
-                                                                                    $variantAttributeValue->attribute_value;
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
                                                                             @endphp
-                                                                            @if (!empty($attributeValue->value))
-                                                                                <li
-                                                                                    style="background-color: #{{ $attributeValue->value }};">
-
-                                                                                </li>
+                                                            
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                                                @php
+                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                @endphp
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                               
                                                             </div>
 
                                                             @if ($product)
