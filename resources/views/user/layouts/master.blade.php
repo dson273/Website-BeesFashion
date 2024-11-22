@@ -82,7 +82,7 @@
 
     <!-- Notification function -->
     <script>
-        function notification(type, data, title) {
+        function notification(type, data, title, timeOut = 5000) {
             $(document).ready();
             $(function() {
                 Command: toastr[type](data, title);
@@ -96,7 +96,7 @@
                     onclick: null,
                     showDuration: "300",
                     hideDuration: "1000",
-                    timeOut: "5000", // Thời gian hiển thị
+                    timeOut: timeOut, // Thời gian hiển thị
                     extendedTimeOut: "1000",
                     showEasing: "swing",
                     hideEasing: "linear",
@@ -105,23 +105,40 @@
                 };
             });
         };
-        var routeGetMinMaxPriceProduct = "{{route('getMinMaxPriceProduct')}}";
-        var csrf = "{{ csrf_token() }}";
+        const csrf = "{{ csrf_token() }}";
+        //Filler product
+        const routeGetMinMaxPriceProduct = "{{route('getMinMaxPriceProduct')}}";
+        //Check-out
+        const routeGetListAddresses = "{{route('checkout.getListAddresses')}}";
+        const routeGetVoucherByCode = "{{route('checkout.getVoucherByCode')}}";
+
+        function routeDeleteAddress(id) {
+            return "{{route('checkout.deleteAddress',':id')}}".replace(':id', id);
+        }
+
+        const routeSetDefaultAddress = "{{route('checkout.setDefaultAddress')}}";
+
+        function routeSetDefaultAddressOther(id) {
+            return "{{route('checkout.setDefaultAddressOther',':id')}}".replace(':id', id);
+        }
+
+        const routeStoreOrder = "{{route('checkout.storeOrder')}}";
     </script>
 
     <!-- Short notification commands -->
     <script>
-        @if (session('statusSuccess'))
-            var message = @json(session('statusSuccess'));
-            notification('success', message, 'Successfully');
-        @elseif (session('statusError'))
-            var message = @json(session('statusError'));
-            notification('error', message, 'Error');
-        @elseif (session('statusWarning'))
-            var message = @json(session('statusWarning'));
-            notification('warning', message, 'warning');
+        @if(session('statusSuccess'))
+        var message = @json(session('statusSuccess'));
+        notification('success', message, 'Successfully!');
+        @elseif(session('statusError'))
+        var message = @json(session('statusError'));
+        notification('error', message, 'Error!');
+        @elseif(session('statusWarning'))
+        var message = @json(session('statusWarning'));
+        notification('warning', message, 'Warning!');
         @endif
     </script>
+    
     @yield('script-libs')
 </body>
 

@@ -18,10 +18,16 @@ class Voucher extends Model
         'start_date',
         'end_date',
         'minimum_order_value',
-        'is_active'
+        'maximum_reduction',
+        'is_active',
+        'is_public'
     ];
     public function product_vouchers()
     {
         return $this->hasMany(Product_voucher::class);
+    }
+    public function user_vouchers()
+    {
+        return $this->hasMany(User_voucher::class);
     }
 }

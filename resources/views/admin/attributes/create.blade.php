@@ -22,7 +22,7 @@
                     <div class="mt-3 mb-3">
                         <label for="attribute_type_id" class="form-label">Loại</label>
                         <select name="attribute_type_id" id="attribute_type_id"
-                            class="form-select form-select-sm mb-3 @error('attribute_type_id') is-invalid @enderror"
+                            class="form-control form-control-sm mb-3 @error('attribute_type_id') is-invalid @enderror"
                             aria-label="small select example">
                             @if ($listAttributeTypes->isEmpty())
                                 <option value="" selected>Không có loại thuộc tính nào</option>

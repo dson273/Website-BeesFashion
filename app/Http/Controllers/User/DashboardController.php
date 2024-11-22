@@ -81,7 +81,7 @@ class DashboardController extends Controller
             'full_name' => 'required|string|max:255',
             'phone_number' => 'required|regex:/^0\d{9,10}$/',
             'address' => 'required|string|max:255',
-        ],[
+        ], [
             'full_name.required' => 'Please enter your full name.',
             'phone_number.required' => 'Please enter your phone number.',
             'phone_number.regex' => 'The phone number must start with 0 and have 10 or 11 digits.',
@@ -110,7 +110,7 @@ class DashboardController extends Controller
             'full_name' => 'required|string|max:255',
             'phone_number' => 'required|regex:/^0\d{9,10}$/',
             'address' => 'required|string|max:255',
-        ],[
+        ], [
             'full_name.required' => 'Please enter your full name.',
             'phone_number.required' => 'Please enter your phone number.',
             'phone_number.regex' => 'The phone number must start with 0 and have 10 or 11 digits.',
@@ -151,4 +151,9 @@ class DashboardController extends Controller
 
     //     return redirect()->back()->with('success', 'Địa chỉ mặc định đã được cập nhật thành công.');
     // }
+
+    public function orderTracking()
+    {
+        return view('user.order-tracking');
+    }
 }

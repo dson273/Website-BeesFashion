@@ -728,12 +728,6 @@ class ProductController extends Controller
                         ->where('file_type', 'image')
                         ->get();
                     foreach ($old_photo_gallery as $oldPhoto) {
-                        // $response = [
-                        //     'status' => 200,
-                        //     'message' => 'Update product successfully!',
-                        //     'data' =>  $oldPhoto
-                        // ];
-                        // return response()->json($response);
                         if (!in_array($oldPhoto->id, $oldPhotoGalleryIds)) {
                             $existingFile = public_path('uploads/products/images/') . $oldPhoto->file_name;
                             if ($oldPhoto->file_name && file_exists($existingFile)) {
