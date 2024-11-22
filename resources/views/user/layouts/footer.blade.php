@@ -5,8 +5,7 @@
                 <div class="row">
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="footer-content">
-                            <div class="footer-logo"><a href="{{route('/')}}"> <img class="img-fluid"
-                                        src="{{ asset('assets/images/logo/logo-Bee-white.png') }}" alt="Footer Logo"></a>
+                            <div class="footer-logo"><a href="{{ route('/') }}"> <img class="img-fluid" src="{{ asset('assets/images/logo/logo-Bee-white.png') }}" alt="Footer Logo"></a>
                             </div>
                             <ul>
                                 <li>
@@ -30,7 +29,7 @@
                                 <div class="footer-title d-md-block">
                                     <h5>About Us</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="{{route('/')}}">Home</a></li>
+                                        <li> <a class="nav" href="{{ route('/') }}">Home</a></li>
                                         <li> <a class="nav" href="#">Shop</a></li>
                                         <li> <a class="nav" href="#">About Us</a></li>
                                         <li> <a class="nav" href="#">Blog</a></li>
@@ -118,16 +117,14 @@
     <!-- End footer -->
 
     {{-- Modal logout --}}
-    <div class="modal theme-modal fade confirmation-modal" id="modal-logout" tabindex="-1" role="dialog"
-        aria-modal="true">
+    <div class="modal theme-modal fade confirmation-modal" id="modal-logout" tabindex="-1" role="dialog" aria-modal="true">
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-body"> <img class="img-fluid" src="{{ asset('assets/images/gif/question.gif') }}"
-                        alt="">
+                <div class="modal-body"> <img class="img-fluid" src="{{ asset('assets/images/gif/question.gif') }}" alt="">
                     <h4>Confirmation</h4>
-                    <p>Are you sure you want to proceed?</p>
-                    <div class="submit-button"> <button class="btn" type="submit" data-bs-dismiss="modal"
-                            aria-label="Close">No</button><a class="btn" href="{{ route('logout') }}">Yes</a>
+                    <p>Are you sure you want to log out?</p>
+                    <div class="submit-button"> <button class="btn" type="submit" data-bs-dismiss="modal" aria-label="Close">No</button><a class="btn"
+                            href="{{ route('logout') }}">Yes</a>
                     </div>
                 </div>
             </div>
@@ -254,8 +251,7 @@
                         <div class="row">
                             <div class="col-12 px-0">
                                 <div class="modal-bg addtocart">
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                     <div class="conten-popup">
                                         {{-- <a href="#"><img class="img-fluid blur-up lazyload pro-img"
                                                 src="{{ asset('assets/images/modal/0.jpg') }}" alt=""></a> --}}
@@ -265,76 +261,15 @@
                                                 </h6>
                                             </a>
                                             <div class="buttons">
-                                                <a class="view-cart btn btn-solid" href="{{route('cart')}}">Your cart</a>
+                                                <a class="view-cart btn btn-solid" href="{{ route('cart') }}">Your cart</a>
                                                 {{-- <a class="checkout btn btn-solid" href="check-out.html">Check out</a> --}}
-                                                <a class="continue btn btn-solid" href="{{route('/')}}">Continue shopping</a>
+                                                <a class="continue btn btn-solid" href="{{ route('/') }}">Continue shopping</a>
                                             </div>
-                                            <div class="upsell_payment"><img class="img-fluid blur-up lazyload"
-                                                    src="{{ asset('assets/images/payment_cart.png') }}"
-                                                    alt=""></div>
+                                            <div class="upsell_payment"><img class="img-fluid blur-up lazyload" src="{{ asset('assets/images/payment_cart.png') }}" alt=""></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- <div class="col-12">
-                                <div class="product-upsell">
-                                    <h5>Products Loved by Our Customers</h5>
-                                    <svg>
-                                        <use
-                                            href="#">
-                                        </use>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-12">
-                                <div class="card-img">
-                                    <img src="{{ asset('assets/images/modal/1.jpg') }}" alt="user">
-                                    <a href="#">
-                                        <h6>Woven Jacket</h6>
-                                        <p>$25</p>
-                                    </a>
-                                </div>
-                                <div class="card-img">
-                                    <img src="{{ asset('assets/images/modal/2.jpg') }}" alt="user">
-                                    <a href="#">
-                                        <h6>Printed Dresses</h6>
-                                        <p>$25</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-12">
-                                <div class="card-img">
-                                    <img src="{{ asset('assets/images/modal/3.jpg') }}" alt="user">
-                                    <a href="#">
-                                        <h6>Woven Jacket</h6>
-                                        <p>$25</p>
-                                    </a>
-                                </div>
-                                <div class="card-img">
-                                    <img src="{{ asset('assets/images/modal/4.jpg') }}" alt="user">
-                                    <a href="#">
-                                        <h6>Printed Dresses</h6>
-                                        <p>$25</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-12">
-                                <div class="card-img">
-                                    <img src="{{ asset('assets/images/modal/5.jpg') }}" alt="user">
-                                    <a href="#">
-                                        <h6>Woven Jacket</h6>
-                                        <p>$25</p>
-                                    </a>
-                                </div>
-                                <div class="card-img">
-                                    <img src="{{ asset('assets/images/modal/6.jpg') }}" alt="user">
-                                    <a href="#">
-                                        <h6>Printed Dresses</h6>
-                                        <p>$25</p>
-                                    </a>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -344,15 +279,12 @@
     <!-- End modal add cart -->
 
     <!-- Modal Seach -->
-    <div class="offcanvas offcanvas-top search-details" id="offcanvasTop" tabindex="-1"
-        aria-labelledby="offcanvasTopLabel">
-        <div class="offcanvas-header"><button class="btn-close" type="button" data-bs-dismiss="offcanvas"
-                aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="offcanvas offcanvas-top search-details" id="offcanvasTop" tabindex="-1" aria-labelledby="offcanvasTopLabel">
+        <div class="offcanvas-header"><button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
         <div class="offcanvas-body theme-scrollbar">
             <div class="container">
                 <h3>What are you trying to find?</h3>
-                <div class="search-box"> <input type="search" name="text" placeholder="I'm looking for…"><i
-                        class="iconsax" data-icon="search-normal-2"></i>
+                <div class="search-box"> <input type="search" name="text" placeholder="I'm looking for…"><i class="iconsax" data-icon="search-normal-2"></i>
                 </div>
                 <h4>Popular Searches</h4>
                 <ul class="rapid-search">
@@ -386,8 +318,7 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/1.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/1.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -412,8 +343,7 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/2.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/2.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -438,8 +368,7 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/3.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/3.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -464,8 +393,7 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/4.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/4.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -490,8 +418,7 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/5.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/5.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -516,8 +443,7 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/6.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/6.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
