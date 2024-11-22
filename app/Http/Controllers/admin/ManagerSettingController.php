@@ -14,7 +14,7 @@ class ManagerSettingController extends Controller
     public function index()
     {
         $managerSettings = Manager_setting::with('children_manager_setting')
-        ->whereNull('parent_manager_setting_id')->orderBy('manager_name')->get();
+            ->whereNull('parent_manager_setting_id')->orderBy('manager_name')->get();
         return view('admin.managerSettings.index', compact('managerSettings'));
     }
 
@@ -32,13 +32,13 @@ class ManagerSettingController extends Controller
      */
     public function store(Request $request)
     {
-        $request ->validate([
+        $request->validate([
             'manager_name' => 'required|string|max:255',
             'parent_manager_setting_id' => 'nullable|exists:manager_settings,id'
         ]);
 
         Manager_setting::create($request->all());
-        return redirect()->route('admin.managerSettings.index')->with('statusSuccess','Thêm chức năng thành công');
+        return redirect()->route('admin.managerSettings.index')->with('statusSuccess', 'Thêm chức năng thành công');
     }
 
     /**
@@ -56,7 +56,7 @@ class ManagerSettingController extends Controller
     {
         $managerSetting = Manager_setting::findOrFail($id);
         $parentSettings = Manager_setting::whereNull('parent_manager_setting_id')->get();
-        return view('admin.managerSettings.edit', compact('managerSetting','parentSettings'));
+        return view('admin.managerSettings.edit', compact('managerSetting', 'parentSettings'));
     }
 
     /**
@@ -64,14 +64,24 @@ class ManagerSettingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request ->validate([
+        $request->validate([
             'manager_name' => 'required|string|max:255',
-            'parent_manager_setting_id' => 'nullable|exists:manager_settings,id'
+            'parent_manager_setting_id' => [
+                'nullable',
+                'exists:manager_settings,id',
+                function ($attribute, $value, $fail) use ($id) {
+                    if ($value == $id) {
+                        session()->flash('statusError', 'Chức năng không thể chọn chính nó làm chức năng cha.');
+                        $fail(''); // Ngăn tiếp tục xử lý
+                    }
+                },
+            ],
         ]);
 
         $managerSetting = Manager_setting::findOrFail($id);
         $managerSetting->update($request->all());
-        return redirect()->route('admin.managerSettings.index')->with('statusSuccess','Sửa chức năng thành công');
+        session()->flash('statusSuccess', 'Sửa chức năng thành công');
+        return redirect()->route('admin.managerSettings.index');
     }
 
     /**
@@ -81,6 +91,6 @@ class ManagerSettingController extends Controller
     {
         $managerSetting = Manager_setting::findOrFail($id);
         $managerSetting->delete();
-        return back()->with('statusSuccess','Xoá chức năng thành công');
+        return back()->with('statusSuccess', 'Xoá chức năng thành công');
     }
 }

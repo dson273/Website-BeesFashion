@@ -28,6 +28,7 @@ class HomeController extends Controller
         $topProducts = Product::with(['product_files'])
             ->where('is_active', 1)
             ->orderBy('view', 'DESC')
+            ->limit(4)
             ->get()
             ->map(function ($product) {
                 $product->priceRange =  $product->priceProduct();
@@ -36,6 +37,7 @@ class HomeController extends Controller
         $newProducts = Product::with(['product_files'])
             ->where('is_active', 1)
             ->orderBy('created_at', 'DESC')
+            ->limit(4)
             ->get()
             ->map(function ($product) {
                 $product->priceRange =  $product->priceProduct();
@@ -45,6 +47,7 @@ class HomeController extends Controller
                 $query->where('fixed', 0);
             })
             ->with(['product_files', 'product_variants'])
+            ->limit(4)
             ->get()
             ->map(function ($product) {
                 $product->priceRange = $product->priceProduct();

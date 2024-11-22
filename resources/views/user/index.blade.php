@@ -243,7 +243,7 @@
                                                                     alt="lable"><span>on <br>Sale!</span></div>
                                                             <div class="product-image">
                                                                 @if ($product)
-                                                                    <a href="{{ route('product.detail', $product) }}">
+                                                                    <a href="{{ route('product.detail', $product->SKU) }}">
                                                                         <img class="bg-img"
                                                                             src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
                                                                             alt="Product Image">
@@ -274,26 +274,33 @@
                                                                     details</a>
                                                             </div>
                                                             <div class="color-box">
-                                                                <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                            
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue =
-                                                                                    $variantAttributeValue->attribute_value;
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
                                                                             @endphp
-                                                                            @if (!empty($attributeValue->value))
-                                                                                <li
-                                                                                    style="background-color: #{{ $attributeValue->value }};">
-                                                                                </li>
+                                                            
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                                                @php
+                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                @endphp
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                               
                                                             </div>
+                                                            
+                                                            
                                                             @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <h6>{{ $product->name }}</h6>
                                                                 </a>
                                                             @else
@@ -321,7 +328,7 @@
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
                                                             @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <img class="bg-img"
                                                                         src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
                                                                         alt="Product Image">
@@ -347,7 +354,7 @@
                                                         <div class="product-detail">
                                                             @if ($product)
                                                                 <div class="add-button">
-                                                                    <a href="{{ route('product.detail', $product) }}"><i
+                                                                    <a href="{{ route('product.detail', $product->SKU) }}"><i
                                                                             class="fa-regular fa-eye"></i> View details</a>
                                                                 </div>
                                                             @else
@@ -357,27 +364,31 @@
                                                                 </div>
                                                             @endif
                                                             <div class="color-box">
-                                                                <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                            
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue =
-                                                                                    $variantAttributeValue->attribute_value;
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
                                                                             @endphp
-                                                                            @if (!empty($attributeValue->value))
-                                                                                <li
-                                                                                    style="background-color: #{{ $attributeValue->value }};">
-
-                                                                                </li>
+                                                            
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                                                @php
+                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                @endphp
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                               
                                                             </div>
                                                             @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <h6>{{ $product->name }}</h6>
                                                                 </a>
                                                             @else
@@ -406,7 +417,7 @@
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
                                                             @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <img class="bg-img"
                                                                         src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
                                                                         alt="Product Image">
@@ -432,7 +443,7 @@
                                                         <div class="product-detail">
                                                             @if ($product)
                                                                 <div class="add-button">
-                                                                    <a href="{{ route('product.detail', $product) }}"><i
+                                                                    <a href="{{ route('product.detail', $product->SKU) }}"><i
                                                                             class="fa-regular fa-eye"></i> View details</a>
                                                                 </div>
                                                             @else
@@ -442,28 +453,32 @@
                                                                 </div>
                                                             @endif
                                                             <div class="color-box">
-                                                                <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                            
+                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $attributeValue =
-                                                                                    $variantAttributeValue->attribute_value;
+                                                                                $attributeValue = $variantAttributeValue->attribute_value;
                                                                             @endphp
-                                                                            @if (!empty($attributeValue->value))
-                                                                                <li
-                                                                                    style="background-color: #{{ $attributeValue->value }};">
-
-                                                                                </li>
+                                                            
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                                                @php
+                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                @endphp
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                               
                                                             </div>
 
                                                             @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <h6>{{ $product->name }}</h6>
                                                                 </a>
                                                             @else
