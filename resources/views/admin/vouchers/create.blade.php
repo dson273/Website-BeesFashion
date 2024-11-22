@@ -106,6 +106,7 @@
                         <input type="checkbox" name="is_active" id="is_active" value="1"
                             {{ old('is_active', 1) ? 'checked' : '' }}>
                     </div>
+                
                 </div>
 
                 <div class="modal-footer">

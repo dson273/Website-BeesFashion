@@ -21,9 +21,6 @@ class HomeController extends Controller
     //Trang chủ
     public function index()
     {
-
-       
-
         $sliders  = Banner::where('is_active', 1)
             ->with('banner_images') // Lấy các hình ảnh liên quan
             ->get();
@@ -55,12 +52,6 @@ class HomeController extends Controller
             });
 
         return view('user.index', compact('sliders', 'topProducts', 'newProducts', 'products'));
-    }
-
-    //Trang dashboard người dùng
-    public function dashboard()
-    {
-        return view('user.dashboard');
     }
 
     //Trang thanh toán

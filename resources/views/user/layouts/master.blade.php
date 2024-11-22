@@ -123,6 +123,9 @@
         }
 
         const routeStoreOrder = "{{route('checkout.storeOrder')}}";
+        //Cart
+        //route UpdateQuatity
+        const routeUpdateQuantity = "{{ route('cart.updateQuantity') }}";
     </script>
 
     <!-- Short notification commands -->
@@ -138,7 +141,7 @@
         notification('warning', message, 'Warning!');
         @endif
     </script>
-    
+
     @yield('script-libs')
 </body>
 

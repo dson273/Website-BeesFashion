@@ -1224,7 +1224,23 @@
                 const url = `{{ route('addToCart', ['variant_id' => ':variant_id', 'quantity' => ':quantity']) }}`
                     .replace(':variant_id', variantId)
                     .replace(':quantity', quantity);
-                window.location.href = url;
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            console.log(response.cartCount);
+                            // Cập nhật số lượng giỏ hàng trong header
+                            $('.shoping-prize .cart-count').text(response.cartCount);
+                            notification('success', response.message, 'Thành công!');
+                        } else if (response.status === 'error') {
+                            notification('warning', response.message, 'Thông báo!');
+                        }
+                    },
+                    error: function() {
+                        notification('error', 'Có lỗi xảy ra. Vui lòng thử lại.', 'Lỗi!');
+                    }
+                });
             }
         });
         //Xử lý đặt hàng

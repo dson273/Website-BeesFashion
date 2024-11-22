@@ -62,23 +62,24 @@ Route::get('wishlist', [WishlistController::class, 'index']);
 Route::middleware('auth')->group(function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //Chức năng đăng xuất
     //Dashboard người dùng
-    Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::put('dashboard/edit-profile', [DashboardController::class, 'editProfile'])->name('dashboard.editProfile'); // Cập nhật thông tin profile
     Route::put('dashboard/edit-password', [DashboardController::class, 'editPassword'])->name('dashboard.editPassword'); // Edit password
     Route::post('dashboard/add-address', [DashboardController::class, 'addAddress'])->name('dashboard.addAddress'); //Thêm địa chỉ giao hàng
     Route::put('dashboard/edit-address/{id}', [DashboardController::class, 'editAddress'])->name('dashboard.editAddress'); // Sửa địa chỉ
     Route::delete('dashboard/delete-address/{id}', [DashboardController::class, 'deleteAddress'])->name('dashboard.deleteAddress'); // Xoá địa chỉ
-    // Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
-    Route::get('dashboard/order-tracking', [DashboardController::class, 'orderTracking'])->name('dashboard.orderTracking');
+    Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
 
     //Trang giỏ hàng
-
     Route::get('cart', [CartController::class, 'index'])->name('cart');
     Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
+    Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
+    Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
+    Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     //Trang yêu thích
     Route::get('wishlist/{product_id}', [WishlistController::class, 'index']);
-
-    //Checkout
+     //Checkout
     Route::get('check-out', [CheckOutController::class, 'index'])->name('checkout');
     Route::post('check-out/addAddress', [CheckOutController::class, 'addAddress'])->name('checkout.addAddress');
     Route::post('check-out/getListAddresses', [CheckOutController::class, 'getListAddresses'])->name('checkout.getListAddresses');
@@ -93,4 +94,5 @@ Route::middleware('auth')->group(function () {
     Route::post('check-out/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
     Route::post('check-out/momo_payment', [PaymentController::class, 'momo_payment'])->name('momo_payment');
     //Theo dõi đơn hàng
+
 });

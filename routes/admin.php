@@ -111,12 +111,14 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('banner/offactive/{id}', [BannerController::class, 'offActive'])->name('banner.offactive');
         });
 
-        //=======================================================Quản lý vouchers=======================================================
-        Route::middleware(['checkPermission:Quản lý vouchers'])->group(function () {
-            Route::resource('vouchers', VoucherController::class);
-            Route::get('vouchers/onactive/{id}', [VoucherController::class, 'onActive'])->name('vouchers.onactive');
-            Route::get('vouchers/offactive/{id}', [VoucherController::class, 'offActive'])->name('vouchers.offactive');
-        });
+    //=======================================================Quản lý vouchers=======================================================
+    // Route::middleware(['checkPermission:Quản lý vouchers'])->group(function () {
+    Route::resource('vouchers', VoucherController::class);
+    Route::post('vouchers/addProductVoucher', [VoucherController::class, 'addProductVoucher'])->name('vouchers.addProductVoucher');
+    Route::delete('vouchers/remove/{productId}/{voucherId}', [VoucherController::class, 'remove'])->name('vouchers.remove');
+    Route::get('vouchers/onactive/{id}', [VoucherController::class, 'onActive'])->name('vouchers.onactive');
+    Route::get('vouchers/offactive/{id}', [VoucherController::class, 'offActive'])->name('vouchers.offactive');
+    // });
 
         Route::resource('import_history', ImportHistoryController::class);
         Route::post('import_history/update', [ImportHistoryController::class, 'updateQuantity'])
