@@ -1,10 +1,8 @@
 @extends('user.layouts.master')
-
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/user/cart.js') }}"></script>
 @endsection
-
 @section('content')
     <!-- Container content -->
     <main>
@@ -49,7 +47,7 @@
                                 <div class="table-responsive theme-scrollbar">
                                     <table class="table" id="cart-table">
                                         <thead>
-                                            <tr>
+                                            <tr >
                                                 <th><input type="checkbox" id="selectAllCheckbox"></th>
                                                 <th>Sản phẩm </th>
                                                 <th>Giá </th>
@@ -60,7 +58,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($cart_list as $item_cart)
-                                                <tr class="product_item" data-cart-id="{{ $item_cart['id_cart'] }}"
+                                                <tr  data-cart-id="{{ $item_cart['id_cart'] }}"
                                                     data-variant-id="{{ $item_cart['variant_id'] }}"
                                                     data-product-id="{{ $item_cart['product_id'] }}"
                                                     data-regular-price="{{ $item_cart['regular_price'] }}"
@@ -166,7 +164,7 @@
                             </div>
                         </div>
                         <div class="col-xxl-3 col-xl-4">
-                            <div class="cart_items">
+                            <div class="cart-items">
                                 <div class="cart-progress">
                                     <h6>Chi tiết giá <span>(0 Sản phẩm)</span></h6>
                                 </div>
@@ -188,7 +186,7 @@
                                     </h6>
                                     <p>Sử dụng <span>BeesFashion's</span> mã giảm giá ở bước tiếp theo</p>
                                 </div>
-                                <form id="form_post_data_to_check_out" action="{{ route('checkout') }}" method="POST">
+                                <form id="form_post_data_to_check_out" action="{{route('checkout')}}" method="POST">
                                     @csrf
                                     @method('GET')
                                     <input type="hidden" name="cart_ids" id="input_post_data_to_check_out">
