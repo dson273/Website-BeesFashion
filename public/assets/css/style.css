@@ -18823,6 +18823,7 @@ body div canvas:first-child {
     display: flex
 }
 
+.block-voucher .slick-track:after, .block-voucher .slick-track:before {
 .block-voucher .slick-track:after,
 .block-voucher .slick-track:before {
     content: none
@@ -19000,6 +19001,8 @@ body div canvas:first-child {
     border-radius: 2px
 }
 
+
+.voucher-item-action:after, .voucher-item-action:before {
 .voucher-item-action:after,
 .voucher-item-action:before {
     content: "";
@@ -19081,6 +19084,12 @@ body div canvas:first-child {
     opacity: .4
 }
 
+
+.voucher-item.active .voucher-item-action, .voucher-item.active .voucher-item-detail, .voucher-item.active .voucher-item-info:after {
+    background-color: #edf1f5
+}
+
+.voucher-item.active .voucher-item-action, .voucher-item.active .voucher-item-detail {
 .voucher-item.active .voucher-item-action,
 .voucher-item.active .voucher-item-detail,
 .voucher-item.active .voucher-item-info:after {
@@ -19393,4 +19402,3 @@ body div canvas:first-child {
         font-size: 14px;
     }
 }
-

@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\StaffController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\BrandController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\admin\AttributeTypeController;
-use App\Http\Controllers\admin\AttributeValueController;
-use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\ImportHistoryController;
-use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\admin\AttributeValueController;
 use App\Http\Controllers\Admin\ManagerSettingController;
 
 
@@ -120,9 +121,13 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('vouchers/offactive/{id}', [VoucherController::class, 'offActive'])->name('vouchers.offactive');
     // });
 
-        Route::resource('import_history', ImportHistoryController::class);
-        Route::post('import_history/update', [ImportHistoryController::class, 'updateQuantity'])
-            ->name('import_history.update');
+
+    Route::resource('orders', OrderController::class);
+
+    Route::resource('import_history', ImportHistoryController::class);
+    Route::post('import_history/update', [ImportHistoryController::class, 'updateQuantity'])
+        ->name('import_history.update');
+
 
 
 
