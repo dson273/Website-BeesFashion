@@ -37,7 +37,7 @@
             </table>
             </div>
             <div>
-                <a href="{{ route('admin.staffs.index') }}" class="btn btn-secondary text-white text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                <a href="{{ route('admin.staffs.index') }}" class="btn btn-secondary text-white text-decoration-none"><i class="fa-solid fa-arrow-left mr-1"></i>Back</a>
             </div>
         </div>
     </div>

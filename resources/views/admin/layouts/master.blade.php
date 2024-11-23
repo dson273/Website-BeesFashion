@@ -29,7 +29,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 
     @yield('style-libs')
-
 </head>
 
 <body id="page-top">
@@ -168,7 +167,7 @@
         })
     </script>
 
-    <!-- AnimeJs 
+    <!-- AnimeJs
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.js"></script>-->
 

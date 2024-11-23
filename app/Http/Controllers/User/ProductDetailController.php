@@ -18,14 +18,15 @@ class ProductDetailController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $id)
+    public function index(string $sku)
     {
         $product = Product::with([
             'product_variants.variant_attribute_values.attribute_value.attribute',
             'categories',
-            'product_files'
-        ])->find($id);
-
+            'product_files',
+            'product_variants.product_votes'
+        ])->where('SKU', $sku)->first();
+        
         //View tăng lên 1
         if ($product) {
             $product->increment('view');
@@ -85,7 +86,7 @@ class ProductDetailController extends Controller
         })->toArray();
 
         // Tính tổng số lượng hàng tồn kho của sản phẩm
-        $total_stock = Product_variant::where('product_id', $id)->sum('stock');
+        $total_stock = Product_variant::where('product_id', $product->id)->sum('stock');
 
         // Lấy giá của biến thể
         if ($product) {
@@ -230,7 +231,7 @@ class ProductDetailController extends Controller
         }
         // Tính tổng số lượng giỏ hàng
         $cartCount = Cart::where('user_id', Auth::id())->count();
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'Thêm sản phẩm vào giỏ hàng thành công.',

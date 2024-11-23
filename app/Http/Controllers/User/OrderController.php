@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Order_detail;
+use App\Models\Status;
 use App\Models\Status_order;
 use App\Models\User_voucher;
 use App\Models\Voucher;
@@ -115,10 +116,29 @@ class OrderController extends Controller
                 'user_id' => $user_id
             ]);
 
-            Status_order::create([
-                'status_id' => $payment_method == "cod" ? 2 : 1,
-                'order_id' => $new_order->id
-            ]);
+            $get_order_id_1 = Status::where('name', 'Đang xử lý')->first();
+            $get_order_id_2 = Status::where('name', 'Chờ xác nhận')->first();
+            if ($get_order_id_1 && $get_order_id_2) {
+                Status_order::create([
+                    'status_id' => $payment_method == "cod" ? $get_order_id_2->id : $get_order_id_1->id,
+                    'order_id' => $new_order->id
+                ]);
+            } else {
+                if (!$get_order_id_1) {
+                    $get_order_id_1 = Status::create([
+                        'name' => 'Đang xử lý',
+                    ]);
+                }
+                if (!$get_order_id_2) {
+                    $get_order_id_2 = Status::create([
+                        'name' => 'Chờ xác nhận',
+                    ]);
+                }
+                Status_order::create([
+                    'status_id' => $payment_method == "cod" ? $get_order_id_2->id : $get_order_id_1->id,
+                    'order_id' => $new_order->id
+                ]);
+            }
 
             foreach ($product_variants as $product_variant) {
                 Order_detail::create([
