@@ -201,7 +201,7 @@
     <div id="collapseOrder" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Danh sách chức năng</h6>
-            <a class="collapse-item" href="{{ route('admin.import_history.index') }}">Danh sách</a>
+            <a class="collapse-item" href="{{ route('admin.orders.index') }}">Đơn hàng</a>
             {{-- <a class="collapse-item" href="{{ route('admin.banner.create') }}">Thêm</a> --}}
         </div>
     </div>

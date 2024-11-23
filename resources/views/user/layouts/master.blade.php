@@ -105,6 +105,8 @@
                 };
             });
         };
+        var routeGetMinMaxPriceProduct = "{{ route('getMinMaxPriceProduct') }}";
+        var csrf = "{{ csrf_token() }}";
         const csrf = "{{ csrf_token() }}";
         //Filler product
         const routeGetMinMaxPriceProduct = "{{route('getMinMaxPriceProduct')}}";
