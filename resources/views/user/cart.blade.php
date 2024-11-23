@@ -309,7 +309,6 @@
             <div id="variantBox" class="box-variant">
                 <div class="variant-container">
                     <div class="varianr-content">
-
                         <label class="form-label">Color: <span>Đen</span></label>
                         <div class="d-flex mb-2 color-options">
                             <input class="btn-color" type="radio" id="color-black" name="color" value="black">
