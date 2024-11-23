@@ -62,6 +62,17 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#total-price').text("0đ");
         $('#cart-progress span').text('(0 Sản phẩm)');
         $(document).on('change', '.product_checkbox', function () {
+            var selectedAll = true;
+            $('.product_checkbox').each(function () {
+                if (!$(this).prop('checked')) {
+                    selectedAll = false;
+                }
+            })
+            if (selectedAll) {
+                $('#selectAllCheckbox').prop('checked', true);
+            } else {
+                $('#selectAllCheckbox').prop('checked', false);
+            }
             updateTotalPrice();
             updateCartItemCount();  // Cập nhật số lượng sản phẩm được chọn
         });
@@ -181,6 +192,37 @@ document.addEventListener("DOMContentLoaded", function () {
             notification('warning', ' Vui lòng chọn sản phẩm cần thanh toán!', 'Warning!', '2000');
         }
     })
+
+
+    const variantButton = document.getElementById("variantButton");
+    const variantBox = document.getElementById("variantBox");
+    const backButton = document.getElementById("backButton");
+
+    // Hàm hiển thị box dưới nút
+    variantButton.addEventListener("click", function (event) {
+        event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+        const rect = variantButton.getBoundingClientRect();
+
+        // Cập nhật vị trí của variantBox ngay dưới nút
+        variantBox.style.top = `${rect.bottom + window.scrollY}px`;
+        variantBox.style.left = `${rect.left + window.scrollX}px`;
+
+        variantBox.classList.toggle("active"); // Hiển thị box
+    });
+
+    // Đóng box khi nhấn nút "Trở lại"
+    backButton.addEventListener("click", function () {
+        variantBox.classList.remove("active");
+    });
+
+    // Đóng box khi nhấn ra ngoài
+    document.addEventListener("click", function (event) {
+        if (!variantBox.contains(event.target) && !variantButton.contains(event.target)) {
+            variantBox.classList.remove("active");
+        }
+    });
+
+    
 });
 
 document.getElementById('clearAllButton').addEventListener('click', function (event) {
@@ -218,32 +260,3 @@ async function updateQuantity(product_variant_id, cart_id, new_quantity, change_
         });
     })
 }
-
-//hiển thị form thay đổi của biến thể sản phẩm
-// const variantButton = document.getElementById("variantButton");
-// const variantBox = document.getElementById("variantBox");
-// const backButton = document.getElementById("backButton");
-
-// // Hàm hiển thị box dưới nút
-// variantButton.addEventListener("click", function (event) {
-//     event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
-//     const rect = variantButton.getBoundingClientRect();
-
-//     // Cập nhật vị trí của variantBox ngay dưới nút
-//     variantBox.style.top = `${rect.bottom + window.scrollY}px`;
-//     variantBox.style.left = `${rect.left + window.scrollX}px`;
-
-//     variantBox.classList.toggle("active"); // Hiển thị box
-// });
-
-// // Đóng box khi nhấn nút "Trở lại"
-// backButton.addEventListener("click", function () {
-//     variantBox.classList.remove("active");
-// });
-
-// // Đóng box khi nhấn ra ngoài
-// document.addEventListener("click", function (event) {
-//     if (!variantBox.contains(event.target) && !variantButton.contains(event.target)) {
-//         variantBox.classList.remove("active");
-//     }
-// });
