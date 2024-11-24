@@ -652,58 +652,58 @@
                             </div>
                             {{-- End đánh giá --}}
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="section-b-space pt-0">
-        <div class="custom-container product-contain container">
-            <div class="text-start mb-4">
-                <h3>Related Products</h3>
-            </div>
-            <div class="swiper special-offer-slide-2">
-                <div class="swiper-wrapper ratio1_3">
-                    @foreach ($relatedProducts as $relatedProduct)
-                    <div class="swiper-slide">
-                        <div class="product-box-3">
-                            <div class="img-wrapper">
-                                <div class="label-block"><span class="lable-1">NEW</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax"
-                                            data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
-                                <div class="product-image">
-                                    <a class="pro-first" href="{{ route('product.detail', $relatedProduct->id) }}">
-                                        <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->active_image) }}" alt="product"></a>
-                                    <a class="pro-sec" href="{{ route('product.detail', $relatedProduct->id) }}">
-                                        <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->inactive_image) }}" alt="product"></a>
-                                </div>
-                                <div class="cart-info-icon">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" tabindex="0"><i class="iconsax" data-icon="basket-2" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to cart">
-                                        </i></a>
-                                    {{-- <a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
+        </section>
+        <section class="section-b-space pt-0">
+            <div class="custom-container product-contain container">
+                <div class="text-start mb-4">
+                    <h3>Related Products</h3>
+                </div>
+                <div class="swiper special-offer-slide-2">
+                    <div class="swiper-wrapper ratio1_3">
+                        @foreach ($relatedProducts as $relatedProduct)
+                            <div class="swiper-slide">
+                                <div class="product-box-3">
+                                    <div class="img-wrapper">
+                                        <div class="label-block"><span class="lable-1">NEW</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax"
+                                                    data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
+                                        <div class="product-image">
+                                            <a class="pro-first" href="{{ route('product.detail', $relatedProduct->id) }}">
+                                                <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->active_image) }}" alt="product"></a>
+                                            <a class="pro-sec" href="{{ route('product.detail', $relatedProduct->id) }}">
+                                                <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->inactive_image) }}" alt="product"></a>
+                                        </div>
+                                        <div class="cart-info-icon">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" tabindex="0"><i class="iconsax" data-icon="basket-2" aria-hidden="true"
+                                                    data-bs-toggle="tooltip" data-bs-title="Add to cart">
+                                                </i></a>
+                                            {{-- <a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Compare"></i></a> --}}
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                    data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <ul class="rating">
+                                            <li><i class="fa-solid fa-star"></i></li>
+                                            <li><i class="fa-solid fa-star"></i></li>
+                                            <li><i class="fa-solid fa-star"></i></li>
+                                            <li><i class="fa-solid fa-star"></i></li>
+                                            <li><i class="fa-regular fa-star"></i></li>
+                                            <li>4.3</li>
+                                        </ul><a href="{{ route('product.detail', $relatedProduct->id) }}">
+                                            <h6>{{ $relatedProduct->name }}</h6>
+                                        </a>
+                                        <p style="color: rgb(201, 33, 39)">{{ $relatedProduct->priceRange }}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="product-detail">
-                                <ul class="rating">
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-regular fa-star"></i></li>
-                                    <li>4.3</li>
-                                </ul><a href="{{ route('product.detail', $relatedProduct->id) }}">
-                                    <h6>{{ $relatedProduct->name }}</h6>
-                                </a>
-                                <p style="color: rgb(201, 33, 39)">{{ $relatedProduct->priceRange }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                    {{-- <div class="swiper-slide">
+                        @endforeach
+                        {{-- <div class="swiper-slide">
                             <div class="product-box-3">
                                 <div class="img-wrapper">
                                     <div class="label-block"><span class="lable-1">NEW</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax"

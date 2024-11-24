@@ -1,11 +1,11 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">Bees Fashion</div>
     </a>
 
     <!-- Divider -->
@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('admin.dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -28,8 +28,7 @@
 
     <!-- Quản lý danh mục -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
             <span>Quản lý danh mục</span>
         </a>
@@ -44,8 +43,7 @@
 
     <!-- Quản lý sản phẩm -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Quản lý sản phẩm</span>
         </a>
@@ -60,8 +58,7 @@
 
     {{-- Quản lý thuộc tính --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-            aria-expanded="true" aria-controls="collapseThree">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
             <i class="fas fa-fw fa-cog"></i>
             <span>Quản lý thuộc tính</span>
         </a>
@@ -79,8 +76,7 @@
 
     {{-- Quản lý banner --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBanners"
-            aria-expanded="true" aria-controls="collapseBanners">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBanners" aria-expanded="true" aria-controls="collapseBanners">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Quản lý banner</span>
         </a>
@@ -93,11 +89,9 @@
         </div>
     </li>
 
-
     {{-- quản lý thương hiệu(brand) --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBrands"
-            aria-expanded="true" aria-controls="collapseBrands">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBrands" aria-expanded="true" aria-controls="collapseBrands">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Quản lý thương hiệu</span>
         </a>
@@ -111,45 +105,40 @@
     </li>
 
     {{-- Kiểm tra nếu là admin --}}
-   
-        {{-- Quản lý manager setting --}}
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManagers"
-                aria-expanded="true" aria-controls="collapseManagers">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Quản lý chức năng</span>
-            </a>
-            <div id="collapseManagers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Danh sách chức năng</h6>
-                    <a class="collapse-item" href="{{ route('admin.managerSettings.index') }}">Danh sách</a>
-                    <a class="collapse-item" href="{{ route('admin.managerSettings.create') }}">Thêm</a>
-                </div>
-            </div>
-        </li>
 
-        {{-- Quản lý nhân viên --}}
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaffs"
-                aria-expanded="true" aria-controls="collapseStaffs">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Quản lý nhân viên</span>
-            </a>
-            <div id="collapseStaffs" class="collapse" aria-labelledby="headingPages"
-                data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Danh sách chức năng</h6>
-                    <a class="collapse-item" href="{{ route('admin.staffs.index') }}">Danh sách</a>
-                    <a class="collapse-item" href="{{ route('admin.staffs.create') }}">Thêm</a>
-                </div>
+    {{-- Quản lý manager setting --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManagers" aria-expanded="true" aria-controls="collapseManagers">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Quản lý chức năng</span>
+        </a>
+        <div id="collapseManagers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{ route('admin.managerSettings.index') }}">Danh sách</a>
+                <a class="collapse-item" href="{{ route('admin.managerSettings.create') }}">Thêm</a>
             </div>
-        </li>
-    
+        </div>
+    </li>
+
+    {{-- Quản lý nhân viên --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaffs" aria-expanded="true" aria-controls="collapseStaffs">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Quản lý nhân viên</span>
+        </a>
+        <div id="collapseStaffs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{ route('admin.staffs.index') }}">Danh sách</a>
+                <a class="collapse-item" href="{{ route('admin.staffs.create') }}">Thêm</a>
+            </div>
+        </div>
+    </li>
 
     {{-- Quản lý khách hàng --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers"
-            aria-expanded="true" aria-controls="collapseCustomers">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers" aria-expanded="true" aria-controls="collapseCustomers">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Quản lý khách hàng</span>
         </a>
@@ -160,36 +149,34 @@
             </div>
         </div>
     </li>
- {{-- Quản lý vouchers--}}
- <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVouchers"
-        aria-expanded="true" aria-controls="collapseVouchers">
-        <i class="fas fa-fw fa-wrench"></i>
-        <span>Quản lý vouchers</span>
-    </a>
-    <div id="collapseVouchers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Danh sách chức năng</h6>
-            <a class="collapse-item" href="{{ route('admin.vouchers.index') }}">Danh sách</a>
-            {{-- <a class="collapse-item" href="{{ route('admin.banner.create') }}">Thêm</a> --}}
+    {{-- Quản lý vouchers --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVouchers" aria-expanded="true" aria-controls="collapseVouchers">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Quản lý vouchers</span>
+        </a>
+        <div id="collapseVouchers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{ route('admin.vouchers.index') }}">Danh sách</a>
+                {{-- <a class="collapse-item" href="{{ route('admin.banner.create') }}">Thêm</a> --}}
+            </div>
         </div>
-    </div>
-</li>
-{{-- Lịch sử nhập hàng--}}
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistory"
-        aria-expanded="true" aria-controls="collapseHistory">
-        <i class="fas fa-fw fa-wrench"></i>
-        <span>Lịch sử nhập hàng</span>
-    </a>
-    <div id="collapseHistory" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Danh sách chức năng</h6>
-            <a class="collapse-item" href="{{ route('admin.import_history.index') }}">Danh sách</a>
-            {{-- <a class="collapse-item" href="{{ route('admin.banner.create') }}">Thêm</a> --}}
+    </li>
+    {{-- Lịch sử nhập hàng --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistory" aria-expanded="true" aria-controls="collapseHistory">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Lịch sử nhập hàng</span>
+        </a>
+        <div id="collapseHistory" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{ route('admin.import_history.index') }}">Danh sách</a>
+                {{-- <a class="collapse-item" href="{{ route('admin.banner.create') }}">Thêm</a> --}}
+            </div>
         </div>
-    </div>
-</li>
+    </li>
 
 {{-- Quản lý đơn hàng--}}
 <li class="nav-item">
@@ -247,7 +234,7 @@
         <a class="nav-link" href="tables.html">
             <i class="fas fa-fw fa-table"></i>
             <span>Tables</span></a>
-    </li>
+    </li> --}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
@@ -258,7 +245,7 @@
     </div>
 
     <!-- Sidebar Message -->
-    <div class="sidebar-card d-none d-lg-flex">
+    {{-- <div class="sidebar-card d-none d-lg-flex">
         <img class="sidebar-card-illustration mb-2" src="{{asset('theme/admin/img/undraw_rocket.svg')}}" alt="...">
         <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
         <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>

@@ -32,6 +32,7 @@ class CartController extends Controller
             $array_item_cart['regular_price'] = $variants->regular_price;
             $array_item_cart['sale_price'] = $variants->sale_price;
             $array_item_cart['stock'] = $variants->stock;
+            $array_item_cart['sku'] = $variants->product->SKU;
             $array_item_cart['product_id'] = $variants->product_id;
             $array_item_cart['variant_id'] = $variants->id;
             $array_item_cart['id_cart'] = $itemCart->id;

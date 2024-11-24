@@ -257,7 +257,7 @@
                                                                     alt="lable"><span>on <br>Sale!</span></div>
                                                             <div class="product-image">
                                                                 @if ($product)
-                                                                    <a href="{{ route('product.detail', $product) }}">
+                                                                    <a href="{{ route('product.detail', $product->SKU) }}">
                                                                         <img class="bg-img"
                                                                             src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
                                                                             alt="Product Image">
@@ -364,7 +364,7 @@
 
 
                                                             @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <h6>{{ $product->name }}</h6>
                                                                 </a>
                                                             @else
@@ -396,7 +396,7 @@
                                                                 alt="lable"><span>on <br>Sale!</span></div>
                                                         <div class="product-image">
                                                             @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <img class="bg-img"
                                                                         src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
                                                                         alt="Product Image">
@@ -435,6 +435,19 @@
 
                                                         <div class="list-size" data-product-id="{{ $product->id }}">
                                                             <ul>
+                                                        <div class="product-detail">
+                                                            @if ($product)
+                                                                <div class="add-button">
+                                                                    <a href="{{ route('product.detail', $product->SKU) }}"><i
+                                                                            class="fa-regular fa-eye"></i> View details</a>
+                                                                </div>
+                                                            @else
+                                                                <div class="add-button">
+                                                                    <a href="#"><i class="fa-regular fa-eye"></i>
+                                                                        View details</a>
+                                                                </div>
+                                                            @endif
+                                                            <div class="color-box">
                                                                 @php
                                                                     $displayedSizes = [];
                                                                 @endphp
@@ -498,6 +511,19 @@
                                                                 @endforeach
                                                             </ul>
                                                             <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                </ul>
+                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                               
+                                                            </div>
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <h6>{{ $product->name }}</h6>
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                    <h6>{{ $product->name }}</h6>
+                                                                </a>
+                                                            @endif
 
                                                         </div>
 
@@ -535,7 +561,7 @@
                                                                 alt="lable"><span>on <br>Sale!</span></div>
                                                         <div class="product-image">
                                                             @if ($product)
-                                                                <a href="{{ route('product.detail', $product) }}">
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <img class="bg-img"
                                                                         src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
                                                                         alt="Product Image">
@@ -574,6 +600,19 @@
 
                                                         <div class="list-size" data-product-id="{{ $product->id }}">
                                                             <ul>
+                                                        <div class="product-detail">
+                                                            @if ($product)
+                                                                <div class="add-button">
+                                                                    <a href="{{ route('product.detail', $product->SKU) }}"><i
+                                                                            class="fa-regular fa-eye"></i> View details</a>
+                                                                </div>
+                                                            @else
+                                                                <div class="add-button">
+                                                                    <a href="#"><i class="fa-regular fa-eye"></i>
+                                                                        View details</a>
+                                                                </div>
+                                                            @endif
+                                                            <div class="color-box">
                                                                 @php
                                                                     $displayedSizes = [];
                                                                 @endphp
@@ -637,6 +676,15 @@
                                                                 @endforeach
                                                             </ul>
                                                             <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <h6>{{ $product->name }}</h6>
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                    <h6>{{ $product->name }}</h6>
+                                                                </a>
+                                                            @endif
 
                                                         </div>
 

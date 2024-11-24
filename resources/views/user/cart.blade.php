@@ -1,9 +1,8 @@
 @extends('user.layouts.master')
-
 @section('script-libs')
-<script src="{{asset('js/user/cart_chinh.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('js/user/cart.js') }}"></script>
 @endsection
-
 @section('content')
 <!-- Container content -->
 <main>
@@ -59,35 +58,19 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($cart_list as $item_cart)
-                                    <tr class="product_item" data-cart-id="{{ $item_cart['id_cart'] }}"
+                                    <tr data-cart-id="{{ $item_cart['id_cart'] }}"
                                         data-variant-id="{{ $item_cart['variant_id'] }}"
                                         data-product-id="{{ $item_cart['product_id'] }}"
                                         data-regular-price="{{ $item_cart['regular_price'] }}"
                                         data-sale-price="{{ $item_cart['sale_price'] }}"
                                         data-stock="{{ $item_cart['stock'] }}" class="cart_item">
                                         <td>
-                                            <input type="checkbox" class="product_checkbox"
-                                                data-cart-id="{{ $item_cart['id_cart'] }}">
-                                        </td>
-                                        <td>
-                                            <div class="cart-box d-flex align-items-start">
-                                                <!-- Use d-flex for flexbox and align items to the top -->
-                                                <a
-                                                    href="{{ route('product.detail', $item_cart['product_id']) }}">
-                                                    <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}"
-                                                        alt="{{ $item_cart['product_name'] }}"
-                                                        class="product-image">
-                                                </a>
-                                                <div
-                                                    class="cart-box-variant ms-0 d-flex justify-content-start flex-column">
-                                                    <!-- ms-0 to remove any left margin -->
-                                                    <a
-                                                        href="{{ route('product.detail', $item_cart['product_id']) }}">
-                                                        <h5 class="text-wrap text-start"
-                                                            style="font-size: 17px">
-                                                            {{ Str::limit($item_cart['product_name'], 25, '...') }}
-                                                        </h5>
-                                                        <!-- text-start for left alignment -->
+                                            <div class="cart-box">
+                                                <a href="{{ route('product.detail', $item_cart['sku']) }}">
+                                                    <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}" alt="{{ $item_cart['product_name'] }}" class="product-image"></a>
+                                                <div class="cart-box-variant">
+                                                    <a href="{{ route('product.detail', $item_cart['sku']) }}">
+                                                        <h5 class="text-wrap">{{ $item_cart['product_name'] }}</h5>
                                                     </a>
                                                     <div class="box-edit-variant mb-2 variant-selector">
                                                         <button type="button" id="variantButton"
@@ -305,17 +288,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Box Chọn Biến Thể -->
-        <div id="variantBox" class="box-variant">
-            <div class="variant-container">
-                <div class="varianr-content">
 
-                    <label class="form-label">Color: <span>Đen</span></label>
-                    <div class="d-flex mb-2 color-options">
-                        <input class="btn-color" type="radio" id="color-black" name="color" value="black">
-                        <label for="color-black" title="black" class="color-label me-2"
-                            style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
+            <!-- Box Chọn Biến Thể -->
+            <div id="variantBox" class="box-variant">
+                <div class="variant-container">
+                    <div class="varianr-content">
+                        <label class="form-label">Color: <span>Đen</span></label>
+                        <div class="d-flex mb-2 color-options">
+                            <input class="btn-color" type="radio" id="color-black" name="color" value="black">
+                            <label for="color-black" title="black" class="color-label me-2"
+                                style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
 
                         <input class="btn-color" type="radio" id="color-gray" name="color" value="gray">
                         <label for="color-gray" class="color-label"
@@ -331,81 +313,21 @@
                         <button class="btn-variant">L</button>
                     </div>
 
-                        {{-- <label class="form-label">Vải: <span>Lụa</span></label>
+                    {{-- <label class="form-label">Vải: <span>Lụa</span></label>
                         <div class="d-flex flex-wrap mb-2 wrap-vra">
                             <button class="btn-variant-default">Lụa</button>
                             <button class="btn-variant-default">Tơ</button>
                             <button class="btn-variant-default">Jean</button>
                         </div> --}}
-                    </div>
-                    <div class="d-flex mt-3 justify-content-between box-variant-bottom">
-                        <button type="button" id="backButton" class="btn-back">Trở lại</button>
-                        <button type="submit" class="btn-confirm">Xác nhận</button>
-                    </div>
+                </div>
+                <div class="d-flex mt-3 justify-content-between box-variant-bottom">
+                    <button type="button" id="backButton" class="btn-back">Trở lại</button>
+                    <button type="submit" class="btn-confirm">Xác nhận</button>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 
 <!-- End container content -->
-@endsection
-
-@section('script-libs')
-<script>
-    //Lấy tất cả các nút có class 'btn-variant'
-    const variantButtons = document.querySelectorAll('.btn-variant');
-    const variantDefault = document.querySelectorAll('.btn-variant-default');
-    const variantColors = document.querySelectorAll('.btn-color');
-
-    variantButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            variantButtons.forEach(btn => btn.classList.remove('selected'));
-            button.classList.add('selected');
-        });
-    });
-    variantDefault.forEach(button => {
-        button.addEventListener('click', () => {
-            variantDefault.forEach(btn => btn.classList.remove('selected'));
-            button.classList.add('selected');
-        });
-    });
-    variantColors.forEach(button => {
-        button.addEventListener('click', () => {
-            variantColors.forEach(btn => btn.classList.remove('selected'));
-            button.classList.add('selected');
-        });
-    });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const variantButton = document.getElementById("variantButton");
-        const variantBox = document.getElementById("variantBox");
-        const backButton = document.getElementById("backButton");
-
-        // Hàm hiển thị box dưới nút
-        variantButton.addEventListener("click", function(event) {
-            event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
-            const rect = variantButton.getBoundingClientRect();
-
-            // Cập nhật vị trí của variantBox ngay dưới nút
-            variantBox.style.top = `${rect.bottom + window.scrollY}px`;
-            variantBox.style.left = `${rect.left + window.scrollX}px`;
-
-            variantBox.classList.toggle("active"); // Hiển thị box
-        });
-
-        // Đóng box khi nhấn nút "Trở lại"
-        backButton.addEventListener("click", function() {
-            variantBox.classList.remove("active");
-        });
-
-        // Đóng box khi nhấn ra ngoài
-        document.addEventListener("click", function(event) {
-            if (!variantBox.contains(event.target) && !variantButton.contains(event.target)) {
-                variantBox.classList.remove("active");
-            }
-        });
-    });
-</script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('js/user/cart.js') }}"></script>
 @endsection

@@ -7,8 +7,6 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\DashboardController;
-use App\Http\Controllers\user\CollectionController;
-use App\Http\Controllers\User\WishlistControllerr;
 use App\Http\Controllers\user\FilterProductController;
 use App\Http\Controllers\User\ProductDetailController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -19,7 +17,7 @@ use App\Http\Controllers\user\WishlistController;
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
 //Trang chi tiết sản phẩm
-Route::get('productDetail/{product}', [ProductDetailController::class, 'index'])->name('product.detail');
+Route::get('productDetail/{sku}', [ProductDetailController::class, 'index'])->name('product.detail');
 Route::post('productDetail', [ProductDetailController::class, 'updateInformationProduct'])->name('userProductDetailFocused');
 
 //Trang thanh toán
@@ -68,7 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/add-address', [DashboardController::class, 'addAddress'])->name('dashboard.addAddress'); //Thêm địa chỉ giao hàng
     Route::put('dashboard/edit-address/{id}', [DashboardController::class, 'editAddress'])->name('dashboard.editAddress'); // Sửa địa chỉ
     Route::delete('dashboard/delete-address/{id}', [DashboardController::class, 'deleteAddress'])->name('dashboard.deleteAddress'); // Xoá địa chỉ
-    Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default');//Set địa chỉ mặc định
+    Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default'); //Set địa chỉ mặc định
 
     //Trang giỏ hàng
     Route::get('cart', [CartController::class, 'index'])->name('cart');

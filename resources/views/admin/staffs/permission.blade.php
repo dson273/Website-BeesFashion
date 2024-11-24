@@ -16,9 +16,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Chức năng</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
+                                <th>Function name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
 
@@ -29,10 +29,10 @@
                                     <td>{{ $parentKey + 1 }}</td>
                                     <td><strong>{{ $parentPermission->manager_name }}</strong></td>
                                     <td>
-                                        @if(in_array($parentPermission->id, $userPermissions))
-                                            <span class="text-success">Đã cấp quyền</span>
+                                        @if (in_array($parentPermission->id, $userPermissions))
+                                            <span class="badge bg-success badge-success">Đã cấp quyền</span>
                                         @else
-                                            <span class="text-danger">Chưa cấp quyền</span>
+                                            <span class="badge bg-danger badge-danger">Chưa cấp quyền</span>
                                         @endif
                                     </td>
                                     <td>
@@ -51,10 +51,10 @@
                                         <td>{{ $parentKey + 1 }}.{{ $childKey + 1 }}</td>
                                         <td style="padding-left: 30px;">- {{ $childPermission->manager_name }}</td>
                                         <td>
-                                            @if(in_array($childPermission->id, $userPermissions))
-                                                <span class="text-success">Đã cấp quyền</span>
+                                            @if (in_array($childPermission->id, $userPermissions))
+                                                <span class="badge bg-success badge-success">Đã cấp quyền</span>
                                             @else
-                                                <span class="text-danger">Chưa cấp quyền</span>
+                                                <span class="badge bg-danger badge-danger">Chưa cấp quyền</span>
                                             @endif
                                         </td>
                                         <td>
@@ -73,8 +73,7 @@
                     </table>
                 </div>
                 <div>
-                    <a href="{{ route('admin.staffs.index') }}" class="btn btn-secondary text-white text-decoration-none"><i
-                            class="fa-solid fa-arrow-left"></i> Back</a>
+                    <a href="{{ route('admin.staffs.index') }}" class="btn btn-secondary text-white text-decoration-none"><i class="fa-solid fa-arrow-left mr-1"></i>Back</a>
                 </div>
             </div>
         </div>
