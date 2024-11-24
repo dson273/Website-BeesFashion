@@ -93,4 +93,8 @@ Route::middleware('auth')->group(function () {
     Route::post('check-out/momo_payment', [PaymentController::class, 'momo_payment'])->name('momo_payment');
     //Theo dõi đơn hàng
 
+
+    //Thêm sản phẩm vào giỏ trang chủ
+    Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
+
 });
