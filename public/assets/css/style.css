@@ -15049,18 +15049,18 @@ body.skeleton_body {
 }
 
 .product-box .product-detail .add-button {
-    background-color: rgba(var(--theme-font-color), 1);
-    cursor: pointer;
-    left: 50%;
-    margin: 0 auto;
-    opacity: 0;
-    padding: 8px 6px;
     position: absolute;
-    text-align: center;
-    top: 0;
-    transform: translate(-50%, -40px);
-    transition: all .4s ease-in-out;
-    width: 146px
+    bottom: 0;
+    right: 0;
+    background: #221F20;
+    border-radius: 8px 0;
+    width: 40px;
+    height: 40px;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
 }
 
 .dark .product-box .product-detail .add-button {
@@ -15075,9 +15075,9 @@ body.skeleton_body {
     margin-top: 6px
 }
 
-.product-box:hover .img-wrapper .add-button {
+/* .product-box:hover .img-wrapper .add-button {
     bottom: 10px
-}
+} */
 
 .product-box:hover .img-wrapper .cart-info-icon a {
     opacity: 1
@@ -15107,10 +15107,10 @@ body.skeleton_body {
     }
 }
 
-.product-box:hover .product-detail .add-button {
+/* .product-box:hover .product-detail .add-button {
     opacity: 1;
     transform: translate(-50%, -45px)
-}
+} */
 
 @media (max-width:1300px) {
     .product-box:hover .product-detail .add-button {
@@ -19394,3 +19394,135 @@ body div canvas:first-child {
     }
 }
 
+/* Css mới 23/11 */
+.list-size {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #FFFFFF;
+    border: 1px solid #E7E8E9;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    display: flex; /* Sử dụng flexbox */
+    flex-direction: column; /* Hiển thị theo chiều dọc */
+    padding: 10px;
+    max-height: 200px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Thêm thanh cuộn nếu cần */
+}
+.size-item {
+    display: block; /* Kiểu hiển thị mặc định là block để các size item xếp thành cột */
+    margin: 5px 0; /* Khoảng cách giữa các size */
+}
+.list-size li {
+    list-style: none;
+}
+
+.list-size li a {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #57585A;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.list-size li a:hover {
+    color: #221F20;
+}
+
+.list-size li:last-child a {
+    margin-bottom: 0;
+}
+
+.list-size ul li button {
+    outline: 0;
+    background: transparent;
+    border: 0;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #221F20;
+    display: block;
+    font-family: 'Montserrat';
+    cursor: pointer;
+    text-transform: uppercase;
+    margin: 0 auto;
+    padding: 12px 50px;
+}
+
+.list-size ul li.unactive button {
+    color: #D1D2D4;
+    cursor: default;
+}
+
+.list-size li.unactive {
+    pointer-events: none;
+}
+
+.list-size li.unactive a {
+    color: #D1D2D4;
+}
+
+.list-size.open {
+    opacity: 1;
+    visibility: visible;
+    bottom: 43px;
+}
+
+
+.color-variant li.checked {
+    border: 1px solid #000000;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+#fancybox-add-to-cart.add-card-size {
+    padding: 90px 80px 80px;
+    text-align: center;
+}
+
+#fancybox-add-to-cart {
+    display: none;
+    position: fixed; /* Đặt vị trí cố định để thông báo luôn ở trên màn hình */
+    top: 50%; /* Đặt thông báo ở giữa theo chiều dọc */
+    left: 50%; /* Đặt thông báo ở giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Căn chính xác vào giữa màn hình */
+    padding: 40px;
+    padding-top: 80px;
+    background-color: white; /* Thêm màu nền cho thông báo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho thông báo */
+    opacity: 1;
+    transition: opacity 0.5s ease; /* Thêm hiệu ứng mờ dần */
+    z-index: 9999; /* Đảm bảo thông báo luôn hiển thị trên cùng */
+}
+
+#fancybox-add-to-cart.show {
+    display: block; /* Hiển thị thông báo khi có lớp 'show' */
+}
+
+#fancybox-add-to-cart.hide {
+    opacity: 0;
+    pointer-events: none; /* Tắt các sự kiện khi ẩn */
+}
+
+
+.add-card-size .thank-you__icon {
+    margin-bottom: 40px;
+}
+
+svg {
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.add-card-size .notify__add-to-cart--success {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 32px;
+    color: #221F20;
+}
+
+.text-uppercase {
+    text-transform: uppercase !important;
+}

@@ -8,6 +8,7 @@
     <meta name="description" content="BeesFashion">
     <meta name="keywords" content="BeesFashion">
     <meta name="author" content="pixelstrap">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <title>BeesFashion - Online Fashion Store </title>
@@ -77,6 +78,7 @@
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Notification library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.js.map"></script>
 
@@ -109,22 +111,22 @@
         var csrf = "{{ csrf_token() }}";
         const csrf = "{{ csrf_token() }}";
         //Filler product
-        const routeGetMinMaxPriceProduct = "{{route('getMinMaxPriceProduct')}}";
+        const routeGetMinMaxPriceProduct = "{{ route('getMinMaxPriceProduct') }}";
         //Check-out
-        const routeGetListAddresses = "{{route('checkout.getListAddresses')}}";
-        const routeGetVoucherByCode = "{{route('checkout.getVoucherByCode')}}";
+        const routeGetListAddresses = "{{ route('checkout.getListAddresses') }}";
+        const routeGetVoucherByCode = "{{ route('checkout.getVoucherByCode') }}";
 
         function routeDeleteAddress(id) {
-            return "{{route('checkout.deleteAddress',':id')}}".replace(':id', id);
+            return "{{ route('checkout.deleteAddress', ':id') }}".replace(':id', id);
         }
 
-        const routeSetDefaultAddress = "{{route('checkout.setDefaultAddress')}}";
+        const routeSetDefaultAddress = "{{ route('checkout.setDefaultAddress') }}";
 
         function routeSetDefaultAddressOther(id) {
-            return "{{route('checkout.setDefaultAddressOther',':id')}}".replace(':id', id);
+            return "{{ route('checkout.setDefaultAddressOther', ':id') }}".replace(':id', id);
         }
 
-        const routeStoreOrder = "{{route('checkout.storeOrder')}}";
+        const routeStoreOrder = "{{ route('checkout.storeOrder') }}";
         //Cart
         //route UpdateQuatity
         const routeUpdateQuantity = "{{ route('cart.updateQuantity') }}";
@@ -132,15 +134,15 @@
 
     <!-- Short notification commands -->
     <script>
-        @if(session('statusSuccess'))
-        var message = @json(session('statusSuccess'));
-        notification('success', message, 'Successfully!');
-        @elseif(session('statusError'))
-        var message = @json(session('statusError'));
-        notification('error', message, 'Error!');
-        @elseif(session('statusWarning'))
-        var message = @json(session('statusWarning'));
-        notification('warning', message, 'Warning!');
+        @if (session('statusSuccess'))
+            var message = @json(session('statusSuccess'));
+            notification('success', message, 'Successfully!');
+        @elseif (session('statusError'))
+            var message = @json(session('statusError'));
+            notification('error', message, 'Error!');
+        @elseif (session('statusWarning'))
+            var message = @json(session('statusWarning'));
+            notification('warning', message, 'Warning!');
         @endif
     </script>
 
