@@ -292,17 +292,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Box Chọn Biến Thể -->
-        <div id="variantBox" class="box-variant">
-            <div class="variant-container">
-                <div class="varianr-content">
 
-                    <label class="form-label">Color: <span>Đen</span></label>
-                    <div class="d-flex mb-2 color-options">
-                        <input class="btn-color" type="radio" id="color-black" name="color" value="black">
-                        <label for="color-black" title="black" class="color-label me-2"
-                            style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
+            <!-- Box Chọn Biến Thể -->
+            <div id="variantBox" class="box-variant">
+                <div class="variant-container">
+                    <div class="varianr-content">
+                        <label class="form-label">Color: <span>Đen</span></label>
+                        <div class="d-flex mb-2 color-options">
+                            <input class="btn-color" type="radio" id="color-black" name="color" value="black">
+                            <label for="color-black" title="black" class="color-label me-2"
+                                style="background-image: url('{{ asset('assets/images/cart/1.jpg') }}');"></label>
 
                         <input class="btn-color" type="radio" id="color-gray" name="color" value="gray">
                         <label for="color-gray" class="color-label"

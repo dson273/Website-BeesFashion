@@ -26,6 +26,20 @@
         Interface
     </div>
 
+    <!-- Thống kê -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistics" aria-expanded="true" aria-controls="collapseStatistics">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Thống kê</span>
+        </a>
+        <div id="collapseStatistics" class="collapse" aria-labelledby="headingStatistics" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng:</h6>
+                <a class="collapse-item" href="{{ route('admin.statistics.revenueProduct') }}">Doanh thu sản phẩm</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Quản lý danh mục -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">

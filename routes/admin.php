@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\ImportHistoryController;
@@ -127,7 +128,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
         Route::resource('import_history', ImportHistoryController::class);
         Route::post('import_history/update', [ImportHistoryController::class, 'updateQuantity'])->name('import_history.update');
-            
+
 
 
 
@@ -137,9 +138,14 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::resource('customers', CustomerController::class);
         });
     });
+    //Thống kê shop
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/statistics/product_views', [DashboardController::class, 'product_views'])->name('statistics.product_views');//Thống kê lượt xem
+    Route::get('/statistics/revenue', [DashboardController::class, 'getRevenue']);//Thống kê doanh thu
+    
+    Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct');//Thống kê doanh thu sản phẩm
 });
 
-Route::get('/statistics', [StatisticalController::class, 'getStatistics'])->name('statistics');
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();
 // });
