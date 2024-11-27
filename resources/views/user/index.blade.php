@@ -1,5 +1,9 @@
 @extends('user.layouts.master')
 
+@section('script-libs')
+    <script src="{{ asset('js/user/home.js') }}"></script>
+@endsection
+
 @section('content')
     <!--Container Content -->
     <main>
@@ -64,13 +68,16 @@
             <div class="container-fluid fashion-images">
                 <div class="swiper fashion-images-slide">
                     <div class="swiper-wrapper ratio_square-2">
-                        <div class="swiper-slide">
-                            <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
-                                        src="{{ asset('assets/images/fashion/category/1.png') }}" alt=""></a>
+                        @foreach ($categoryLimit as $item)
+                            <div class="swiper-slide">
+                                <div class="fashion-box"><a href="#"> <img class="img-fluid"
+                                            src="{{ asset('storage/uploads/categories/images/' . $item->image) }}"
+                                            alt=""></a>
+                                </div>
+                                <h5>{{ $item->name }}</h5>
                             </div>
-                            <h5>Top Wear</h5>
-                        </div>
-                        <div class="swiper-slide">
+                        @endforeach
+                        {{-- <div class="swiper-slide">
                             <div class="fashion-box"><a href="product-select.html"> <img class="img-fluid"
                                         src="{{ asset('assets/images/fashion/category/2.png') }}" alt=""></a>
                             </div>
@@ -111,7 +118,7 @@
                                         src="{{ asset('assets/images/fashion/category/3.png') }}" alt=""></a>
                             </div>
                             <h5>footwear</h5>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -120,7 +127,7 @@
         <section class="section-t-space">
             <div class="custom-container container product-contain">
                 <div class="title">
-                    <h3>Ma Voucher</h3>
+                    <h3>ƯU ĐÃI BLACK FRIDAY ĐỘC QUYỀN ONLINE</h3>
                 </div>
                 <div class="detail-content MuiBox-root css-0">
                     <div class="block-voucher">
@@ -128,9 +135,16 @@
                             <div class="voucher-item">
                                 <div class="voucher-item-info">
                                     <div class="voucher-item-detail">
-                                        <div class="voucher-item-des"><strong><span style="font-size: 12pt;"><span
-                                                        style="color: #ba372a;">GIẢM THÊM 10% ĐẾN
-                                                        100K</span><br></span></strong></div>
+                                        <div class="voucher-item-des">
+                                            <strong>
+                                                <span style="font-size: 12pt;">
+                                                    <span style="color: #ba372a;">GIẢM THÊM 10% ĐẾN
+                                                        100K
+                                                    </span>
+                                                    <br>
+                                                </span>
+                                            </strong>
+                                        </div>
                                         <div class="voucher-item-des"><span style="font-size: 10pt;">Nhập mã <strong><span
                                                         style="font-size: 12pt;">LUCKY11</span></strong><span
                                                     style="color: #e03e2d;"><strong><br></strong></span></span></div>
@@ -235,7 +249,7 @@
                                         <div class="row g-4">
                                             @foreach ($newProducts as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6">
-                                                    <div class="product-box">
+                                                    <div class="product-box" data-product-id={{ $product->id }}>
                                                         <div class="img-wrapper">
 
                                                             <div class="label-block"><img
@@ -258,47 +272,97 @@
                                                             </div>
                                                             <div class="cart-info-icon">
                                                                 <a class="wishlist-icon" href="javascript:void(0)"
-                                                                    tabindex="0"><i class="iconsax" data-icon="heart"
+                                                                    tabindex="0">
+                                                                    <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i></a>
-                                                                <a href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i
-                                                                        class="iconsax" data-icon="eye"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Quick View"></i></a>
+                                                                        data-bs-title="Add to Wishlist"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0)" class="quick-view-btn"
+                                                                    data-id="{{ $product->id }}" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view" tabindex="0">
+                                                                    <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
                                                             <div class="add-button">
-                                                                <a href="#"><i class="fa-regular fa-eye"></i> View
-                                                                    details</a>
+                                                                <a href="javascript:void(0)" class="add-to-cart"
+                                                                    data-product-id="{{ $product->id }}">
+                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                </a>
                                                             </div>
-                                                            <div class="color-box">
-                                                                @php
-                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
-                                                                @endphp
+
+                                                            <div class="list-size" data-product-id="{{ $product->id }}">
+                                                                <ul>
+                                                                    @php
+                                                                        $displayedSizes = [];
+                                                                    @endphp
                                                             
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
                                                                                 $attributeValue = $variantAttributeValue->attribute_value;
+                                                                                $sizeName = $attributeValue->name;
                                                                             @endphp
                                                             
+                                                                            @if ($attributeValue->attribute->name == 'Size' && is_null($attributeValue->value))
+                                                                                @if (!in_array($sizeName, $displayedSizes))
+                                                                                    @php
+                                                                                        // Kiểm tra số lượng tồn kho
+                                                                                        $stock = $variant->stock; // Giả sử bạn có trường stock trong variant
+                                                                                    @endphp
+                                                            
+                                                                                    <li data-size="{{ $attributeValue->id }}" class="size-item {{ $stock <= 0 ? 'unactive' : '' }}">
+                                                                                        <button type="button" class="btn bt-large">
+                                                                                            {{ $sizeName }}
+                                                                                        </button>
+                                                                                    </li>
+                                                            
+                                                                                    @php
+                                                                                        $displayedSizes[] = $sizeName;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                            
+                                                            <div class="color-box">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                                <ul class="color-variant"
+                                                                    style="list-style-type: none; padding: 0;">
+                                                                    @foreach ($product->product_variants as $variant)
+                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                            @php
+                                                                                $attributeValue =
+                                                                                    $variantAttributeValue->attribute_value;
+                                                                            @endphp
+
                                                                             @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
-                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                                                <li class="color-item"
+                                                                                    data-color="{{ $attributeValue->id }}"
+                                                                                    style="background-color:{{ $attributeValue->value }};">
+                                                                                    <a href="javascript:void(0)"
+                                                                                        class="color-picker"></a>
+                                                                                </li>
                                                                                 @php
-                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                    $displayedColors[] =
+                                                                                        $attributeValue->value; // Thêm màu vào mảng
                                                                                 @endphp
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
-                                                               
+                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+
                                                             </div>
-                                                            
-                                                            
+
+
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <h6>{{ $product->name }}</h6>
@@ -312,6 +376,8 @@
                                                                 {{ $product->priceRange }}
                                                             </p>
                                                         </div>
+
+
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -321,12 +387,14 @@
                                     <div class="tab-pane fade" id="features-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($products as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
-                                                    <div class="product-box">
-                                                        <div class="img-wrapper">
-                                                            <div class="label-block"><img
-                                                                    src="{{ asset('assets/images/product/3.png') }}"
-                                                                    alt="lable"><span>on <br>Sale!</span></div>
+                                            <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="product-box" data-product-id={{ $product->id }}>
+                                                    <div class="img-wrapper">
+
+                                                        <div class="label-block"><img
+                                                                src="{{ asset('assets/images/product/3.png') }}"
+                                                                alt="lable"><span>on <br>Sale!</span></div>
+                                                        <div class="product-image">
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <img class="bg-img"
@@ -340,17 +408,33 @@
                                                                         alt="Product Image">
                                                                 </a>
                                                             @endif
-                                                            <div class="cart-info-icon"> <a class="wishlist-icon"
-                                                                    href="javascript:void(0)" tabindex="0"><i
-                                                                        class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i></a><a
-                                                                    href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i
-                                                                        class="iconsax" data-icon="eye"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Quick View"></i></a></div>
                                                         </div>
+                                                        <div class="cart-info-icon">
+                                                            <a class="wishlist-icon" href="javascript:void(0)"
+                                                                tabindex="0">
+                                                                <i class="iconsax" data-icon="heart"
+                                                                    aria-hidden="true" data-bs-toggle="tooltip"
+                                                                    data-bs-title="Add to Wishlist"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" class="quick-view-btn"
+                                                                data-id="{{ $product->id }}" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" tabindex="0">
+                                                                <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                                    data-bs-toggle="tooltip"
+                                                                    data-bs-title="Quick View"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <div class="add-button">
+                                                            <a href="javascript:void(0)" class="add-to-cart"
+                                                                data-product-id="{{ $product->id }}">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="list-size" data-product-id="{{ $product->id }}">
+                                                            <ul>
                                                         <div class="product-detail">
                                                             @if ($product)
                                                                 <div class="add-button">
@@ -365,24 +449,68 @@
                                                             @endif
                                                             <div class="color-box">
                                                                 @php
-                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                    $displayedSizes = [];
                                                                 @endphp
-                                                            
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
-                                                                    @foreach ($product->product_variants as $variant)
-                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
-                                                                            @php
-                                                                                $attributeValue = $variantAttributeValue->attribute_value;
-                                                                            @endphp
-                                                            
-                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
-                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                        
+                                                                @foreach ($product->product_variants as $variant)
+                                                                    @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                        @php
+                                                                            $attributeValue = $variantAttributeValue->attribute_value;
+                                                                            $sizeName = $attributeValue->name;
+                                                                        @endphp
+                                                        
+                                                                        @if ($attributeValue->attribute->name == 'Size' && is_null($attributeValue->value))
+                                                                            @if (!in_array($sizeName, $displayedSizes))
                                                                                 @php
-                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                    // Kiểm tra số lượng tồn kho
+                                                                                    $stock = $variant->stock; // Giả sử bạn có trường stock trong variant
+                                                                                @endphp
+                                                        
+                                                                                <li data-size="{{ $attributeValue->id }}" class="size-item {{ $stock <= 0 ? 'unactive' : '' }}">
+                                                                                    <button type="button" class="btn bt-large">
+                                                                                        {{ $sizeName }}
+                                                                                    </button>
+                                                                                </li>
+                                                        
+                                                                                @php
+                                                                                    $displayedSizes[] = $sizeName;
                                                                                 @endphp
                                                                             @endif
-                                                                        @endforeach
+                                                                        @endif
                                                                     @endforeach
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                        
+                                                        <div class="color-box">
+                                                            @php
+                                                                $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                            @endphp
+                                                            <ul class="color-variant"
+                                                                style="list-style-type: none; padding: 0;">
+                                                                @foreach ($product->product_variants as $variant)
+                                                                    @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                        @php
+                                                                            $attributeValue =
+                                                                                $variantAttributeValue->attribute_value;
+                                                                        @endphp
+
+                                                                        @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                            <li class="color-item"
+                                                                                data-color="{{ $attributeValue->id }}"
+                                                                                style="background-color:{{ $attributeValue->value }};">
+                                                                                <a href="javascript:void(0)"
+                                                                                    class="color-picker"></a>
+                                                                            </li>
+                                                                            @php
+                                                                                $displayedColors[] =
+                                                                                    $attributeValue->value; // Thêm màu vào mảng
+                                                                            @endphp
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </ul>
+                                                            <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                                 </ul>
                                                                     <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                                
@@ -397,12 +525,26 @@
                                                                 </a>
                                                             @endif
 
-                                                            <p>
-                                                                {{ $product->priceRange }}
-                                                            </p>
                                                         </div>
+
+
+                                                        @if ($product)
+                                                            <a href="{{ route('product.detail', $product) }}">
+                                                                <h6>{{ $product->name }}</h6>
+                                                            </a>
+                                                        @else
+                                                            <a href="#">
+                                                                <h6>{{ $product->name }}</h6>
+                                                            </a>
+                                                        @endif
+                                                        <p>
+                                                            {{ $product->priceRange }}
+                                                        </p>
                                                     </div>
+
+
                                                 </div>
+                                            </div>
                                             @endforeach
                                         </div>
                                     </div>
@@ -410,12 +552,14 @@
                                     <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($topProducts as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
-                                                    <div class="product-box">
-                                                        <div class="img-wrapper">
-                                                            <div class="label-block"><img
-                                                                    src="{{ asset('assets/images/product/3.png') }}"
-                                                                    alt="lable"><span>on <br>Sale!</span></div>
+                                            <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="product-box" data-product-id={{ $product->id }}>
+                                                    <div class="img-wrapper">
+
+                                                        <div class="label-block"><img
+                                                                src="{{ asset('assets/images/product/3.png') }}"
+                                                                alt="lable"><span>on <br>Sale!</span></div>
+                                                        <div class="product-image">
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <img class="bg-img"
@@ -429,17 +573,33 @@
                                                                         alt="Product Image">
                                                                 </a>
                                                             @endif
-                                                            <div class="cart-info-icon"> <a class="wishlist-icon"
-                                                                    href="javascript:void(0)" tabindex="0"><i
-                                                                        class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i></a><a
-                                                                    href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#quick-view" tabindex="0"><i
-                                                                        class="iconsax" data-icon="eye"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Quick View"></i></a></div>
                                                         </div>
+                                                        <div class="cart-info-icon">
+                                                            <a class="wishlist-icon" href="javascript:void(0)"
+                                                                tabindex="0">
+                                                                <i class="iconsax" data-icon="heart"
+                                                                    aria-hidden="true" data-bs-toggle="tooltip"
+                                                                    data-bs-title="Add to Wishlist"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" class="quick-view-btn"
+                                                                data-id="{{ $product->id }}" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" tabindex="0">
+                                                                <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                                    data-bs-toggle="tooltip"
+                                                                    data-bs-title="Quick View"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <div class="add-button">
+                                                            <a href="javascript:void(0)" class="add-to-cart"
+                                                                data-product-id="{{ $product->id }}">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="list-size" data-product-id="{{ $product->id }}">
+                                                            <ul>
                                                         <div class="product-detail">
                                                             @if ($product)
                                                                 <div class="add-button">
@@ -454,29 +614,68 @@
                                                             @endif
                                                             <div class="color-box">
                                                                 @php
-                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                    $displayedSizes = [];
                                                                 @endphp
-                                                            
-                                                                <ul class="color-variant" style="list-style-type: none; padding: 0;">
-                                                                    @foreach ($product->product_variants as $variant)
-                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
-                                                                            @php
-                                                                                $attributeValue = $variantAttributeValue->attribute_value;
-                                                                            @endphp
-                                                            
-                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
-                                                                                <li style="background-color:{{ $attributeValue->value }};"></li>
+                                                        
+                                                                @foreach ($product->product_variants as $variant)
+                                                                    @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                        @php
+                                                                            $attributeValue = $variantAttributeValue->attribute_value;
+                                                                            $sizeName = $attributeValue->name;
+                                                                        @endphp
+                                                        
+                                                                        @if ($attributeValue->attribute->name == 'Size' && is_null($attributeValue->value))
+                                                                            @if (!in_array($sizeName, $displayedSizes))
                                                                                 @php
-                                                                                    $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                                                    // Kiểm tra số lượng tồn kho
+                                                                                    $stock = $variant->stock; // Giả sử bạn có trường stock trong variant
+                                                                                @endphp
+                                                        
+                                                                                <li data-size="{{ $attributeValue->id }}" class="size-item {{ $stock <= 0 ? 'unactive' : '' }}">
+                                                                                    <button type="button" class="btn bt-large">
+                                                                                        {{ $sizeName }}
+                                                                                    </button>
+                                                                                </li>
+                                                        
+                                                                                @php
+                                                                                    $displayedSizes[] = $sizeName;
                                                                                 @endphp
                                                                             @endif
-                                                                        @endforeach
+                                                                        @endif
                                                                     @endforeach
-                                                                </ul>
-                                                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
-                                                               
-                                                            </div>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                        
+                                                        <div class="color-box">
+                                                            @php
+                                                                $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                            @endphp
+                                                            <ul class="color-variant"
+                                                                style="list-style-type: none; padding: 0;">
+                                                                @foreach ($product->product_variants as $variant)
+                                                                    @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                        @php
+                                                                            $attributeValue =
+                                                                                $variantAttributeValue->attribute_value;
+                                                                        @endphp
 
+                                                                        @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                            <li class="color-item"
+                                                                                data-color="{{ $attributeValue->id }}"
+                                                                                style="background-color:{{ $attributeValue->value }};">
+                                                                                <a href="javascript:void(0)"
+                                                                                    class="color-picker"></a>
+                                                                            </li>
+                                                                            @php
+                                                                                $displayedColors[] =
+                                                                                    $attributeValue->value; // Thêm màu vào mảng
+                                                                            @endphp
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </ul>
+                                                            <span>4.5 <i class="fa-solid fa-star"></i></span>
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <h6>{{ $product->name }}</h6>
@@ -487,12 +686,26 @@
                                                                 </a>
                                                             @endif
 
-                                                            <p>
-                                                                {{ $product->priceRange }}
-                                                            </p>
                                                         </div>
+
+
+                                                        @if ($product)
+                                                            <a href="{{ route('product.detail', $product) }}">
+                                                                <h6>{{ $product->name }}</h6>
+                                                            </a>
+                                                        @else
+                                                            <a href="#">
+                                                                <h6>{{ $product->name }}</h6>
+                                                            </a>
+                                                        @endif
+                                                        <p>
+                                                            {{ $product->priceRange }}
+                                                        </p>
                                                     </div>
+
+
                                                 </div>
+                                            </div>
                                             @endforeach
                                         </div>
                                     </div>
@@ -1004,9 +1217,10 @@
                                     <div class="swiper modal-slide-1">
                                         <div class="swiper-wrapper ratio_square-2">
                                             <div class="swiper-slide"><img class="bg-img"
-                                                    src="{{ asset('assets/images/pro/1.jpg') }}" alt="">
+                                                    src="{{ asset('uploads/products/images/' . $product->product_files->first()->file_name) }}"
+                                                    alt="Product Image">
                                             </div>
-                                            <div class="swiper-slide"><img class="bg-img"
+                                            {{-- <div class="swiper-slide"><img class="bg-img"
                                                     src="{{ asset('assets/images/pro/2.jpg') }}" alt="">
                                             </div>
                                             <div class="swiper-slide"><img class="bg-img"
@@ -1014,15 +1228,20 @@
                                             </div>
                                             <div class="swiper-slide"><img class="bg-img"
                                                     src="{{ asset('assets/images/pro/4.jpg') }}" alt="">
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <div class="swiper modal-slide-2">
                                         <div class="swiper-wrapper ratio3_4">
-                                            <div class="swiper-slide"><img class="bg-img"
-                                                    src="{{ asset('assets/images/pro/5.jpg') }}" alt="">
-                                            </div>
-                                            <div class="swiper-slide"><img class="bg-img"
+                                            @foreach ($newProducts as $product)
+                                                @foreach ($product->product_files as $item)
+                                                    <div class="swiper-slide"><img class="bg-img"
+                                                            src="{{ asset('uploads/products/images/' . $item->file_name) }}"
+                                                            alt="">
+                                                    </div>
+                                                @endforeach
+                                            @endforeach
+                                            {{-- <div class="swiper-slide"><img class="bg-img"
                                                     src="{{ asset('assets/images/pro/6.jpg') }}" alt="">
                                             </div>
                                             <div class="swiper-slide"><img class="bg-img"
@@ -1030,25 +1249,36 @@
                                             </div>
                                             <div class="swiper-slide"><img class="bg-img"
                                                     src="{{ asset('assets/images/pro/8.jpg') }}" alt="">
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 rtl-text">
                                 <div class="product-right">
-                                    <h3>Women Pink Shirt</h3>
-                                    <h5>$32.96<del>$50.12</del></h5>
-                                    <ul class="color-variant">
-                                        <li class="bg-color-brown"></li>
-                                        <li class="bg-color-chocolate"></li>
-                                        <li class="bg-color-coffee"></li>
-                                        <li class="bg-color-black"></li>
+                                    <h3>{{ $product->name }}</h3>
+                                    <h5>
+                                        <p>
+                                            {{ $product->priceRange }}
+                                        </p>
+                                    </h5>
+                                    <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                        @foreach ($product->product_variants as $variant)
+                                            @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                @php
+                                                    $attributeValue = $variantAttributeValue->attribute_value;
+                                                @endphp
+                                                @if (!empty($attributeValue->value))
+                                                    <li style="background-color:{{ $attributeValue->value }};">
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
                                     </ul>
                                     <div class="border-product">
                                         <h6>Product details</h6>
-                                        <p>Western yoke on an Indigo shirt made of 100% cotton. Ideal for informal
-                                            gatherings, this top will ensure your comfort and style throughout the day.
+                                        <p>
+                                            {{ $product->description }}
                                         </p>
                                     </div>
                                     <div class="product-description">
@@ -1130,6 +1360,20 @@
         </div>
         <!-- End seach -->
     </div> --}}
+        <div class="add-card-size" id="fancybox-add-to-cart">
+            <div class="thank-you__icon"><svg width="160" height="160" viewBox="0 0 160 160" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M56.7833 20.1167C62.9408 13.9592 71.2921 10.5 80 10.5C84.3117 10.5 88.5812 11.3493 92.5648 12.9993C96.5483 14.6493 100.168 17.0678 103.217 20.1167C106.266 23.1655 108.684 26.785 110.334 30.7686C111.984 34.7521 112.833 39.0216 112.833 43.3333V62.8333H47.1667V43.3333C47.1667 34.6254 50.6259 26.2741 56.7833 20.1167ZM46.1667 62.8333V43.3333C46.1667 34.3602 49.7312 25.7545 56.0762 19.4096C62.4212 13.0646 71.0268 9.5 80 9.5C84.4431 9.5 88.8426 10.3751 92.9474 12.0754C97.0523 13.7757 100.782 16.2678 103.924 19.4096C107.065 22.5513 109.558 26.281 111.258 30.3859C112.958 34.4907 113.833 38.8903 113.833 43.3333V62.8333H133.333C133.582 62.8333 133.793 63.0163 133.828 63.2626L147.162 156.596C147.182 156.739 147.139 156.885 147.044 156.994C146.949 157.104 146.812 157.167 146.667 157.167H13.3333C13.1884 157.167 13.0506 157.104 12.9556 156.994C12.8606 156.885 12.8179 156.739 12.8384 156.596L26.1717 63.2626C26.2069 63.0163 26.4178 62.8333 26.6667 62.8333H46.1667ZM113.333 63.8333H46.6667H27.1003L13.9098 156.167H146.09L132.9 63.8333H113.333Z"
+                        fill="#212121"></path>
+                    <path
+                        d="M107.205 91.3663L80.4451 121.251L64.5853 106.174L62 108.893L80.6618 126.634L110 93.8694L107.205 91.3663Z"
+                        fill="black"></path>
+                </svg>
+            </div>
+            <p class="notify__add-to-cart--success text-uppercase">Thêm vào giỏ hàng thành công !</p>
+        </div>
+
     </main>
     <!-- End container content -->
 @endsection

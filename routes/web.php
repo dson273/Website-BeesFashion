@@ -99,5 +99,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('order-success/{id}', [OrderController::class, 'show'])->name('order_success');
     Route::get('order-failed/{id}', [OrderController::class, 'show'])->name('order_failed');
-    //Theo dõi đơn hàng
+
+    //Thêm sản phẩm vào giỏ trang chủ
+    Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
+
 });
