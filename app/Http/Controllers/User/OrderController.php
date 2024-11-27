@@ -81,12 +81,6 @@ class OrderController extends Controller
             }
         }
 
-        if ($data_from_js['payment_method'] != "") {
-            $payment_method = $data_from_js['payment_method'];
-        } else {
-            return $this->returnJson(false, 'Không xác định được phương thức thanh toán, vui lòng thử lại!');
-        }
-
         $shipping_price = $data_from_js['shipping_price'];
         $shipping_voucher = $data_from_js['shipping_voucher'];
         $tax = $data_from_js['tax'];
@@ -94,6 +88,12 @@ class OrderController extends Controller
         $total_payment = $data_from_js['total_payment'];
         $voucher = $data_from_js['voucher'];
         $voucher_id = $data_from_js['voucher_id'];
+
+        if ($data_from_js['payment_method'] != "") {
+            $payment_method = $total_payment != 0 ? $data_from_js['payment_method'] : "cod";
+        } else {
+            return $this->returnJson(false, 'Không xác định được phương thức thanh toán, vui lòng thử lại!');
+        }
 
         $product_variants = $data_from_js['product_variants'];
 
@@ -116,26 +116,26 @@ class OrderController extends Controller
                 'user_id' => $user_id
             ]);
 
-            $get_order_id_1 = Status::where('name', 'Đang xử lý')->first();
-            $get_order_id_2 = Status::where('name', 'Chờ xác nhận')->first();
-            if ($get_order_id_1 && $get_order_id_2) {
+            $get_status_id_1 = Status::where('name', 'Processing')->first();
+            $get_status_id_2 = Status::where('name', 'Pending')->first();
+            if ($get_status_id_1 && $get_status_id_2) {
                 Status_order::create([
-                    'status_id' => $payment_method == "cod" ? $get_order_id_2->id : $get_order_id_1->id,
+                    'status_id' => $payment_method == "cod" ? $get_status_id_2->id : $get_status_id_1->id,
                     'order_id' => $new_order->id
                 ]);
             } else {
-                if (!$get_order_id_1) {
-                    $get_order_id_1 = Status::create([
-                        'name' => 'Đang xử lý',
+                if (!$get_status_id_1) {
+                    $get_status_id_1 = Status::create([
+                        'name' => 'Processing',
                     ]);
                 }
-                if (!$get_order_id_2) {
-                    $get_order_id_2 = Status::create([
-                        'name' => 'Chờ xác nhận',
+                if (!$get_status_id_2) {
+                    $get_status_id_2 = Status::create([
+                        'name' => 'Pending',
                     ]);
                 }
                 Status_order::create([
-                    'status_id' => $payment_method == "cod" ? $get_order_id_2->id : $get_order_id_1->id,
+                    'status_id' => $payment_method == "cod" ? $get_status_id_2->id : $get_status_id_1->id,
                     'order_id' => $new_order->id
                 ]);
             }
@@ -201,7 +201,11 @@ class OrderController extends Controller
                 ]
             )->where('user_id', Auth::user()->id)->find($order_id);
             if ($get_order) {
-                $get_order_status = Status_order::with('status')->where('order_id', $order_id)->latest();
+                $get_order_status = Status_order::with('status')->where('order_id', $order_id)->latest()->first();
+                // dd($get_order_status);
+                if ($get_order->payment_method != "cod" && $get_order_status->status->name == "Processing") {
+                    return view('user.order-failed', compact('get_order', 'get_order_status'))->with('statusError', 'Đặt hàng không thành công!');
+                }
                 return view('user.order-success', compact('get_order', 'get_order_status'))->with('statusSuccess', 'Đặt hàng thành công!');
             } else {
                 return redirect()->route('checkout')->with('statusError', 'Có lỗi xảy ra!');
@@ -235,3 +239,79 @@ class OrderController extends Controller
         //
     }
 }
+
+
+// attribute_id:1,
+// attribute_name:color,
+// [red,green,pink,white]
+
+// attribute_id:2,
+// attribute_name:size,
+// [S,M,L,XL]
+
+// Red-M
+// Red-S
+
+// product_variant_id:1,
+// name:Biến thể 1,
+// product_id:1,
+
+
+// attribute_data=[
+//     0:{
+//         attribute_id:1,
+//         attribute_name:color,
+//         attribute_values:[
+//             0:{
+//                 attribute_value_id:1,
+//                 attribute_value_name:red
+//             },
+//         ]
+//     },
+//     2:{
+//         attribute_id:2,
+//         attribute_name:size,
+//         attribute_values:[
+//             0:{
+//                 attribute_value_id:5,
+//                 attribute_value_name:S
+//             },
+//             1:{
+//                 attribute_value_id:6,
+//                 attribute_value_name:M
+//             }
+//         ]
+//     },
+// ]
+
+
+// attribute_data=[
+//     0:{
+//         attribute_id:1,
+//         attribute_name:color,
+//         attribute_values:[
+//             0:{
+//                 attribute_value_id:1,
+//                 attribute_value_name:red
+//             },
+//             1:{
+//                 attribute_value_id:2,
+//                 attribute_value_name:green
+//             }
+//         ]
+//     },
+//     2:{
+//         attribute_id:2,
+//         attribute_name:size,
+//         attribute_values:[
+//             0:{
+//                 attribute_value_id:5,
+//                 attribute_value_name:S
+//             },
+//             1:{
+//                 attribute_value_id:6,
+//                 attribute_value_name:M
+//             }
+//         ]
+//     },
+// ]

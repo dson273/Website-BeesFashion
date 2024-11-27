@@ -91,6 +91,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(User_voucher::class);
     }
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
 
     // Lấy tất cả quyền của người dùng
     public function permissions()

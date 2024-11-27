@@ -65,6 +65,10 @@
                                         data-sale-price="{{ $item_cart['sale_price'] }}"
                                         data-stock="{{ $item_cart['stock'] }}" class="cart_item">
                                         <td>
+                                            <input type="checkbox" class="product_checkbox"
+                                                data-cart-id="{{ $item_cart['id_cart'] }}">
+                                        </td>
+                                        <td>
                                             <div class="cart-box">
                                                 <a href="{{ route('product.detail', $item_cart['sku']) }}">
                                                     <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}" alt="{{ $item_cart['product_name'] }}" class="product-image"></a>

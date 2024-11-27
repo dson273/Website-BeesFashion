@@ -77,20 +77,27 @@ Route::middleware('auth')->group(function () {
     Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     //Trang yêu thích
     Route::get('wishlist/{product_id}', [WishlistController::class, 'index']);
-     //Checkout
-    Route::get('check-out', [CheckOutController::class, 'index'])->name('checkout');
-    Route::post('check-out/addAddress', [CheckOutController::class, 'addAddress'])->name('checkout.addAddress');
-    Route::post('check-out/getListAddresses', [CheckOutController::class, 'getListAddresses'])->name('checkout.getListAddresses');
-    Route::put('check-out/edit-default-address', [CheckOutController::class, 'editDefaultAddress'])->name('checkout.editDefaultAddress');
-    Route::put('check-out/edit-address/{id}', [CheckOutController::class, 'editAddress'])->name('checkout.editAddress');
-    Route::put('check-out/set-default-address', [CheckOutController::class, 'setDefaultAddress'])->name('checkout.setDefaultAddress');
-    Route::put('check-out/set-default-address-other/{id}', [CheckOutController::class, 'setDefaultAddressOther'])->name('checkout.setDefaultAddressOther'); // Xoá địa chỉ
-    Route::delete('check-out/delete-address/{id}', [CheckOutController::class, 'deleteAddress'])->name('checkout.deleteAddress'); // Xoá địa chỉ
-    Route::post('check-out/get-voucher-by-code', [CheckOutController::class, 'getVoucherByCode'])->name('checkout.getVoucherByCode');
-    Route::post('check-out/store-order', [OrderController::class, 'store'])->name('checkout.storeOrder');
-    Route::get('order-success/{id}', [OrderController::class, 'show'])->name('order_success');
-    Route::post('check-out/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
-    Route::post('check-out/momo_payment', [PaymentController::class, 'momo_payment'])->name('momo_payment');
-    //Theo dõi đơn hàng
+    //Checkout
+    Route::prefix('check-out')->group(function () {
+        Route::get('/', [CheckOutController::class, 'index'])->name('checkout');
+        Route::post('/add-address', [CheckOutController::class, 'addAddress'])->name('checkout.addAddress');
+        Route::post('/get-list-addresses', [CheckOutController::class, 'getListAddresses'])->name('checkout.getListAddresses');
+        Route::put('/edit-default-address', [CheckOutController::class, 'editDefaultAddress'])->name('checkout.editDefaultAddress');
+        Route::put('/edit-address/{id}', [CheckOutController::class, 'editAddress'])->name('checkout.editAddress');
+        Route::put('/set-default-address', [CheckOutController::class, 'setDefaultAddress'])->name('checkout.setDefaultAddress');
+        Route::put('/set-default-address-other/{id}', [CheckOutController::class, 'setDefaultAddressOther'])->name('checkout.setDefaultAddressOther'); // Xoá địa chỉ
+        Route::delete('/delete-address/{id}', [CheckOutController::class, 'deleteAddress'])->name('checkout.deleteAddress'); // Xoá địa chỉ
+        Route::post('/get-voucher-by-code', [CheckOutController::class, 'getVoucherByCode'])->name('checkout.getVoucherByCode');
+        Route::post('/store-order', [OrderController::class, 'store'])->name('checkout.storeOrder');
 
+        Route::post('/vnpay_create_payment', [PaymentController::class, 'vnpay_payment'])->name('checkout.vnpay_payment');
+        Route::get('/vnpay_return', [PaymentController::class, 'vnpay_return'])->name('checkout.vnpay_return');
+
+        Route::post('/momo_payment', [PaymentController::class, 'momo_payment'])->name('checkout.momo_payment');
+        Route::get('/momo_return', [PaymentController::class, 'momo_return'])->name('checkout.momo_return');
+    });
+
+    Route::get('order-success/{id}', [OrderController::class, 'show'])->name('order_success');
+    Route::get('order-failed/{id}', [OrderController::class, 'show'])->name('order_failed');
+    //Theo dõi đơn hàng
 });
