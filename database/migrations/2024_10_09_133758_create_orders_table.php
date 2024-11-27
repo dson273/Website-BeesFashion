@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\User_shipping_address;
 use Illuminate\Database\Migrations\Migration;
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('address')->nullable()->comment('Nếu người dùng chọn địa chỉ thanh toán mặc định ở bảng user thì không thể lấy thông tin địa chỉ giao hàng qua id của bảng user_shipping_address');
             $table->enum('payment_method', ['cod', 'vnpay', 'momo'])->default('cod')->comment('Thanh toán bằng hình thức nào');
             $table->foreignIdFor(User::class)->comment('Xác định người dùng nào đã đặt hàng')->constrained();
+            $table->foreignIdFor(Payment::class)->nullable()->comment('Xác định giao dịch thanh toán nào')->constrained();
             $table->timestamps();
         });
     }

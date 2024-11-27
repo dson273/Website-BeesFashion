@@ -19,11 +19,16 @@ class Order extends Model
         'phone_number',
         'address',
         'payment_method',
+        'payment_id',
         'user_id'
     ];
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
     }
     public function order_details()
     {

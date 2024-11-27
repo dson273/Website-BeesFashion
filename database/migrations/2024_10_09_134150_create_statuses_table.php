@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->comment('Tên trạng thái');
+            $table->enum('name', ['Processing', 'Pending', 'Shipping', 'Completed', 'Cancelled', 'Returned'])->comment('Tên trạng thái');
             $table->timestamps();
         });
     }
