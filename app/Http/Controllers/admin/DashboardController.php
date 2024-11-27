@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Chart;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -18,11 +19,8 @@ class DashboardController extends Controller
         $totalProducts = Product::count();
         $totalView = Product::where('is_active', '1')->sum('view');
         $totalOrders = Order::join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-            ->where('status_orders.status_id', 3)
+            ->where('status_orders.status_id', 4)
             ->count();
-        // $totalRevenue =  Order::join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-        //     ->where('status_orders.status_id', 3)
-        //     ->sum('orders.total_payment');
         $totalUsers = User::where('role', 'member')->count();
 
         return view('admin.dashboard', compact('totalProducts', 'totalOrders', 'totalView', 'totalUsers'));
@@ -53,14 +51,54 @@ class DashboardController extends Controller
             return $interval['label'];
         }, $intervals);
 
+        //Lấy doanh thu đổ vào biểu đồ
         $revenue = $this->getRevenueData($intervals, $labels);
+
+        // Tính tổng các chỉ số từ dữ liệu thống kê
+        $rawRevenue = Chart::getRevenueStatisticsByIntervals(array_map(function ($interval) {
+            return [$interval['start'], $interval['end']];
+        }, $intervals));
+
+        $totals = [
+            'total_revenue' => 0,
+            'total_cost' => 0,
+            'profit' => 0,
+            'total_orders' => 0
+        ];
+
+        foreach ($rawRevenue as $item) {
+            $totals['total_revenue'] += $item['total_revenue'];
+            $totals['total_cost'] += $item['total_cost'];
+            $totals['profit'] += $item['profit'];
+            $totals['total_orders'] += $item['total_orders'];
+        }
 
         return response()->json([
             'labels' => $labels,
-            'revenue' => array_values($revenue)
+            'revenue' => array_values($revenue),
+            'totals' => $totals
         ]);
     }
 
+    //Lấy khoảng thời gian và doanh thu
+    private function getRevenueData(array $intervals, array $labels): array
+    {
+        $rawRevenue = Chart::getRevenueStatisticsByIntervals(array_map(function ($interval) {
+            return [$interval['start'], $interval['end']];
+        }, $intervals));
+
+        $revenueByLabels = array_fill_keys($labels, 0);
+
+        foreach ($rawRevenue as $item) {
+            if (isset($revenueByLabels[$item['label']])) {
+                $revenueByLabels[$item['label']] = $item['total_revenue'];
+            }
+        }
+
+        return $revenueByLabels;
+    }
+
+    //Lấy khoảng thời gian
     private function getIntervalsByTimeFrame(string $timeFrame, Carbon $startDate, Carbon $endDate): array
     {
         if (in_array($timeFrame, ['this_year', 'last_year'])) {
@@ -79,23 +117,7 @@ class DashboardController extends Controller
         return $this->getGroupedIntervals($startDate, $endDate, 7);
     }
 
-    private function getRevenueData(array $intervals, array $labels): array
-    {
-        $rawRevenue = Order::getRevenueByIntervals(array_map(function ($interval) {
-            return [$interval['start'], $interval['end']];
-        }, $intervals));
-
-        $revenueByLabels = array_fill_keys($labels, 0);
-
-        foreach ($rawRevenue as $item) {
-            if (isset($revenueByLabels[$item['label']])) {
-                $revenueByLabels[$item['label']] = $item['total_revenue'];
-            }
-        }
-
-        return $revenueByLabels;
-    }
-
+    //Lấy ngày cho khoảng thời gian
     private function getTimeFrameDates(string $timeFrame): array
     {
         $today = Carbon::today();
@@ -139,6 +161,7 @@ class DashboardController extends Controller
         return $dates;
     }
 
+    //Lấy khoảng thời gian hằng ngày
     private function getDailyIntervals(Carbon $startDate, Carbon $endDate): array
     {
         $intervals = [];
@@ -158,7 +181,8 @@ class DashboardController extends Controller
 
         return $intervals;
     }
-
+  
+    //Lấy khoảng thời gian hàng tháng
     private function getMonthlyIntervals(Carbon $startDate, Carbon $endDate): array
     {
         $intervals = [];
@@ -168,7 +192,7 @@ class DashboardController extends Controller
             $intervals[] = [
                 'start' => $current->copy()->startOfMonth(),
                 'end' => $current->copy()->endOfMonth(),
-                'label' =>$current->format('m/Y')
+                'label' => $current->format('m/Y')
             ];
             $current->addMonth();
         }
@@ -176,6 +200,7 @@ class DashboardController extends Controller
         return $intervals;
     }
 
+    //Lấy khoảng thời gian hàng quý
     private function getQuarterlyMonthIntervals(Carbon $startDate, Carbon $endDate): array
     {
         $intervals = [];
@@ -185,7 +210,7 @@ class DashboardController extends Controller
             $intervals[] = [
                 'start' => $current->copy()->startOfMonth(),
                 'end' => $current->copy()->endOfMonth(),
-                'label' =>$current->format('m/Y')
+                'label' => $current->format('m/Y')
             ];
             $current->addMonth();
         }
@@ -193,6 +218,7 @@ class DashboardController extends Controller
         return $intervals;
     }
 
+    //Lấy khoảng thời gian được nhóm
     private function getGroupedIntervals(Carbon $startDate, Carbon $endDate, int $groupCount): array
     {
         $totalDays = $startDate->diffInDays($endDate) + 1;
