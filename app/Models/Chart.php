@@ -48,7 +48,7 @@ class Chart extends Model
         $query = Order::selectRaw("
         CASE " . implode("\n", $caseStatements) . "
         END as label,
-        COALESCE(SUM((order_details.original_price - order_details.amount_reduced) * order_details.quantity), 0) as total_revenue,
+        COALESCE(SUM((order_details.original_price* order_details.quantity) - order_details.amount_reduced ), 0) as total_revenue,
         COALESCE(SUM(order_details.quantity * import_intervals.import_price), 0) as total_cost,
         COUNT(DISTINCT orders.id) as total_orders")
             ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
@@ -90,7 +90,7 @@ class Chart extends Model
             'products.id',
             'products.name',
             DB::raw('SUM(order_details.quantity) as total_quantity'),
-            DB::raw('COALESCE(SUM((order_details.original_price - order_details.amount_reduced) * order_details.quantity), 0) as total_revenue'),
+            DB::raw('COALESCE(SUM((order_details.original_price * order_details.quantity)- order_details.amount_reduced) , 0) as total_revenue'),
             DB::raw('SUM(order_details.quantity * import_intervals.import_price) as total_cost')
         ])
             ->join('product_variants', 'products.id', '=', 'product_variants.product_id')

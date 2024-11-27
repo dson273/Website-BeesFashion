@@ -881,7 +881,7 @@ class CheckOutController extends Controller
                                         }
                                     }
                                 } else {
-                                    return $this->returnJson(false, 'Giá trị đơn hàng tối thiểu!' . number_format($voucher->minimum_order_value, 0, '.', ',') . ' đ mới có thể áp dụng được voucher này!');
+                                    return $this->returnJson(false, 'Giá trị đơn hàng tối thiểu ' . number_format($voucher->minimum_order_value, 0, '.', ',') . ' đ mới có thể áp dụng được voucher này!');
                                 }
                             }
                         } else if ($voucher->start_date < Carbon::now('Asia/Ho_Chi_Minh') && $voucher->end_date < Carbon::now('Asia/Ho_Chi_Minh')) {
