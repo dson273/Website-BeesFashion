@@ -134,8 +134,10 @@ document.addEventListener("DOMContentLoaded", function () {
             var cart_ids = [];
             $('.cart_item').each(function () {
                 var product_item = $(this);
-                var cart_id = product_item.data('cart-id');
-                cart_ids.push(cart_id);
+                if (product_item.find('.product_checkbox').prop('checked')) {
+                    var cart_id = product_item.data('cart-id');
+                    cart_ids.push(cart_id);
+                }
             })
             if (cart_ids.length > 0) {
                 console.log(cart_ids);
