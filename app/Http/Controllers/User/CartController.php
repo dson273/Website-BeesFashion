@@ -15,7 +15,7 @@ use App\Models\Product_variant_attribute_value;
 class CartController extends Controller
 {
 
-    
+
     public function index()
     {
         $carts = Auth::user()->carts;
@@ -166,7 +166,7 @@ class CartController extends Controller
         $change_type = request()->input('change_type');
 
         $check_cart = Cart::find($cart_id);
-        $response=[];
+        $response = [];
         if ($check_cart) {
             $check_product_variant = Product_variant::find($product_variant_id);
             if ($check_product_variant) {

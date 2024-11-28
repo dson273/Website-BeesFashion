@@ -20,6 +20,11 @@ Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('productDetail/{sku}', [ProductDetailController::class, 'index'])->name('product.detail');
 Route::post('productDetail', [ProductDetailController::class, 'updateInformationProduct'])->name('userProductDetailFocused');
 
+
+//Thêm sản phẩm vào giỏ trang chủ
+Route::get('/get-product-details/{productId}', [HomeController::class, 'getProductDetails']);
+Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
+
 //Trang thanh toán
 // Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 
@@ -77,7 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     //Trang yêu thích
     Route::get('wishlist/{product_id}', [WishlistController::class, 'index']);
-     //Checkout
+    //Checkout
     Route::get('check-out', [CheckOutController::class, 'index'])->name('checkout');
     Route::post('check-out/addAddress', [CheckOutController::class, 'addAddress'])->name('checkout.addAddress');
     Route::post('check-out/getListAddresses', [CheckOutController::class, 'getListAddresses'])->name('checkout.getListAddresses');
@@ -94,7 +99,5 @@ Route::middleware('auth')->group(function () {
     //Theo dõi đơn hàng
 
 
-    //Thêm sản phẩm vào giỏ trang chủ
-    Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
 
 });

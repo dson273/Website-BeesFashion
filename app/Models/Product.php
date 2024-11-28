@@ -66,16 +66,16 @@ class Product extends Model
     {
         return $this->hasMany(Product_view_history::class);
     }
-    public function priceProduct()
+    public function getPriceRangeAttribute()
     {
         $salePrices = $this->product_variants->pluck('sale_price');
         $importPrices = $this->product_variants->pluck('regular_price');
-
+    
         $minSalePrice = $salePrices->min();
         $maxSalePrice = $salePrices->max();
         $minImportPrice = $importPrices->min();
         $maxImportPrice = $importPrices->max();
-
+    
         if ($salePrices->every(fn($price) => $price === null)) {
             // Tất cả sale_price đều là null
             return "$" . number_format($minImportPrice) . " - $" . number_format($maxImportPrice);
@@ -102,5 +102,5 @@ class Product extends Model
             return "$" . number_format($minSalePrice) . " - $" . number_format($maxSalePrice);
         }
     }
-
+    
 }
