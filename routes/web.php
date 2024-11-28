@@ -49,7 +49,7 @@ Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPasswor
 
 
 //filterProduct
-Route::get('product', [FilterProductController::class, 'index']);
+Route::get('product', [FilterProductController::class, 'index'])->name('product');
 Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'getMinMaxPriceProduct'])->name('getMinMaxPriceProduct');
 // web.php hoặc api.php
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
@@ -73,6 +73,9 @@ Route::middleware('auth')->group(function () {
     Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
     Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
+    Route::get('product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('product.getVariants');
+
+
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     //Trang yêu thích

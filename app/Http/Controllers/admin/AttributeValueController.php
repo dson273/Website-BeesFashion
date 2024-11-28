@@ -81,7 +81,7 @@ class AttributeValueController extends Controller
         // Lấy attribute và các giá trị liên quan từ bảng attribute_values
         $attribute = Attribute::findOrFail($id); // Tìm attribute theo ID
         $attribute_type = Attribute_type::where('id', $attribute->attribute_type_id)->first();
-        $type_name = $attribute_type->type_name;
+        $type_name = $attribute_type ->type_name ;
         // dd($type_name);
         // $values = $attribute->values; // Lấy tất cả các giá trị (attribute_values) của thuộc tính
         return view('admin.attribute_values.show', compact('attribute', 'type_name'))->with('statusError', 'Không tìm thấy sản phẩm cần vô hiệu hóa!');;

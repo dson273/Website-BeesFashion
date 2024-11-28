@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\user\WishlistController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -35,3 +36,4 @@ Route::get('/products/sort', [FilterProductController::class, 'sortProducts']);
 Route::get('/product/{id}', [FilterProductController::class, 'getProductDetails']);
 Route::get('/favorite', [WishlistController::class, 'getAllFavotited']);
 
+Route::get('product/{product_id}/variants', [CartController::class, 'getProductVariants']);

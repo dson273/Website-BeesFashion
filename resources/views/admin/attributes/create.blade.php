@@ -66,14 +66,26 @@
                             @foreach ($listAttribute as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td><a class="text-decoration-none font-weight-bold"
-                                            href="{{ route('admin.attribute_values.show', $item->id) }}">{{ $item->name }}</a>
+                                    <td>
+                                        @if (!$item->attribute_type)
+                                            <a href="javascript:void(0);"
+                                                class="text-decoration-none font-weight-bold notification-trigger"
+                                                data-item-id="{{ $item->id }}">
+                                                {{ $item->name }}
+                                            </a>
+                                        @else
+                                            <a class="text-decoration-none font-weight-bold"
+                                                href="{{ route('admin.attribute_values.show', $item->id) }}">
+                                                {{ $item->name }}
+                                            </a>
+                                        @endif
                                     </td>
+
 
                                     @if ($item->attribute_type)
                                         <td>{{ $item->attribute_type->type_name }}</td>
                                     @else
-                                        <td class="text-center">Chưa có loại</td>
+                                        <td class="text-center text-danger">Chưa có loại</td>
                                     @endif
                                     <td>
                                         <a href="{{ route('admin.attributes.edit', $item->id) }}" class="btn btn-warning">
@@ -96,4 +108,12 @@
             </div>
         </div>
     </div>
+    <script>
+        document.querySelectorAll('.notification-trigger').forEach(function(link) {
+            link.addEventListener('click', function() {
+                // Hiển thị thông báo nếu người dùng chưa chọn loại thuộc tính
+                notification('warning', 'Vui lòng chọn loại thuộc tính!', 'Warning!', '2000');
+            });
+        });
+    </script>
 @endsection
