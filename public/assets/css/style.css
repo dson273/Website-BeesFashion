@@ -4267,11 +4267,9 @@ footer .footer-1 .social-icon>li:hover a i {
 }
 
 .theme-modal .modal-dialog .modal-content .modal-body .product-right .color-variant {
-    border-bottom: 1px dashed rgba(var(--light-border), 1);
     display: flex;
     gap: 8px;
-    margin-bottom: 10px;
-    padding: 10px 0
+
 }
 
 .theme-modal .modal-dialog .modal-content .modal-body .product-right .color-variant li {
@@ -18791,8 +18789,6 @@ body div canvas:first-child {
 .block-voucher .voucher-item-action .action {
     width: auto;
     font-weight: 600;
-    border: 1px solid var(--color-red);
-    color: var(--color-red)
 }
 
 .block-voucher .voucher-item-date .date {
@@ -18984,9 +18980,9 @@ body div canvas:first-child {
 }
 
 .voucher-item-action .action {
-    color: #63b1bc;
+    color: #ba372a;
     background-color: #fff;
-    border: 1px solid #63b1bc;
+    border: 1px solid #ba372a;
     font-weight: 700;
     font-size: 14px;
     line-height: 20px;
@@ -19175,7 +19171,7 @@ body div canvas:first-child {
 
 @media screen and (max-width: 768px) {
     .block-voucher .voucher-items-list .voucher-item {
-        width:100%!important
+        width: 100% !important
     }
 }
 
@@ -19404,16 +19400,24 @@ body div canvas:first-child {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease-in-out;
-    display: flex; /* Sử dụng flexbox */
-    flex-direction: column; /* Hiển thị theo chiều dọc */
+    display: flex;
+    /* Sử dụng flexbox */
+    flex-direction: column;
+    /* Hiển thị theo chiều dọc */
     padding: 10px;
-    max-height: 200px; /* Giới hạn chiều cao */
-    overflow-y: auto; /* Thêm thanh cuộn nếu cần */
+    max-height: 200px;
+    /* Giới hạn chiều cao */
+    overflow-y: auto;
+    /* Thêm thanh cuộn nếu cần */
 }
+
 .size-item {
-    display: block; /* Kiểu hiển thị mặc định là block để các size item xếp thành cột */
-    margin: 5px 0; /* Khoảng cách giữa các size */
+    display: block;
+    /* Kiểu hiển thị mặc định là block để các size item xếp thành cột */
+    margin: 5px 0;
+    /* Khoảng cách giữa các size */
 }
+
 .list-size li {
     list-style: none;
 }
@@ -19484,26 +19488,36 @@ body div canvas:first-child {
 
 #fancybox-add-to-cart {
     display: none;
-    position: fixed; /* Đặt vị trí cố định để thông báo luôn ở trên màn hình */
-    top: 50%; /* Đặt thông báo ở giữa theo chiều dọc */
-    left: 50%; /* Đặt thông báo ở giữa theo chiều ngang */
-    transform: translate(-50%, -50%); /* Căn chính xác vào giữa màn hình */
+    position: fixed;
+    /* Đặt vị trí cố định để thông báo luôn ở trên màn hình */
+    top: 50%;
+    /* Đặt thông báo ở giữa theo chiều dọc */
+    left: 50%;
+    /* Đặt thông báo ở giữa theo chiều ngang */
+    transform: translate(-50%, -50%);
+    /* Căn chính xác vào giữa màn hình */
     padding: 40px;
     padding-top: 80px;
-    background-color: white; /* Thêm màu nền cho thông báo */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho thông báo */
+    background-color: white;
+    /* Thêm màu nền cho thông báo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng đổ cho thông báo */
     opacity: 1;
-    transition: opacity 0.5s ease; /* Thêm hiệu ứng mờ dần */
-    z-index: 9999; /* Đảm bảo thông báo luôn hiển thị trên cùng */
+    transition: opacity 0.5s ease;
+    /* Thêm hiệu ứng mờ dần */
+    z-index: 9999;
+    /* Đảm bảo thông báo luôn hiển thị trên cùng */
 }
 
 #fancybox-add-to-cart.show {
-    display: block; /* Hiển thị thông báo khi có lớp 'show' */
+    display: block;
+    /* Hiển thị thông báo khi có lớp 'show' */
 }
 
 #fancybox-add-to-cart.hide {
     opacity: 0;
-    pointer-events: none; /* Tắt các sự kiện khi ẩn */
+    pointer-events: none;
+    /* Tắt các sự kiện khi ẩn */
 }
 
 
@@ -19527,3 +19541,84 @@ svg {
     text-transform: uppercase !important;
 }
 
+
+/* Các loại thuộc tính */
+.attribute_group .button-boxx .color-boxx .default-boxx ul {
+    display: flex;
+    gap: 12px
+}
+
+.attribute_group .button-boxx .color-boxx .default-boxx ul li {
+    align-items: center;
+    border: 1px solid rgba(var(--light-border), 1);
+    border-radius: 50%;
+    display: flex;
+    height: 35px;
+    justify-content: center;
+    transition: all .4s ease-in-out;
+    width: 35px;
+    color: rgba(var(--theme-font-color), 1);
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.attribute_group ul li.active {
+    background-color: rgba(var(--theme-default));
+    border-color: transparent;
+    color: rgba(var(--white), 1)
+}
+.attribute-section .attribute_group ul {
+    display: flex;
+    gap: 12px;
+}
+
+.attribute_item {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border: 2px solid #ddd;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+
+.attribute-item.color {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.attribute_item.color:hover {
+    border-color: #fff;
+    transform: scale(1.1);
+}
+
+/* Modal buttons */
+.product-buttons a {
+    background-color: #ba372a;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.product-buttons a:hover {
+    background-color: #9b2e22;
+    text-decoration: none;
+}
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.able {
+    opacity: 1;
+    pointer-events: auto;
+}

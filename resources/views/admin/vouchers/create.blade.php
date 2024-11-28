@@ -99,13 +99,26 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="col-md-6">
+                            <label for="maximum_reduction" class="form-label">Giá tiền giảm tối đa</label>
+                            <input type="number" class="form-control form-control-sm" name="maximum_reduction"
+                                id="maximum_reduction" value="{{ old('maximum_reduction') }}">
+                            @error('maximum_reduction')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
-
+                    <div class="mb-3">
+                        <label for="is_public" class="form-label">is_public</label>
+                        <input type="checkbox" name="is_public" id="is_public" value="1"
+                            {{ old('is_public', 1) ? 'checked' : '' }}>
+                    </div>
                     <div class="mb-3">
                         <label for="is_active" class="form-label">Kích Hoạt</label>
                         <input type="checkbox" name="is_active" id="is_active" value="1"
                             {{ old('is_active', 1) ? 'checked' : '' }}>
                     </div>
+                    
                 
                 </div>
 

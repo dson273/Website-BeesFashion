@@ -245,46 +245,7 @@
     </div> --}}
     <!-- End modal cart right -->
 
-    <!-- Modal add cart -->
-    <div class="modal theme-modal fade cart-modal" id="addtocart" tabindex="-1" role="dialog" aria-modal="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body modal1">
-                    <div class="custom-container container">
-                        <div class="row">
-                            <div class="col-12 px-0">
-                                <div class="modal-bg addtocart">
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                    <div class="conten-popup">
-                                        {{-- <a href="#"><img class="img-fluid blur-up lazyload pro-img"
-                                                src="{{ asset('assets/images/modal/0.jpg') }}" alt=""></a> --}}
-                                        <div class="add-card-content align-self-center text-center">
-                                            <a href="#">
-                                                <h6><i class="fa-solid fa-check"> </i>The product has been successfully
-                                                    added to your shopping cart
-                                                </h6>
-                                            </a>
-                                            <div class="buttons">
-                                                <a class="view-cart btn btn-solid" href="{{ route('cart') }}">Your
-                                                    cart</a>
-                                                {{-- <a class="checkout btn btn-solid" href="check-out.html">Check out</a> --}}
-                                                <a class="continue btn btn-solid" href="{{ route('/') }}">Continue
-                                                    shopping</a>
-                                            </div>
-                                            <div class="upsell_payment"><img class="img-fluid blur-up lazyload"
-                                                    src="{{ asset('assets/images/payment_cart.png') }}"
-                                                    alt=""></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   
     <!-- End modal add cart -->
 
     <!-- Modal Seach -->

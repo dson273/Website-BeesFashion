@@ -8,6 +8,7 @@
     <meta name="description" content="BeesFashion">
     <meta name="keywords" content="BeesFashion">
     <meta name="author" content="pixelstrap">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <title>BeesFashion - Online Fashion Store </title>
