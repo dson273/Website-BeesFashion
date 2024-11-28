@@ -50,13 +50,13 @@
                                     <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
                                     </li> --}}
                                 <li>
-                                    <a class="nav-link" href="{{ route('/') }}">Shop
+                                    <a class="nav-link" href="{{ route('product') }}">Shop
                                         <i class="fa-solid fa-angle-down"></i>
                                     </a>
                                     <ul class="nav-submenu">
                                         @foreach ($categoryLimit as $parentCategory)
                                             <li class="has-submenu">
-                                                <a href="#">{{ $parentCategory->name }}
+                                                <a href="{{ route('product', ['category' => $parentCategory->id]) }}">{{ $parentCategory->name }}
                                                 </a>
                                                 <ul class="nav-childmenu">
                                                     @include('user.layouts.child_menu', ['parentCategory' => $parentCategory])
@@ -164,3 +164,35 @@
     </div>
 </header>
 <!-- End header -->
+<script>
+     // Lắng nghe sự kiện nhấn Enter trên ô input tìm kiếm
+     document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Lắng nghe sự kiện click vào biểu tượng tìm kiếm
+        document.getElementById('search-icon').addEventListener('click', function() {
+            performSearch();
+        });
+
+        // Hàm thực hiện tìm kiếm và chuyển hướng tới trang sản phẩm
+        function performSearch() {
+            const searchValue = document.getElementById('search-input-of-header').value.trim(); // Lấy giá trị từ ô input
+            console.log(searchValue);
+
+            if (searchValue) {
+                var current_url = new URL(window.location.href);
+                var search_param = current_url.searchParams.has('search');
+                if (search_param) {
+                    current_url.searchParams.delete('search');
+                    window.history.replaceState({}, '', current_url);
+                }
+
+                
+                // Chuyển hướng đến trang product và thêm query string 'name' với từ khóa tìm kiếm
+                window.location.href = '/product?search=' + encodeURIComponent(searchValue);
+            }
+        }
+</script>

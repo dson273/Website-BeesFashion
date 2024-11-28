@@ -1,3 +1,6 @@
+// Hàm để lấy giá trị tham số từ URL
+
+
 function loadAllProducts() {
     $.ajax({
         url: 'api/products/all', // URL đến API `getAllProducts`
@@ -102,16 +105,16 @@ const onInput = (parent, e) => {
     }
 };
 
-addEventListener("DOMContentLoaded", (event) => {
-    document.querySelectorAll(".range-slider").forEach((range) =>
-        range.querySelectorAll("input").forEach((input) => {
-            if (input.type === "range") {
-                input.oninput = (e) => onInput(range, e);
-                onInput(range);
-            }
-        })
-    );
-});
+// addEventListener("DOMContentLoaded", (event) => {
+//     document.querySelectorAll(".range-slider").forEach((range) =>
+//         range.querySelectorAll("input").forEach((input) => {
+//             if (input.type === "range") {
+//                 input.oninput = (e) => onInput(range, e);
+//                 onInput(range);
+//             }
+//         })
+//     );
+// });
 
 
 
@@ -190,18 +193,18 @@ function renderProducts(products) {
 
 $(document).ready(function () {
     // Lắng nghe các sự kiện trên các bộ lọc
-    $('#filterBestSelling').on('click', function () {
-        loadBestselingProducts();
-    });
+    // $('#filterBestSelling').on('click', function () {
+    //     loadBestselingProducts();
+    // });
 
-    $('#filterNewArrivals').on('click', function () {
-        loadNewProducts();
-    });
+    // $('#filterNewArrivals').on('click', function () {
+    //     loadNewProducts();
+    // });
 
-    // Lắng nghe sự kiện thay đổi trên các bộ lọc
-    $('input.category-checkbox, input.brand-checkbox').on('change', function () {
-        updateSelectedFilters();
-    });
+    // // Lắng nghe sự kiện thay đổi trên các bộ lọc
+    // $('input.category-checkbox, input.brand-checkbox').on('change', function () {
+    //     updateSelectedFilters();
+    // });
 
     // Lắng nghe sự kiện click trên màu sắc (nếu có)
     // $('ul.color-variant li').on('click', function () {
@@ -214,8 +217,39 @@ $(document).ready(function () {
     //     updateSelectedFilters();
     // });
 
-    // Gọi hàm loadAllProducts khi trang được tải
-    loadAllProducts();
+    // Gọi hàm loadAllProducts khi trang được tải    
+    const searchValue = getQueryParam('search'); // Lấy giá trị 'name' từ URL
+    const searchCate = getQueryParam('category'); // Lấy giá trị 'name' từ URL
+
+    if (searchValue) {
+        // Điền vào ô tìm kiếm nếu có giá trị 'name' trong URL
+        document.getElementById('search-input').value = searchValue;
+        filterProducts(searchValue);
+    } else if (searchCate) {
+        const categoryIds = searchCate.split(','); // Tách chuỗi categories thành mảng ID
+
+        var categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+        categoryCheckboxes.forEach(function (checkbox) {
+            var cate_id = checkbox.getAttribute('data-id'); // Lấy 'data-id' của checkbox
+            var parent_id = checkbox.getAttribute('data-parent'); // Lấy 'data-parent' của checkbox (nếu có)
+
+            // Nếu cate_id nằm trong danh sách categoryIds thì đánh dấu checkbox
+            if (categoryIds.includes(cate_id)) {
+                checkbox.checked = true;  // Đánh dấu checkbox là checked
+
+                // Kiểm tra nếu đó là danh mục cha (data-parent rỗng hoặc không có)
+                if (!parent_id) {
+                    // Nếu là danh mục cha, tự động tick tất cả các danh mục con của nó
+                    document.querySelectorAll('.category-checkbox[data-parent="' + cate_id + '"]').forEach(function (childCheckbox) {
+                        childCheckbox.checked = true;  // Đánh dấu checkbox con là checked
+                    });
+                }
+            }
+        });
+        filterProducts();
+    } else {
+        loadAllProducts();
+    }
 
     // Hàm cập nhật các lựa chọn đã chọn và hiển thị vào .title_selected
     function updateSelectedFilters() {
@@ -311,7 +345,7 @@ $(document).ready(function () {
         // Cập nhật lại phần đã chọn sau khi xóa
         updateSelectedFilters();
 
-        
+
         filterProducts();
     });
 
@@ -388,10 +422,26 @@ function toggleChildCategories(parentId) {
 
 
 
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param); // Lấy giá trị của tham số, hoặc null nếu không có tham số này
+}
 
+// Hàm điền giá trị tìm kiếm vào ô input
+// window.addEventListener('DOMContentLoaded', (event) => {
+//     const searchValue = getQueryParam('search'); // Lấy giá trị 'name' từ URL
+//     console.log(searchValue);
+//     if (searchValue) {
+//         // Điền vào ô tìm kiếm nếu có giá trị 'name' trong URL
+//         document.getElementById('search-input').value = searchValue;
+//         filterProducts(searchValue);
+//     }
+// });
 // Hàm lọc sản phẩm
-function filterProducts(searchValue = "") {
+function filterProducts(searchValue,) {
+
     const searchInput = searchValue;
+    // console.log(searchInput);
     const selectedCategories = [];
     const selectedBrands = [];
     const minPrice = $('#range-slider-min').val();
@@ -424,7 +474,6 @@ function filterProducts(searchValue = "") {
     });
 
 
-    // console.log(selectedCategories);
 
     // Nếu không có bộ lọc nào, gọi lại để hiển thị toàn bộ sản phẩm
     if (!searchInput && selectedCategories.length === 0 && !minPrice && !maxPrice && selectedBrands.length === 0) {
@@ -466,11 +515,6 @@ function filterProducts(searchValue = "") {
             console.error("Có lỗi xảy ra: ", xhr);
         }
     });
-    // $('#search-input').on('change', function () {
-    //     filterProducts(); // Thực hiện tìm kiếm và lọc sau khi mất focus
-    // });
-
-
 }
 $(document).on('change', '#search-input', function () {
     filterProducts($(this).val());
