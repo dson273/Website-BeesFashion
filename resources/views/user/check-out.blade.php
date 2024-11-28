@@ -55,10 +55,11 @@
                                 <div class="col-sm-6">
                                     <label class="payment-box" for="vnpay">
                                         <input class="custom-radio me-2" id="vnpay" type="radio" name="radioPayment">
-                                        <form action="{{route('vnpay_payment')}}" method="post" id="form_vnpay">
+                                        <form action="{{route('checkout.vnpay_payment')}}" method="post" id="form_vnpay">
                                             @csrf
                                             <input type="hidden" name="order_id" class="order_id">
                                             <input type="hidden" name="amount" class="amount">
+                                            <!-- <input type="hidden" name="redirect"> -->
                                         </form>
                                         <label class="no-select" for="vnpay">Thanh toán bằng VNPAY</label>
                                     </label>
@@ -66,10 +67,11 @@
                                 <div class="col-sm-6">
                                     <label class="payment-box" for="momo">
                                         <input class="custom-radio me-2" id="momo" type="radio" name="radioPayment">
-                                        <form action="{{route('momo_payment')}}" method="post" id="form_momo">
+                                        <form action="{{route('checkout.momo_payment')}}" method="post" id="form_momo">
                                             @csrf
                                             <input type="hidden" name="order_id" class="order_id">
                                             <input type="hidden" name="amount" class="amount">
+                                            <input type="hidden" name="payUrl">
                                         </form>
                                         <label class="no-select" for="momo">Thanh toán bằng MOMO</label>
                                     </label>
@@ -83,7 +85,7 @@
                         <h4>Checkout</h4>
                         <div class="cart-listing">
                             <ul>
-                                @if (!empty($check_out_data))
+                                @if (!empty($check_out_data) && isset($check_out_data['product_variant_data']))
                                 @foreach ($check_out_data['product_variant_data'] as $item)
                                 <li class="position-relative variant_item justify-content-between">
                                     <input type="hidden" class="variant_id" value="{{$item['id']}}">
@@ -160,7 +162,7 @@
                                     </div>
                                     <button class="btn" id="btnApplyVoucher">Apply</button>
                                 </div>
-                                @if ($check_out_data['product_variant_data'])
+                                @if (isset($check_out_data['product_variant_data'])&& $check_out_data['product_variant_data'])
                                 @if ($check_out_data['free_ship']!=true)
                                 <div>
                                     <p style="font-size: 12px;" class="text-danger">

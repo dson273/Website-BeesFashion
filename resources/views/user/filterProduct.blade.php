@@ -1,7 +1,9 @@
 @extends('user.layouts.master')
+
 @section('css-libs')
     <link rel="stylesheet" href="{{ asset('css/user/filterProduct.css') }}">
 @endsection
+
 @section('content')
     <div class="tap-top">
         <div><i class="fa-solid fa-angle-up"></i></div>
@@ -87,7 +89,7 @@
                                         <ul class="catagories-side theme-scrollbar">
                                             @foreach ($listCategory as $parentCategory)
                                                 <li style="list-style-type: none; display: flex; align-items: center;">
-                                                    <div style="margin-left: 0px; flex-grow: 1;">
+                                                    <div style="margin-left: 0px; flex-grow: 1;" id="category_checkbox">
                                                         <!-- Hiển thị danh mục cha -->
                                                         <input class="category-checkbox custom-checkbox"
                                                             id="category{{ $parentCategory->id }}" type="checkbox"
@@ -105,7 +107,7 @@
                                                     @foreach ($parentCategory->categoryChildrent as $childCategory)
                                                         <li
                                                             style="list-style-type: none; display: flex; align-items: center;">
-                                                            <div style="margin-left: 20px; flex-grow: 1;">
+                                                            <div style="margin-left: 20px; flex-grow: 1;" id="category_checkbox">
                                                                 <!-- Lùi lại cho danh mục con -->
                                                                 <input class="category-checkbox custom-checkbox"
                                                                     id="category{{ $childCategory->id }}" type="checkbox"
@@ -254,7 +256,7 @@
                         </div>
                         <div class="product-tab-content ratio1_3">
                             <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 ">
-                                <!-- Sản phẩm sẽ được hiển thị ở đây --
+                                 {{-- Sản phẩm sẽ được hiển thị ở đây --}}
                             </div>
                         </div>
                     </div>
@@ -263,7 +265,7 @@
         </div>
     </section>
 
-    <!-- Modal quikview -->
+    <!-- Modal quikview 
     <div class="modal theme-modal fade" id="quick-view" tabindex="-1" role="dialog" aria-modal="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -353,7 +355,7 @@
             </div>
         </div>
     </div>
-    <!-- End model quikview -->
+     End model quikview -->
 @endsection
 
 @section('script-libs')

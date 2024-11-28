@@ -672,9 +672,9 @@
                                         <div class="label-block"><span class="lable-1">NEW</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax"
                                                     data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
                                         <div class="product-image">
-                                            <a class="pro-first" href="{{ route('product.detail', $relatedProduct->id) }}">
+                                            <a class="pro-first" href="{{ route('product.detail', $relatedProduct->SKU) }}">
                                                 <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->active_image) }}" alt="product"></a>
-                                            <a class="pro-sec" href="{{ route('product.detail', $relatedProduct->id) }}">
+                                            <a class="pro-sec" href="{{ route('product.detail', $relatedProduct->SKU) }}">
                                                 <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->inactive_image) }}" alt="product"></a>
                                         </div>
                                         <div class="cart-info-icon">

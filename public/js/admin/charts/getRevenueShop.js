@@ -1,146 +1,162 @@
-// Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
-
-function number_format(number, decimals, dec_point, thousands_sep) {
-    number = (number + '').replace(',', '').replace(' ', '');
-    var n = !isFinite(+number) ? 0 : +number,
-        prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-        sep = (typeof thousands_sep === 'undefined') ? '.' : thousands_sep,  // Dùng dấu chấm phân cách
-        dec = (typeof dec_point === 'undefined') ? ',' : dec_point,
-        s = '',
-        toFixedFix = function (n, prec) {
-            var k = Math.pow(10, prec);
-            return '' + Math.round(n * k) / k;
-        };
-    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-    if (s[0].length > 3) {
-        s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);  // Dùng dấu chấm phân cách hàng nghìn
-    }
-    if ((s[1] || '').length < prec) {
-        s[1] = s[1] || '';
-        s[1] += new Array(prec - s[1].length + 1).join('0');
-    }
-    return s.join(dec) + 'đ';  // Thêm "đ" vào cuối chuỗi
-}
-
+let myBarChart = null;
 
 function createChart(labels, data) {
-    // Làm tròn tất cả các giá trị trong data để tránh sai lệch
-    data = data.map(value => Math.round(value));
+    // Destroy existing chart if it exists
+    if (myBarChart) {
+        myBarChart.destroy();
+    }
 
-    // Bar Chart Example
-    var ctx = document.getElementById("myBarChart");
-    var myBarChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "Doanh thu",
-                backgroundColor: "#4e73df",
-                hoverBackgroundColor: "#2e59d9",
-                borderColor: "#4e73df",
-                data: data,
-                maxBarThickness: 25,
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            layout: {
-                padding: {
-                    left: 10,
-                    right: 25,
-                    top: 25,
-                    bottom: 0
-                }
-            },
-            scales: {
-                xAxes: [{
-                    type: 'category',
-                    gridLines: {
-                        display: false,
-                        drawBorder: false
-                    },
-                    ticks: {
-                        maxTicksLimit: 6
-                    },
-                }],
-                yAxes: [{
-                    ticks: {
-                        min: 0,
-                        max: 20000000,
-                        maxTicksLimit: 10,
-                        padding: 10,
-                        callback: function (value) {
-                            return number_format(Math.round(value), 0, ',', '.')
-                        }
-                    },
-                    gridLines: {
-                        color: "rgb(234, 236, 244)",
-                        zeroLineColor: "rgb(234, 236, 244)",
-                        drawBorder: false,
-                        borderDash: [2],
-                        zeroLineBorderDash: [2]
-                    }
-                }],
-            },
-            legend: {
-                display: false
-            },
-            tooltips: {
-                titleMarginBottom: 10,
-                titleFontColor: '#6e707e',
-                titleFontSize: 14,
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
-                callbacks: {
-                    label: function (tooltipItem, chart) {
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return datasetLabel + ': ' + number_format(Math.round(tooltipItem.yLabel), 0, ',', '.')
+    const chartOptions = {
+        responsive: true,
+        scales: {
+            y: {
+                min: 0,
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return new Intl.NumberFormat('vi-VN').format(value) + ' đ';
                     }
                 }
             }
+        },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return new Intl.NumberFormat('vi-VN').format(context.raw) + ' đ';
+                    }
+                }
+            },
+            legend: {
+                display: true,
+                position: 'top'
+            }
         }
-    });
+    };
+
+    // Round all values in data to avoid discrepancies
+    data = data.map(value => Math.round(value));
+
+    const revenueCtx = document.getElementById("myBarChart");
+
+    // Check if canvas element exists
+    if (!revenueCtx) {
+        console.error('Chart canvas element not found');
+        return;
+    }
+
+    try {
+        myBarChart = new Chart(revenueCtx.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Doanh thu",
+                    data: data,
+                    backgroundColor: 'rgba(78, 115, 223, 0.5)',
+                    borderColor: 'rgba(78, 115, 223, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+    } catch (error) {
+        console.error('Error creating chart:', error);
+    }
 }
 
-// Hàm lấy dữ liệu từ API
-function fetchChartData(timeFrame) {
-    fetch(`/admin/statistics/revenue?time_frame=${timeFrame}`)
-        .then(response => response.json())
-        .then(data => {
-            createChart(data.labels, data.revenue);
-        })
-        .catch(error => console.error('Lỗi:', error));
+function formatCurrency(amount) {
+    try {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(amount);
+    } catch (error) {
+        console.error('Error formatting currency:', error);
+        return '0 đ';
+    }
 }
 
-// Hàm áp dụng lọc tùy chỉnh
-function applyCustomFilter() {
-    const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
+function updateTotals(totals) {
+    try {
+        const elements = {
+            'total_revenue': totals.total_revenue,
+            'total_cost': totals.total_cost,
+            'profit': totals.profit,
+            'total_orders': totals.total_orders
+        };
+
+        for (const [id, value] of Object.entries(elements)) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = id === 'total_orders'
+                    ? value.toLocaleString('vi-VN')
+                    : formatCurrency(value);
+            }
+        }
+    } catch (error) {
+        console.error('Error updating totals:', error);
+    }
+}
+
+async function fetchChartData(timeFrame) {
+    try {
+        const response = await fetch(`/admin/statistics/revenue?time_frame=${timeFrame}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        createChart(data.labels, data.revenue);
+        updateTotals(data.totals);
+    } catch (error) {
+        console.error('Error fetching chart data:', error);
+        // Show user-friendly error message
+        const chartContainer = document.getElementById('myBarChart')?.parentElement;
+        if (chartContainer) {
+            chartContainer.innerHTML = `
+                <div class="alert alert-danger">
+                    Không thể tải dữ liệu. Vui lòng thử lại sau.
+                </div>
+            `;
+        }
+    }
+}
+
+async function applyCustomFilter() {
+    const startDate = document.getElementById('startDate')?.value;
+    const endDate = document.getElementById('endDate')?.value;
+
     if (!startDate || !endDate) {
         alert('Vui lòng chọn ngày bắt đầu và ngày kết thúc');
         return;
     }
+
     if (startDate > endDate) {
-        alert('Vui lòng chọn ngày bắt đầu không được lớn hơn ngày kết thúc');
+        alert('Ngày bắt đầu không được lớn hơn ngày kết thúc');
         return;
     }
-    fetch(`/admin/statistics/revenue?time_frame=custom&start_date=${startDate}&end_date=${endDate}`)
-        .then(response => response.json())
-        .then(data => {
-            createChart(data.labels, data.revenue);
-        })
-        .catch(error => console.error('Lỗi:', error));
+
+    try {
+        const response = await fetch(
+            `/admin/statistics/revenue?time_frame=custom&start_date=${startDate}&end_date=${endDate}`
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        createChart(data.labels, data.revenue);
+        updateTotals(data.totals);
+    } catch (error) {
+        console.error('Error applying custom filter:', error);
+        alert('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+    }
 }
 
 // Tải biểu đồ mặc định (tháng này) khi trang load
 document.addEventListener('DOMContentLoaded', () => {
-    fetchChartData('this_month');
+    fetchChartData('this_month').catch(error => {
+        console.error('Error initializing chart:', error);
+    });
 });

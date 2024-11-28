@@ -142,9 +142,10 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/statistics/product_views', [DashboardController::class, 'product_views'])->name('statistics.product_views');//Thống kê lượt xem
     Route::get('/statistics/revenue', [DashboardController::class, 'getRevenue']);//Thống kê doanh thu
+    
+    Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct');//Thống kê doanh thu sản phẩm
 });
 
-Route::get('/statistics', [StatisticalController::class, 'getStatistics'])->name('statistics');
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
 //     \UniSharp\LaravelFilemanager\Lfm::routes();
 // });
