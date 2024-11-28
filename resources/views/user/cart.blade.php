@@ -132,7 +132,7 @@
 
         .btn-variant.selected {
             background-color: #ffcccc;
-            color: #ff0000;
+            color: #ff0000; 
             border: 2px solid #ff0000;
             position: relative;
             transform: scale(1.05);
@@ -152,22 +152,36 @@
         .attribute_item:hover {
             opacity: 1;
         }
-
         .attribute_item.disabled {
             opacity: 0.5;
             pointer-events: none;
         }
-
         .btn-variant.disabled {
             opacity: 0.5;
             pointer-events: none;
         }
-
         .attribute_item.disabled:hover {
             cursor: not-allowed;
         }
     </style>
     <main>
+        <section class="section-b-space pt-0">
+            <div class="heading-banner">
+                <div class="custom-container container">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <h4>Giỏ hàng</h4>
+                        </div>
+                        {{-- <div class="col-sm-6">
+                            <ul class="breadcrumb float-end">
+                                <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
+                                <li class="breadcrumb-item active"> <a href="#">Cart</a></li>
+                            </ul>
+                        </div> --}}
+                </div>
+            </div>
+        </div>
+    </section>
         <section class="section-b-space pt-0">
             <div class="custom-container container">
                 <div class="row g-4">
@@ -220,8 +234,7 @@
                                                                     alt="{{ $item_cart['product_name'] }}"
                                                                     class="product-image"></a>
                                                             <div class="cart-box-variant">
-                                                                <a
-                                                                    href="{{ route('product.detail', $item_cart['sku']) }}">
+                                                                <a href="{{ route('product.detail', $item_cart['sku']) }}">
                                                                     <h5 class="text-wrap">{{ $item_cart['product_name'] }}
                                                                     </h5>
                                                                 </a>
@@ -311,8 +324,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="no-data" id="data-show"><img src="../assets/images/cart/1.gif"
-                                        alt="">
+                                <div class="no-data" id="data-show"><img src="../assets/images/cart/1.gif" alt="">
                                     <h4>You have nothing in your shopping cart!</h4>
                                     <p>Today is a great day to purchase the things you have been holding onto! or
                                         <span>Carry on
