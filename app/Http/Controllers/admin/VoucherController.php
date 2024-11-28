@@ -77,6 +77,7 @@ class VoucherController extends Controller
         }
 
         $params['is_active'] = $request->has('is_active') ? 1 : 0;
+        $params['is_public'] = $request->has('is_public') ? 1 : 0;
         Voucher::create($params);
 
         return back()->with('statusSuccess', 'Thêm voucher thành công');
@@ -177,6 +178,7 @@ class VoucherController extends Controller
                 $params['image'] = $vouchers->image;
             }
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
+            $params['is_public'] = $request->has('is_public') ? 1 : 0;
 
             $vouchers->update($params);
 
@@ -204,7 +206,6 @@ class VoucherController extends Controller
     public function onActive($id)
     {
 
-        // Bật banner được chọn
         $vouchers = Voucher::find($id);
         $vouchers->is_active = 1;
         $vouchers->save();

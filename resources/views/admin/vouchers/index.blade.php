@@ -49,6 +49,7 @@
                                 <th>Giá Tối Thiểu</th>
                                 <th>Ngày Bắt Đầu</th>
                                 <th>Ngày Hết Hạn</th>
+                                <th>Mã được áp dụng</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
@@ -65,6 +66,7 @@
                                 <th>Giá Tối Thiểu</th>
                                 <th>Ngày Bắt Đầu</th>
                                 <th>Ngày Hết Hạn</th>
+                                <th>Mã được áp dụng</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
@@ -93,6 +95,7 @@
                                     <td>{{ $item->minimum_order_value }}</td>
                                     <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
+                                    <td>{{ $item->is_public == 1 ? 'Tất cả' : 'Tùy chỉnh' }}</td>
                                     <td>{{ $item->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
                                         <a href="{{ route('admin.vouchers.show', $item->id) }}" class="btn btn-success"><i

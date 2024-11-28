@@ -140,10 +140,13 @@ Route::prefix('admin')->as('admin.')->group(function () {
     });
     //Thống kê shop
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/statistics/product_views', [DashboardController::class, 'product_views'])->name('statistics.product_views');//Thống kê lượt xem
-    Route::get('/statistics/revenue', [DashboardController::class, 'getRevenue']);//Thống kê doanh thu
-    
-    Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct');//Thống kê doanh thu sản phẩm
+    Route::get('/statistics/revenue', [DashboardController::class, 'getRevenue']); //Thống kê doanh thu
+
+    Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct'); //Thống kê doanh thu sản phẩm
+    Route::get('/statistics/cart-statistics', [StatisticalController::class, 'statisticCart'])->name('statistics.cart-statistics'); //Thống kê sản phẩm trong giỏ hàng
+    Route::get('/statistics/product_views', [StatisticalController::class, 'product_views'])->name('statistics.product_views'); //Thống kê lượt xem
+    Route::get('/statistics/revenueBrand', [StatisticalController::class, 'revenueByBrand'])->name('statistics.revenueBrand'); //Thống kê doanh thu thương hiệu
+    Route::get('/statistics/revenueCustomer', [StatisticalController::class, 'revenueByCustomer'])->name('statistics.revenueCustomer'); //Thống kê doanh thu theo khách hàng
 });
 
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {

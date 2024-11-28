@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Cart;
 use App\Models\User;
-use App\Models\Brand;
 use App\Models\Chart;
-use App\Models\Order;
-use App\Models\Status;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -16,6 +12,14 @@ use App\Http\Controllers\Controller;
 
 class StatisticalController extends Controller
 {
+    private $chart;
+
+    public function __construct(Chart $chart)
+    {
+        $this->chart = $chart;
+    }
+
+    //Thống kê doanh thu theo sản phẩm
     public function revenueByProduct(Request $request)
     {
         $type = $request->input('type', 'day');
@@ -31,67 +35,65 @@ class StatisticalController extends Controller
         return view('admin.statistics.revenue_by_product', compact('statistics', 'type', 'date'));
     }
 
-    private function formatPeriodText($type, $date)
+    //Thống kê sản phẩm trong giỏ hàng
+    public function statisticCart()
     {
-        $carbon = Carbon::parse($date);
-        return match($type) {
-            'day' => $carbon->format('d/m/Y'),
-            'month' => $carbon->format('m/Y'),
-            'year' => $carbon->format('Y'),
-            default => $carbon->format('d/m/Y'),
-        };
+        $products = Chart::getCartStatistics();
+        return view('admin.statistics.statistics_cart', compact('products'));
     }
 
-
-    // Thống kê các sản phẩm trong giỏ hàng
-    private function getCartItems()
+    //Thống kê sản phẩm có lượt xem
+    public function product_views()
     {
-        return Cart::select(
-            'products.name',
-            'product_variants.name as variant_name',
-            DB::raw('SUM(carts.quantity) as total_quantity')
-        )
-            ->join('product_variants', 'carts.product_variant_id', '=', 'product_variants.id')
-            ->join('products', 'product_variants.product_id', '=', 'products.id')
-            ->groupBy('products.id', 'products.name', 'product_variants.name')
+        $listProductViews = Product::where('is_active', 1)
+            ->where('view', '>', 0)
+            ->select('products.*')
+            ->selectRaw('(SELECT file_name FROM product_files
+                  WHERE is_default = 1 AND product_id = products.id LIMIT 1) as mainImage')
+            ->orderBy('view', 'desc')
             ->get();
+
+        return view('admin.statistics.product_views', compact('listProductViews'));
     }
 
     // Thống kê doanh thu theo thương hiệu
-    private function getRevenueByBrand($startDate, $endDate)
+    public function revenueByBrand()
     {
-        return Order::select(
-            'brands.name',
-            DB::raw('SUM(order_details.quantity * (order_details.original_price - COALESCE(order_details.amount_reduced, 0))) as revenue')
-        )
-            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->join('product_variants', 'order_details.product_variant_id', '=', 'product_variants.id')
-            ->join('products', 'product_variants.product_id', '=', 'products.id')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-            ->where('status_orders.status_id', 3) // Hoàn thành
-            ->whereBetween('orders.created_at', [$startDate, $endDate])
-            ->groupBy('brands.id', 'brands.name')
-            ->orderBy('revenue', 'desc')
-            ->get();
+        $statisticBrand = $this->chart->getBrandStatistics();
+        // dd($statisticBrand);
+        return view('admin.statistics.revenue_by_brands', compact('statisticBrand'));
     }
 
     // Thống kê doanh thu theo khách hàng
-    private function getTopCustomers($startDate, $endDate)
+    public function revenueByCustomer(Request $request)
     {
-        return User::select(
-            'users.full_name',
-            'users.email',
-            DB::raw('COUNT(DISTINCT orders.id) as total_orders'),
-            DB::raw('SUM(orders.total_payment) as total_spent')
-        )
-            ->join('orders', 'users.id', '=', 'orders.user_id')
-            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-            ->where('status_orders.status_id', 3) // Hoàn thành
-            ->whereBetween('orders.created_at', [$startDate, $endDate])
-            ->groupBy('users.id', 'users.full_name', 'users.email')
-            ->orderBy('total_spent', 'desc')
-            ->limit(10)
-            ->get();
+        if (!$request->ajax()) {
+            return view('admin.statistics.revenue_by_customer');
+        }
+
+        try {
+            $type = $request->get('time_type', 'monthly');
+            $date = match ($type) {
+                'daily' => $request->get('daily_date', now()->format('Y-m-d')),
+                'monthly' => $request->get('monthly_date', now()->format('Y-m')),
+                'yearly' => $request->get('yearly_date', now()->year),
+                default => now()->format('Y-m')
+            };
+
+            $revenueStats = $this->chart->getRevenueStatistics($date, $type);
+            $spendingTiers = $this->chart->getCustomerSpendingTiers($date, $type);
+            $customerDetails = $this->chart->getCustomerSpendingDetails($date, $type);
+
+            return response()->json([
+                'revenueStats' => $revenueStats,
+                'customerDetails' => $customerDetails,
+                'spendingTiers' => $spendingTiers,
+                'type' => $type
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Có lỗi xảy ra khi xử lý dữ liệu'
+            ], 500);
+        }
     }
 }

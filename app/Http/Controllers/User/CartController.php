@@ -15,7 +15,7 @@ use App\Models\Product_variant_attribute_value;
 class CartController extends Controller
 {
 
-    
+
     public function index()
     {
         $carts = Auth::user()->carts;

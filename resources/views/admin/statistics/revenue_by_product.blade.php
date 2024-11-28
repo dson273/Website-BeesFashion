@@ -152,7 +152,7 @@
                                 <th class="text-end">Doanh thu</th>
                                 <th class="text-end">Chi phí</th>
                                 <th class="text-end">Lợi nhuận</th>
-                                <th class="text-end">Lợi nhuân theo %</th>
+                                <th class="text-end">Lợi nhuận theo %</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -15,7 +15,8 @@
         <div class="card shadow mb-4">
             <h1 class="h2 text-center text-gray-800 fw-bold">Sửa vouchers</h1>
             <div class="card-body">
-                <form action="{{ route('admin.vouchers.update', $vouchers->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.vouchers.update', $vouchers->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
@@ -103,6 +104,19 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="col-md-6">
+                            <label for="maximum_reduction" class="form-label">Giá tiền giảm tối đa</label>
+                            <input type="number" class="form-control form-control-sm" name="maximum_reduction"
+                                id="maximum_reduction" value="{{ $vouchers->maximum_reduction }}">
+                            @error('maximum_reduction')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="is_public" class="form-label">is_public</label>
+                        <input type="checkbox" name="is_public" id="is_public" value="1"
+                        {{ $vouchers->is_public ? 'checked' : '' }}>
                     </div>
                     <div class="mb-3">
                         <label for="is_active" class="form-label">Kích Hoạt</label>
