@@ -36,6 +36,10 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                 <a class="collapse-item" href="{{ route('admin.statistics.revenueProduct') }}">Doanh thu sản phẩm</a>
+                <a class="collapse-item" href="{{ route('admin.statistics.revenueBrand') }}">Doanh thu thương hiệu</a>
+                <a class="collapse-item" href="{{ route('admin.statistics.revenueCustomer') }}">Doanh thu khách hàng</a>
+                <a class="collapse-item" href="{{ route('admin.statistics.cart-statistics') }}">Sản phẩm giỏ hàng</a>
+                <a class="collapse-item" href="{{ route('admin.statistics.product_views') }}">Lượt xem sản phẩm</a>
             </div>
         </div>
     </li>
