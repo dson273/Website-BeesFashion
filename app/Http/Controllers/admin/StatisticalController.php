@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
 use App\Models\Chart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class StatisticalController extends Controller
@@ -73,21 +71,13 @@ class StatisticalController extends Controller
 
         try {
             $type = $request->get('time_type', 'monthly');
-            $date = match ($type) {
-                'daily' => $request->get('daily_date', now()->format('Y-m-d')),
-                'monthly' => $request->get('monthly_date', now()->format('Y-m')),
-                'yearly' => $request->get('yearly_date', now()->year),
-                default => now()->format('Y-m')
-            };
 
-            $revenueStats = $this->chart->getRevenueStatistics($date, $type);
-            $spendingTiers = $this->chart->getCustomerSpendingTiers($date, $type);
-            $customerDetails = $this->chart->getCustomerSpendingDetails($date, $type);
+            $revenueStats = $this->chart->getRevenueStatistics($type);
+            $customerDetails = $this->chart->getCustomerSpendingDetails($type);
 
             return response()->json([
                 'revenueStats' => $revenueStats,
                 'customerDetails' => $customerDetails,
-                'spendingTiers' => $spendingTiers,
                 'type' => $type
             ]);
         } catch (\Exception $e) {
