@@ -26,16 +26,16 @@ class HomeController extends Controller
     public function index()
     {
         $sliders  = Banner::where('is_active', 1)
-            ->with('banner_images') // Lấy các hình ảnh liên quan
+            ->with('banner_images') // Lấy các hình ảnh liên quanp
             ->get();
         $vouchers = Voucher::where('is_active', 1)
             ->where('end_date', '>=', Carbon::now())
-            ->limit(3)
+            ->limit(8)
             ->get();
         $topProducts = Product::with(['product_files'])
             ->where('is_active', 1)
             ->orderBy('view', 'DESC')
-            ->limit(4)
+            ->limit(8)
             ->get()
             ->map(function ($product) {
                 $product->priceRange =  $product->getPriceRangeAttribute();
@@ -44,7 +44,7 @@ class HomeController extends Controller
         $newProducts = Product::with(['product_files'])
             ->where('is_active', 1)
             ->orderBy('created_at', 'DESC')
-            ->limit(4)
+            ->limit(8)
             ->get()
             ->map(function ($product) {
                 $product->priceRange =  $product->getPriceRangeAttribute();
@@ -54,7 +54,7 @@ class HomeController extends Controller
             $query->where('fixed', 0);
         })
             ->with(['product_files', 'product_variants'])
-            ->limit(4)
+            ->limit(8)
             ->get()
             ->map(function ($product) {
                 $product->priceRange = $product->getPriceRangeAttribute();
@@ -143,7 +143,7 @@ class HomeController extends Controller
         // Xác định các dữ liệu cần thiết từ request
         $variant_id = $request->input('variant_id');
         $quantity = $request->input('quantity', 1); // Mặc định số lượng là 1 nếu không có
-    
+
         // Kiểm tra nếu không có variant_id
         if (!$variant_id) {
             return response()->json([
@@ -151,12 +151,12 @@ class HomeController extends Controller
                 'message' => 'Dữ liệu không hợp lệ.',
             ], 400); // Trả về mã lỗi 400
         }
-    
+
         // Kiểm tra giỏ hàng của người dùng hiện tại
         $cartItem = Cart::where('product_variant_id', $variant_id)  // Sửa ở đây, không cần `$variant_id->id`
             ->where('user_id', auth()->id())
             ->first();
-    
+
         if ($cartItem) {
             // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng
             $cartItem->quantity += $quantity;
@@ -177,8 +177,8 @@ class HomeController extends Controller
             'cartCount' => $cartCount
         ]);
     }
-    
-    
+
+
     //Trang thanh toán
     public function checkout()
     {
