@@ -19561,11 +19561,13 @@ svg {
     text-transform: uppercase;
     cursor: pointer;
 }
+
 .attribute_group ul li.active {
     background-color: rgba(var(--theme-default));
     border-color: transparent;
     color: rgba(var(--white), 1)
 }
+
 .attribute-section .attribute_group ul {
     display: flex;
     gap: 12px;
@@ -19613,11 +19615,13 @@ svg {
     background-color: #9b2e22;
     text-decoration: none;
 }
+
 .disabled {
     opacity: 0.5;
     pointer-events: none;
     cursor: not-allowed;
 }
+
 .able {
     opacity: 1;
     pointer-events: auto;
