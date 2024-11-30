@@ -161,25 +161,34 @@
                                             <td>
                                                 @foreach ($item->order_details as $detail)
                                                     <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"><br>
+                                                        alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
                                                 @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($item->status_orders as $statusOrder)
+                                                <div class="order-status">
+                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
+                                                                                @elseif($statusOrder->status_id == 2) pending 
+                                                                                @elseif($statusOrder->status_id == 3) shipped 
+                                                                                @elseif($statusOrder->status_id == 4) completed 
+                                                                                @elseif($statusOrder->status_id == 5) cancelled 
+                                                                                @else failed @endif"></span>
                                                     @if ($statusOrder->status_id == 1)
-                                                        Đơn hàng xử lý
+                                                    Chờ xử lý
                                                     @elseif($statusOrder->status_id == 2)
-                                                        Đơn hàng cần gửi đi
+                                                        Chờ xác nhận
                                                     @elseif($statusOrder->status_id == 3)
-                                                        Đơn hàng đã được gửi đi
+                                                        Đang vận chuyển
                                                     @elseif($statusOrder->status_id == 4)
-                                                        Đơn hàng đã hoàn thành
+                                                        Hoàn thành
                                                     @elseif($statusOrder->status_id == 5)
-                                                        Đơn hàng đã bị hủy
+                                                        Đã hủy
                                                     @else
                                                         Đơn hàng giao không thành công
                                                     @endif
-                                                @endforeach
+                                                </div>
+                                            @endforeach
+                                            
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -290,25 +299,33 @@
                                             <td>
                                                 @foreach ($item->order_details as $detail)
                                                     <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"><br>
+                                                        alt="Product Image" width="50" height="50">x {{ number_format($detail->quantity, 0, ',', '.') }}
                                                 @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($item->status_orders as $statusOrder)
+                                                <div class="order-status">
+                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
+                                                                                @elseif($statusOrder->status_id == 2) pending 
+                                                                                @elseif($statusOrder->status_id == 3) shipped 
+                                                                                @elseif($statusOrder->status_id == 4) completed 
+                                                                                @elseif($statusOrder->status_id == 5) cancelled 
+                                                                                @else failed @endif"></span>
                                                     @if ($statusOrder->status_id == 1)
-                                                        Đơn hàng xử lý
+                                                    Chờ xử lý
                                                     @elseif($statusOrder->status_id == 2)
-                                                        Đơn hàng cần gửi đi
+                                                        Chờ xác nhận
                                                     @elseif($statusOrder->status_id == 3)
-                                                        Đơn hàng đã được gửi đi
+                                                        Đang vận chuyển
                                                     @elseif($statusOrder->status_id == 4)
-                                                        Đơn hàng đã hoàn thành
+                                                        Hoàn thành
                                                     @elseif($statusOrder->status_id == 5)
-                                                        Đơn hàng đã bị hủy
+                                                        Đã hủy
                                                     @else
                                                         Đơn hàng giao không thành công
                                                     @endif
-                                                @endforeach
+                                                </div>
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -319,11 +336,19 @@
                                             </td>
                                             <td>{{ number_format($item->total_payment, 0, ',', '.') }} đ</td>
                                             <td>
-                                                <a href="{{ route('admin.orders.print', $item->id) }}"
-                                                    onclick="printAndReload(event, this)">
-                                                    <i class="fa fa-print"></i> In đơn
+                                                <a href="{{ route('admin.orders.cancel', $item->id) }}"
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Xác nhận hủy đơn hàng này?')">
+                                                    <i class="fa fa-times"></i> Hủy
+                                                </a>
+
+                                                <a href="{{ route('admin.orders.success', $item->id) }}"
+                                                    class="btn btn-success btn-sm"
+                                                    onclick="return confirm('Xác nhận đơn hàng này?')">
+                                                    <i class="fa fa-check"></i> Xác nhận
                                                 </a>
                                             </td>
+
 
                                         </tr>
                                     @endforeach
@@ -423,26 +448,34 @@
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"><br>
-                                                @endforeach
+                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($item->status_orders as $statusOrder)
+                                                <div class="order-status">
+                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
+                                                                                @elseif($statusOrder->status_id == 2) pending 
+                                                                                @elseif($statusOrder->status_id == 3) shipped 
+                                                                                @elseif($statusOrder->status_id == 4) completed 
+                                                                                @elseif($statusOrder->status_id == 5) cancelled 
+                                                                                @else failed @endif"></span>
                                                     @if ($statusOrder->status_id == 1)
-                                                        Đơn hàng xử lý
+                                                    Chờ xử lý
                                                     @elseif($statusOrder->status_id == 2)
-                                                        Đơn hàng cần gửi đi
+                                                        Chờ xác nhận
                                                     @elseif($statusOrder->status_id == 3)
-                                                        Đơn hàng đã được gửi đi
+                                                        Đang vận chuyển
                                                     @elseif($statusOrder->status_id == 4)
-                                                        Đơn hàng đã hoàn thành
+                                                        Hoàn thành
                                                     @elseif($statusOrder->status_id == 5)
-                                                        Đơn hàng đã bị hủy
+                                                        Đã hủy
                                                     @else
                                                         Đơn hàng giao không thành công
                                                     @endif
-                                                @endforeach
+                                                </div>
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -453,10 +486,16 @@
                                             </td>
                                             <td>{{ number_format($item->total_payment, 0, ',', '.') }} đ</td>
                                             <td>
-                                                <a href="{{ route('admin.orders.active', $item->id) }}"
-                                                    onclick="return confirm('Xác nhận giao đơn hàng?')">
-                                                    Xác nhận
+                                                <a href="{{ route('admin.orders.print', $item->id) }}"
+                                                    class="btn btn-primary btn-sm" onclick="printAndReload(event, this)">
+                                                    <i class="fa fa-print"></i> In phiếu
                                                 </a>
+                                                <a href="{{ route('admin.orders.active', $item->id) }}"
+                                                    class="btn btn-success btn-sm"
+                                                    onclick="return confirm('Xác nhận giao đơn hàng?')">
+                                                    <i class="fa fa-check"></i> Xác nhận
+                                                </a>
+                                                
                                             </td>
                                         </tr>
                                     @endforeach
@@ -556,26 +595,34 @@
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"><br>
-                                                @endforeach
+                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($item->status_orders as $statusOrder)
+                                                <div class="order-status">
+                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
+                                                                                @elseif($statusOrder->status_id == 2) pending 
+                                                                                @elseif($statusOrder->status_id == 3) shipped 
+                                                                                @elseif($statusOrder->status_id == 4) completed 
+                                                                                @elseif($statusOrder->status_id == 5) cancelled 
+                                                                                @else failed @endif"></span>
                                                     @if ($statusOrder->status_id == 1)
-                                                        Đơn hàng xử lý
+                                                    Chờ xử lý
                                                     @elseif($statusOrder->status_id == 2)
-                                                        Đơn hàng cần gửi đi
+                                                        Chờ xác nhận
                                                     @elseif($statusOrder->status_id == 3)
-                                                        Đơn hàng đã được gửi đi
+                                                        Đang vận chuyển
                                                     @elseif($statusOrder->status_id == 4)
-                                                        Đơn hàng đã hoàn thành
+                                                        Hoàn thành
                                                     @elseif($statusOrder->status_id == 5)
-                                                        Đơn hàng đã bị hủy
+                                                        Đã hủy
                                                     @else
                                                         Đơn hàng giao không thành công
                                                     @endif
-                                                @endforeach
+                                                </div>
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -607,6 +654,7 @@
                                     <th>Trạng thái đơn hàng</th>
                                     <th>Phương thức vận chuyển</th>
                                     <th>Tổng</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -683,26 +731,34 @@
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"><br>
-                                                @endforeach
+                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($item->status_orders as $statusOrder)
+                                                <div class="order-status">
+                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
+                                                                                @elseif($statusOrder->status_id == 2) pending 
+                                                                                @elseif($statusOrder->status_id == 3) shipped 
+                                                                                @elseif($statusOrder->status_id == 4) completed 
+                                                                                @elseif($statusOrder->status_id == 5) cancelled 
+                                                                                @else failed @endif"></span>
                                                     @if ($statusOrder->status_id == 1)
-                                                        Đơn hàng xử lý
+                                                    Chờ xử lý
                                                     @elseif($statusOrder->status_id == 2)
-                                                        Đơn hàng cần gửi đi
+                                                        Chờ xác nhận
                                                     @elseif($statusOrder->status_id == 3)
-                                                        Đơn hàng đã được gửi đi
+                                                        Đang vận chuyển
                                                     @elseif($statusOrder->status_id == 4)
-                                                        Đơn hàng đã hoàn thành
+                                                        Hoàn thành
                                                     @elseif($statusOrder->status_id == 5)
-                                                        Đơn hàng đã bị hủy
+                                                        Đã hủy
                                                     @else
                                                         Đơn hàng giao không thành công
                                                     @endif
-                                                @endforeach
+                                                </div>
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -712,8 +768,7 @@
                                                 @endif
                                             </td>
                                             <td>{{ number_format($item->total_payment, 0, ',', '.') }} đ</td>
-
-
+                                            <td></td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -812,26 +867,34 @@
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"><br>
-                                                @endforeach
+                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($item->status_orders as $statusOrder)
+                                                <div class="order-status">
+                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
+                                                                                @elseif($statusOrder->status_id == 2) pending 
+                                                                                @elseif($statusOrder->status_id == 3) shipped 
+                                                                                @elseif($statusOrder->status_id == 4) completed 
+                                                                                @elseif($statusOrder->status_id == 5) cancelled 
+                                                                                @else failed @endif"></span>
                                                     @if ($statusOrder->status_id == 1)
-                                                        Đơn hàng xử lý
+                                                    Chờ xử lý
                                                     @elseif($statusOrder->status_id == 2)
-                                                        Đơn hàng cần gửi đi
+                                                        Chờ xác nhận
                                                     @elseif($statusOrder->status_id == 3)
-                                                        Đơn hàng đã được gửi đi
+                                                        Đang vận chuyển
                                                     @elseif($statusOrder->status_id == 4)
-                                                        Đơn hàng đã hoàn thành
+                                                        Hoàn thành
                                                     @elseif($statusOrder->status_id == 5)
-                                                        Đơn hàng đã bị hủy
+                                                        Đã hủy
                                                     @else
                                                         Đơn hàng giao không thành công
                                                     @endif
-                                                @endforeach
+                                                </div>
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -939,26 +1002,34 @@
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"><br>
-                                                @endforeach
+                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($item->status_orders as $statusOrder)
+                                                <div class="order-status">
+                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
+                                                                                @elseif($statusOrder->status_id == 2) pending 
+                                                                                @elseif($statusOrder->status_id == 3) shipped 
+                                                                                @elseif($statusOrder->status_id == 4) completed 
+                                                                                @elseif($statusOrder->status_id == 5) cancelled 
+                                                                                @else failed @endif"></span>
                                                     @if ($statusOrder->status_id == 1)
-                                                        Đơn hàng xử lý
+                                                        Chờ xử lý
                                                     @elseif($statusOrder->status_id == 2)
-                                                        Đơn hàng cần gửi đi
+                                                        Chờ xác nhận
                                                     @elseif($statusOrder->status_id == 3)
-                                                        Đơn hàng đã được gửi đi
+                                                        Đang vận chuyển
                                                     @elseif($statusOrder->status_id == 4)
-                                                        Đơn hàng đã hoàn thành
+                                                        Hoàn thành
                                                     @elseif($statusOrder->status_id == 5)
-                                                        Đơn hàng đã bị hủy
+                                                        Đã hủy
                                                     @else
                                                         Đơn hàng giao không thành công
                                                     @endif
-                                                @endforeach
+                                                </div>
+                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -986,14 +1057,12 @@
     function printAndReload(event, link) {
         event.preventDefault(); // Ngăn chặn reload mặc định
 
-        // Mở file PDF trong tab mới
         let printWindow = window.open(link.href, '_blank');
 
-        // Sau khi tab được đóng hoặc sau một khoảng thời gian, reload lại trang
         printWindow.onunload = function() {
             setTimeout(() => {
                 window.location.reload();
-            }, 1000); // Delay 1 giây để đảm bảo quá trình in được xử lý
+            }, 1000);
         };
     }
     document.addEventListener('DOMContentLoaded', function() {

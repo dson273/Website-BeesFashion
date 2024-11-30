@@ -51,11 +51,11 @@
                                                         @if ($item->status_id == 1)
                                                             Chờ xử lý
                                                         @elseif ($item->status_id == 2)
-                                                            Cần gửi
+                                                            Chờ xác nhận
                                                         @elseif ($item->status_id == 3)
-                                                            Đơn hàng đã được vận chuyển
+                                                            Đang vận chuyển
                                                         @elseif ($item->status_id == 4)
-                                                            Đã hoàn thành
+                                                            Hoàn thành
                                                         @elseif ($item->status_id == 6)
                                                         Đơn hàng giao không thành công
                                                         @else
@@ -82,15 +82,31 @@
                                             </div>
                                             <div class="KeyValuePair">
                                                 <div class="text-header">
-                                                    <div class="truncate">Vị trí</div>
+                                                    <div class="truncate">Phương thức thanh toán</div>
                                                 </div>
-                                                <div class="text-footer">Việt Nam</div>
+                                                <div class="text-footer">@if ($getInfo->payment_method === 'cod')
+                                                    Thanh toán khi nhận hàng
+                                                @else
+                                                    Thanh toán online
+                                                @endif</div>
                                             </div>
                                             <div class="KeyValuePair">
                                                 <div class="text-header">
-                                                    <div class="truncate">Vị trí</div>
+                                                    <div class="truncate">Tên người đặt</div>
                                                 </div>
-                                                <div class="text-footer">Việt Nam</div>
+                                                <div class="text-footer">{{ $getInfo->full_name }}</div>
+                                            </div>
+                                            <div class="KeyValuePair">
+                                                <div class="text-header">
+                                                    <div class="truncate">Địa chỉ</div>
+                                                </div>
+                                                <div class="text-footer">{{ $getInfo->address }}</div>
+                                            </div>
+                                            <div class="KeyValuePair">
+                                                <div class="text-header">
+                                                    <div class="truncate">Thông tin liên hệ</div>
+                                                </div>
+                                                <div class="text-footer">{{ $getInfo->phone_number }}</div>
                                             </div>
 
 
@@ -407,7 +423,7 @@
                                                 @if ($getInfo->payment_method === 'cod')
                                                     Thanh toán khi nhận hàng
                                                 @else
-                                                    Thanh toán trực tuyến
+                                                    Thanh toán online
                                                 @endif
                                             </div>
                                         </div>
