@@ -480,3 +480,41 @@
         /* 1 cột cho màn hình rất nhỏ */
     }
 }
+.order-status {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.status-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+    
+}
+
+/* Circle colors based on status */
+.processing {
+    background-color: rgb(255, 181, 43);  /* Pending/processing order */
+}
+
+.pending {
+    background-color: rgb(255, 181, 43);
+}
+
+.shipped {
+    background-color: #007bff;
+}
+
+.completed {
+    background-color: #007bff; /* Completed order */
+}
+
+.cancelled {
+    background-color: red; /* Cancelled order */
+}
+
+.failed {
+    background-color: red; /* Failed delivery */
+}

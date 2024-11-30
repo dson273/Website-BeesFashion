@@ -15,40 +15,44 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $allCount = Order::all();
+        $allCount  = Order::orderBy('created_at', 'desc')->get();
 
         $pendingOrders = Order::whereHas('status_orders', function ($query) {
             $query->where('status_id', 2);
-        })
+        })->orderBy('created_at', 'desc')
             ->get();
         $pendingCount = $pendingOrders->count();
 
         $processingOrders = Order::with('status_orders')
             ->whereHas('status_orders', function ($query) {
                 $query->where('status_id', 1);
-            })
+            })->orderBy('created_at', 'desc')
             ->get();
         $processingCount = $processingOrders->count();
 
         $shippingOrders = Order::whereHas('status_orders', function ($query) {
             $query->where('status_id', 3);
-        })->get();
+        })->orderBy('created_at', 'desc')
+            ->get();
         $shippingCount = $shippingOrders->count();
 
         $completedOrders = Order::whereHas('status_orders', function ($query) {
             $query->where('status_id', 4);
-        })->get();
+        })->orderBy('created_at', 'desc')
+            ->get();
         $completedCount = $completedOrders->count();
 
         $cancelledOrders = Order::whereHas('status_orders', function ($query) {
             $query->where('status_id', 5);
-        })->get();
+        })->orderBy('created_at', 'desc')
+            ->get();
         $cancelledCount = $cancelledOrders->count();
 
 
         $fail_delivery = Order::whereHas('status_orders', function ($query) {
             $query->where('status_id', 6);
-        })->get();
+        })->orderBy('created_at', 'desc')
+            ->get();
         $fail_deliveryCount = $fail_delivery->count();
 
         return view('admin.orders.index', compact(
@@ -74,10 +78,6 @@ class OrderController extends Controller
 
 
         if ($order) {
-            // Cập nhật trạng thái của đơn hàng
-            foreach ($order->status_orders as $statusOrder) {
-                $statusOrder->update(['status_id' => 3]);
-            }
             // Khởi tạo generator và tạo mã vạch cho từng SKU
             $generator = new BarcodeGeneratorHTML();
             $barcodes = [];
@@ -105,10 +105,34 @@ class OrderController extends Controller
             // Cập nhật trạng thái của đơn hàng
             foreach ($order->status_orders as $statusOrder) {
                 $statusOrder->update(['status_id' => 4]);
-            }      
+            }
         }
-        
-        return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng giao thành công');
+
+        return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được giao');
+    }
+    public function onSuccess(Request $request, string $id)
+    {
+        $order = Order::with('order_details.product_variant')->findOrFail($id);
+        if ($order) {
+            // Cập nhật trạng thái của đơn hàng
+            foreach ($order->status_orders as $statusOrder) {
+                $statusOrder->update(['status_id' => 3]);
+            }
+        }
+
+        return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được gửi đi');
+    }
+    public function cancelOrder(Request $request, string $id)
+    {
+        $order = Order::with('order_details.product_variant')->findOrFail($id);
+        if ($order) {
+            // Cập nhật trạng thái của đơn hàng
+            foreach ($order->status_orders as $statusOrder) {
+                $statusOrder->update(['status_id' => 5]);
+            }
+        }
+
+        return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được hủy');
     }
     /**
      * Display the specified resource.
