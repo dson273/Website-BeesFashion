@@ -424,7 +424,7 @@
     <!-- End seach -->
     <script>
         // Lắng nghe sự kiện nhấn Enter trên ô input tìm kiếm
-        document.getElementById('search-input').addEventListener('keypress', function(e) {
+        document.getElementById('search-input-of-header').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 performSearch();
             }
