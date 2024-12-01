@@ -143,6 +143,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
         //=======================================================Quản lý khách hàng=======================================================
         Route::middleware(['checkPermission:Quản lý khách hàng'])->group(function () {
             Route::resource('customers', CustomerController::class);
+            Route::post('customers/ban/{id}', [CustomerController::class, 'ban'])->name('customers.ban'); //Ban nhân viên
+            Route::post('customers/unban/{id}', [CustomerController::class, 'unban'])->name('customers.unban'); //Unban nhân viên
+            Route::get('customers/history/{id}', [CustomerController::class, 'history'])->name('customers.history'); //Lịch sử ban/unban
         });
     });
     //Thống kê shop

@@ -78,8 +78,9 @@ Route::middleware('auth')->group(function () {
     Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
     Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
-    Route::get('product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('product.getVariants');
-
+    Route::get('cart/product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('getProductVariants');
+    Route::post('cart//update-variant', [CartController::class, 'updateVariant'])->name('updateVariant');//cập nhật biến thể trong giỏ hàng
+    Route::post('product/{product_id}/update-variant', [CartController::class, 'updateVariant'])->name('product.updateVariant');
 
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');

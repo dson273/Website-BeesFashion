@@ -292,33 +292,30 @@ class CartController extends Controller
         return response()->json($response);
     }
 
-    // public function updateVariant(Request $request)
-    // {
-    //     $request->validate([
-    //         'cart_id' => 'required|exists:carts,id',
-    //         'variant_id' => 'required|exists:product_variants,id'
-    //     ]);
+    public function updateVariant(Request $request)
+    {
 
-    //     $cart = Cart::findOrFail($request->cart_id);
-    //     $newVariant = Product_variant::findOrFail($request->variant_id);
 
-    //     // Kiểm tra stock của variant mới
-    //     if ($cart->quantity > $newVariant->stock) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Số lượng vượt quá tồn kho của biến thể mới'
-    //         ], 422);
-    //     }
+        $cart = Cart::findOrFail($request->cart_id);
+        $newVariant = Product_variant::findOrFail($request->variant_id);
 
-    //     $cart->product_variant_id = $newVariant->id;
-    //     $cart->save();
+        // Kiểm tra stock của variant mới
+        if ($cart->quantity > $newVariant->stock) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Số lượng vượt quá tồn kho của biến thể mới'
+            ], 422);
+        }
 
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Cập nhật biến thể thành công',
-    //         'new_price' => $newVariant->sale_price ?? $newVariant->regular_price,
-    //         'new_total' => ($newVariant->sale_price ?? $newVariant->regular_price) * $cart->quantity,
-    //         'stock' => $newVariant->stock
-    //     ]);
-    // }
+        $cart->product_variant_id = $newVariant->id;
+        $cart->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cập nhật biến thể thành công',
+            'new_price' => $newVariant->sale_price ?? $newVariant->regular_price,
+            'new_total' => ($newVariant->sale_price ?? $newVariant->regular_price) * $cart->quantity,
+            'stock' => $newVariant->stock
+        ]);
+    }
 }
