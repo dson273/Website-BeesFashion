@@ -1715,7 +1715,6 @@ div#newsletter {
 
 .custom-accordion.product-custom-accordion .accordion .accordion-item:last-child {
     border-bottom: 1px solid rgba(var(--border), 1);
-    padding-bottom: 15px
 }
 
 .custom-accordion.product-custom-accordion .accordion .accordion-item .accordion-body {
@@ -1788,7 +1787,7 @@ div#newsletter {
 .custom-accordion .accordion .accordion-item .accordion-header .accordion-button {
     background-color: transparent;
     box-shadow: none;
-    padding: 16px 0;
+    padding: 16px 13px;
     position: relative
 }
 
