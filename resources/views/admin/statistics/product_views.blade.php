@@ -19,15 +19,20 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Product Views</h1>
-        <div class="mb-2 d-flex justify-content-start">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Lượt xem sản phẩm</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        </div>
+        <div class="mb-4 d-flex justify-content-start">
             <a href="javascript:history.back()" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left mr-1"></i>Back</a>
         </div>
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 ">
-                <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm có lượt xem</h6>
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-table mr-1"></i>
+                    Danh sách sản phẩm có lượt xem
+                </h6>
             </div>
 
             <div class="card-body">

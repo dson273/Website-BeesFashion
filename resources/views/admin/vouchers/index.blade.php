@@ -79,8 +79,8 @@
                                     <td>{{ $item->code }}</td>
                                     <td><img src="{{ asset('storage/uploads/vouchers/images/' . $item->image) }}"
                                             width="100px" alt=""></td>
-                                    <td>{{ $item->amount }}</td>
-                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ number_format($item->amount, 0, ',', '.') }}</td>
+                                    <td>{{ number_format($item->quantity, 0, ',', '.') }}</td>
                                     <td>
                                         @if ($item->type === 'fixed')
                                             Cố định
@@ -92,7 +92,7 @@
                                             Không xác định
                                         @endif
                                     </td>
-                                    <td>{{ $item->minimum_order_value }}</td>
+                                    <td>{{ number_format($item->minimum_order_value, 0, ',', '.') }} đ</td>
                                     <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
                                     <td>{{ $item->is_public == 1 ? 'Tất cả' : 'Tùy chỉnh' }}</td>

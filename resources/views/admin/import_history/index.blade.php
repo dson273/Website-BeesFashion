@@ -46,7 +46,6 @@
                                 <th>Số lượng</th>
                                 <th>Người nhập</th>
                                 <th>Thời gian nhập</th>
-                                <th>Tổng tiền</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -58,7 +57,6 @@
                                 <th>Số lượng</th>
                                 <th>Người nhập</th>
                                 <th>Thời gian nhập</th>
-                                <th>Tổng tiền</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -68,19 +66,12 @@
                                     <td>{{ $item->product_variant->SKU }} / {{ $item->product_variant->product->name }}</td>
                                     <td><img src="{{ asset('uploads/products/images/' . $item->product_variant->image) }}"
                                             width="100px" alt=""></td>
-                                    <td>{{ $item->import_price }}</td>
-                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ number_format($item->import_price, 0, ',', '.') }}</td>
+                                    <td>{{ number_format($item->quantity, 0, ',', '.') }}</td>
                                     <td>
-                                        @if ($item->user->role === 'staff')
-                                            Nhân viên
-                                        @elseif ($item->user->role === 'admin')
-                                            Admin
-                                        @else
-                                            Không xác định
-                                        @endif
+                                        {{ $item->user ? $item->user->full_name : 'Fail' }}
                                     </td>
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->total_price }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l, d F Y, H:i:s') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
