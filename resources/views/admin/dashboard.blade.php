@@ -52,7 +52,7 @@
                                     <a class="btn btn-outline-info btn-sm" href="{{ route('admin.statistics.product_views') }}">Xem chi tiết<i class="fas fa-arrow-right ml-1 fa-sm"></i></a>
                                 </div>
                                 <div class=" fa-2x text-info">
-                                    <i class="fas fa-dollar-sign"></i>
+                                    <i class="fa-regular fa-eye"></i>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
 
         <div class="card mb-4">
             <div class="card-body">

@@ -1,7 +1,9 @@
 @extends('user.layouts.master')
+
 @section('css-libs')
     <link rel="stylesheet" href="{{ asset('css/user/filterProduct.css') }}">
 @endsection
+
 @section('content')
     <div class="tap-top">
         <div><i class="fa-solid fa-angle-up"></i></div>
@@ -58,7 +60,7 @@
                             </div>
                             {{-- lọc theo khoảng giá --}}
 
-                            <div class="accordion-item">
+                            {{-- <div class="accordion-item">
                                 <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
                                         data-bs-target="#panelsStayOpen-collapseFour"><span>Sắp xếp khoảng
                                             giá</span></button></h2>
@@ -73,7 +75,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- Lọc theo danh mục --}}
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -87,7 +89,7 @@
                                         <ul class="catagories-side theme-scrollbar">
                                             @foreach ($listCategory as $parentCategory)
                                                 <li style="list-style-type: none; display: flex; align-items: center;">
-                                                    <div style="margin-left: 0px; flex-grow: 1;">
+                                                    <div style="margin-left: 0px; flex-grow: 1;" id="category_checkbox">
                                                         <!-- Hiển thị danh mục cha -->
                                                         <input class="category-checkbox custom-checkbox"
                                                             id="category{{ $parentCategory->id }}" type="checkbox"
@@ -105,7 +107,7 @@
                                                     @foreach ($parentCategory->categoryChildrent as $childCategory)
                                                         <li
                                                             style="list-style-type: none; display: flex; align-items: center;">
-                                                            <div style="margin-left: 20px; flex-grow: 1;">
+                                                            <div style="margin-left: 20px; flex-grow: 1;" id="category_checkbox">
                                                                 <!-- Lùi lại cho danh mục con -->
                                                                 <input class="category-checkbox custom-checkbox"
                                                                     id="category{{ $childCategory->id }}" type="checkbox"
@@ -152,7 +154,7 @@
                             </div>
 
                             {{-- màu --}}
-                            <div class="accordion-item">
+                            {{-- <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" data-bs-toggle="collapse"
                                         data-bs-target="#panelsStayOpen-collapseOne">
@@ -175,10 +177,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
-                            <div class="accordion-item">
+                            {{-- <div class="accordion-item">
                                 <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
                                         data-bs-target="#panelsStayOpen-collapseSix"><span>Availability</span></button>
                                 </h2>
@@ -193,7 +195,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="accordion-item">
                                 <h2 class="accordion-header tags-header"><button class="accordion-button"><span>Vận chuyển
@@ -243,18 +245,18 @@
                                     </div>
                                 </div>
                                 <!-- Dropdown select cho sắp xếp theo giá -->
-                                <div class="category-dropdown m-3">
+                                {{-- <div class="category-dropdown m-3">
                                     <select class="form-select" id="priceSort" name="priceSort" style="width: 200px;">
                                         <option value="price_default">Giá</option>
                                         <option value="price_asc">Giá : Thấp - Cao</option>
                                         <option value="price_desc">Giá : Cao - Thấp</option>
                                     </select>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="product-tab-content ratio1_3">
                             <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 ">
-                                <!-- Sản phẩm sẽ được hiển thị ở đây --
+                                 {{-- Sản phẩm sẽ được hiển thị ở đây --}}
                             </div>
                         </div>
                     </div>
@@ -263,7 +265,7 @@
         </div>
     </section>
 
-    <!-- Modal quikview -->
+    <!-- Modal quikview 
     <div class="modal theme-modal fade" id="quick-view" tabindex="-1" role="dialog" aria-modal="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -353,7 +355,7 @@
             </div>
         </div>
     </div>
-    <!-- End model quikview -->
+     End model quikview -->
 @endsection
 
 @section('script-libs')

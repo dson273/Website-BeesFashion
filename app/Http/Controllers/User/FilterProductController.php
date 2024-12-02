@@ -276,8 +276,9 @@ class FilterProductController extends Controller
 
         // Xử lý đường dẫn ảnh cho mỗi sản phẩm
         $products = $products->map(function ($product) {
-            $product->productURL = route('product.detail', ['product' => $product->id]);
+            $product->productURL = route('product.detail', ['sku' => $product->SKU]);
             // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
+            
             if ($product->image) {
                 $product->image_url = asset('uploads/products/images/' . $product->image);
             } else {
@@ -287,7 +288,7 @@ class FilterProductController extends Controller
             return $product;
         });
         $products = $products->map(function ($product) {
-            $product->productID = route('product.detail', ['product' => $product->id]);
+            $product->productID = route('product.detail', ['sku' => $product->SKU]);
             return $product;
         });
 
@@ -319,7 +320,7 @@ class FilterProductController extends Controller
 
         // Xử lý đường dẫn ảnh cho mỗi sản phẩm
         $products = $products->map(function ($product) {
-            $product->productURL = route('product.detail', ['product' => $product->id]);
+            $product->productURL = route('product.detail', ['sku' => $product->SKU]);
             // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
             if ($product->image) {
                 $product->image_url = asset('uploads/products/images/' . $product->image);
@@ -355,7 +356,7 @@ class FilterProductController extends Controller
 
         // Xử lý đường dẫn ảnh cho mỗi sản phẩm
         $products = $products->map(function ($product) {
-            $product->productURL = route('product.detail', ['product' => $product->id]);
+            $product->productURL = route('product.detail', ['sku' => $product->SKU]);
             // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
             if ($product->image) {
                 $product->image_url = asset('uploads/products/images/' . $product->image);
@@ -366,7 +367,7 @@ class FilterProductController extends Controller
             return $product;
         });
         $products = $products->map(function ($product) {
-            $product->productID = route('product.detail', ['product' => $product->id]);
+            $product->productID = route('product.detail', ['sku' => $product->SKU]);
             return $product;
         });
 

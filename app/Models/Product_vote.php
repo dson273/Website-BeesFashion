@@ -14,7 +14,8 @@ class Product_vote extends Model
         'edit',
         'product_variant_id',
         'order_detail_id',
-        'user_id'
+        'user_id',
+        'is_active'
     ];
     public function product_variant()
     {

@@ -15,7 +15,7 @@ use App\Models\Product_variant_attribute_value;
 class CartController extends Controller
 {
 
-    
+
     public function index()
     {
         $carts = Auth::user()->carts;
@@ -66,6 +66,7 @@ class CartController extends Controller
             }
         }
 
+        //  dd($cart_list);
         return view('user.cart', compact('cart_list', 'total_payment', 'total_discount'));
     }
 
@@ -90,28 +91,39 @@ class CartController extends Controller
         return redirect()->route('cart')->with('statusSuccess', 'Giỏ hàng đã được làm sạch.');
     }
 
-
     public function getProductVariants($product_id)
     {
-        $product = Product::with(['product_variants' => function ($query) {
-            $query->where('is_active', 1)
-                ->where('stock', '>', 0);
-        }, 'product_variants.variant_attribute_values.attribute_value.attribute'])
-            ->findOrFail($product_id);
+        // Lấy sản phẩm với các biến thể và các giá trị thuộc tính liên quan
+        $product = Product::with([
+            'product_variants' => function ($query) {
+                // Lọc các biến thể có sẵn và còn hàng
+                $query->where('is_active', 1)->where('stock', '>', 0);
+            },
+            'product_variants.variant_attribute_values.attribute_value',
+            'product_variants.product' // Nạp thông tin sản phẩm liên quan
+        ])
+            ->findOrFail($product_id); // Tìm sản phẩm theo ID hoặc trả lỗi 404 nếu không tìm thấy
 
-        // Mảng chứa các biến thể với các attribute_value_id liên quan
+        // Tạo danh sách các biến thể của sản phẩm
         $array_variants = $product->product_variants->map(function ($variant) {
             return [
-                'variant_id' => $variant->id,
-                'image' => $variant->image,
-                'regular_price' => $variant->regular_price,
-                'sale_price' => $variant->sale_price,
+                'product_variant_id' => $variant->id,
+                'name' => $variant->name, // Tên biến thể
                 'stock' => $variant->stock,
-                'attribute_values' => $variant->variant_attribute_values->pluck('attribute_value_id')->toArray()
+                'product_id' => $variant->product_id, // ID sản phẩm
+                'attributes' => $variant->variant_attribute_values->map(function ($value) {
+                    return [
+                        'attribute_id' => $value->attribute_value->attribute_id,
+                        'attribute_name' => $value->attribute_value->attribute->name, // Tên thuộc tính
+                        'value_id' => $value->attribute_value->id,
+                        'value_name' => $value->attribute_value->name, // Tên giá trị thuộc tính
+                        'value' => $value->attribute_value->value, // Giá trị thuộc tính
+                    ];
+                })->toArray() // Thêm mảng thuộc tính cho mỗi biến thể
             ];
         })->toArray();
 
-        // Lấy tất cả các attribute_value_id và attribute_id duy nhất
+        // Lấy các ID của giá trị thuộc tính từ các biến thể
         $attribute_value_ids = $product->product_variants
             ->pluck('variant_attribute_values.*.attribute_value_id')
             ->flatten()
@@ -130,33 +142,99 @@ class CartController extends Controller
                 $query->whereIn('id', $attribute_value_ids);
             },
             'attribute_type' // Lấy thông tin loại thuộc tính
-        ])->whereIn('id', $attribute_ids)->get()->mapWithKeys(function ($attribute) {
-            return [
-                $attribute->id => [
-                    'id' => $attribute->id,
-                    'name' => $attribute->name,
-                    'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null, // Lấy tên loại thuộc tính
-                    'attribute_values' => $attribute->attribute_values->sortBy(function ($value) {
-                        // Sắp xếp theo thứ tự "S", "M", "L", "XL", nếu giá trị khác số
-                        $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
-                        return $sizes[$value->name] ?? $value->name; // Sắp xếp theo thứ tự định trước hoặc theo tên
-                    })->values()->map(function ($value) {
-                        return [
-                            'id' => $value->id,
-                            'name' => $value->name,
-                            'value' => $value->value
-                        ];
-                    })->toArray()
-                ]
-            ];
-        })->toArray();
+        ])
+            ->whereIn('id', $attribute_ids)
+            ->get()
+            ->mapWithKeys(function ($attribute) {
+                return [
+                    $attribute->id => [
+                        'id' => $attribute->id,
+                        'name' => $attribute->name,
+                        'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null, // Lấy tên loại thuộc tính
+                        'attribute_values' => $attribute->attribute_values->sortBy(function ($value) {
+                            // Sắp xếp theo thứ tự "S", "M", "L", "XL", nếu giá trị khác số
+                            $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
+                            return $sizes[$value->name] ?? $value->name; // Sắp xếp theo thứ tự định trước hoặc theo tên
+                        })->values()->map(function ($value) {
+                            return [
+                                'id' => $value->id,
+                                'name' => $value->name,
+                                'value' => $value->value
 
+                            ];
+                        })->toArray()
+                    ]
+                ];
+            })->toArray();
+
+        // Trả về dữ liệu dưới dạng JSON cho frontend
         return response()->json([
             'success' => true,
-            'variants' =>  $array_variants,
-            'attributes' => $array_attributes
+            'variants' => $array_variants, // Danh sách các biến thể sản phẩm
+            'attribute_data' => $array_attributes, // Dữ liệu thuộc tính của các biến thể
         ]);
     }
+
+
+
+
+
+
+
+
+
+
+    //     "variants": [
+    //         {
+    //             "product_variant_id": 5,
+    //             "name": "red-XL",
+    //             "product_id": 2
+    //         },
+    //         {
+    //             "product_variant_id": 6,
+    //             "name": "red-XXL",
+    //             "product_id": 2
+    //         }
+    // ],
+
+    //             "attribute_data": [
+    //                 {
+    //                     "attribute_id": 1,
+    //                     "attribute_name": "Màu sắc\r\n",
+    //                     "attribute_type": "color",
+    //                     "attribute_values": [
+    //                         {
+    //                             "attribute_value_id": 1,
+    //                             "attribute_value_name": "red"
+    //                         },
+    //                         {
+    //                             "attribute_value_id": 4,
+    //                             "attribute_value_name": "blue"
+    //                         }
+    //                     ]
+    //                 },
+    //                 {
+    //                     "attribute_id": 2,
+    //                     "attribute_name": "Kích cỡ",
+    //                     "attribute_type": "Button",
+    //                     "attribute_values": [
+    //                         {
+    //                             "attribute_value_id": 2,
+    //                             "attribute_value_name": "XL"
+    //                         },
+    //                         {
+    //                             "attribute_value_id": 3,
+    //                             "attribute_value_name": "XXL"
+    //                         }
+    //                     ]
+    //                 }
+    //             ]
+
+
+
+
+
+
 
     public function updateQuantity(Request $request)
     {
@@ -166,7 +244,7 @@ class CartController extends Controller
         $change_type = request()->input('change_type');
 
         $check_cart = Cart::find($cart_id);
-        $response=[];
+        $response = [];
         if ($check_cart) {
             $check_product_variant = Product_variant::find($product_variant_id);
             if ($check_product_variant) {
@@ -214,33 +292,29 @@ class CartController extends Controller
         return response()->json($response);
     }
 
-    // public function updateVariant(Request $request)
-    // {
-    //     $request->validate([
-    //         'cart_id' => 'required|exists:carts,id',
-    //         'variant_id' => 'required|exists:product_variants,id'
-    //     ]);
+    public function updateVariant(Request $request)
+    {
+        // Lấy giỏ hàng và biến thể mới từ yêu cầu
+        $cart = Cart::findOrFail($request->cart_id);
+        $newVariant = Product_variant::findOrFail($request->variant_id);
 
-    //     $cart = Cart::findOrFail($request->cart_id);
-    //     $newVariant = Product_variant::findOrFail($request->variant_id);
+        // Kiểm tra xem biến thể mới có tồn tại hay không
+        if (!$newVariant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Biến thể không hợp lệ'
+            ], 422);
+        }
 
-    //     // Kiểm tra stock của variant mới
-    //     if ($cart->quantity > $newVariant->stock) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Số lượng vượt quá tồn kho của biến thể mới'
-    //         ], 422);
-    //     }
+        // Cập nhật lại biến thể trong giỏ hàng mà không thay đổi giá hoặc tồn kho
+        $cart->product_variant_id = $newVariant->id;
+        $cart->save();
 
-    //     $cart->product_variant_id = $newVariant->id;
-    //     $cart->save();
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Cập nhật biến thể thành công',
-    //         'new_price' => $newVariant->sale_price ?? $newVariant->regular_price,
-    //         'new_total' => ($newVariant->sale_price ?? $newVariant->regular_price) * $cart->quantity,
-    //         'stock' => $newVariant->stock
-    //     ]);
-    // }
+        // Trả về phản hồi thành công
+        return response()->json([
+            'success' => true,
+            'message' => 'Cập nhật biến thể thành công',
+            // Không cần trả giá hoặc số lượng tồn kho vì bạn không yêu cầu thay đổi chúng
+        ]);
+    }
 }

@@ -66,7 +66,7 @@ class Product extends Model
     {
         return $this->hasMany(Product_view_history::class);
     }
-    public function priceProduct()
+    public function getPriceRangeAttribute()
     {
         $salePrices = $this->product_variants->pluck('sale_price');
         $importPrices = $this->product_variants->pluck('regular_price');
@@ -78,28 +78,28 @@ class Product extends Model
 
         if ($salePrices->every(fn($price) => $price === null)) {
             // Tất cả sale_price đều là null
-            return "$" . number_format($minImportPrice) . " - $" . number_format($maxImportPrice);
+            return number_format($minImportPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxImportPrice, 0, ',', '.') . 'đ';
         } elseif ($salePrices->contains(null)) {
             // Có sale_price null
             if ($minSalePrice === null) {
                 return $maxSalePrice === $minImportPrice
-                    ? "$" . number_format($maxSalePrice)
-                    : "$" . number_format($minImportPrice) . " - $" . number_format($maxSalePrice);
+                    ? number_format($maxSalePrice, 0, ',', '.')
+                    : number_format($minImportPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxSalePrice, 0, ',', '.') . 'đ';
             } elseif ($maxSalePrice === null) {
                 return $minSalePrice === $maxImportPrice
-                    ? "$" . number_format($minSalePrice)
-                    : "$" . number_format($minSalePrice) . " - $" . number_format($maxImportPrice);
+                    ? number_format($minSalePrice, 0, ',', '.')
+                    : number_format($minSalePrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxImportPrice, 0, ',', '.') . 'đ';
             } else {
                 return $minImportPrice === $maxSalePrice
-                    ? "$" . number_format($minImportPrice)
-                    : "$" . number_format($maxSalePrice) . " - $" . number_format($maxImportPrice);
+                    ? number_format($minImportPrice, 0, ',', '.')
+                    : number_format($maxSalePrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxImportPrice, 0, ',', '.') . 'đ';
             }
         } else {
             // Có sale_price cho tất cả
             if ($minSalePrice === $maxSalePrice || $minSalePrice === $maxImportPrice || $maxSalePrice === $minImportPrice) {
-                return "$" . number_format(min($minSalePrice, $maxSalePrice, $minImportPrice, $maxImportPrice));
+                return number_format(min($minSalePrice, $maxSalePrice, $minImportPrice, $maxImportPrice), 0, ',', '.') . 'đ';
             }
-            return "$" . number_format($minSalePrice) . " - $" . number_format($maxSalePrice);
+            return number_format($minSalePrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxSalePrice, 0, ',', '.') . 'đ';
         }
     }
 

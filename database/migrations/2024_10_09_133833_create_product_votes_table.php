@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(Product_variant::class)->comment('Xác định biến thể sản phẩm nào đang được đánh giá')->constrained();
             $table->foreignIdFor(Order_detail::class)->comment('Xác định đơn hàng chi tiết nào đang được đánh giá')->constrained();
             $table->foreignIdFor(User::class)->comment('Xác định người dùng nào đang đánh giá')->constrained();
+            $table->tinyInteger('is_active')->default(1)->comment('1: hiện đánh giá, 0: ẩn đánh giá');
             $table->timestamps();
         });
     }

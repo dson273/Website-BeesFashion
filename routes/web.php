@@ -20,6 +20,11 @@ Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('productDetail/{sku}', [ProductDetailController::class, 'index'])->name('product.detail');
 Route::post('productDetail', [ProductDetailController::class, 'updateInformationProduct'])->name('userProductDetailFocused');
 
+
+//Thêm sản phẩm vào giỏ trang chủ
+Route::get('/get-product-details/{productId}', [HomeController::class, 'getProductDetails']);
+Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
+
 //Trang thanh toán
 // Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 
@@ -49,7 +54,7 @@ Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPasswor
 
 
 //filterProduct
-Route::get('product', [FilterProductController::class, 'index']);
+Route::get('product', [FilterProductController::class, 'index'])->name('product');
 Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'getMinMaxPriceProduct'])->name('getMinMaxPriceProduct');
 // web.php hoặc api.php
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
@@ -81,12 +86,16 @@ Route::middleware('auth')->group(function () {
     Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
     Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
+    Route::get('cart/product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('getProductVariants');
+    Route::post('cart//update-variant', [CartController::class, 'updateVariant'])->name('updateVariant');//cập nhật biến thể trong giỏ hàng
+    Route::post('product/{product_id}/update-variant', [CartController::class, 'updateVariant']);
+
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     //Trang yêu thích
     Route::get('wishlist/{product_id}', [WishlistController::class, 'index']);
     //Checkout
-    Route::prefix('check-out')->group(function () {
+ Route::prefix('check-out')->group(function () {
         Route::get('/', [CheckOutController::class, 'index'])->name('checkout');
         Route::post('/add-address', [CheckOutController::class, 'addAddress'])->name('checkout.addAddress');
         Route::post('/get-list-addresses', [CheckOutController::class, 'getListAddresses'])->name('checkout.getListAddresses');
@@ -108,6 +117,8 @@ Route::middleware('auth')->group(function () {
     Route::get('order-success/{id}', [OrderController::class, 'show'])->name('order_success');
     Route::get('order-failed/{id}', [OrderController::class, 'show'])->name('order_failed');
 
+
     //Thêm sản phẩm vào giỏ trang chủ
-    Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
+//     Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
+
 });

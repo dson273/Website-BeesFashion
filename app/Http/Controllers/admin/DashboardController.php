@@ -18,26 +18,10 @@ class DashboardController extends Controller
     {
         $totalProducts = Product::count();
         $totalView = Product::where('is_active', '1')->sum('view');
-        $totalOrders = Order::join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-            ->where('status_orders.status_id', 4)
-            ->count();
+        $totalOrders = Order::count();
         $totalUsers = User::where('role', 'member')->count();
 
         return view('admin.dashboard', compact('totalProducts', 'totalOrders', 'totalView', 'totalUsers'));
-    }
-
-    //Liệt kê sản phẩm có lượt xem
-    public function product_views()
-    {
-        $listProductViews = Product::where('is_active', 1)
-            ->where('view', '>', 0)
-            ->select('products.*')
-            ->selectRaw('(SELECT file_name FROM product_files
-                  WHERE is_default = 1 AND product_id = products.id LIMIT 1) as mainImage')
-            ->orderBy('view', 'desc')
-            ->get();
-
-        return view('admin.statistics.product_views', compact('listProductViews'));
     }
 
     //Thống kê doanh thu shop theo thời gian
@@ -181,7 +165,7 @@ class DashboardController extends Controller
 
         return $intervals;
     }
-  
+
     //Lấy khoảng thời gian hàng tháng
     private function getMonthlyIntervals(Carbon $startDate, Carbon $endDate): array
     {

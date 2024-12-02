@@ -11,22 +11,21 @@ use App\Models\Product_variant;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Product_variant_attribute_value;
+use App\Models\Order_detail;
+use App\Models\Product_vote;
 
 class ProductDetailController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(string $sku)
     {
         $product = Product::with([
             'product_variants.variant_attribute_values.attribute_value.attribute',
             'categories',
             'product_files',
-            'product_variants.product_votes'
+            'product_variants.product_votes.user',
+            'product_variants.order_details.order.status_orders.status'
         ])->where('SKU', $sku)->first();
-        
+
         //View tăng lên 1
         if ($product) {
             $product->increment('view');
@@ -158,10 +157,16 @@ class ProductDetailController extends Controller
             $inactiveImage = $relatedProduct->product_files->where('is_default', 0)->first();
             $relatedProduct->active_image = $activeImage ? $activeImage->file_name : null;
             $relatedProduct->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
+
+            $rating = $this->calculateProductRating($relatedProduct);
+            $relatedProduct->rating = $rating;
             return $relatedProduct;
         });
+        //Đánh giá sản phẩm
+        $reviewData = $this->getProductReviewData($product);
+        // dd($reviewData);
 
-        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts'));
+        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts', 'reviewData'));
     }
 
     public function updateInformationProduct(Request $request)
@@ -239,51 +244,64 @@ class ProductDetailController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    private function calculateProductRating($product)
     {
-        //
+        $variantIds = $product->product_variants->pluck('id')->toArray();
+
+        $reviews = Product_vote::whereIn('product_variant_id', $variantIds)
+            ->where('is_active', 1)
+            ->get();
+
+        $totalReviews = $reviews->count();
+        $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 5; // Mặc định 5 sao nếu chưa có đánh giá
+
+        return [
+            'average_rating' => $averageRating,
+            'total_reviews' => $totalReviews
+        ];
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    private function getProductReviewData($product)
     {
-        //
-    }
+        $variantIds = $product->product_variants->pluck('id')->toArray();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        // Lấy đánh giá
+        $reviews = Product_vote::whereIn('product_variant_id', $variantIds)
+        ->where('is_active',1)
+            ->with(['user', 'product_variant'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        // Tính toán thống kê
+        $totalReviews = $reviews->count();
+        $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 0;
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        // Tính phần trăm cho từng số sao
+        $starCounts = $reviews->groupBy('star');
+        $starPercentages = [];
+        for ($i = 5; $i >= 1; $i--) {
+            $count = isset($starCounts[$i]) ? $starCounts[$i]->count() : 0;
+            $starPercentages[$i] = $totalReviews > 0 ? round(($count / $totalReviews) * 100) : 0;
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Tính tổng số lượng đã bán
+        $totalSold = Order_detail::whereIn('product_variant_id', $variantIds)
+            ->whereHas('order.status_orders.status', function($query) {
+                $query->where('name', 'Completed');
+            })
+            ->sum('quantity');
+
+        // Thêm fake_sales nếu có
+        $totalSold += $product->fake_sales ?? 0;
+
+        return [
+            'reviews' => $reviews,
+            'stats' => [
+                'average_rating' => $averageRating,
+                'total_reviews' => $totalReviews,
+                'star_percentages' => $starPercentages,
+                'total_sold' => $totalSold
+            ]
+        ];
     }
 }

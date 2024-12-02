@@ -109,7 +109,7 @@
                 <div class="card h-100">
                     <div class="card-header">
                         <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="fas fa-chart-bar me-1"></i>
+                            <i class="fas fa-chart-bar mr-1"></i>
                             Doanh thu sản phẩm
                         </h6>
                     </div>
@@ -122,7 +122,7 @@
                 <div class="card h-100">
                     <div class="card-header">
                         <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="fas fa-chart-bar me-1"></i>
+                            <i class="fas fa-chart-bar mr-1"></i>
                             Lợi nhuận sản phẩm
                         </h6>
                     </div>
@@ -137,13 +137,13 @@
         <div class="card">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">
-                    <i class="fas fa-table me-1"></i>
+                    <i class="fas fa-table mr-1"></i>
                     Dữ liệu doanh thu chi tiết
                 </h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="revenueTable" class="table table-bordered">
+                    <table id="revenueTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -152,7 +152,7 @@
                                 <th class="text-end">Doanh thu</th>
                                 <th class="text-end">Chi phí</th>
                                 <th class="text-end">Lợi nhuận</th>
-                                <th class="text-end">Lợi nhuân theo %</th>
+                                <th class="text-end">Lợi nhuận theo %</th>
                             </tr>
                         </thead>
                         <tbody>

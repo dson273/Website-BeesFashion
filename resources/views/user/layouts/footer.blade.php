@@ -5,7 +5,8 @@
                 <div class="row">
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="footer-content">
-                            <div class="footer-logo"><a href="{{ route('/') }}"> <img class="img-fluid" src="{{ asset('assets/images/logo/logo-Bee-white.png') }}" alt="Footer Logo"></a>
+                            <div class="footer-logo"><a href="{{ route('/') }}"> <img class="img-fluid"
+                                        src="{{ asset('assets/images/logo/logo-Bee-white.png') }}" alt="Footer Logo"></a>
                             </div>
                             <ul>
                                 <li>
@@ -117,14 +118,16 @@
     <!-- End footer -->
 
     {{-- Modal logout --}}
-    <div class="modal theme-modal fade confirmation-modal" id="modal-logout" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal theme-modal fade confirmation-modal" id="modal-logout" tabindex="-1" role="dialog"
+        aria-modal="true">
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-body"> <img class="img-fluid" src="{{ asset('assets/images/gif/question.gif') }}" alt="">
+                <div class="modal-body"> <img class="img-fluid" src="{{ asset('assets/images/gif/question.gif') }}"
+                        alt="">
                     <h4>Confirmation</h4>
                     <p>Are you sure you want to log out?</p>
-                    <div class="submit-button"> <button class="btn" type="submit" data-bs-dismiss="modal" aria-label="Close">No</button><a class="btn"
-                            href="{{ route('logout') }}">Yes</a>
+                    <div class="submit-button"> <button class="btn" type="submit" data-bs-dismiss="modal"
+                            aria-label="Close">No</button><a class="btn" href="{{ route('logout') }}">Yes</a>
                     </div>
                 </div>
             </div>
@@ -242,83 +245,29 @@
     </div> --}}
     <!-- End modal cart right -->
 
-    <!-- Modal add cart -->
-    <div class="modal theme-modal fade cart-modal" id="addtocart" tabindex="-1" role="dialog" aria-modal="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body modal1">
-                    <div class="custom-container container">
-                        <div class="row">
-                            <div class="col-12 px-0">
-                                <div class="modal-bg addtocart">
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    <div class="conten-popup">
-                                        {{-- <a href="#"><img class="img-fluid blur-up lazyload pro-img"
-                                                src="{{ asset('assets/images/modal/0.jpg') }}" alt=""></a> --}}
-                                        <div class="add-card-content align-self-center text-center">
-                                            <a href="#">
-                                                <h6><i class="fa-solid fa-check"> </i>The product has been successfully added to your shopping cart
-                                                </h6>
-                                            </a>
-                                            <div class="buttons">
-                                                <a class="view-cart btn btn-solid" href="{{ route('cart') }}">Your cart</a>
-                                                {{-- <a class="checkout btn btn-solid" href="check-out.html">Check out</a> --}}
-                                                <a class="continue btn btn-solid" href="{{ route('/') }}">Continue shopping</a>
-                                            </div>
-                                            <div class="upsell_payment"><img class="img-fluid blur-up lazyload" src="{{ asset('assets/images/payment_cart.png') }}" alt=""></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   
     <!-- End modal add cart -->
 
     <!-- Modal Seach -->
-    <div class="offcanvas offcanvas-top search-details" id="offcanvasTop" tabindex="-1" aria-labelledby="offcanvasTopLabel">
-        <div class="offcanvas-header"><button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="offcanvas offcanvas-top search-details" id="offcanvasTop" tabindex="-1"
+        aria-labelledby="offcanvasTopLabel">
+        <div class="offcanvas-header"><button class="btn-close" type="button" data-bs-dismiss="offcanvas"
+                aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
         <div class="offcanvas-body theme-scrollbar">
             <div class="container">
-                <h3>What are you trying to find?</h3>
-                <div class="search-box"> <input type="search" name="text" placeholder="I'm looking for…"><i class="iconsax" data-icon="search-normal-2"></i>
+                <h3>Bạn đang muốn tìm kiếm gì!!</h3>
+                <div class="search-box">
+                    <input type="search" id="search-input-of-header" name="text" placeholder="Tìm kiếm sản phẩm...">
+                    <i class="iconsax" data-icon="search-normal-2" id="search-icon"></i>
                 </div>
-                <h4>Popular Searches</h4>
-                <ul class="rapid-search">
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Jeans
-                            Women</a>
-                    </li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Blazer
-                            Women</a></li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Jeans
-                            Men</a>
-                    </li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Blazer
-                            Men</a>
-                    </li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>T-Shirts
-                            Men</a></li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Shoes
-                            Men</a>
-                    </li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>T-Shirts
-                            Women</a></li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Bags</a>
-                    </li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Sneakers
-                            Women</a></li>
-                    <li> <a href="product-select.html"><i class="iconsax" data-icon="search-normal-2"></i>Dresses</a>
-                    </li>
-                </ul>
+
                 <h4>You Might Like</h4>
                 <div class="row gy-4 ratio_square-2 preemptive-search">
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/1.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-2/blazers/1.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -343,7 +292,8 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/2.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-2/blazers/2.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -368,7 +318,8 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/3.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-2/blazers/3.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -393,7 +344,8 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/4.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-2/blazers/4.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -418,7 +370,8 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/5.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-2/blazers/5.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -443,7 +396,8 @@
                     <div class="col-xl-2 col-sm-4 col-6">
                         <div class="product-box-6">
                             <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img" src="{{ asset('assets/images/product/product-2/blazers/6.jpg') }}"
+                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
+                                            src="{{ asset('assets/images/product/product-2/blazers/6.jpg') }}"
                                             alt="product"></a>
                                 </div>
                             </div>
@@ -468,3 +422,35 @@
         </div>
     </div>
     <!-- End seach -->
+    <script>
+        // Lắng nghe sự kiện nhấn Enter trên ô input tìm kiếm
+        document.getElementById('search-input-of-header').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Lắng nghe sự kiện click vào biểu tượng tìm kiếm
+        document.getElementById('search-icon').addEventListener('click', function() {
+            performSearch();
+        });
+
+        // Hàm thực hiện tìm kiếm và chuyển hướng tới trang sản phẩm
+        function performSearch() {
+            const searchValue = document.getElementById('search-input-of-header').value.trim(); // Lấy giá trị từ ô input
+            console.log(searchValue);
+
+            if (searchValue) {
+                var current_url = new URL(window.location.href);
+                var search_param = current_url.searchParams.has('search');
+                if (search_param) {
+                    current_url.searchParams.delete('search');
+                    window.history.replaceState({}, '', current_url);
+                }
+
+                
+                // Chuyển hướng đến trang product và thêm query string 'name' với từ khóa tìm kiếm
+                window.location.href = '/product?search=' + encodeURIComponent(searchValue);
+            }
+        }
+    </script>
