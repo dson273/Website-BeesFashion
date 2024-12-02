@@ -111,14 +111,14 @@ async function loadListAddresses() {
         if (!dataListAddresses['is_default']) {
             const setDefaultButton = document.createElement("a");
             setDefaultButton.classList.add("btn", "btn-light", "btn-sm", "btn_set_default_address", "rounded-0");
-            setDefaultButton.setAttribute("href", "javascrip:void(0)");
+            setDefaultButton.setAttribute("href", "javascript:void(0)");
             setDefaultButton.textContent = "Set default";
             buttons.appendChild(setDefaultButton);
         }
 
         const editButton = document.createElement("a");
         editButton.classList.add("btn", "btn-dark", "btn-sm", "btn_edit_default_address", "rounded-0");
-        editButton.setAttribute("href", "javascrip:void(0)");
+        editButton.setAttribute("href", "javascript:void(0)");
         editButton.setAttribute("data-bs-toggle", "modal");
         editButton.setAttribute("data-bs-target", "#edit-default-address-modal");
         editButton.setAttribute("title", "Edit default address");
@@ -214,7 +214,7 @@ async function loadListAddresses() {
                 if (!addressOrtherItem['is_default']) {
                     const setDefaultButton = document.createElement("a");
                     setDefaultButton.classList.add("btn", "btn-light", "btn-sm", "btn_set_default_address_other", "rounded-0");
-                    setDefaultButton.setAttribute("href", "javascrip:void(0)");
+                    setDefaultButton.setAttribute("href", "javascript:void(0)");
                     setDefaultButton.setAttribute("data-id", addressOrtherItem['id']);
                     setDefaultButton.textContent = "Set default";
                     buttons.appendChild(setDefaultButton);
@@ -222,7 +222,7 @@ async function loadListAddresses() {
 
                 const editButton = document.createElement("a");
                 editButton.classList.add("btn", "btn-dark", "btn-sm", "btn_edit_address_other", "rounded-0");
-                editButton.setAttribute("href", "javascrip:void(0)");
+                editButton.setAttribute("href", "javascript:void(0)");
                 editButton.setAttribute("data-bs-toggle", "modal");
                 editButton.setAttribute("data-bs-target", "#edit-address-modal");
                 editButton.setAttribute("title", "Edit address");
@@ -235,7 +235,7 @@ async function loadListAddresses() {
 
                 const deleteButton = document.createElement("a");
                 deleteButton.classList.add("btn", "btn-danger", "btn-sm", "btn_delete_address_other", "rounded-0");
-                deleteButton.setAttribute("href", "javascrip:void(0)");
+                deleteButton.setAttribute("href", "javascript:void(0)");
                 deleteButton.setAttribute("data-id", addressOrtherItem['id']);
                 deleteButton.textContent = "Delete";
 
@@ -519,7 +519,7 @@ $('#edit-address-form').on('submit', function (e) {
         }
     });
 });
-
+//Xử lý xóa địa chỉ
 $(document).on('click', '.btn_delete_address_other', function () {
     var address_id = $(this).data('id');
     document.getElementById('delete-address-form').action = routeDeleteAddress(address_id);
@@ -540,7 +540,19 @@ $('#delete-address-form').on('submit', function (e) {
             $('#delete-address-modal').modal('hide');
             if (response.success) {
                 notification('success', response.message, 'Successfully!', 2000);
+
                 await loadListAddresses();
+
+                document.querySelectorAll('.addressItem').forEach(function (item) {
+                    let input = $(item).find('input[type="radio"],input[type="checkbox"]');
+                    if (input.is(':checked')) {
+                        if (!$(item).find('.btn_edit_address_other').data('id')) {
+                            data_to_place_order['address_id'] = null;
+                        } else {
+                            data_to_place_order['address_id'] = $(item).find('.btn_edit_address_other').data('id');
+                        }
+                    }
+                })
             }
         },
         error: function (error) {
@@ -592,7 +604,6 @@ $(document).off('click', '.labelAddressItem').on('click', '.labelAddressItem', f
     if (!addressId) {
         if ($(this).find('.btn_edit_default_address').length > 0) {
             data_to_place_order['address_id'] = null;
-        } else {
         }
     } else {
         data_to_place_order['address_id'] = addressId;
@@ -729,177 +740,191 @@ function getVoucherByCode(voucherCode) {
 }
 var variant_item_already_updated = [];
 $(document).on('click', '#btnApplyVoucher', async function () {
-    if (has_product) {
-        if (!appliedVoucherStatus) {
-            var voucherCode = $(this).closest('.coupon-code').find('#inputApplyVoucher').val();
-            if (voucherCode != "") {
-                await getVoucherByCode(voucherCode);
-                if (voucher_data_from_controller != null) {
-                    var voucher_id = voucher_data_from_controller['voucher_id'];
-                    if (voucher_data_from_controller['type'] == "free_ship") {
-                        var amount = voucher_data_from_controller['amount'];
-                        if (amount >= base_shipping_price) {
-                            shipping_price_reduced = base_shipping_price;
-                            //Hiển thị tiêu đề
-                            $('#titleAppliedDiscounts').removeClass('hidden');
-                            //Hiển thị giá trị vận chuyển được giảm từ voucher
-                            $('#liShippingVoucher').removeClass('hidden').find('#shipping_voucher').text(formatCurrency(shipping_price_reduced));
-                            //Fix cứng mã voucher vào ô nhập mã voucher
-                            $('#showVoucher').removeClass('hidden').find('#voucherCode').text(voucherCode);
-                            //Tính số tiền thanh toán mới
-                            new_payment_total_value = base_payment_total - shipping_price_reduced;
-                            //Thêm gạch ngang vào giá thanh toán cũ và hiển thị giá thanh toán mới
-                            $('#paymentTotal').addClass('text-decoration-line-through');
-                            $('#newPaymentTotal').removeClass('hidden').text(formatCurrency(new_payment_total_value));
+    $('.container-spinner').removeClass('hidden');
+    try {
+        if (has_product) {
+            if (!appliedVoucherStatus) {
+                var voucherCode = $(this).closest('.coupon-code').find('#inputApplyVoucher').val();
+                if (voucherCode != "") {
+                    await getVoucherByCode(voucherCode);
+                    if (voucher_data_from_controller != null) {
+                        var voucher_id = voucher_data_from_controller['voucher_id'];
+                        if (voucher_data_from_controller['type'] == "free_ship") {
+                            var amount = voucher_data_from_controller['amount'];
+                            if (amount >= base_shipping_price) {
+                                shipping_price_reduced = base_shipping_price;
+                                //Hiển thị tiêu đề
+                                $('#titleAppliedDiscounts').removeClass('hidden');
+                                //Hiển thị giá trị vận chuyển được giảm từ voucher
+                                $('#liShippingVoucher').removeClass('hidden').find('#shipping_voucher').text(formatCurrency(shipping_price_reduced));
+                                //Fix cứng mã voucher vào ô nhập mã voucher
+                                $('#showVoucher').removeClass('hidden').find('#voucherCode').text(voucherCode);
+                                //Tính số tiền thanh toán mới
+                                new_payment_total_value = base_payment_total - shipping_price_reduced;
+                                //Thêm gạch ngang vào giá thanh toán cũ và hiển thị giá thanh toán mới
+                                $('#paymentTotal').addClass('text-decoration-line-through');
+                                $('#newPaymentTotal').removeClass('hidden').text(formatCurrency(new_payment_total_value));
 
-                            data_to_place_order['shipping_voucher'] = shipping_price_reduced;
-                            //Đặt trạng thái áp dụng voucher là true
-                            appliedVoucherStatus = true;
-                            applied_shipping_voucher = true;
+                                data_to_place_order['shipping_voucher'] = shipping_price_reduced;
+                                //Đặt trạng thái áp dụng voucher là true
+                                appliedVoucherStatus = true;
+                                applied_shipping_voucher = true;
+                            } else {
+                                shipping_price_reduced = amount;
+                                //Hiển thị tiêu đề
+                                $('#titleAppliedDiscounts').removeClass('hidden');
+                                //Hiển thị giá trị vận chuyển được giảm từ voucher
+                                $('#liShippingVoucher').removeClass('hidden').find('#shipping_voucher').text(formatCurrency(shipping_price_reduced));
+                                //Fix cứng mã voucher vào ô nhập mã voucher
+                                $('#showVoucher').removeClass('hidden').find('#voucherCode').text(voucherCode);
+                                //Tính số tiền thanh toán mới
+                                new_payment_total_value = base_payment_total - shipping_price_reduced;
+                                //Thêm gạch ngang vào giá thanh toán cũ và hiển thị giá thanh toán mới
+                                $('#paymentTotal').addClass('text-decoration-line-through');
+                                $('#newPaymentTotal').removeClass('hidden').text(formatCurrency(new_payment_total_value));
+
+                                data_to_place_order['shipping_voucher'] = shipping_price_reduced;
+                                //Đặt trạng thái áp dụng voucher là true
+                                appliedVoucherStatus = true;
+                                applied_shipping_voucher = true;
+                            }
                         } else {
-                            shipping_price_reduced = amount;
-                            //Hiển thị tiêu đề
-                            $('#titleAppliedDiscounts').removeClass('hidden');
-                            //Hiển thị giá trị vận chuyển được giảm từ voucher
-                            $('#liShippingVoucher').removeClass('hidden').find('#shipping_voucher').text(formatCurrency(shipping_price_reduced));
-                            //Fix cứng mã voucher vào ô nhập mã voucher
-                            $('#showVoucher').removeClass('hidden').find('#voucherCode').text(voucherCode);
-                            //Tính số tiền thanh toán mới
-                            new_payment_total_value = base_payment_total - shipping_price_reduced;
-                            //Thêm gạch ngang vào giá thanh toán cũ và hiển thị giá thanh toán mới
-                            $('#paymentTotal').addClass('text-decoration-line-through');
-                            $('#newPaymentTotal').removeClass('hidden').text(formatCurrency(new_payment_total_value));
-
-                            data_to_place_order['shipping_voucher'] = shipping_price_reduced;
-                            //Đặt trạng thái áp dụng voucher là true
-                            appliedVoucherStatus = true;
-                            applied_shipping_voucher = true;
-                        }
-                    } else {
-                        var cumulative_discount = 0;
-                        var total_price_of_product = 0;
-                        $('.variant_item').each(function () {
-                            var variant_item = $(this);
-                            var variant_id = variant_item.find('.variant_id').val();
-                            // var variant_quantity = variant_item.find('.variant_quantity').val();
-                            var variant_total_price = variant_item.find('.variant_total_price').val();
-                            voucher_data_from_controller['variant_data'].forEach(function (variant_item_from_controlller) {
-                                if (variant_item_from_controlller)
-                                    if (variant_item_from_controlller['variant_id'] == variant_id && !variant_item_already_updated.includes(variant_id)) {
-                                        variant_item_already_updated.push(variant_id);
-                                        total_price_of_product += variant_total_price;
-                                        var value_reduced = 0;
-                                        var reduce_price = variant_item_from_controlller['reduce_price'];
-                                        if (variant_total_price > cumulative_discount + reduce_price) {
-                                            value_reduced = cumulative_discount + reduce_price;
-                                            variant_item.find('.p_value_reduced').removeClass('hidden').find('.value_reduced').text(formatCurrency(value_reduced));
-                                            cumulative_discount = 0;
-                                            voucher_reduced += parseFloat(value_reduced);
-                                        } else if (variant_total_price < cumulative_discount + reduce_price) {
-                                            console.log(cumulative_discount);
-                                            value_reduced = variant_total_price;
-                                            cumulative_discount = (reduce_price + cumulative_discount) - value_reduced;
-                                            variant_item.find('.p_value_reduced').removeClass('hidden').find('.value_reduced').text(formatCurrency(value_reduced));
-                                            voucher_reduced += parseFloat(value_reduced);
-                                        } else {
-                                            console.log(cumulative_discount);
-                                            value_reduced = cumulative_discount + reduce_price;
-                                            variant_item.find('.p_value_reduced').removeClass('hidden').find('.value_reduced').text(formatCurrency(value_reduced));
-                                            cumulative_discount = 0;
-                                            voucher_reduced += parseFloat(value_reduced);
-                                        }
-                                        data_to_place_order['product_variants'].forEach(function (item) {
-                                            if (item['id'] == variant_id) {
-                                                item['reduced_price'] = value_reduced;
+                            var cumulative_discount = 0;
+                            var total_price_of_product = 0;
+                            $('.variant_item').each(function () {
+                                var variant_item = $(this);
+                                var variant_id = variant_item.find('.variant_id').val();
+                                // var variant_quantity = variant_item.find('.variant_quantity').val();
+                                var variant_total_price = variant_item.find('.variant_total_price').val();
+                                voucher_data_from_controller['variant_data'].forEach(function (variant_item_from_controlller) {
+                                    if (variant_item_from_controlller)
+                                        if (variant_item_from_controlller['variant_id'] == variant_id && !variant_item_already_updated.includes(variant_id)) {
+                                            variant_item_already_updated.push(variant_id);
+                                            total_price_of_product += variant_total_price;
+                                            var value_reduced = 0;
+                                            var reduce_price = variant_item_from_controlller['reduce_price'];
+                                            if (variant_total_price > cumulative_discount + reduce_price) {
+                                                value_reduced = cumulative_discount + reduce_price;
+                                                variant_item.find('.p_value_reduced').removeClass('hidden').find('.value_reduced').text(formatCurrency(value_reduced));
+                                                cumulative_discount = 0;
+                                                voucher_reduced += parseFloat(value_reduced);
+                                            } else if (variant_total_price < cumulative_discount + reduce_price) {
+                                                console.log(cumulative_discount);
+                                                value_reduced = variant_total_price;
+                                                cumulative_discount = (reduce_price + cumulative_discount) - value_reduced;
+                                                variant_item.find('.p_value_reduced').removeClass('hidden').find('.value_reduced').text(formatCurrency(value_reduced));
+                                                voucher_reduced += parseFloat(value_reduced);
+                                            } else {
+                                                console.log(cumulative_discount);
+                                                value_reduced = cumulative_discount + reduce_price;
+                                                variant_item.find('.p_value_reduced').removeClass('hidden').find('.value_reduced').text(formatCurrency(value_reduced));
+                                                cumulative_discount = 0;
+                                                voucher_reduced += parseFloat(value_reduced);
                                             }
-                                        })
-                                    }
+                                            data_to_place_order['product_variants'].forEach(function (item) {
+                                                if (item['id'] == variant_id) {
+                                                    item['reduced_price'] = value_reduced;
+                                                }
+                                            })
+                                        }
+                                })
                             })
-                        })
-                        console.log(voucher_reduced);
-                        $('#titleAppliedDiscounts').removeClass('hidden');
-                        if (voucher_reduced >= total_price_of_product) {
-                            new_sub_total_value = base_sub_total - total_price_of_product;
-                            $('#sub_total').addClass('text-decoration-line-through');
-                            $('#new_sub_total').removeClass('hidden').text(formatCurrency(new_sub_total_value));
-                            $('#liVoucher').find('#voucher').text(formatCurrency(total_price_of_product));
-                        } else {
-                            new_sub_total_value = base_sub_total - voucher_reduced;
-                            $('#sub_total').addClass('text-decoration-line-through');
-                            $('#new_sub_total').removeClass('hidden').text(formatCurrency(new_sub_total_value));
-                            $('#liVoucher').find('#voucher').text(formatCurrency(voucher_reduced));
+                            console.log(voucher_reduced);
+                            $('#titleAppliedDiscounts').removeClass('hidden');
+                            if (voucher_reduced >= total_price_of_product) {
+                                new_sub_total_value = base_sub_total - total_price_of_product;
+                                $('#sub_total').addClass('text-decoration-line-through');
+                                $('#new_sub_total').removeClass('hidden').text(formatCurrency(new_sub_total_value));
+                                $('#liVoucher').find('#voucher').text(formatCurrency(total_price_of_product));
+                            } else {
+                                new_sub_total_value = base_sub_total - voucher_reduced;
+                                $('#sub_total').addClass('text-decoration-line-through');
+                                $('#new_sub_total').removeClass('hidden').text(formatCurrency(new_sub_total_value));
+                                $('#liVoucher').find('#voucher').text(formatCurrency(voucher_reduced));
+                            }
+
+                            new_payment_total_value = parseFloat(new_sub_total_value) + parseFloat(base_tax) + parseFloat(base_shipping_price) - (parseFloat(shipping_price_reduced));
+
+                            $('#paymentTotal').addClass('text-decoration-line-through');
+                            $('#newPaymentTotal').removeClass('hidden').text(formatCurrency(new_payment_total_value));
+
+                            $('#showVoucher').removeClass('hidden').find('#voucherCode').text(voucherCode);
+
+                            $('#liVoucher').removeClass('hidden');
+
+                            data_to_place_order['voucher'] = voucher_reduced;
+
+                            appliedVoucherStatus = true;
+                            applied_voucher = true;
                         }
-
-                        new_payment_total_value = parseFloat(new_sub_total_value) + parseFloat(base_tax) + parseFloat(base_shipping_price) - (parseFloat(shipping_price_reduced));
-
-                        $('#paymentTotal').addClass('text-decoration-line-through');
-                        $('#newPaymentTotal').removeClass('hidden').text(formatCurrency(new_payment_total_value));
-
-                        $('#showVoucher').removeClass('hidden').find('#voucherCode').text(voucherCode);
-
-                        $('#liVoucher').removeClass('hidden');
-
-                        data_to_place_order['voucher'] = voucher_reduced;
-
-                        appliedVoucherStatus = true;
-                        applied_voucher = true;
+                        data_to_place_order['voucher_id'] = voucher_id;
+                        data_to_place_order['total_cost'] = new_sub_total_value;
+                        data_to_place_order['total_payment'] = new_payment_total_value;
                     }
-                    data_to_place_order['voucher_id'] = voucher_id;
-                    data_to_place_order['total_cost'] = new_sub_total_value;
-                    data_to_place_order['total_payment'] = new_payment_total_value;
+                } else {
+                    notification('warning', 'Vui lòng không để trống trường nhập!', 'Warning!', 2000);
                 }
             } else {
-                notification('warning', 'Vui lòng không để trống trường nhập!', 'Warning!', 2000);
+                notification('warning', 'Đã áp dụng voucher!', 'Cảnh báo!', 2000);
             }
         } else {
-            notification('warning', 'Đã áp dụng voucher!', 'Cảnh báo!', 2000);
+            notification('warning', 'Vui lòng quay lại giỏ hàng hoặc chi tiết sản phẩm để tiến hành mua sản phẩm!', 'Cảnh báo!', 2000);
         }
-    } else {
-        notification('warning', 'Vui lòng quay lại giỏ hàng hoặc chi tiết sản phẩm để tiến hành mua sản phẩm!', 'Cảnh báo!', 2000);
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+        $('.container-spinner').addClass('hidden');
     }
 })
 
 $(document).on('click', '#cancelVoucher', function () {
-    if (applied_shipping_voucher == true) {
-        shipping_price_reduced = free_ship_status ? base_shipping_price : 0;
-        data_to_place_order['shipping_voucher'] = shipping_price_reduced;
-        $('#liShippingVoucher').addClass('hidden');
-        applied_shipping_voucher = false;
-    } else if (applied_voucher = true) {
-        voucher_reduced = 0;
-        $('.variant_item').each(function () {
-            var variant_id = $(this).find('.variant_id').val();
-            var p_value_reduced = $(this).find('.p_value_reduced');
-            if (!p_value_reduced.hasClass('hidden')) {
-                p_value_reduced.addClass('hidden');
-            }
-            variant_item_already_updated = variant_item_already_updated.filter(function (item) {
-                return item != variant_id;
-            })
-            data_to_place_order['product_variants'].forEach(function (item) {
-                if (item['id'] == variant_id) {
-                    item['reduced_price'] = null;
+    $('.container-spinner').removeClass('hidden');
+    try {
+        if (applied_shipping_voucher == true) {
+            shipping_price_reduced = free_ship_status ? base_shipping_price : 0;
+            data_to_place_order['shipping_voucher'] = shipping_price_reduced;
+            $('#liShippingVoucher').addClass('hidden');
+            applied_shipping_voucher = false;
+        } else if (applied_voucher = true) {
+            voucher_reduced = 0;
+            $('.variant_item').each(function () {
+                var variant_id = $(this).find('.variant_id').val();
+                var p_value_reduced = $(this).find('.p_value_reduced');
+                if (!p_value_reduced.hasClass('hidden')) {
+                    p_value_reduced.addClass('hidden');
                 }
+                variant_item_already_updated = variant_item_already_updated.filter(function (item) {
+                    return item != variant_id;
+                })
+                data_to_place_order['product_variants'].forEach(function (item) {
+                    if (item['id'] == variant_id) {
+                        item['reduced_price'] = null;
+                    }
+                })
             })
-        })
-        $('#sub_total').removeClass('text-decoration-line-through');
-        $('#new_sub_total').addClass('hidden');
-        $('#liVoucher').addClass('hidden');
-        data_to_place_order['voucher'] = null;
-        applied_voucher = false;
+            $('#sub_total').removeClass('text-decoration-line-through');
+            $('#new_sub_total').addClass('hidden');
+            $('#liVoucher').addClass('hidden');
+            data_to_place_order['voucher'] = null;
+            applied_voucher = false;
+        }
+        data_to_place_order['voucher_id'] = null;
+        data_to_place_order['total_payment'] = base_payment_total;
+        $('#inputApplyVoucher').val('');
+        free_ship_status == false ? $('#titleAppliedDiscounts').addClass('hidden') : "";
+        $('#showVoucher').addClass('hidden');
+
+        $('#paymentTotal').removeClass('text-decoration-line-through');
+        $('#newPaymentTotal').addClass('hidden');
+        new_payment_total_value = base_payment_total;
+
+        appliedVoucherStatus = false;
+        notification('success', 'Bỏ áp dụng voucher thành công!', 'Successfully!', 2000);
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+        $('.container-spinner').addClass('hidden');
     }
-    data_to_place_order['voucher_id'] = null;
-    data_to_place_order['total_payment'] = base_payment_total;
-    $('#inputApplyVoucher').val('');
-    free_ship_status == false ? $('#titleAppliedDiscounts').addClass('hidden') : "";
-    $('#showVoucher').addClass('hidden');
-
-    $('#paymentTotal').removeClass('text-decoration-line-through');
-    $('#newPaymentTotal').addClass('hidden');
-    new_payment_total_value = base_payment_total;
-
-    appliedVoucherStatus = false;
-    notification('success', 'Bỏ áp dụng voucher thành công!', 'Successfully!', 2000);
 })
 
 $(document).on('click', '.payment-box', function () {
@@ -947,63 +972,71 @@ function storeOrder(data) {
 
 // ===================================================Đặt hàng==================================================
 $('#place_order').on('click', async function () {
-    var check = true;
-    // console.log(data_to_place_order);
-    // return;
+    $('.container-spinner').removeClass('hidden');
+    try {
+        var check = true;
+        // console.log(data_to_place_order);
+        // return;
 
-    var selected_payment_method = false;
-    var payment_method = null;
+        var selected_payment_method = false;
+        var payment_method = null;
 
-    var is_default_address = false;
-    var address_id = null;
+        var is_default_address = false;
+        var address_id = null;
 
-    //Lấy phương thức thanh toán
-    document.querySelectorAll('.payment-box').forEach(function (item) {
-        let input = $(item).find('input[type="radio"], input[type="checkbox"]');
-        if (input.is(':checked')) {
-            selected_payment_method = true;
-            payment_method = input.attr('id');
-            data_to_place_order['payment_method'] = payment_method;
-        }
-    })
-    //Lấy địa chỉ
-    document.querySelectorAll('.addressItem').forEach(function (item) {
-        let input = $(item).find('input[type="radio"],input[type="checkbox"]');
-        if (input.is(':checked')) {
-            if (!$(item).find('.btn_edit_address_other ').data('id')) {
-                is_default_address = true;
+        //Lấy phương thức thanh toán
+        document.querySelectorAll('.payment-box').forEach(function (item) {
+            let input = $(item).find('input[type="radio"], input[type="checkbox"]');
+            if (input.is(':checked')) {
+                selected_payment_method = true;
+                payment_method = input.attr('id');
+                data_to_place_order['payment_method'] = payment_method;
             }
-        }
-    })
-
-    if (is_default_address) {
-        if (!updated_default_address) {
-            notification('warning', 'Vui lòng cập nhật địa chỉ của bạn!', 'Warning', 3000);
-        }
-    } else {
+        })
+        //Lấy địa chỉ
         document.querySelectorAll('.addressItem').forEach(function (item) {
             let input = $(item).find('input[type="radio"],input[type="checkbox"]');
             if (input.is(':checked')) {
-                address_id = $(item).find('.btn_edit_address_other ').data('id');
+                if (!$(item).find('.btn_edit_address_other').data('id')) {
+                    is_default_address = true;
+                }
             }
         })
-    }
 
-    if (!selected_payment_method) {
-        check = false;
-        notification('warning', "Vui lòng chọn phương thức thanh toán!", "Warning!", 3000);
-    }
-    if (!is_default_address && address_id == null) {
-        check = false;
-        notification('warning', 'Vui lòng chọn địa chỉ nhận hàng!', 'Warning', 3000);
-    }
-    if (!has_product) {
-        check = false;
-        notification('error', 'Vui lòng thêm sản phẩm để tiến hành đặt hàng!', 'Error!', 3000);
-    }
-    //Nếu tất cả dữ liệu đều hợp lệ thì chạy tiếp
-    if (check) {
-        await storeOrder(data_to_place_order);
+        if (is_default_address) {
+            if (!updated_default_address) {
+                check = false;
+                notification('warning', 'Vui lòng cập nhật địa chỉ của bạn!', 'Warning', 3000);
+            }
+        } else {
+            document.querySelectorAll('.addressItem').forEach(function (item) {
+                let input = $(item).find('input[type="radio"],input[type="checkbox"]');
+                if (input.is(':checked')) {
+                    address_id = $(item).find('.btn_edit_address_other ').data('id');
+                }
+            })
+        }
+
+        if (!selected_payment_method) {
+            check = false;
+            notification('warning', "Vui lòng chọn phương thức thanh toán!", "Warning!", 3000);
+        }
+        if (!is_default_address && address_id == null) {
+            check = false;
+            notification('warning', 'Vui lòng chọn địa chỉ nhận hàng!', 'Warning', 3000);
+        }
+        if (!has_product) {
+            check = false;
+            notification('error', 'Vui lòng thêm sản phẩm để tiến hành đặt hàng!', 'Error!', 3000);
+        }
+        //Nếu tất cả dữ liệu đều hợp lệ thì chạy tiếp
+        if (check) {
+            await storeOrder(data_to_place_order);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+        $('.container-spinner').addClass('hidden');
     }
 })
 

@@ -150,6 +150,35 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
 
+
+//     const variantButton = document.getElementById("variantButton");
+//     const variantBox = document.getElementById("variantBox");
+//     const backButton = document.getElementById("backButton");
+
+//     // Hàm hiển thị box dưới nút
+//     variantButton.addEventListener("click", function (event) {
+//         event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+//         const rect = variantButton.getBoundingClientRect();
+
+//         // Cập nhật vị trí của variantBox ngay dưới nút
+//         variantBox.style.top = `${rect.bottom + window.scrollY}px`;
+//         variantBox.style.left = `${rect.left + window.scrollX}px`;
+
+//         variantBox.classList.toggle("active"); // Hiển thị box
+//     });
+
+//     // Đóng box khi nhấn nút "Trở lại"
+//     backButton.addEventListener("click", function () {
+//         variantBox.classList.remove("active");
+//     });
+
+//     // Đóng box khi nhấn ra ngoài
+//     document.addEventListener("click", function (event) {
+//         if (!variantBox.contains(event.target) && !variantButton.contains(event.target)) {
+//             variantBox.classList.remove("active");
+//         }
+//     });
+
 });
 
 //xóa tất cả những sản phẩm trong giỏ hàng
