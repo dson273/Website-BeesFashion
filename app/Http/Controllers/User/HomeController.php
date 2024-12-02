@@ -131,7 +131,6 @@ class HomeController extends Controller
                 ];
             })->toArray(),
 
-
         ];
 
         // Trả về dữ liệu sản phẩm dưới dạng JSON
