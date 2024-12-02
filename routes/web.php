@@ -73,13 +73,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('dashboard/delete-address/{id}', [DashboardController::class, 'deleteAddress'])->name('dashboard.deleteAddress'); // Xoá địa chỉ
     Route::post('dashboard/shipping-addresses/set-default/{id}', [DashboardController::class, 'setDefaultShippingAddress'])->name('dashboard.addresses.set.default'); //Set địa chỉ mặc định
 
+    Route::post('dashboard/get-orders', [DashboardController::class, 'getOrders'])->name('dashboard.getOrders');
+    Route::post('dashboard/cancel-order', [DashboardController::class, 'cancelOrder'])->name('dashboard.cancelOrder');
+    Route::post('dashboard/confirm-done-order', [DashboardController::class, 'confirmDoneOrder'])->name('dashboard.confirmDoneOrder');
+    Route::post('dashboard/order-detail', [DashboardController::class, 'getOrderDetail'])->name('dashboard.orderDetail');
+    Route::post('dashboard/vote-order-detail', [DashboardController::class, 'getVoteOrderDetail'])->name('dashboard.getVoteOrderDetail');
+    Route::post('dashboard/submit-vote-order-detail', [DashboardController::class, 'submitVoteOrderDetail'])->name('dashboard.submitVoteOrderDetail');
+    Route::post('dashboard/submit-edit-vote-order-detail', [DashboardController::class, 'submitEditVoteOrderDetail'])->name('dashboard.submitEditVoteOrderDetail');
+
     //Trang giỏ hàng
     Route::get('cart', [CartController::class, 'index'])->name('cart');
     Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
     Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
-    Route::get('product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('product.getVariants');
-
+    Route::get('cart/product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('getProductVariants');
+    Route::post('cart//update-variant', [CartController::class, 'updateVariant'])->name('updateVariant');//cập nhật biến thể trong giỏ hàng
+    Route::post('product/{product_id}/update-variant', [CartController::class, 'updateVariant']);
 
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
@@ -98,15 +107,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/get-voucher-by-code', [CheckOutController::class, 'getVoucherByCode'])->name('checkout.getVoucherByCode');
         Route::post('/store-order', [OrderController::class, 'store'])->name('checkout.storeOrder');
 
-        Route::post('/vnpay_create_payment', [PaymentController::class, 'vnpay_payment'])->name('checkout.vnpay_payment');
-        Route::get('/vnpay_return', [PaymentController::class, 'vnpay_return'])->name('checkout.vnpay_return');
+        Route::post('/vnpay-create_payment', [PaymentController::class, 'vnpay_payment'])->name('checkout.vnpay_payment');
+        Route::get('/vnpay-return', [PaymentController::class, 'vnpay_return'])->name('checkout.vnpay_return');
 
-        Route::post('/momo_payment', [PaymentController::class, 'momo_payment'])->name('checkout.momo_payment');
-        Route::get('/momo_return', [PaymentController::class, 'momo_return'])->name('checkout.momo_return');
+        Route::post('/momo-payment', [PaymentController::class, 'momo_payment'])->name('checkout.momo_payment');
+        Route::get('/momo-return', [PaymentController::class, 'momo_return'])->name('checkout.momo_return');
     });
 
     Route::get('order-success/{id}', [OrderController::class, 'show'])->name('order_success');
     Route::get('order-failed/{id}', [OrderController::class, 'show'])->name('order_failed');
 
+
+    //Thêm sản phẩm vào giỏ trang chủ
+//     Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
 
 });

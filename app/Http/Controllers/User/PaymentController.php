@@ -236,7 +236,6 @@ class PaymentController extends Controller
     public function momo_payment(Request $request)
     {
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
-        // $endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
 
         $partnerCode = 'MOMOBKUN20180529';
         $accessKey = 'klm05TvNBzhg7h7j';
@@ -251,7 +250,6 @@ class PaymentController extends Controller
         $requestId = time() . "";
         $requestType = "captureWallet";
         // $requestType = "payWithATM";
-        //before sign HMAC SHA256 signature
         $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
         $signature = hash_hmac("sha256", $rawHash, $serectkey);
         $data = array(
@@ -271,9 +269,12 @@ class PaymentController extends Controller
         );
         $result = $this->execPostRequest($endpoint, json_encode($data));
         $jsonResult = json_decode($result, true);  // decode json
-        //Just a example, please check more in there
-        // dd($jsonResult);
-        header('Location: ' . $jsonResult['payUrl']);
+
+        if ($jsonResult['payUrl']) {
+            header('Location: ' . $jsonResult['payUrl']);
+        } else {
+            echo "Vui lòng tải lại trang!";
+        }
         die();
     }
     public function momo_return(Request $request)

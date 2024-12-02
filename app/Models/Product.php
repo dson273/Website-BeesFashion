@@ -88,5 +88,5 @@ class Product extends Model
     
         return number_format($minSalePrice) . " ₫ - " . number_format($maxSalePrice) . " ₫";
     }
-    
+
 }

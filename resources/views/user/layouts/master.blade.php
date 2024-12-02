@@ -36,7 +36,8 @@
     <!-- Notification library -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
-
+    <!-- RateYo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     @yield('css-libs')
 </head>
 
@@ -81,6 +82,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.js.map"></script>
 
+    <!-- RateYo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
     <!-- Notification function -->
     <script>
         function notification(type, data, title, timeOut = 5000) {
@@ -106,10 +110,11 @@
                 };
             });
         };
+
         const csrf = "{{ csrf_token() }}";
-        //Filler product
+        //===============Filler product===============
         const routeGetMinMaxPriceProduct = "{{ route('getMinMaxPriceProduct') }}";
-        //Check-out
+        //===============Check-out===============
         const routeGetListAddresses = "{{ route('checkout.getListAddresses') }}";
         const routeGetVoucherByCode = "{{ route('checkout.getVoucherByCode') }}";
 
@@ -124,22 +129,31 @@
         }
 
         const routeStoreOrder = "{{ route('checkout.storeOrder') }}";
-        //Cart
+        //===============Cart===============
         //route UpdateQuatity
         const routeUpdateQuantity = "{{ route('cart.updateQuantity') }}";
+
+        //===============Dashboard (Order)===============
+        const routeGetOrders = "{{route('dashboard.getOrders')}}";
+        const routeCancelOrder = "{{route('dashboard.cancelOrder')}}";
+        const routeConfirmDoneOrder = "{{route('dashboard.confirmDoneOrder')}}";
+        const routeGetOrderDetail = "{{route('dashboard.orderDetail')}}";
+        const routeGetVoteOrderDetail = "{{route('dashboard.getVoteOrderDetail')}}";
+        const routeSubmitVoteOrderDetail = "{{route('dashboard.submitVoteOrderDetail')}}";
+        const routeSubmitEditVoteOrderDetail = "{{route('dashboard.submitEditVoteOrderDetail')}}";
     </script>
 
     <!-- Short notification commands -->
     <script>
-        @if (session('statusSuccess'))
-            var message = @json(session('statusSuccess'));
-            notification('success', message, 'Successfully!');
-        @elseif (session('statusError'))
-            var message = @json(session('statusError'));
-            notification('error', message, 'Error!');
-        @elseif (session('statusWarning'))
-            var message = @json(session('statusWarning'));
-            notification('warning', message, 'Warning!');
+        @if(session('statusSuccess'))
+        var message = @json(session('statusSuccess'));
+        notification('success', message, 'Successfully!');
+        @elseif(session('statusError'))
+        var message = @json(session('statusError'));
+        notification('error', message, 'Error!');
+        @elseif(session('statusWarning'))
+        var message = @json(session('statusWarning'));
+        notification('warning', message, 'Warning!');
         @endif
     </script>
 

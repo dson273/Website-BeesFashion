@@ -16,15 +16,14 @@ return new class extends Migration
     {
         Schema::create('product_votes', function (Blueprint $table) {
             $table->id();
-            $table->string('content')->comment('Nội dung đánh giá');
+            $table->string('content')->nullable()->comment('Nội dung đánh giá');
             $table->float('star')->comment('Số sao');
-            $table->boolean('status')->default(false)
-            ->comment('Trạng thái đã đánh giá chưa, mặc định là chưa, khi nào người dùng đánh giá thì chuyển thành true, nếu là true thì không cho đánh giá thêm nữa, mỗi sản phẩm trong một đơn hàng chỉ được đánh giá một lần');
             $table->boolean('edit')->default(false)
-            ->comment('Trạng thái chỉnh sửa đánh giá, mặc định là chưa, khi nào người dùng sửa đánh giá thì chuyển thành true , nếu là true thì không cho sửa nữa');
-            $table->foreignIdFor(Product_variant::class)->comment('Xác định người dùng đang đánh giá biến thể nào')->constrained();
+                ->comment('Trạng thái chỉnh sửa đánh giá, mặc định là chưa, khi nào người dùng sửa đánh giá thì chuyển thành true , nếu là true thì không cho sửa nữa');
+            $table->foreignIdFor(Product_variant::class)->comment('Xác định biến thể sản phẩm nào đang được đánh giá')->constrained();
             $table->foreignIdFor(Order_detail::class)->comment('Xác định đơn hàng chi tiết nào đang được đánh giá')->constrained();
             $table->foreignIdFor(User::class)->comment('Xác định người dùng nào đang đánh giá')->constrained();
+            $table->tinyInteger('is_active')->default(1)->comment('1: hiện đánh giá, 0: ẩn đánh giá');
             $table->timestamps();
         });
     }

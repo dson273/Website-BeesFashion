@@ -76,12 +76,13 @@
 
 @section('content')
     <div class="container-fluid">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Doanh thu theo thương hiệu</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        </div>
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title mt-2">Thống kê theo thương hiệu</h3>
-                    </div>
                     <div class="card-body">
                         @if ($statisticBrand)
                             @foreach ($statisticBrand as $brandStat)

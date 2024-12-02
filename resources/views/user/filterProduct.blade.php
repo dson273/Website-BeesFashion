@@ -60,7 +60,7 @@
                             </div>
                             {{-- lọc theo khoảng giá --}}
 
-                            <div class="accordion-item">
+                            {{-- <div class="accordion-item">
                                 <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
                                         data-bs-target="#panelsStayOpen-collapseFour"><span>Sắp xếp khoảng
                                             giá</span></button></h2>
@@ -75,7 +75,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- Lọc theo danh mục --}}
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -154,7 +154,7 @@
                             </div>
 
                             {{-- màu --}}
-                            <div class="accordion-item">
+                            {{-- <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" data-bs-toggle="collapse"
                                         data-bs-target="#panelsStayOpen-collapseOne">
@@ -177,10 +177,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
-                            <div class="accordion-item">
+                            {{-- <div class="accordion-item">
                                 <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse"
                                         data-bs-target="#panelsStayOpen-collapseSix"><span>Availability</span></button>
                                 </h2>
@@ -195,7 +195,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="accordion-item">
                                 <h2 class="accordion-header tags-header"><button class="accordion-button"><span>Vận chuyển
@@ -245,13 +245,13 @@
                                     </div>
                                 </div>
                                 <!-- Dropdown select cho sắp xếp theo giá -->
-                                <div class="category-dropdown m-3">
+                                {{-- <div class="category-dropdown m-3">
                                     <select class="form-select" id="priceSort" name="priceSort" style="width: 200px;">
                                         <option value="price_default">Giá</option>
                                         <option value="price_asc">Giá : Thấp - Cao</option>
                                         <option value="price_desc">Giá : Cao - Thấp</option>
                                     </select>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="product-tab-content ratio1_3">

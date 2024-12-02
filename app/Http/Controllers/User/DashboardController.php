@@ -6,8 +6,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\Order_detail;
+use App\Models\Product;
+use App\Models\Product_vote;
+use App\Models\Status;
+use App\Models\Status_order;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User_shipping_address;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DashboardController extends Controller
@@ -166,8 +173,285 @@ class DashboardController extends Controller
 
         return redirect()->back()->with('success', 'Địa chỉ mặc định đã được cập nhật thành công.');
     }
+    //===============================ORDER===============================
     public function orderTracking()
     {
         return view('user.order-tracking');
+    }
+    public function getOrders()
+    {
+        // Lấy trạng thái đơn hàng
+        $status_order = request()->input('status_order');
+        $user_id = Auth::user()->id;
+
+        if ($status_order == 0) {
+            $get_orders = Order::with(['order_details.product_variant.product'])
+                ->leftJoinSub(
+                    DB::table('status_orders as so1')
+                        ->joinSub(
+                            DB::table('status_orders')
+                                ->select('order_id', DB::raw('MAX(status_id) as max_status_id'))
+                                ->groupBy('order_id'),
+                            'so2',
+                            function ($join) {
+                                $join->on('so1.order_id', '=', 'so2.order_id')
+                                    ->on('so1.status_id', '=', 'so2.max_status_id');
+                            }
+                        )
+                        ->select('so1.order_id', 'so1.status_id', 'so1.created_at'), // Chỉ lấy các cột cần thiết
+                    'so',
+                    'orders.id',
+                    '=',
+                    'so.order_id'
+                )
+                ->leftJoin('statuses as s', 'so.status_id', '=', 's.id')
+                ->select('orders.*', 'so.status_id as latest_status_id', 's.name as status_name') // Giữ nguyên cột orders.*
+                ->where('orders.user_id', $user_id)
+                ->orderBy('orders.created_at', 'desc')
+                ->get();
+        } else {
+            // Lọc đơn hàng dựa trên trạng thái cụ thể
+            $get_orders = Order::whereHas('status_orders', function ($query) use ($status_order) {
+                $query->where('status_id', $status_order)
+                    ->whereRaw('id = (SELECT MAX(id) FROM status_orders so WHERE so.order_id = status_orders.order_id)');
+            })
+                ->with(['status_orders' => function ($query) {
+                    $query->latest(); // Lấy trạng thái mới nhất cho mỗi đơn hàng
+                }, 'order_details.product_variant.product'])
+                ->where('orders.user_id', $user_id)
+                ->orderBy('orders.created_at', 'desc')
+                ->get();
+        }
+
+        // Trả về danh sách đơn hàng
+        $response = [
+            'success' => true,
+            'message' => 'Lấy danh sách đơn hàng thành công!',
+            'data' => $get_orders
+        ];
+        return response()->json($response);
+    }
+    public function cancelOrder()
+    {
+        $order_id = request()->input('order_id');
+        if ($order_id) {
+            $get_order_by_id = Order::find($order_id)->first();
+            if ($get_order_by_id) {
+                $get_cancelled_status = Status::where('name', 'Cancelled')->first();
+                if ($get_cancelled_status) {
+                    $get_cancelled_status_order = Status_order::where('order_id', $order_id)->where('status_id', $get_cancelled_status->id)->first();
+                    if (!$get_cancelled_status_order) {
+                        Status_order::create([
+                            'order_id' => $order_id,
+                            'status_id' => $get_cancelled_status->id
+                        ]);
+                        $response = [
+                            'success' => true,
+                            'message' => 'Hủy đơn hàng thành công!',
+                        ];
+                    } else {
+                        $response = [
+                            'success' => false,
+                            'message' => 'Đơn hàng này đã trong trạng thái hủy!',
+                        ];
+                    }
+                }
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Không tìm thấy đơn hàng!',
+                ];
+            }
+            return response()->json($response);
+        } else {
+            return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
+        }
+    }
+    public function confirmDoneOrder()
+    {
+        $order_id = request()->input('order_id');
+        if ($order_id) {
+            $get_order_by_id = Order::find($order_id)->first();
+            if ($get_order_by_id) {
+                $get_completed_status = Status::where('name', 'Completed')->first();
+                if ($get_completed_status) {
+                    $get_completed_status_order = Status_order::where('order_id', $order_id)->where('status_id', $get_completed_status->id)->first();
+                    if (!$get_completed_status_order) {
+                        Status_order::create([
+                            'order_id' => $order_id,
+                            'status_id' => $get_completed_status->id
+                        ]);
+                        $response = [
+                            'success' => true,
+                            'message' => 'Xác nhận hoàn thành đơn hàng thành công!',
+                        ];
+                    } else {
+                        $response = [
+                            'success' => false,
+                            'message' => 'Đơn hàng này đã trong trạng thái hoàn thành!',
+                        ];
+                    }
+                }
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Không tìm thấy đơn hàng!',
+                ];
+            }
+            return response()->json($response);
+        } else {
+            return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
+        }
+    }
+
+    public function getOrderDetail()
+    {
+        $order_id = request()->input('order_id');
+        if ($order_id) {
+            $query_data = Order::with(['order_details.product_variant.product', 'status_orders.status'])->where('id', $order_id)->get();
+            if ($query_data) {
+                $response = [
+                    'success' => true,
+                    'message' => 'Lấy dữ liệu đơn hàng thành công!',
+                    'data' => $query_data
+                ];
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Không tìm thấy đơn hàng!',
+                ];
+            }
+            return response()->json($response);
+        } else {
+            return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
+        }
+    }
+    public function getVoteOrderDetail()
+    {
+        $order_detail_id = request()->input('order_detail_id');
+        if ($order_detail_id) {
+            $get_vote_by_order_detail_id = Product_vote::where('order_detail_id', $order_detail_id)->where('user_id', Auth::user()->id)->first();
+            if ($get_vote_by_order_detail_id) {
+                $response = [
+                    'success' => true,
+                    'message' => 'Lấy dữ liệu đơn hàng thành công!',
+                    'data' => $get_vote_by_order_detail_id
+                ];
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Đơn hàng này chưa được đánh giá!',
+                ];
+            }
+            return response()->json($response);
+        } else {
+            return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
+        }
+    }
+    public function submitVoteOrderDetail()
+    {
+        $user_id = Auth::user()->id;
+        $order_detail_id = request()->input(key: 'order_detail_id');
+        $star = request()->input('star');
+        $content = request()->input('content');
+        if (!$star || $star == 0) {
+            $response = [
+                'success' => false,
+                'message' => 'Đánh giá không hợp lệ!',
+            ];
+            return response()->json($response);
+        }
+        if ($order_detail_id) {
+            $get_vote_by_order_detail_id = Product_vote::where('order_detail_id', $order_detail_id)->where('user_id', Auth::user()->id)->first();
+            if (!$get_vote_by_order_detail_id) {
+                $product_variant_id = Order_detail::find($order_detail_id)?->product_variant_id;
+                $order_id = Order_detail::find($order_detail_id)?->order_id;
+                if ($product_variant_id) {
+                    $create_new_vote_order_detail = Product_vote::create([
+                        'content' => $content,
+                        'star' => $star,
+                        'order_detail_id' => $order_detail_id,
+                        'product_variant_id' => $product_variant_id,
+                        'user_id' => $user_id
+                    ]);
+                    if ($create_new_vote_order_detail) {
+                        $query_data = Order::with(['order_details.product_variant.product', 'status_orders.status'])->where('id', $order_id)->get()[0];
+                        $response = [
+                            'success' => true,
+                            'message' => 'Đánh giá sản phẩm thành công!',
+                            'data' => $query_data
+                        ];
+                    } else {
+                        $response = [
+                            'success' => false,
+                            'message' => 'Đánh giá sản phẩm không thành công!',
+                        ];
+                    }
+                }
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Đơn hàng này đã được đánh giá!',
+                ];
+            }
+            return response()->json($response);
+        } else {
+            return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
+        }
+    }
+    public function submitEditVoteOrderDetail()
+    {
+        $user_id = Auth::user()->id;
+        $order_detail_id = request()->input(key: 'order_detail_id');
+        $vote_id = request()->input(key: 'vote_id');
+        $star = request()->input('star');
+        $content = request()->input('content');
+        if (!$star || $star == 0) {
+            $response = [
+                'success' => false,
+                'message' => 'Đánh giá không hợp lệ!',
+            ];
+            return response()->json($response);
+        }
+        if ($order_detail_id && $vote_id) {
+            $get_vote_by_order_detail_id = Product_vote::where('id', $vote_id)->where('user_id', $user_id)->first();
+            if ($get_vote_by_order_detail_id) {
+                if ($get_vote_by_order_detail_id->edit == 0) {
+                    $get_vote_by_order_detail_id->update([
+                        'star' => $star,
+                        'content' => $content,
+                        'edit' => 1
+                    ]);
+                    $product_variant_id = Order_detail::find($order_detail_id)?->product_variant_id;
+                    $order_id = Order_detail::find($order_detail_id)?->order_id;
+                    if ($product_variant_id && $get_vote_by_order_detail_id->edit == 1) {
+                        $query_data = Order::with(['order_details.product_variant.product', 'status_orders.status'])->where('id', $order_id)->get()[0];
+                        $response = [
+                            'success' => true,
+                            'message' => 'Sửa đánh giá sản phẩm thành công!',
+                            'data' => $query_data
+                        ];
+                    } else {
+                        $response = [
+                            'success' => false,
+                            'message' => 'Sửa đánh giá sản phẩm không thành công!',
+                        ];
+                    }
+                } else {
+                    $response = [
+                        'success' => false,
+                        'message' => 'Đơn hàng này đã được đánh giá!',
+                    ];
+                }
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Đơn hàng này chưa có đánh giá, không thể sửa!',
+                ];
+            }
+            return response()->json($response);
+        } else {
+            return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
+        }
     }
 }

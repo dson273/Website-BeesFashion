@@ -102,8 +102,8 @@ class CartController extends Controller
             'product_variants.variant_attribute_values.attribute_value',
             'product_variants.product' // Nạp thông tin sản phẩm liên quan
         ])
-        ->findOrFail($product_id); // Tìm sản phẩm theo ID hoặc trả lỗi 404 nếu không tìm thấy
-    
+            ->findOrFail($product_id); // Tìm sản phẩm theo ID hoặc trả lỗi 404 nếu không tìm thấy
+
         // Tạo danh sách các biến thể của sản phẩm
         $array_variants = $product->product_variants->map(function ($variant) {
             return [
@@ -122,20 +122,20 @@ class CartController extends Controller
                 })->toArray() // Thêm mảng thuộc tính cho mỗi biến thể
             ];
         })->toArray();
-    
+
         // Lấy các ID của giá trị thuộc tính từ các biến thể
         $attribute_value_ids = $product->product_variants
             ->pluck('variant_attribute_values.*.attribute_value_id')
             ->flatten()
             ->unique()
             ->toArray();
-    
+
         $attribute_ids = Attribute_value::whereIn('id', $attribute_value_ids)
             ->pluck('attribute_id')
             ->unique()
             ->sort()
             ->toArray();
-    
+
         // Xây dựng mảng thuộc tính đã lọc
         $array_attributes = Attribute::with([
             'attribute_values' => function ($query) use ($attribute_value_ids) {
@@ -143,30 +143,30 @@ class CartController extends Controller
             },
             'attribute_type' // Lấy thông tin loại thuộc tính
         ])
-        ->whereIn('id', $attribute_ids)
-        ->get()
-        ->mapWithKeys(function ($attribute) {
-            return [
-                $attribute->id => [
-                    'id' => $attribute->id,
-                    'name' => $attribute->name,
-                    'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null, // Lấy tên loại thuộc tính
-                    'attribute_values' => $attribute->attribute_values->sortBy(function ($value) {
-                        // Sắp xếp theo thứ tự "S", "M", "L", "XL", nếu giá trị khác số
-                        $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
-                        return $sizes[$value->name] ?? $value->name; // Sắp xếp theo thứ tự định trước hoặc theo tên
-                    })->values()->map(function ($value) {
-                        return [
-                            'id' => $value->id,
-                            'name' => $value->name,
-                            'value' => $value->value
-                            
-                        ];
-                    })->toArray()
-                ]
-            ];
-        })->toArray();
-    
+            ->whereIn('id', $attribute_ids)
+            ->get()
+            ->mapWithKeys(function ($attribute) {
+                return [
+                    $attribute->id => [
+                        'id' => $attribute->id,
+                        'name' => $attribute->name,
+                        'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null, // Lấy tên loại thuộc tính
+                        'attribute_values' => $attribute->attribute_values->sortBy(function ($value) {
+                            // Sắp xếp theo thứ tự "S", "M", "L", "XL", nếu giá trị khác số
+                            $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
+                            return $sizes[$value->name] ?? $value->name; // Sắp xếp theo thứ tự định trước hoặc theo tên
+                        })->values()->map(function ($value) {
+                            return [
+                                'id' => $value->id,
+                                'name' => $value->name,
+                                'value' => $value->value
+
+                            ];
+                        })->toArray()
+                    ]
+                ];
+            })->toArray();
+
         // Trả về dữ liệu dưới dạng JSON cho frontend
         return response()->json([
             'success' => true,
@@ -174,63 +174,63 @@ class CartController extends Controller
             'attribute_data' => $array_attributes, // Dữ liệu thuộc tính của các biến thể
         ]);
     }
-    
-    
-    
-
-    
 
 
 
 
 
-//     "variants": [
-//         {
-//             "product_variant_id": 5,
-//             "name": "red-XL",
-//             "product_id": 2
-//         },
-//         {
-//             "product_variant_id": 6,
-//             "name": "red-XXL",
-//             "product_id": 2
-//         }
-// ],
-        
-//             "attribute_data": [
-//                 {
-//                     "attribute_id": 1,
-//                     "attribute_name": "Màu sắc\r\n",
-//                     "attribute_type": "color",
-//                     "attribute_values": [
-//                         {
-//                             "attribute_value_id": 1,
-//                             "attribute_value_name": "red"
-//                         },
-//                         {
-//                             "attribute_value_id": 4,
-//                             "attribute_value_name": "blue"
-//                         }
-//                     ]
-//                 },
-//                 {
-//                     "attribute_id": 2,
-//                     "attribute_name": "Kích cỡ",
-//                     "attribute_type": "Button",
-//                     "attribute_values": [
-//                         {
-//                             "attribute_value_id": 2,
-//                             "attribute_value_name": "XL"
-//                         },
-//                         {
-//                             "attribute_value_id": 3,
-//                             "attribute_value_name": "XXL"
-//                         }
-//                     ]
-//                 }
-//             ]
-        
-       
+
+
+
+
+
+    //     "variants": [
+    //         {
+    //             "product_variant_id": 5,
+    //             "name": "red-XL",
+    //             "product_id": 2
+    //         },
+    //         {
+    //             "product_variant_id": 6,
+    //             "name": "red-XXL",
+    //             "product_id": 2
+    //         }
+    // ],
+
+    //             "attribute_data": [
+    //                 {
+    //                     "attribute_id": 1,
+    //                     "attribute_name": "Màu sắc\r\n",
+    //                     "attribute_type": "color",
+    //                     "attribute_values": [
+    //                         {
+    //                             "attribute_value_id": 1,
+    //                             "attribute_value_name": "red"
+    //                         },
+    //                         {
+    //                             "attribute_value_id": 4,
+    //                             "attribute_value_name": "blue"
+    //                         }
+    //                     ]
+    //                 },
+    //                 {
+    //                     "attribute_id": 2,
+    //                     "attribute_name": "Kích cỡ",
+    //                     "attribute_type": "Button",
+    //                     "attribute_values": [
+    //                         {
+    //                             "attribute_value_id": 2,
+    //                             "attribute_value_name": "XL"
+    //                         },
+    //                         {
+    //                             "attribute_value_id": 3,
+    //                             "attribute_value_name": "XXL"
+    //                         }
+    //                     ]
+    //                 }
+    //             ]
+
+
 
 
 
@@ -292,33 +292,29 @@ class CartController extends Controller
         return response()->json($response);
     }
 
-    // public function updateVariant(Request $request)
-    // {
-    //     $request->validate([
-    //         'cart_id' => 'required|exists:carts,id',
-    //         'variant_id' => 'required|exists:product_variants,id'
-    //     ]);
+    public function updateVariant(Request $request)
+    {
+        // Lấy giỏ hàng và biến thể mới từ yêu cầu
+        $cart = Cart::findOrFail($request->cart_id);
+        $newVariant = Product_variant::findOrFail($request->variant_id);
 
-    //     $cart = Cart::findOrFail($request->cart_id);
-    //     $newVariant = Product_variant::findOrFail($request->variant_id);
+        // Kiểm tra xem biến thể mới có tồn tại hay không
+        if (!$newVariant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Biến thể không hợp lệ'
+            ], 422);
+        }
 
-    //     // Kiểm tra stock của variant mới
-    //     if ($cart->quantity > $newVariant->stock) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Số lượng vượt quá tồn kho của biến thể mới'
-    //         ], 422);
-    //     }
+        // Cập nhật lại biến thể trong giỏ hàng mà không thay đổi giá hoặc tồn kho
+        $cart->product_variant_id = $newVariant->id;
+        $cart->save();
 
-    //     $cart->product_variant_id = $newVariant->id;
-    //     $cart->save();
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Cập nhật biến thể thành công',
-    //         'new_price' => $newVariant->sale_price ?? $newVariant->regular_price,
-    //         'new_total' => ($newVariant->sale_price ?? $newVariant->regular_price) * $cart->quantity,
-    //         'stock' => $newVariant->stock
-    //     ]);
-    // }
+        // Trả về phản hồi thành công
+        return response()->json([
+            'success' => true,
+            'message' => 'Cập nhật biến thể thành công',
+            // Không cần trả giá hoặc số lượng tồn kho vì bạn không yêu cầu thay đổi chúng
+        ]);
+    }
 }
