@@ -37,6 +37,7 @@
                                         New
                                         Address</a>
                                 </div>
+
                                 <div class="row" id="listAddresses">
                                     <!-- Hiển thị danh sách địa chỉ nhận hàng ở đây -->
                                 </div>
@@ -412,7 +413,15 @@
                 </div>
             </div>
         </div>
-        {{-- End modal --}}
-    </main>
-    <!-- End container content -->
+
+    </div>
+    {{-- End modal --}}
+</main>
+<!-- End container content -->
+<div class="container-spinner position-fixed d-flex justify-content-center align-items-center w-100 h-100 hidden">
+    <div class="overlay"></div>
+    <div class="spinner-border text-of-theme" id="loadingSpinner" role="status">
+    </div>
+</div>
 @endsection
+

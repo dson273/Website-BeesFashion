@@ -127,7 +127,7 @@
                                     </li>
                                 @else
                                     <li class="onhover-div">
-                                        <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
+                                        <a href="{{ route('dashboard') }}"><i class="iconsax" data-icon="user-2"></i></a>
                                         <div class="user-box">
                                             <div class="user-info">
                                                 <img src="{{asset('assets/images/user/user-icon.jpg')}}" alt="Avatar" class="user-avatar" />
