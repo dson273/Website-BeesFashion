@@ -213,6 +213,7 @@ class FilterProductController extends Controller
 
         $products = $query->get()->map(function ($product) {
             // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
+            $product->productURL = route('product.detail', ['sku' => $product->SKU]);
             if ($product->image) {
                 $product->image_url = asset('uploads/products/images/' . $product->image);
             } else {

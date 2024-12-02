@@ -125,7 +125,7 @@ function renderProducts(products) {
 
     if (!Array.isArray(products) || products.length === 0) {
         productGrid.html(`
-            <div class=" justify-content-center">
+            <div class=" justify-content-center ">
                 <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/search/a60759ad1dabe909c46a.png" alt="timmm">
                 <p>Hic. Không có sản phẩm nào. Bạn thử tắt điều kiện lọc và tìm lại nhé?</p>
             </div>
@@ -193,18 +193,18 @@ function renderProducts(products) {
 
 $(document).ready(function () {
     // Lắng nghe các sự kiện trên các bộ lọc
-    // $('#filterBestSelling').on('click', function () {
-    //     loadBestselingProducts();
-    // });
+    $('#filterBestSelling').on('click', function () {
+        loadBestselingProducts();
+    });
 
-    // $('#filterNewArrivals').on('click', function () {
-    //     loadNewProducts();
-    // });
+    $('#filterNewArrivals').on('click', function () {
+        loadNewProducts();
+    });
 
-    // // Lắng nghe sự kiện thay đổi trên các bộ lọc
-    // $('input.category-checkbox, input.brand-checkbox').on('change', function () {
-    //     updateSelectedFilters();
-    // });
+    // Lắng nghe sự kiện thay đổi trên các bộ lọc
+    $('input.category-checkbox, input.brand-checkbox').on('change', function () {
+        updateSelectedFilters();
+    });
 
     // Lắng nghe sự kiện click trên màu sắc (nếu có)
     // $('ul.color-variant li').on('click', function () {
@@ -441,7 +441,6 @@ function getQueryParam(param) {
 function filterProducts(searchValue,) {
 
     const searchInput = searchValue;
-    // console.log(searchInput);
     const selectedCategories = [];
     const selectedBrands = [];
     const minPrice = $('#range-slider-min').val();
@@ -458,20 +457,20 @@ function filterProducts(searchValue,) {
     });
 
     // Lấy giá trị màu đã chọn
-    $('.color-option').on('click', function () {
-        var selectedColor = $(this).data('color');
-    });
+    // $('.color-option').on('click', function () {
+    //     var selectedColor = $(this).data('color');
+    // });
     // lấy giá 
-    $('.range-slider-input').on('change', function () {
-        const currentMinPrice = $('#range-slider-min').val();
-        const currentMaxPrice = $('#range-slider-max').val();
+    // $('.range-slider-input').on('change', function () {
+    //     const currentMinPrice = $('#range-slider-min').val();
+    //     const currentMaxPrice = $('#range-slider-max').val();
 
-        // Cập nhật hiển thị giá
-        $('.price-display').text(`Giá: ${currentMinPrice} - ${currentMaxPrice}`);
+    //     // Cập nhật hiển thị giá
+    //     $('.price-display').text(`Giá: ${currentMinPrice} - ${currentMaxPrice}`);
 
-        // Gọi hàm filterProducts để lọc sản phẩm dựa trên giá trị thanh kéo mới
-        // filterProducts(currentMinPrice, currentMaxPrice);
-    });
+    //     // Gọi hàm filterProducts để lọc sản phẩm dựa trên giá trị thanh kéo mới
+    //     // filterProducts(currentMinPrice, currentMaxPrice);
+    // });
 
 
 
@@ -495,7 +494,7 @@ function filterProducts(searchValue,) {
         },
         success: function (response) {
             // Kiểm tra cấu trúc của response để đảm bảo dữ liệu cần thiết tồn tại
-            console.log("Response:", response);
+            // console.log("Response:", response);
 
             // Sử dụng default nếu không tồn tại
             // const globalMinPrice = response.data?.minPriceProduct ?? minPrice;
@@ -508,18 +507,18 @@ function filterProducts(searchValue,) {
 
             // Gọi hàm renderProducts và truyền vào các tham số
             // console.log(globalMinPrice, ' - ', globalMaxPrice);
-            console.log("Sản phẩm sau khi lọc:", products);
-            renderProducts(products); // Hiển thị sản phẩm đã lọc, globalMinPrice, globalMaxPrice
+            // console.log("Sản phẩm sau khi lọc:", products);
+            renderProducts(products); 
         },
         error: function (xhr) {
             console.error("Có lỗi xảy ra: ", xhr);
         }
     });
 }
-$(document).on('change', '#search-input', function () {
-    filterProducts($(this).val());
-})
+// $(document).on('change', '#search-input', function () {
+//     filterProducts($(this).val());
+// })
 // $('#search-input').on('keyup', filterProducts); // Thay 'change' bằng 'keyup'
-$('.custom-checkbox, .color-checkbox, .brand-checkbox').on('change', filterProducts);
+// $('.custom-checkbox, .color-checkbox, .brand-checkbox').on('change', filterProducts);
 
 

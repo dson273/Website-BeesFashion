@@ -237,7 +237,7 @@
                                 <label class="m-2" for="priceSort">Sắp xếp theo :</label>
                                 <div class="d-flex">
                                     <div class="filter-option m-3">
-                                        <button class="btn btn-outline-secondary" id="filterBestSelling">Bán chạy
+                                        <button class="btn btn-outline-secondary " id="filterBestSelling">Bán chạy
                                             nhất</button>
                                     </div>
                                     <div class="filter-option m-3">
@@ -255,7 +255,7 @@
                             </div>
                         </div>
                         <div class="product-tab-content ratio1_3">
-                            <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 ">
+                            <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 align-items-center">
                                  {{-- Sản phẩm sẽ được hiển thị ở đây --}}
                             </div>
                         </div>
