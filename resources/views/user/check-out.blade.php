@@ -59,7 +59,7 @@
                                             @csrf
                                             <input type="hidden" name="order_id" class="order_id">
                                             <input type="hidden" name="amount" class="amount">
-                                            <!-- <input type="hidden" name="redirect"> -->
+                                            <input type="hidden" name="redirect">
                                         </form>
                                         <label class="no-select" for="vnpay">Thanh toán bằng VNPAY</label>
                                     </label>
@@ -380,4 +380,9 @@
     {{-- End modal --}}
 </main>
 <!-- End container content -->
+<div class="container-spinner position-fixed d-flex justify-content-center align-items-center w-100 h-100 hidden">
+    <div class="overlay"></div>
+    <div class="spinner-border text-of-theme" id="loadingSpinner" role="status">
+    </div>
+</div>
 @endsection

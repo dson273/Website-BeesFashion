@@ -11,7 +11,6 @@ class Product_vote extends Model
     protected $fillable = [
         'content',
         'star',
-        'status',
         'edit',
         'product_variant_id',
         'order_detail_id',

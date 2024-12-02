@@ -71,13 +71,19 @@ class OrderController extends Controller
             $phone_number = Auth::user()->phone;
             $address = Auth::user()->address;
         } else {
-            $get_address_by_id = Auth::user()->user_shipping_addresses->find($data_from_js['address_id']);
-            if ($get_address_by_id) {
-                $full_name = $get_address_by_id->full_name;
-                $phone_number = $get_address_by_id->phone_number;
-                $address = $get_address_by_id->address;
+            if ($data_from_js['address_id'] != null) {
+                $get_address_by_id = Auth::user()->user_shipping_addresses->find($data_from_js['address_id']);
+                if ($get_address_by_id) {
+                    $full_name = $get_address_by_id->full_name;
+                    $phone_number = $get_address_by_id->phone_number;
+                    $address = $get_address_by_id->address;
+                } else {
+                    return $this->returnJson(false, 'Không tìm thấy địa chỉ đã chọn!');
+                }
             } else {
-                return $this->returnJson(false, 'Không tìm thấy địa chỉ đã chọn!');
+                $full_name = Auth::user()->full_name;
+                $phone_number = Auth::user()->phone;
+                $address = Auth::user()->address;
             }
         }
 

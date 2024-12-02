@@ -10469,6 +10469,7 @@ footer .footer-1 .social-icon>li:hover a i {
     }
 }
 
+/* Menu chính của dashboard bên trái */
 .dashboard-left-sidebar .dashboard-tab {
     border-top: 1px solid rgba(var(--light-border), 1);
     padding: 15px
@@ -10572,6 +10573,118 @@ footer .footer-1 .social-icon>li:hover a i {
 }
 
 .dashboard-left-sidebar .dashboard-tab li .nav-link:hover .iconsax {
+    --Iconsax-Color: rgba(var(--theme-default), 1)
+}
+
+/* Menu của order */
+
+.dashboard-left-sidebar .order-dashboard-tab {
+    border-top: 1px solid rgba(var(--light-border), 1);
+    padding: 15px
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li {
+    padding: 2px 0;
+    /* width: 100% */
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li:last-child {
+    padding-bottom: 0
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li:first-child {
+    padding-top: 0
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link {
+    border-left: 3px solid rgba(var(--theme-default), 0);
+    letter-spacing: 1.1px;
+    padding: 12px 16px;
+    text-align: left;
+    transition: all .4s ease-in-out;
+    width: 100%
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link,
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link a {
+    color: rgba(var(--theme-font-color), 1);
+    font-size: calc(15.6px + .125vw)
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link a .iconsax {
+    --Iconsax-Size: calc(13px + 0.3125vw);
+    --Iconsax-Color: rgba(var(--theme-font-color), 1);
+    margin-right: 8px;
+    vertical-align: -2px
+}
+
+[dir=rtl] .dashboard-left-sidebar .order-dashboard-tab li .nav-link a .iconsax {
+    margin-left: 8px;
+    margin-right: unset
+}
+
+[dir=rtl] .dashboard-left-sidebar .order-dashboard-tab li .nav-link {
+    border-left: unset;
+    border-right: 3px solid rgba(var(--theme-default), 0);
+    text-align: right
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link .iconsax {
+    --Iconsax-Size: calc(13px + 0.3125vw);
+    --Iconsax-Color: rgba(var(--theme-font-color), 1);
+    margin-right: 8px;
+    vertical-align: -2px
+}
+
+[dir=rtl] .dashboard-left-sidebar .order-dashboard-tab li .nav-link .iconsax {
+    margin-left: 8px;
+    margin-right: unset
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link.active {
+    background-color: rgba(var(--theme-default), .1);
+    border-bottom: 3px solid rgba(var(--theme-default), 1);
+    border-radius: 4px;
+    color: rgba(var(--theme-default), 1);
+    font-weight: 500;
+    letter-spacing: 1.4px
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link.active a {
+    color: rgba(var(--theme-default), 1)
+}
+
+[dir=rtl] .dashboard-left-sidebar .order-dashboard-tab li .nav-link.active {
+    border-left: unset;
+    border-right: 3px solid rgba(var(--theme-default), 1)
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link.active .iconsax {
+    --Iconsax-Color: rgba(var(--theme-default), 1)
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link:hover {
+    background-color: rgba(var(--theme-default), .1);
+    border-bottom: 3px solid rgba(var(--theme-default), 1);
+    border-radius: 4px;
+    color: rgba(var(--theme-default), 1);
+    letter-spacing: 1.4px
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link {
+    border-bottom: 3px solid transparent;
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link:hover a {
+    color: rgba(var(--theme-default), 1)
+}
+
+[dir=rtl] .dashboard-left-sidebar .order-dashboard-tab li .nav-link:hover {
+    border-left: unset;
+    border-right: 3px solid rgba(var(--theme-default), 1)
+}
+
+.dashboard-left-sidebar .order-dashboard-tab li .nav-link:hover .iconsax {
     --Iconsax-Color: rgba(var(--theme-default), 1)
 }
 
@@ -19175,7 +19288,7 @@ body div canvas:first-child {
 
 @media screen and (max-width: 768px) {
     .block-voucher .voucher-items-list .voucher-item {
-        width:100%!important
+        width: 100% !important
     }
 }
 
@@ -19404,16 +19517,24 @@ body div canvas:first-child {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease-in-out;
-    display: flex; /* Sử dụng flexbox */
-    flex-direction: column; /* Hiển thị theo chiều dọc */
+    display: flex;
+    /* Sử dụng flexbox */
+    flex-direction: column;
+    /* Hiển thị theo chiều dọc */
     padding: 10px;
-    max-height: 200px; /* Giới hạn chiều cao */
-    overflow-y: auto; /* Thêm thanh cuộn nếu cần */
+    max-height: 200px;
+    /* Giới hạn chiều cao */
+    overflow-y: auto;
+    /* Thêm thanh cuộn nếu cần */
 }
+
 .size-item {
-    display: block; /* Kiểu hiển thị mặc định là block để các size item xếp thành cột */
-    margin: 5px 0; /* Khoảng cách giữa các size */
+    display: block;
+    /* Kiểu hiển thị mặc định là block để các size item xếp thành cột */
+    margin: 5px 0;
+    /* Khoảng cách giữa các size */
 }
+
 .list-size li {
     list-style: none;
 }
@@ -19484,26 +19605,36 @@ body div canvas:first-child {
 
 #fancybox-add-to-cart {
     display: none;
-    position: fixed; /* Đặt vị trí cố định để thông báo luôn ở trên màn hình */
-    top: 50%; /* Đặt thông báo ở giữa theo chiều dọc */
-    left: 50%; /* Đặt thông báo ở giữa theo chiều ngang */
-    transform: translate(-50%, -50%); /* Căn chính xác vào giữa màn hình */
+    position: fixed;
+    /* Đặt vị trí cố định để thông báo luôn ở trên màn hình */
+    top: 50%;
+    /* Đặt thông báo ở giữa theo chiều dọc */
+    left: 50%;
+    /* Đặt thông báo ở giữa theo chiều ngang */
+    transform: translate(-50%, -50%);
+    /* Căn chính xác vào giữa màn hình */
     padding: 40px;
     padding-top: 80px;
-    background-color: white; /* Thêm màu nền cho thông báo */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho thông báo */
+    background-color: white;
+    /* Thêm màu nền cho thông báo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng đổ cho thông báo */
     opacity: 1;
-    transition: opacity 0.5s ease; /* Thêm hiệu ứng mờ dần */
-    z-index: 9999; /* Đảm bảo thông báo luôn hiển thị trên cùng */
+    transition: opacity 0.5s ease;
+    /* Thêm hiệu ứng mờ dần */
+    z-index: 9999;
+    /* Đảm bảo thông báo luôn hiển thị trên cùng */
 }
 
 #fancybox-add-to-cart.show {
-    display: block; /* Hiển thị thông báo khi có lớp 'show' */
+    display: block;
+    /* Hiển thị thông báo khi có lớp 'show' */
 }
 
 #fancybox-add-to-cart.hide {
     opacity: 0;
-    pointer-events: none; /* Tắt các sự kiện khi ẩn */
+    pointer-events: none;
+    /* Tắt các sự kiện khi ẩn */
 }
 
 
@@ -19527,3 +19658,108 @@ svg {
     text-transform: uppercase !important;
 }
 
+/* Spinner */
+.container-spinner {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    position: fixed;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(147, 137, 137, 0.5);
+    /* Màu nền tối với độ trong suốt 50% */
+    z-index: 1;
+}
+
+#loadingSpinner {
+    position: relative;
+    z-index: 2;
+    opacity: 1 !important;
+}
+
+.color-of-theme {
+    color: #cca270;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.tr_of_list_products_in_order>th {
+    font-size: 13px !important;
+}
+
+.fs-12 {
+    font-size: 12px !important;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    align-items: flex-start;
+}
+
+.progress-step {
+    text-align: center;
+    position: relative;
+    max-width: 90px;
+    height: 100%;
+}
+
+.step-icon {
+    font-size: 20px;
+    background-color: green;
+    color: white;
+    border-radius: 50%;
+    padding: 26px 10px;
+}
+
+.step-text {
+    margin-top: 8px;
+}
+
+.step-time {
+    margin-top: 4px;
+    font-size: 11px;
+    color: gray;
+}
+
+.progress-line {
+    flex-grow: 1;
+    height: 7px;
+    background-color: gray;
+    margin-top: 38px;
+}
+
+.completed .step-icon {
+    background-color: gray;
+}
+
+.progress-step.completed .step-text {
+    color: green;
+}
+
+.bg-of-theme {
+    background-color: #cca270 !important;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}

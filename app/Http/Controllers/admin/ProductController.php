@@ -436,8 +436,7 @@ class ProductController extends Controller
                 $variant->total_profit = $totalProfitPerItem;
 
                 //Get star
-                $productVotes = Product_vote::where('product_variant_id', $variant->id)
-                    ->where('status', 1)->get();
+                $productVotes = Product_vote::where('product_variant_id', $variant->id)->get();
                 if ($productVotes->count() > 0) {
                     $starRatingPerProductVariant = 0;
                     $productVote = 0;
