@@ -303,29 +303,13 @@
                                                 @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
+                                                @foreach ($item->status_orders->where('status_id', 2) as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    <span class="status-circle shipped"></span>
+                                                    Đang vận chuyển
                                                 </div>
                                             @endforeach
+                                            
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -453,27 +437,10 @@
                                             @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
+                                                @foreach ($item->status_orders->where('status_id',3) as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    <span class="status-circle completed"></span>
+                                                    Hoàn thành
                                                 </div>
                                             @endforeach
                                             </td>
@@ -600,27 +567,10 @@
                                             @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
+                                                @foreach ($item->status_orders->where('status_id', 4) as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    <span class="status-circle completed"></span>
+                                                    Hoàn thành
                                                 </div>
                                             @endforeach
                                             </td>
@@ -654,7 +604,7 @@
                                     <th>Trạng thái đơn hàng</th>
                                     <th>Phương thức vận chuyển</th>
                                     <th>Tổng</th>
-                                    <th>Thao tác</th>
+                            
                                 </tr>
                             </thead>
                             <tbody>
@@ -736,27 +686,10 @@
                                             @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
+                                                @foreach ($item->status_orders->where('status_id', 1) as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
+                                                    <span class="status-circle processing"></span>
                                                     Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
                                                 </div>
                                             @endforeach
                                             </td>
@@ -768,7 +701,7 @@
                                                 @endif
                                             </td>
                                             <td>{{ number_format($item->total_payment, 0, ',', '.') }} đ</td>
-                                            <td></td>
+                                          
                                         </tr>
                                     @endforeach
                                 @endif
@@ -872,27 +805,10 @@
                                             @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
+                                                @foreach ($item->status_orders->where('status_id', 5) as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    <span class="status-circle cancelled"></span>
+                                                    Đã hủy
                                                 </div>
                                             @endforeach
                                             </td>

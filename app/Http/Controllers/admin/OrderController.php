@@ -92,7 +92,7 @@ class OrderController extends Controller
 
             // Xuất file PDF dưới dạng stream
 
-            return $pdf->stream('order_' . $id . '.pdf');
+            return $pdf->download('order_' . $id . '.pdf');
         }
 
         // return $pdf->stream('order_' . $id . '.pdf');
@@ -125,12 +125,9 @@ class OrderController extends Controller
     public function cancelOrder(Request $request, string $id)
     {
         $order = Order::with('order_details.product_variant')->findOrFail($id);
-        if ($order) {
-            // Cập nhật trạng thái của đơn hàng
-            foreach ($order->status_orders as $statusOrder) {
-                $statusOrder->update(['status_id' => 5]);
-            }
-        }
+        $order->status_orders()->create([
+            'status_id' => 5,  // Giả sử status_id = 5 là trạng thái "Hủy"
+        ]);
 
         return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được hủy');
     }
