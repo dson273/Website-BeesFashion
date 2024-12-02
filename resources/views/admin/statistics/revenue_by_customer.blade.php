@@ -1,63 +1,50 @@
 @extends('admin.layouts.master')
 
 @section('content')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Thống kê doanh thu</h1>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Doanh thu theo khách hàng</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        </div>
 
         <!-- Filter Form -->
         <div class="card mb-4">
             <div class="card-body">
-                <form id="revenueFilterForm" class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label">Kiểu thời gian</label>
-                        <select name="time_type" class="form-control" id="timeTypeSelect">
-                            <option value="daily">Theo ngày</option>
-                            <option value="monthly" selected>Theo tháng</option>
-                            <option value="yearly">Theo năm</option>
-                        </select>
+                <form id="revenueFilterForm">
+                    <div class="btn-group d-flex">
+                        <button type="button" class="btn btn-outline-primary active" data-value="daily">
+                            Hôm nay
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" data-value="monthly">
+                            Tháng này
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" data-value="yearly">
+                            Năm này
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" data-value="all">
+                            Tất cả
+                        </button>
                     </div>
-
-                    <div class="col-md-4" id="dailySelect" style="display: none;">
-                        <label class="form-label">Chọn ngày</label>
-                        <input type="date" name="daily_date" class="form-control date-filter" value="{{ now()->format('Y-m-d') }}">
-                    </div>
-
-                    <div class="col-md-4" id="monthlySelect">
-                        <label class="form-label">Chọn tháng</label>
-                        <input type="month" name="monthly_date" class="form-control date-filter" value="{{ now()->format('Y-m') }}">
-                    </div>
-
-                    <div class="col-md-4" id="yearlySelect" style="display: none;">
-                        <label class="form-label">Chọn năm</label>
-                        <select name="yearly_date" class="form-control date-filter">
-                            @for ($year = now()->year; $year >= 2020; $year--)
-                                <option value="{{ $year }}" {{ now()->year == $year ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
-                            @endfor
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">&nbsp;</label>
-                        <button type="submit" class="btn btn-primary d-block w-100">Lọc dữ liệu</button>
-                    </div>
+                    <input type="hidden" name="time_type" value="daily">
                 </form>
             </div>
         </div>
-
-        <!-- Customer Details -->
+        
+        <!-- Chi tiết khách hàng -->
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-users me-1"></i>
-                Chi tiết khách hàng
+                <h6 class="font-weight-bold text-primary mb-0">
+                    <i class="fas fa-users mr-1"></i>
+                    Chi tiết khách hàng
+                </h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="customersTable">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Khách hàng</th>
                                 <th>Email</th>
                                 <th>Phân loại</th>
@@ -74,48 +61,13 @@
             </div>
         </div>
 
-        <!-- Customer Spending Tiers -->
-        <div class="row">
-            <div class="col-xl-5">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie me-1"></i>
-                        Phân loại khách hàng theo chi tiêu
-                    </div>
-                    <div class="card-body">
-                        <canvas id="customerTiersChart" width="100%" height="50"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-7">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-bar me-1"></i>
-                        Chi tiết phân loại
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="spendingTiersTable">
-                                <thead>
-                                    <tr>
-                                        <th>Phân loại</th>
-                                        <th>Số lượng</th>
-                                        <th>Tỷ lệ</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Revenue Statistics -->
+        <!-- Chi tiết doanh thu theo thời gian -->
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Chi tiết doanh thu theo thời gian
+                <h6 class="font-weight-bold text-primary mb-0">
+                    <i class="fas fa-table mr-1"></i>
+                    Chi tiết doanh thu theo thời gian
+                </h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -138,6 +90,40 @@
     </div>
 @endsection
 
+@section('style-libs')
+    <link href="{{ asset('theme/admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <style>
+        .btn-group {
+            width: 100%;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                border-radius: 0;
+                margin: -1px 0;
+            }
+
+            .btn-group .btn:first-child {
+                border-radius: 0.25rem 0.25rem 0 0;
+            }
+
+            .btn-group .btn:last-child {
+                border-radius: 0 0 0.25rem 0.25rem;
+            }
+        }
+    </style>
+@endsection
+
 @section('script-libs')
+    <script src="{{ asset('theme/admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('js/admin/charts/getRenvenueCustomer.js') }}"></script>
 @endsection

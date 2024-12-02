@@ -320,33 +320,39 @@ class Chart extends Model
             ->toArray();
     }
 
+    //Thống kê doanh thu theo khách hàng
     private const VIP_THRESHOLD = 10000000;
     private const REGULAR_THRESHOLD = 5000000;
 
-    public function getRevenueStatistics(string $date, string $type = 'monthly')
+    public function getRevenueStatistics(string $type = 'monthly')
     {
-        $dateRange = $this->getDateRange($date, $type);
+        $dateRange = $this->getDateRange($type);
+        $query = Order::query()
+            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+            ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->where('statuses.name', 'Completed');
+
+        if ($type !== 'all') {
+            $query->whereBetween('orders.created_at', [$dateRange->start, $dateRange->end]);
+        }
+
         $dateFormat = match ($type) {
             'daily' => '%Y-%m-%d',
             'monthly' => '%Y-%m',
             'yearly' => '%Y',
+            'all' => '%Y',
             default => '%Y-%m'
         };
 
-        return Order::query()
-            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-            ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
-            ->join('users', 'orders.user_id', '=', 'users.id')
-            ->where('statuses.name', 'Completed')
-            ->whereBetween('orders.created_at', [$dateRange->start, $dateRange->end])
-            ->select([
-                DB::raw("DATE_FORMAT(orders.created_at, '$dateFormat') as period"),
-                DB::raw('COUNT(DISTINCT orders.user_id) as total_customers'),
-                DB::raw('COUNT(DISTINCT orders.id) as total_orders'),
-                DB::raw('SUM(orders.total_payment) as total_revenue'),
-                DB::raw('AVG(orders.total_payment) as average_order_value'),
-                DB::raw('SUM(orders.total_payment) / COUNT(DISTINCT orders.user_id) as average_customer_spending')
-            ])
+        return $query->select([
+            DB::raw("DATE_FORMAT(orders.created_at, '$dateFormat') as period"),
+            DB::raw('COUNT(DISTINCT orders.user_id) as total_customers'),
+            DB::raw('COUNT(DISTINCT orders.id) as total_orders'),
+            DB::raw('SUM(orders.total_payment) as total_revenue'),
+            DB::raw('AVG(orders.total_payment) as average_order_value'),
+            DB::raw('SUM(orders.total_payment) / COUNT(DISTINCT orders.user_id) as average_customer_spending')
+        ])
             ->groupBy('period')
             ->orderBy('period')
             ->get()
@@ -360,43 +366,20 @@ class Chart extends Model
             ]);
     }
 
-    public function getCustomerSpendingTiers(string $date, string $type = 'monthly')
+    public function getCustomerSpendingDetails(string $type = 'monthly')
     {
-        $dateRange = $this->getDateRange($date, $type);
-
-        $customerSpending = Order::query()
-            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-            ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
-            ->where('statuses.name', 'Completed')
-            ->whereBetween('orders.created_at', [$dateRange->start, $dateRange->end])
-            ->groupBy('orders.user_id')
-            ->select([
-                'orders.user_id',
-                DB::raw('SUM(orders.total_payment) as total_spending')
-            ])
-            ->get();
-
-        return [
-            'spending_tiers' => [
-                'high_value' => $customerSpending->where('total_spending', '>=', self::VIP_THRESHOLD)->count(),
-                'medium_value' => $customerSpending->whereBetween('total_spending', [self::REGULAR_THRESHOLD, self::VIP_THRESHOLD - 1])->count(),
-                'low_value' => $customerSpending->where('total_spending', '<', self::REGULAR_THRESHOLD)->count(),
-            ],
-            'total_customers' => $customerSpending->count(),
-        ];
-    }
-
-    public function getCustomerSpendingDetails(string $date, string $type = 'monthly')
-    {
-        $dateRange = $this->getDateRange($date, $type);
-
-        return Order::query()
+        $dateRange = $this->getDateRange($type);
+        $query = Order::query()
             ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
             ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
             ->join('users', 'orders.user_id', '=', 'users.id')
-            ->where('statuses.name', 'Completed')
-            ->whereBetween('orders.created_at', [$dateRange->start, $dateRange->end])
-            ->groupBy('users.id', 'users.full_name', 'users.username', 'users.email')
+            ->where('statuses.name', 'Completed');
+
+        if ($type !== 'all') {
+            $query->whereBetween('orders.created_at', [$dateRange->start, $dateRange->end]);
+        }
+
+        return $query->groupBy('users.id', 'users.full_name', 'users.username', 'users.email')
             ->select([
                 'users.id',
                 'users.full_name',
@@ -422,27 +405,31 @@ class Chart extends Model
                 'tier' => $this->getCustomerTier($customer->total_spending)
             ]);
     }
-
-    private function getDateRange(string $date, string $type): object
+  
+    private function getDateRange(string $type): object
     {
-        $carbonDate = Carbon::parse($date);
+        $now = Carbon::now();
 
         return match ($type) {
             'daily' => (object)[
-                'start' => $carbonDate->startOfDay()->format('Y-m-d H:i:s'),
-                'end' => $carbonDate->endOfDay()->format('Y-m-d H:i:s')
+                'start' => $now->startOfDay()->format('Y-m-d H:i:s'),
+                'end' => $now->endOfDay()->format('Y-m-d H:i:s')
             ],
             'monthly' => (object)[
-                'start' => $carbonDate->startOfMonth()->format('Y-m-d H:i:s'),
-                'end' => $carbonDate->endOfMonth()->format('Y-m-d H:i:s')
+                'start' => $now->startOfMonth()->format('Y-m-d H:i:s'),
+                'end' => $now->endOfMonth()->format('Y-m-d H:i:s')
             ],
             'yearly' => (object)[
-                'start' => $carbonDate->startOfYear()->format('Y-m-d H:i:s'),
-                'end' => $carbonDate->endOfYear()->format('Y-m-d H:i:s')
+                'start' => $now->startOfYear()->format('Y-m-d H:i:s'),
+                'end' => $now->endOfYear()->format('Y-m-d H:i:s')
+            ],
+            'all' => (object)[
+                'start' => null,
+                'end' => null
             ],
             default => (object)[
-                'start' => $carbonDate->startOfMonth()->format('Y-m-d H:i:s'),
-                'end' => $carbonDate->endOfMonth()->format('Y-m-d H:i:s')
+                'start' => $now->startOfMonth()->format('Y-m-d H:i:s'),
+                'end' => $now->endOfMonth()->format('Y-m-d H:i:s')
             ]
         };
     }
@@ -450,13 +437,13 @@ class Chart extends Model
     private function getCustomerTier(int $totalSpending): array
     {
         if ($totalSpending >= self::VIP_THRESHOLD) {
-            return ['name' => 'VIP', 'class' => 'badge bg-danger'];
+            return ['name' => 'VIP', 'class' => 'badge bg-danger text-light'];
         }
 
         if ($totalSpending >= self::REGULAR_THRESHOLD) {
-            return ['name' => 'Thường xuyên', 'class' => 'badge bg-primary'];
+            return ['name' => 'Thường xuyên', 'class' => 'badge bg-primary text-light'];
         }
 
-        return ['name' => 'Mới', 'class' => 'badge bg-secondary'];
+        return ['name' => 'Mới', 'class' => 'badge bg-secondary text-light'];
     }
 }

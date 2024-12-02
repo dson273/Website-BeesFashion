@@ -125,6 +125,13 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
 
         Route::resource('orders', OrderController::class);
+        Route::get('orders/info/{id}', [OrderController::class, 'show'])->name('orders.info');
+        Route::get('orders/print/{id}', [OrderController::class, 'printOrder'])->name('orders.print');
+        Route::get('orders/success/{id}', [OrderController::class, 'onSuccess'])->name('orders.success');
+        Route::get('orders/active/{id}', [OrderController::class, 'onActive'])->name('orders.active');
+        Route::get('orders/cancel/{id}', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
+
+
 
         Route::resource('import_history', ImportHistoryController::class);
         Route::post('import_history/update', [ImportHistoryController::class, 'updateQuantity'])->name('import_history.update');

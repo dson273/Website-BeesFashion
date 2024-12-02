@@ -298,7 +298,8 @@ function addToCart(variantId, quantity) {
                
                 var successMessage = $('#fancybox-add-to-cart');
                 successMessage.removeClass('hide').addClass('show'); 
-
+                $('#quantity').val(1);
+                
                 setTimeout(function () {
                     successMessage.removeClass('show').addClass('hide');
                 }, 3000);
