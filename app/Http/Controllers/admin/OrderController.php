@@ -153,10 +153,10 @@ class OrderController extends Controller
                 $order->status_orders()->create(['status_id' => 3]);
             }
 
-            return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đã bị hủy');
+            return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được gửi đi');
         }
 
-        return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được gửi đi');
+        return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đã bị hủy');
     }
     public function cancelOrder(Request $request, string $id)
     {

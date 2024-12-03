@@ -193,13 +193,13 @@ function renderProducts(products) {
 
 $(document).ready(function () {
     // Lắng nghe các sự kiện trên các bộ lọc
-    // $('#filterBestSelling').on('click', function () {
-    //     loadBestselingProducts();
-    // });
+    $('#filterBestSelling').on('click', function () {
+        loadBestselingProducts();
+    });
 
-    // $('#filterNewArrivals').on('click', function () {
-    //     loadNewProducts();
-    // });
+    $('#filterNewArrivals').on('click', function () {
+        loadNewProducts();
+    });
 
     // // Lắng nghe sự kiện thay đổi trên các bộ lọc
     // $('input.category-checkbox, input.brand-checkbox').on('change', function () {

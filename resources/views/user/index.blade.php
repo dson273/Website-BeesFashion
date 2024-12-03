@@ -256,13 +256,13 @@
                                         tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($newProducts as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="col-xxl-3 col-md-4 col-6 position-relative">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
-
-                                                            <div class="label-block"><img
+                                                            <div class="info-ticket ticket-news">NEW</div>
+                                                            {{-- <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
-                                                                    alt="lable"><span>on <br>Sale!</span></div>
+                                                                    alt="lable"><span>on <br>Sale!</span></div> --}}
                                                             <div class="product-image">
                                                                 @if ($product)
                                                                     <a
@@ -286,7 +286,7 @@
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
                                                                         data-bs-title="Add to Wishlist"></i>
                                                                 </a>
-                                                                <a href="javascript:void(0)"
+                                                                {{-- <a href="javascript:void(0)"
                                                                     class="add-to-cart quick-view-btn"
                                                                     data-product-id="{{ $product->id }}"
                                                                     data-bs-toggle="modal" data-bs-target="#quick-view"
@@ -294,11 +294,10 @@
                                                                     <i class="iconsax" data-icon="eye" aria-hidden="true"
                                                                         data-bs-toggle="tooltip"
                                                                         data-bs-title="Quick View"></i>
-                                                                </a>
+                                                                </a> --}}
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
-
                                                             <div class="add-button">
                                                                 <a href="javascript:void(0)"
                                                                     class="add-to-cart quick-view-btn"
@@ -364,7 +363,7 @@
                                                                             @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                                                 <li class="color-item"
                                                                                     data-color="{{ $attributeValue->id }}"
-                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
+                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #ccc;">
                                                                                     <a href="javascript:void(0)"
                                                                                         class="color-picker"></a>
                                                                                 </li>
@@ -376,18 +375,28 @@
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                <span> @php
+                                                                    $rating = $product->rating['average_rating'];
+                                                                    $fullStars = floor($rating);
+                                                                    $hasHalfStar = $rating - $fullStars >= 0.5;
+                                                                    $emptyStars =
+                                                                        5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                                                @endphp
+                                                                    {{ number_format($rating, 1) }}
+                                                                    <i class="fa-solid fa-star"></i></span>
 
                                                             </div>
 
 
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
+                                                                    </h6>
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
+                                                                    </h6>
                                                                 </a>
                                                             @endif
                                                             <p>
@@ -408,10 +417,10 @@
                                                 <div class="col-xxl-3 col-md-4 col-6">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
-
-                                                            <div class="label-block"><img
+                                                            <div class="info-ticket seller">Best Seller</div>
+                                                            {{-- <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
-                                                                    alt="lable"><span>on <br>Sale!</span></div>
+                                                                    alt="lable"><span>on <br>Sale!</span></div> --}}
                                                             <div class="product-image">
                                                                 @if ($product)
                                                                     <a
@@ -511,7 +520,7 @@
                                                                             @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                                                 <li class="color-item"
                                                                                     data-color="{{ $attributeValue->id }}"
-                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
+                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #ccc;">
                                                                                     <a href="javascript:void(0)"
                                                                                         class="color-picker"></a>
                                                                                 </li>
@@ -523,18 +532,28 @@
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                <span> @php
+                                                                    $rating = $product->rating['average_rating'];
+                                                                    $fullStars = floor($rating);
+                                                                    $hasHalfStar = $rating - $fullStars >= 0.5;
+                                                                    $emptyStars =
+                                                                        5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                                                @endphp
+                                                                    {{ number_format($rating, 1) }} <i
+                                                                        class="fa-solid fa-star"></i></span>
 
                                                             </div>
 
 
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
+                                                                    </h6>
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
+                                                                    </h6>
                                                                 </a>
                                                             @endif
                                                             <p>
@@ -658,7 +677,7 @@
                                                                             @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                                                 <li class="color-item"
                                                                                     data-color="{{ $attributeValue->id }}"
-                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
+                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #ccc;">
                                                                                     <a href="javascript:void(0)"
                                                                                         class="color-picker"></a>
                                                                                 </li>
@@ -670,18 +689,28 @@
                                                                         @endforeach
                                                                     @endforeach
                                                                 </ul>
-                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                                                <span> @php
+                                                                    $rating = $product->rating['average_rating'];
+                                                                    $fullStars = floor($rating);
+                                                                    $hasHalfStar = $rating - $fullStars >= 0.5;
+                                                                    $emptyStars =
+                                                                        5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                                                @endphp
+                                                                    {{ number_format($rating, 1) }} <i
+                                                                        class="fa-solid fa-star"></i></span>
 
                                                             </div>
 
 
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
+                                                                    </h6>
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
+                                                                    </h6>
                                                                 </a>
                                                             @endif
                                                             <p>
@@ -836,7 +865,7 @@
 
                                                     @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                         <li class="color-item" data-color="{{ $attributeValue->id }}"
-                                                            style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
+                                                            style="background-color:{{ $attributeValue->value }}; border: 1px solid #ccc;">
                                                             <a href="javascript:void(0)" class="color-picker"></a>
                                                         </li>
                                                         @php
@@ -846,16 +875,22 @@
                                                 @endforeach
                                             @endforeach
                                         </ul>
-                                        <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                        <span> @php
+                                            $rating = $product->rating['average_rating'];
+                                            $fullStars = floor($rating);
+                                            $hasHalfStar = $rating - $fullStars >= 0.5;
+                                            $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                        @endphp
+                                            {{ number_format($rating, 1) }} <i class="fa-solid fa-star"></i></span>
 
                                     </div>
                                     @if ($product)
                                         <a href="{{ route('product.detail', $product->SKU) }}">
-                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                            <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                     @else
                                         <a href="#">
-                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                            <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                     @endif
                                     <p>
@@ -935,7 +970,7 @@
 
                                                     @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                         <li class="color-item" data-color="{{ $attributeValue->id }}"
-                                                            style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
+                                                            style="background-color:{{ $attributeValue->value }}; border: 1px solid #ccc;">
                                                             <a href="javascript:void(0)" class="color-picker"></a>
                                                         </li>
                                                         @php
@@ -945,16 +980,22 @@
                                                 @endforeach
                                             @endforeach
                                         </ul>
-                                        <span>4.5 <i class="fa-solid fa-star"></i></span>
+                                        <span> @php
+                                            $rating = $product->rating['average_rating'];
+                                            $fullStars = floor($rating);
+                                            $hasHalfStar = $rating - $fullStars >= 0.5;
+                                            $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                        @endphp
+                                            {{ number_format($rating, 1) }} <i class="fa-solid fa-star"></i></span>
 
                                     </div>
                                     @if ($product)
                                         <a href="{{ route('product.detail', $product->SKU) }}">
-                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                            <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                     @else
                                         <a href="{{ route('product.detail', $product->SKU) }}">
-                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                            <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                     @endif
                                     <p>
@@ -1160,7 +1201,7 @@
                                         <!-- Các thuộc tính sẽ được cập nhật qua JS -->
                                     </div>
                                     <div class="border-product">
-                                        
+
                                     </div>
                                     <div class="product-description">
                                         <h6 class="product-title">Quantity</h6>
@@ -1176,7 +1217,7 @@
 
                                     <div class="product-buttons">
                                         <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
-                                        <a class="btn btn-solid" href="#">View detail</a>
+                                        <a class="btn btn-solid" href="#" id="btn_view_detail_of_quick_view_product">View detail</a>
                                     </div>
                                 </div>
                             </div>

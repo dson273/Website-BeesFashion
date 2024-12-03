@@ -1,7 +1,7 @@
 function formatCurrency(amount) {
     amount = parseFloat(amount);
-    if (isNaN(amount)) return "0 VND";
-    return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    if (isNaN(amount)) return "0 đ";
+    return amount.toLocaleString('vi-VN') + "đ";
 }
 
 
