@@ -41,7 +41,7 @@ class HomeController extends Controller
             ->limit(8)
             ->get()
             ->map(function ($product) {
-                $product->priceRange =  $product->getPriceRangeAttribute();
+                $product->priceRange =  $product->getPriceRange();
                 return $product;
             });
         $newProducts = Product::with(['product_files'])
@@ -50,7 +50,7 @@ class HomeController extends Controller
             ->limit(8)
             ->get()
             ->map(function ($product) {
-                $product->priceRange =  $product->getPriceRangeAttribute();
+                $product->priceRange =  $product->getPriceRange();
                 return $product;
             });
         $products = Product::whereHas('categories', function ($query) {
@@ -60,7 +60,7 @@ class HomeController extends Controller
             ->limit(8)
             ->get()
             ->map(function ($product) {
-                $product->priceRange = $product->getPriceRangeAttribute();
+                $product->priceRange = $product->getPriceRange();
                 return $product;
             });
 
@@ -79,7 +79,7 @@ class HomeController extends Controller
             'id' => $product->id,
             'name' => $product->name,
             'sku' => $product->SKU,
-            'price' => $product->getPriceRangeAttribute(),  // Giá sản phẩm (ví dụ: dải giá)
+            'price' => $product->getPriceRange(),  // Giá sản phẩm (ví dụ: dải giá)
             'description' => $product->description,
             'imageUrl' => asset('uploads/products/images/' . $product->product_files->first()->file_name), // Ảnh sản phẩm chính
             'relatedImages' => $product->product_files->map(function ($file) {

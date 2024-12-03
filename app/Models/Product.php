@@ -66,27 +66,59 @@ class Product extends Model
     {
         return $this->hasMany(Product_view_history::class);
     }
-    public function getPriceRangeAttribute()
+    public function getPriceRange()
     {
-        $salePrices = $this->product_variants->pluck('sale_price')->filter();
-        $importPrices = $this->product_variants->pluck('regular_price')->filter();
-    
-        $minSalePrice = $salePrices->min();
-        $maxSalePrice = $salePrices->max();
-        $minImportPrice = $importPrices->min();
-        $maxImportPrice = $importPrices->max();
-    
-        // Nếu không có giá khuyến mãi
-        if ($salePrices->isEmpty()) {
-            return number_format($minImportPrice) . " ₫ - " . number_format($maxImportPrice) . " ₫";
+        $variants = $this->product_variants;
+
+        // Lọc các biến thể có `sale_price` không null
+        $variantsWithSalePrice = $variants->filter(function ($variant) {
+            return $variant->sale_price !== null;
+        });
+
+        // Lọc các biến thể chỉ có `regular_price`
+        $variantsWithoutSalePrice = $variants->filter(function ($variant) {
+            return $variant->sale_price === null;
+        });
+
+        // Tìm giá trị thấp nhất và cao nhất
+        if ($variantsWithSalePrice->isNotEmpty()) {
+            $minPrice = $variantsWithSalePrice->min('sale_price');
+            $maxPrice = $variantsWithoutSalePrice->isNotEmpty()
+                ? $variantsWithoutSalePrice->max('regular_price')
+                : $variantsWithSalePrice->max('sale_price');
+        } else {
+            $minPrice = $variantsWithoutSalePrice->min('regular_price');
+            $maxPrice = $variantsWithoutSalePrice->max('regular_price');
         }
-    
-        // Nếu có giá khuyến mãi, xử lý các trường hợp
-        if ($minSalePrice === $maxSalePrice) {
-            return number_format($minSalePrice) . " ₫";
+
+        // Trả về khoảng giá
+        return $minPrice === $maxPrice
+            ? number_format($minPrice, 0, ',', '.') . 'đ'
+            : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
+    }
+
+    public function getRegularPrice()
+    {
+        $variants = $this->product_variants;
+        return $variants->max('regular_price');
+    }
+
+    public function getDiscountPercent()
+    {
+        $variants = $this->product_variants;
+        $maxRegularPrice = $variants->max('regular_price');
+        $variantsWithSalePrice = $variants->filter(function ($variant) {
+            return $variant->sale_price !== null;
+        });
+
+        $minSalePrice = $variantsWithSalePrice->min('sale_price');
+
+        if ($maxRegularPrice && $minSalePrice) {
+            $discountPercent = number_format((100 - ($minSalePrice / $maxRegularPrice * 100)), 1, '.', '');
+            return '-' . $discountPercent . '%';
         }
-    
-        return number_format($minSalePrice) . " ₫ - " . number_format($maxSalePrice) . " ₫";
+
+        return 'Hot!';
     }
 
 }

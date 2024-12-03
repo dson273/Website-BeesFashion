@@ -763,7 +763,7 @@
                     } else {
                         $('#sale-price').text(regular_price);
                         $('#regular-price').text(regular_price);
-                        $('#percent-discount').hide();
+                        $('#percent-discount').text(`Hot!`);
                         $('#update-stock').text(stock);
                     }
                     currency();
