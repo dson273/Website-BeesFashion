@@ -353,7 +353,7 @@
                                                                     $displayedColors = []; // Mảng lưu màu đã hiển thị
                                                                 @endphp
                                                                 <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                    style="list-style-type: none; padding: 0; ">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
@@ -364,7 +364,7 @@
                                                                             @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                                                 <li class="color-item"
                                                                                     data-color="{{ $attributeValue->id }}"
-                                                                                    style="background-color:{{ $attributeValue->value }};">
+                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
                                                                                     <a href="javascript:void(0)"
                                                                                         class="color-picker"></a>
                                                                                 </li>
@@ -383,11 +383,11 @@
 
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                                                 </a>
                                                             @endif
                                                             <p>
@@ -511,7 +511,7 @@
                                                                             @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                                                 <li class="color-item"
                                                                                     data-color="{{ $attributeValue->id }}"
-                                                                                    style="background-color:{{ $attributeValue->value }};">
+                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
                                                                                     <a href="javascript:void(0)"
                                                                                         class="color-picker"></a>
                                                                                 </li>
@@ -530,11 +530,11 @@
 
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                                                 </a>
                                                             @endif
                                                             <p>
@@ -658,7 +658,7 @@
                                                                             @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                                                 <li class="color-item"
                                                                                     data-color="{{ $attributeValue->id }}"
-                                                                                    style="background-color:{{ $attributeValue->value }};">
+                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
                                                                                     <a href="javascript:void(0)"
                                                                                         class="color-picker"></a>
                                                                                 </li>
@@ -677,11 +677,11 @@
 
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                                                 </a>
                                                             @endif
                                                             <p>
@@ -836,7 +836,7 @@
 
                                                     @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                         <li class="color-item" data-color="{{ $attributeValue->id }}"
-                                                            style="background-color:{{ $attributeValue->value }};">
+                                                            style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
                                                             <a href="javascript:void(0)" class="color-picker"></a>
                                                         </li>
                                                         @php
@@ -851,11 +851,11 @@
                                     </div>
                                     @if ($product)
                                         <a href="{{ route('product.detail', $product->SKU) }}">
-                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                     @else
                                         <a href="#">
-                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                     @endif
                                     <p>
@@ -935,7 +935,7 @@
 
                                                     @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
                                                         <li class="color-item" data-color="{{ $attributeValue->id }}"
-                                                            style="background-color:{{ $attributeValue->value }};">
+                                                            style="background-color:{{ $attributeValue->value }}; border: 1px solid #D3D3D3">
                                                             <a href="javascript:void(0)" class="color-picker"></a>
                                                         </li>
                                                         @php
@@ -950,11 +950,11 @@
                                     </div>
                                     @if ($product)
                                         <a href="{{ route('product.detail', $product->SKU) }}">
-                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                     @else
-                                        <a href="#">
-                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                        <a href="{{ route('product.detail', $product->SKU) }}">
+                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                     @endif
                                     <p>
@@ -1131,8 +1131,8 @@
                     <div class="modal-body">
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"
                             id="close_modal"></button>
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 col-xs-12">
+                        <div class="row">
+                            <div class="col-lg-5 col-xs-12">
                                 <div class="quick-view-img">
                                     <div class="swiper modal-slide-1">
                                         <div class="swiper-wrapper ratio_square-2">
@@ -1149,7 +1149,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 rtl-text">
+                            <div class="col-lg-7 rtl-text">
                                 <div class="product-right">
                                     <h4 id="product-name"></h4>
                                     <p id="product-sku"></p>
@@ -1159,10 +1159,8 @@
                                     <div class="blink-border attributes-container" id="attributes-container">
                                         <!-- Các thuộc tính sẽ được cập nhật qua JS -->
                                     </div>
-
                                     <div class="border-product">
-                                        <h6>Mô tả sản phẩm</h6>
-                                        <p id="product-description"></p>
+                                        
                                     </div>
                                     <div class="product-description">
                                         <h6 class="product-title">Quantity</h6>
