@@ -14878,7 +14878,6 @@ body.skeleton_body {
 }
 
 .product-box .img-wrapper {
-    overflow: hidden;
     position: relative
 }
 
@@ -19846,4 +19845,40 @@ svg {
 .able {
     opacity: 1;
     pointer-events: auto;
+}
+
+.info-ticket{
+	position: absolute;
+	color: #fff;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 16px;
+	top: 0;
+	left: -7px;
+	z-index: 3;
+}
+
+.ticket-news{
+	background: url('../images/ticket/bg_news.png') no-repeat center/cover;
+	padding: 7px 18px 7px 15px;
+	text-transform: uppercase;
+}
+.info-ticket.ticket-news:after {
+    border-top: 17px solid #AC2F33;
+}
+.info-ticket:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 17px solid #D73831;
+    border-left: 7px solid transparent;
+    bottom: -16px;
+    left: 0px;
+    z-index: -1;
+}
+.seller {
+    background: url(../images/ticket/bg-seller.png) no-repeat center / cover;
+    padding: 5px 18px 7px 15px;
+
 }
