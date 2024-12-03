@@ -34,12 +34,18 @@ class BannerController extends Controller
     {
 
         $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'file_name' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
 
         ], [
             'name.required' => 'Tên banner chưa được nhập.',
-            'name.string' => 'Tên danh mục phải là một chuỗi ký tự.',
-            'name.max' => 'Tên danh mục không được quá 255 ký tự.',
+            'name.string' => 'Tên banner phải là một chuỗi ký tự.',
+            'name.max' => 'Tên banner không được quá 255 ký tự.',
+
+
+            'file_name.required' => 'Không được để trống ảnh.',
+            'file_name.image' => 'Tệp tải lên phải là một hình ảnh.',
+            'file_name.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif, svg.',
         ]);
 
         if ($request->isMethod('POST')) {

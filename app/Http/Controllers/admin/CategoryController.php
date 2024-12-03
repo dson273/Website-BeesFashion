@@ -54,7 +54,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'description' => 'required|string',
         ], [
             'name.required' => 'Tên danh mục chưa được nhập.',
@@ -64,7 +64,6 @@ class CategoryController extends Controller
             'image.required' => 'Không được để trống ảnh.',
             'image.image' => 'Tệp tải lên phải là một hình ảnh.',
             'image.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif, svg.',
-            'image.max' => 'Dung lượng ảnh tối đa là 2MB.',
 
             'description.required' => 'Mô tả danh mục chưa được nhập.',
             'description.string' => 'Mô tả phải là một chuỗi ký tự.',

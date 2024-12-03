@@ -66,23 +66,22 @@
 
                                     </td>
                                     <td>{{ $banner->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
-                                    <td>
+                                    <td style="white-space: nowrap;">
                                         @if ($banner->is_active == 1)
-                                            <a href="{{ route('admin.banner.offactive', $banner->id) }}"
-                                                class="btn btn-danger"><i class="fa fa-power-off"></i></a>
+                                            <a href="{{ route('admin.banner.offactive', $banner->id) }}" style="margin-right: 10px;"><i class="fa fa-power-off"></i></a>
                                         @else
-                                            <a href="{{ route('admin.banner.onactive', $banner->id) }}"
-                                                class="btn btn-success"><i class="fa fa-power-off"></i></a>
+                                            <a href="{{ route('admin.banner.onactive', $banner->id) }}" style="margin-right: 10px;"><i class="fa fa-power-off"></i></a>
                                         @endif
-                                        <a href="{{ route('admin.banner.edit', $banner->id) }}" class="btn btn-warning"><i
-                                                class="fa fa-wrench"></i></a>
+                                        <a href="{{ route('admin.banner.edit', $banner->id) }}" style="margin-right: 10px;"><img
+                                            src="{{ asset('assets/images/icons/edit.svg') }}" alt="img"></a>
                                         <form action="{{ route('admin.banner.destroy', $banner->id) }}" method="POST"
                                             style="display: inline;"
                                             onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"><i
-                                                    class="fa fa-trash"></i></button>
+                                            <button type="submit" style="all: unset; cursor: pointer;">
+                                                <img src="{{ asset('assets/images/icons/delete.svg') }}" alt="Delete">
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
