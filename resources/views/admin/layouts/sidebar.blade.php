@@ -28,13 +28,11 @@
 
     <!-- Thống kê -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistics"
-            aria-expanded="true" aria-controls="collapseStatistics">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistics" aria-expanded="true" aria-controls="collapseStatistics">
             <img src="{{ asset('assets/images/icons/statistical.svg') }}" alt="img">
             <span>Thống kê</span>
         </a>
-        <div id="collapseStatistics" class="collapse" aria-labelledby="headingStatistics"
-            data-parent="#accordionSidebar">
+        <div id="collapseStatistics" class="collapse" aria-labelledby="headingStatistics" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Danh sách chức năng:</h6>
                 <a class="collapse-item" href="{{ route('admin.statistics.revenueProduct') }}">Doanh thu sản phẩm</a>
@@ -48,8 +46,7 @@
 
     <!-- Quản lý danh mục -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <img src="{{ asset('assets/images/icons/category.svg') }}" alt="img">
             <span>Quản lý danh mục</span>
         </a>
@@ -64,8 +61,7 @@
 
     <!-- Quản lý sản phẩm -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
             <img src="{{ asset('assets/images/icons/product.svg') }}" alt="img">
             <span>Quản lý sản phẩm</span>
         </a>
@@ -80,8 +76,7 @@
 
     {{-- Quản lý thuộc tính --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-            aria-expanded="true" aria-controls="collapseThree">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
             <img src="{{ asset('assets/images/icons/attribute.svg') }}" alt="img">
             <span>Quản lý thuộc tính</span>
         </a>
@@ -99,8 +94,7 @@
 
     {{-- Quản lý banner --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBanners"
-            aria-expanded="true" aria-controls="collapseBanners">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBanners" aria-expanded="true" aria-controls="collapseBanners">
             <img src="{{ asset('assets/images/icons/banner.svg') }}" alt="img">
 
             <span>Quản lý banner</span>
@@ -116,8 +110,7 @@
 
     {{-- quản lý thương hiệu(brand) --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBrands"
-            aria-expanded="true" aria-controls="collapseBrands">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBrands" aria-expanded="true" aria-controls="collapseBrands">
             <img src="{{ asset('assets/images/icons/brand.svg') }}" alt="img">
             <span>Quản lý thương hiệu</span>
         </a>
@@ -131,43 +124,40 @@
     </li>
 
     {{-- Kiểm tra nếu là admin --}}
-
-    {{-- Quản lý manager setting --}}
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManagers"
-            aria-expanded="true" aria-controls="collapseManagers">
-            <img src="{{ asset('assets/images/icons/function.svg') }}" alt="img">
-            <span>Quản lý chức năng</span>
-        </a>
-        <div id="collapseManagers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Danh sách chức năng</h6>
-                <a class="collapse-item" href="{{ route('admin.managerSettings.index') }}">Danh sách</a>
-                <a class="collapse-item" href="{{ route('admin.managerSettings.create') }}">Thêm</a>
+    @if (Auth::user()->role === 'admin')
+        {{-- Quản lý manager setting --}}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManagers" aria-expanded="true" aria-controls="collapseManagers">
+                <img src="{{ asset('assets/images/icons/function.svg') }}" alt="img">
+                <span>Quản lý chức năng</span>
+            </a>
+            <div id="collapseManagers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Danh sách chức năng</h6>
+                    <a class="collapse-item" href="{{ route('admin.managerSettings.index') }}">Danh sách</a>
+                    <a class="collapse-item" href="{{ route('admin.managerSettings.create') }}">Thêm</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    {{-- Quản lý nhân viên --}}
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaffs"
-            aria-expanded="true" aria-controls="collapseStaffs">
-            <img src="{{ asset('assets/images/icons/staff.svg') }}" alt="img">
-            <span>Quản lý nhân viên</span>
-        </a>
-        <div id="collapseStaffs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Danh sách chức năng</h6>
-                <a class="collapse-item" href="{{ route('admin.staffs.index') }}">Danh sách</a>
-                <a class="collapse-item" href="{{ route('admin.staffs.create') }}">Thêm</a>
+        {{-- Quản lý nhân viên --}}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaffs" aria-expanded="true" aria-controls="collapseStaffs">
+                <img src="{{ asset('assets/images/icons/staff.svg') }}" alt="img">
+                <span>Quản lý nhân viên</span>
+            </a>
+            <div id="collapseStaffs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Danh sách chức năng</h6>
+                    <a class="collapse-item" href="{{ route('admin.staffs.index') }}">Danh sách</a>
+                    <a class="collapse-item" href="{{ route('admin.staffs.create') }}">Thêm</a>
+                </div>
             </div>
-        </div>
-    </li>
-
+        </li>
+    @endif
     {{-- Quản lý khách hàng --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers"
-            aria-expanded="true" aria-controls="collapseCustomers">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomers" aria-expanded="true" aria-controls="collapseCustomers">
             <img src="{{ asset('assets/images/icons/users1.svg') }}" alt="img">
             <span>Quản lý khách hàng</span>
         </a>
@@ -180,8 +170,7 @@
     </li>
     {{-- Quản lý vouchers --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVouchers"
-            aria-expanded="true" aria-controls="collapseVouchers">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVouchers" aria-expanded="true" aria-controls="collapseVouchers">
             <img src="{{ asset('assets/images/icons/vouchers.svg') }}" alt="img">
             <span>Quản lý vouchers</span>
         </a>
@@ -195,8 +184,7 @@
     </li>
     {{-- Lịch sử nhập hàng --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistory"
-            aria-expanded="true" aria-controls="collapseHistory">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistory" aria-expanded="true" aria-controls="collapseHistory">
             <img src="{{ asset('assets/images/icons/import.svg') }}" alt="img">
             <span>Lịch sử nhập hàng</span>
         </a>
@@ -211,8 +199,7 @@
 
     {{-- Quản lý đơn hàng --}}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrder"
-            aria-expanded="true" aria-controls="collapseOrder">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrder" aria-expanded="true" aria-controls="collapseOrder">
             <img src="{{ asset('assets/images/icons/sales1.svg') }}" alt="img">
             <span>Quản lý đơn hàng</span>
         </a>
