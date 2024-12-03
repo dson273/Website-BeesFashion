@@ -54,7 +54,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'description' => 'required|string',
         ], [
             'name.required' => 'Tên danh mục chưa được nhập.',
@@ -272,16 +272,16 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'fake_sales' => 'required|integer|min:1',
         ]);
-    
+
         try {
             $newFakeSales = $validated['fake_sales']; // Lấy số lượng nhập từ request
-    
+
             $product = Product::findOrFail($id);
-    
+
             $product->update([
                 'fake_sales' => $newFakeSales,
             ]);
-    
+
             // Trả về thông báo thành công
             return redirect()->back()->with('statusSuccess', 'Số lượng ảo đã được cập nhật!');
         } catch (\Exception $e) {

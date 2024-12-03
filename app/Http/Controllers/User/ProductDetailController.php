@@ -274,7 +274,7 @@ class ProductDetailController extends Controller
 
         // Tính toán thống kê
         $totalReviews = $reviews->count();
-        $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 0;
+        $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 5;
 
         // Tính phần trăm cho từng số sao
         $starCounts = $reviews->groupBy('star');

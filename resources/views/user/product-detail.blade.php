@@ -384,7 +384,7 @@
                                     <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
                                             aria-expanded="false" aria-controls="collapseThree"><span>Reviews</span></button></h2>
                                     <div class="accordion-collapse collapse" id="collapseFour" data-bs-parent="#accordionDescription">
-                                        <div class="accordion-body">
+                                        <div class="accordion-body mb-4">
                                             @if ($reviewData['stats']['total_reviews'] > 0)
                                                 <div class="row gy-4">
                                                     <div class="col-lg-4">
