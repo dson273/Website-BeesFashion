@@ -66,6 +66,7 @@ class Product extends Model
     {
         return $this->hasMany(Product_view_history::class);
     }
+  
     public function getPriceRange()
     {
         $variants = $this->product_variants;
