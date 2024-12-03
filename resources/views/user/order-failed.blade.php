@@ -51,7 +51,7 @@
                                                     </a>
                                                     <div class="d-flex flex-column">
                                                         <a href="{{route('product.detail',$order_detail->product_variant->product->id)}}">
-                                                            <h5>{{Str::limit($order_detail->product_variant->product->name,30,'...')}}</h5>
+                                                            <h5>{{Str::limit($order_detail->product_variant->product->name,15,'...')}}</h5>
                                                         </a>
                                                         <span>{{$order_detail->value_variants}}</span>
                                                     </div>

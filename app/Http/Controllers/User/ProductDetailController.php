@@ -140,8 +140,10 @@ class ProductDetailController extends Controller
             ]);
         }
     }
-    public function addToCart(string $variant_id, string $quantity)
+    public function addToCart()
     {
+        $variant_id = request()->input('variant_id');
+        $quantity = request()->input('quantity');
         if (!auth()->check()) {
             return response()->json([
                 'status' => 'unauthenticated',
