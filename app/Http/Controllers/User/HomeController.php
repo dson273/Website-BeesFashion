@@ -11,7 +11,7 @@ use App\Models\Category;
 use App\Models\Attribute;
 use Illuminate\Http\Request;
 use App\Models\Attribute_value;
-use App\Models\Product_variant;
+use App\Models\Product_vote;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
@@ -35,35 +35,44 @@ class HomeController extends Controller
             ->where('end_date', '>=', Carbon::now())
             ->limit(8)
             ->get();
-        $topProducts = Product::with(['product_files'])
+        $topProducts = Product::with(['product_files','product_variants.product_votes.user'])
             ->where('is_active', 1)
             ->orderBy('view', 'DESC')
             ->limit(8)
             ->get()
             ->map(function ($product) {
                 $product->priceRange =  $product->getPriceRange();
+                $product->priceRange =  $product->getPriceRange();
+                $rating = $this->getProductReviewData($product);
+                $product->rating = $rating;
                 return $product;
             });
-        $newProducts = Product::with(['product_files'])
+        $newProducts = Product::with(['product_files','product_variants.product_votes.user'])
             ->where('is_active', 1)
             ->orderBy('created_at', 'DESC')
             ->limit(8)
             ->get()
             ->map(function ($product) {
                 $product->priceRange =  $product->getPriceRange();
+                $rating = $this->getProductReviewData($product);
+                $product->rating = $rating;
+
                 return $product;
             });
         $products = Product::whereHas('categories', function ($query) {
             $query->where('fixed', 0);
         })
-            ->with(['product_files', 'product_variants'])
+            ->with(['product_files', 'product_variants','product_variants.product_votes.user'])
             ->limit(8)
             ->get()
             ->map(function ($product) {
                 $product->priceRange = $product->getPriceRange();
+                $product->priceRange =  $product->getPriceRange();
+                $rating = $this->getProductReviewData($product);
+                $product->rating = $rating;
                 return $product;
             });
-
+    
         return view('user.index', compact('sliders','brands', 'vouchers', 'topProducts', 'newProducts', 'products'));
     }
     public function getProductDetails($productId)
@@ -79,7 +88,6 @@ class HomeController extends Controller
             'id' => $product->id,
             'name' => $product->name,
             'sku' => $product->SKU,
-            'price' => $product->getPriceRange(),  // Giá sản phẩm (ví dụ: dải giá)
             'description' => $product->description,
             'imageUrl' => asset('uploads/products/images/' . $product->product_files->first()->file_name), // Ảnh sản phẩm chính
             'relatedImages' => $product->product_files->map(function ($file) {
@@ -180,7 +188,22 @@ class HomeController extends Controller
         ]);
     }
 
+    private function getProductReviewData($product)
+    {
+        $variantIds = $product->product_variants->pluck('id')->toArray();
 
+        $reviews = Product_vote::whereIn('product_variant_id', $variantIds)
+            ->where('is_active', 1)
+            ->get();
+
+        $totalReviews = $reviews->count();
+        $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 5; // Mặc định 5 sao nếu chưa có đánh giá
+
+        return [
+            'average_rating' => $averageRating,
+            'total_reviews' => $totalReviews
+        ];
+    }
     //Trang thanh toán
     public function checkout()
     {
