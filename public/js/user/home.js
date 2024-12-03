@@ -69,7 +69,7 @@ function openQuickView(productId) {
     const modal = $('#quick-view');
     modal.modal('show');
     modal.find('#product-image').attr('src', 'path/to/loading-image.gif'); // Loading image tạm thời
-    modal.find('#product-name, #product-sku, #product-price, #product-description').text('Loading...');
+    modal.find('#product-name, #product-sku, #product-price').text('Loading...');
     modal.find('.color-list, .size-list, .default-list').empty(); // Xóa dữ liệu cũ
 
     // Gửi yêu cầu API lấy dữ liệu chi tiết sản phẩm
@@ -127,7 +127,6 @@ function displayProductDetailsInModal(product) {
     modal.find('#product-name').text(product.name);
     modal.find('#product-sku').text(`SKU: ${product.sku}`);
     modal.find('#product-price').text(product.price);
-    modal.find('#product-description').html(product.description);
     modal.find('#product-image').attr('src', product.imageUrl);
 
     // Cập nhật ảnh liên quan
