@@ -271,16 +271,16 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'fake_sales' => 'required|integer|min:1',
         ]);
-    
+
         try {
             $newFakeSales = $validated['fake_sales']; // Lấy số lượng nhập từ request
-    
+
             $product = Product::findOrFail($id);
-    
+
             $product->update([
                 'fake_sales' => $newFakeSales,
             ]);
-    
+
             // Trả về thông báo thành công
             return redirect()->back()->with('statusSuccess', 'Số lượng ảo đã được cập nhật!');
         } catch (\Exception $e) {
