@@ -130,7 +130,6 @@
 .listitem {
     display: flex;
     padding: 10px 10px;
-
 }
 
 .theme-arco-timeline-item-dot-wrapper {
@@ -138,128 +137,58 @@
     justify-content: center;
     align-items: center;
     margin-right: 15px;
-
-}
-.theme-arco-timeline-item-dot-custom1.active {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: #8f8f8f;
-    /* Blue color */
-}
-.theme-arco-timeline-item-dot-custom1 {
-    width: 15px;
-    /* Kích thước của dấu chấm */
-    height: 15px;
-    /* Chiều cao bằng chiều rộng để tạo hình tròn */
-    border-radius: 50%;
-    /* Đảm bảo hình tròn */
-    border: 2px solid #000;
-    /* Tạo viền đen cho dấu chấm */
-    background-color: transparent;
-    /* Loại bỏ nền */
+    position: relative;
 }
 
-.theme-arco-timeline-item-dot-custom2.active {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: #8f8f8f;
-    /* Blue color */
+.theme-arco-timeline-item-dot-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    /* Độ dày của đường kẻ */
+    height: 100%;
+    /* Chiều cao của đường kẻ */
+    border-left: 1px dashed #888;
+    /* Tạo đường kẻ đứt */
+    transform: translateX(-50%);
+    /* Căn giữa đường kẻ */
 }
 
-.theme-arco-timeline-item-dot-custom2 {
-    width: 15px;
-    /* Kích thước của dấu chấm */
-    height: 15px;
-    /* Chiều cao bằng chiều rộng để tạo hình tròn */
+/* Dấu chấm của timeline */
+.theme-arco-timeline-item-dot-custom.active {
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    /* Đảm bảo hình tròn */
-    border: 2px solid #000;
-    /* Tạo viền đen cho dấu chấm */
-    background-color: transparent;
-    /* Loại bỏ nền */
+    background-color: #8e8e8e;
+    /* Màu xanh lá khi active */
+    border: 2px solid #fff;
+    /* Màu sắc viền */
 }
 
-.theme-arco-timeline-item-dot-custom3.active {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: #8f8f8f;
-    /* Blue color */
-}
-
-.theme-arco-timeline-item-dot-custom3 {
-    width: 15px;
-    /* Kích thước của dấu chấm */
-    height: 15px;
-    /* Chiều cao bằng chiều rộng để tạo hình tròn */
-    border-radius: 50%;
-    /* Đảm bảo hình tròn */
-    border: 2px solid #000;
-    /* Tạo viền đen cho dấu chấm */
-    background-color: transparent;
-    /* Loại bỏ nền */
-}
-
-.theme-arco-timeline-item-dot-custom4.active {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: #8f8f8f;
-    /* Blue color */
-}
-
-.theme-arco-timeline-item-dot-custom4 {
-    width: 15px;
-    /* Kích thước của dấu chấm */
-    height: 15px;
-    /* Chiều cao bằng chiều rộng để tạo hình tròn */
-    border-radius: 50%;
-    /* Đảm bảo hình tròn */
-    border: 2px solid #000;
-    /* Tạo viền đen cho dấu chấm */
-    background-color: transparent;
-    /* Loại bỏ nền */
-}
-
-.theme-arco-timeline-item-dot-custom5.active {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: #8f8f8f;
-    /* Blue color */
-}
-
-.theme-arco-timeline-item-dot-custom5 {
-    width: 15px;
-    /* Kích thước của dấu chấm */
-    height: 15px;
-    /* Chiều cao bằng chiều rộng để tạo hình tròn */
-    border-radius: 50%;
-    /* Đảm bảo hình tròn */
-    border: 2px solid #000;
-    /* Tạo viền đen cho dấu chấm */
-    background-color: transparent;
-    /* Loại bỏ nền */
-}
 
 /* Timeline content */
 .theme-arco-timeline-item-dot-content {
     flex-grow: 1;
 }
 
+/* Texts for each step */
 .sc-jeGSBP {
     font-size: 1rem;
     font-weight: bold;
     color: #000000;
 }
 
-
 .text-sm {
     font-size: 0.875rem;
     color: #888;
 }
+
+/* Style cho khi trạng thái đơn hàng là đã hủy */
+.cancelled-order .theme-arco-timeline-item-dot-wrapper {
+    display: none;
+}
+
+
 
 /* Responsive Design */
 @media (max-width: 767px) {
@@ -310,6 +239,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .card {
     margin-bottom: 20px;
     background-color: #fff;
@@ -480,6 +410,7 @@
         /* 1 cột cho màn hình rất nhỏ */
     }
 }
+
 .order-status {
     display: flex;
     align-items: center;
@@ -491,12 +422,13 @@
     height: 12px;
     border-radius: 50%;
     margin-right: 10px;
-    
+
 }
 
 /* Circle colors based on status */
 .processing {
-    background-color: rgb(255, 181, 43);  /* Pending/processing order */
+    background-color: rgb(255, 181, 43);
+    /* Pending/processing order */
 }
 
 .pending {
@@ -508,13 +440,16 @@
 }
 
 .completed {
-    background-color: #007bff; /* Completed order */
+    background-color: #007bff;
+    /* Completed order */
 }
 
 .cancelled {
-    background-color: red; /* Cancelled order */
+    background-color: red;
+    /* Cancelled order */
 }
 
 .failed {
-    background-color: red; /* Failed delivery */
+    background-color: red;
+    /* Failed delivery */
 }

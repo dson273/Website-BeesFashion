@@ -14,6 +14,7 @@ use App\Models\Attribute_value;
 use App\Models\Product_variant;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -27,6 +28,8 @@ class HomeController extends Controller
     {
         $sliders  = Banner::where('is_active', 1)
             ->with('banner_images') // Lấy các hình ảnh liên quanp
+            ->get();
+        $brands  = Brand::where('is_active', 1)
             ->get();
         $vouchers = Voucher::where('is_active', 1)
             ->where('end_date', '>=', Carbon::now())
@@ -61,7 +64,7 @@ class HomeController extends Controller
                 return $product;
             });
 
-        return view('user.index', compact('sliders', 'vouchers', 'topProducts', 'newProducts', 'products'));
+        return view('user.index', compact('sliders','brands', 'vouchers', 'topProducts', 'newProducts', 'products'));
     }
     public function getProductDetails($productId)
     {

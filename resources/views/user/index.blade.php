@@ -286,10 +286,11 @@
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
                                                                         data-bs-title="Add to Wishlist"></i>
                                                                 </a>
-                                                                <a href="javascript:void(0)" class="add-to-cart quick-view-btn"
-                                                                data-product-id="{{ $product->id }}"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                tabindex="0">
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
                                                                     <i class="iconsax" data-icon="eye" aria-hidden="true"
                                                                         data-bs-toggle="tooltip"
                                                                         data-bs-title="Quick View"></i>
@@ -297,9 +298,10 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
-                                                           
+
                                                             <div class="add-button">
-                                                                <a href="javascript:void(0)" class="add-to-cart quick-view-btn"
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
                                                                     data-product-id="{{ $product->id }}"
                                                                     data-bs-toggle="modal" data-bs-target="#quick-view"
                                                                     tabindex="0">
@@ -381,11 +383,11 @@
 
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <h6>{{ $product->name }}</h6>
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
                                                                 </a>
                                                             @else
                                                                 <a href="#">
-                                                                    <h6>{{ $product->name }}</h6>
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
                                                                 </a>
                                                             @endif
                                                             <p>
@@ -403,57 +405,58 @@
                                     <div class="tab-pane fade" id="features-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($products as $product)
-                                            <div class="col-xxl-3 col-md-4 col-6">
-                                                <div class="product-box">
-                                                    <div class="img-wrapper">
+                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
 
-                                                        <div class="label-block"><img
-                                                                src="{{ asset('assets/images/product/3.png') }}"
-                                                                alt="lable"><span>on <br>Sale!</span></div>
-                                                        <div class="product-image">
-                                                            @if ($product)
-                                                                <a
-                                                                    href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img"
-                                                                        src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
-                                                                        alt="Product Image">
+                                                            <div class="label-block"><img
+                                                                    src="{{ asset('assets/images/product/3.png') }}"
+                                                                    alt="lable"><span>on <br>Sale!</span></div>
+                                                            <div class="product-image">
+                                                                @if ($product)
+                                                                    <a
+                                                                        href="{{ route('product.detail', $product->SKU) }}">
+                                                                        <img class="bg-img"
+                                                                            src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                            alt="Product Image">
+                                                                    </a>
+                                                                @else
+                                                                    <a href="#">
+                                                                        <img class="bg-img"
+                                                                            src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                            alt="Product Image">
+                                                                    </a>
+                                                                @endif
+                                                            </div>
+                                                            <div class="cart-info-icon">
+                                                                <a class="wishlist-icon" href="javascript:void(0)"
+                                                                    tabindex="0">
+                                                                    <i class="iconsax" data-icon="heart"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Add to Wishlist"></i>
                                                                 </a>
-                                                            @else
-                                                                <a href="#">
-                                                                    <img class="bg-img"
-                                                                        src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
-                                                                        alt="Product Image">
-                                                                </a>
-                                                            @endif
-                                                        </div>
-                                                        <div class="cart-info-icon">
-                                                            <a class="wishlist-icon" href="javascript:void(0)"
-                                                                tabindex="0">
-                                                                <i class="iconsax" data-icon="heart"
-                                                                    aria-hidden="true" data-bs-toggle="tooltip"
-                                                                    data-bs-title="Add to Wishlist"></i>
-                                                            </a>
-                                                            {{-- <a href="javascript:void(0)" class="quick-view-btn"
+                                                                {{-- <a href="javascript:void(0)" class="quick-view-btn"
                                                                 data-bs-toggle="modal" data-bs-target="#quick-view"
                                                                 tabindex="0">
                                                                 <i class="iconsax" data-icon="eye" aria-hidden="true"
                                                                     data-bs-toggle="tooltip"
                                                                     data-bs-title="Quick View"></i>
                                                             </a> --}}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="product-detail">
+                                                        <div class="product-detail">
 
-                                                        <div class="add-button">
-                                                            <a href="javascript:void(0)" class="add-to-cart quick-view-btn"
-                                                                data-product-id="{{ $product->id }}"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                tabindex="0">
-                                                                <i class="fa fa-shopping-cart"></i>
-                                                            </a>
-                                                        </div>
+                                                            <div class="add-button">
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
+                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                </a>
+                                                            </div>
 
-                                                        {{-- <div class="list-size" data-product-id="{{ $product->id }}">
+                                                            {{-- <div class="list-size" data-product-id="{{ $product->id }}">
                                                             <ul>
                                                                 @php
                                                                     $displayedSizes = [];
@@ -492,56 +495,56 @@
                                                             </ul>
                                                         </div> --}}
 
-                                                        <div class="color-box">
-                                                            @php
-                                                                $displayedColors = []; // Mảng lưu màu đã hiển thị
-                                                            @endphp
-                                                            <ul class="color-variant"
-                                                                style="list-style-type: none; padding: 0;">
-                                                                @foreach ($product->product_variants as $variant)
-                                                                    @foreach ($variant->variant_attribute_values as $variantAttributeValue)
-                                                                        @php
-                                                                            $attributeValue =
-                                                                                $variantAttributeValue->attribute_value;
-                                                                        @endphp
-
-                                                                        @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
-                                                                            <li class="color-item"
-                                                                                data-color="{{ $attributeValue->id }}"
-                                                                                style="background-color:{{ $attributeValue->value }};">
-                                                                                <a href="javascript:void(0)"
-                                                                                    class="color-picker"></a>
-                                                                            </li>
+                                                            <div class="color-box">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                                <ul class="color-variant"
+                                                                    style="list-style-type: none; padding: 0;">
+                                                                    @foreach ($product->product_variants as $variant)
+                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $displayedColors[] =
-                                                                                    $attributeValue->value; // Thêm màu vào mảng
+                                                                                $attributeValue =
+                                                                                    $variantAttributeValue->attribute_value;
                                                                             @endphp
-                                                                        @endif
-                                                                    @endforeach
-                                                                @endforeach
-                                                            </ul>
-                                                            <span>4.5 <i class="fa-solid fa-star"></i></span>
 
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li class="color-item"
+                                                                                    data-color="{{ $attributeValue->id }}"
+                                                                                    style="background-color:{{ $attributeValue->value }};">
+                                                                                    <a href="javascript:void(0)"
+                                                                                        class="color-picker"></a>
+                                                                                </li>
+                                                                                @php
+                                                                                    $displayedColors[] =
+                                                                                        $attributeValue->value; // Thêm màu vào mảng
+                                                                                @endphp
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+
+                                                            </div>
+
+
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                </a>
+                                                            @endif
+                                                            <p>
+                                                                {{ $product->priceRange }}
+                                                            </p>
                                                         </div>
 
 
-                                                        @if ($product)
-                                                            <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                <h6>{{ $product->name }}</h6>
-                                                            </a>
-                                                        @else
-                                                            <a href="#">
-                                                                <h6>{{ $product->name }}</h6>
-                                                            </a>
-                                                        @endif
-                                                        <p>
-                                                            {{ $product->priceRange }}
-                                                        </p>
                                                     </div>
-
-
                                                 </div>
-                                            </div>
                                             @endforeach
                                         </div>
                                     </div>
@@ -549,57 +552,58 @@
                                     <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($topProducts as $product)
-                                            <div class="col-xxl-3 col-md-4 col-6">
-                                                <div class="product-box">
-                                                    <div class="img-wrapper">
+                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
 
-                                                        <div class="label-block"><img
-                                                                src="{{ asset('assets/images/product/3.png') }}"
-                                                                alt="lable"><span>on <br>Sale!</span></div>
-                                                        <div class="product-image">
-                                                            @if ($product)
-                                                                <a
-                                                                    href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img"
-                                                                        src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
-                                                                        alt="Product Image">
+                                                            <div class="label-block"><img
+                                                                    src="{{ asset('assets/images/product/3.png') }}"
+                                                                    alt="lable"><span>on <br>Sale!</span></div>
+                                                            <div class="product-image">
+                                                                @if ($product)
+                                                                    <a
+                                                                        href="{{ route('product.detail', $product->SKU) }}">
+                                                                        <img class="bg-img"
+                                                                            src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                            alt="Product Image">
+                                                                    </a>
+                                                                @else
+                                                                    <a href="#">
+                                                                        <img class="bg-img"
+                                                                            src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                                            alt="Product Image">
+                                                                    </a>
+                                                                @endif
+                                                            </div>
+                                                            <div class="cart-info-icon">
+                                                                <a class="wishlist-icon" href="javascript:void(0)"
+                                                                    tabindex="0">
+                                                                    <i class="iconsax" data-icon="heart"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Add to Wishlist"></i>
                                                                 </a>
-                                                            @else
-                                                                <a href="#">
-                                                                    <img class="bg-img"
-                                                                        src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
-                                                                        alt="Product Image">
-                                                                </a>
-                                                            @endif
-                                                        </div>
-                                                        <div class="cart-info-icon">
-                                                            <a class="wishlist-icon" href="javascript:void(0)"
-                                                                tabindex="0">
-                                                                <i class="iconsax" data-icon="heart"
-                                                                    aria-hidden="true" data-bs-toggle="tooltip"
-                                                                    data-bs-title="Add to Wishlist"></i>
-                                                            </a>
-                                                            {{-- <a href="javascript:void(0)" class="quick-view-btn"
+                                                                {{-- <a href="javascript:void(0)" class="quick-view-btn"
                                                                 data-bs-toggle="modal" data-bs-target="#quick-view"
                                                                 tabindex="0">
                                                                 <i class="iconsax" data-icon="eye" aria-hidden="true"
                                                                     data-bs-toggle="tooltip"
                                                                     data-bs-title="Quick View"></i>
                                                             </a> --}}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="product-detail">
+                                                        <div class="product-detail">
 
-                                                        <div class="add-button">
-                                                            <a href="javascript:void(0)" class="add-to-cart quick-view-btn"
-                                                                data-product-id="{{ $product->id }}"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                tabindex="0">
-                                                                <i class="fa fa-shopping-cart"></i>
-                                                            </a>
-                                                        </div>
+                                                            <div class="add-button">
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
+                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                </a>
+                                                            </div>
 
-                                                        {{-- <div class="list-size" data-product-id="{{ $product->id }}">
+                                                            {{-- <div class="list-size" data-product-id="{{ $product->id }}">
                                                             <ul>
                                                                 @php
                                                                     $displayedSizes = [];
@@ -638,56 +642,56 @@
                                                             </ul>
                                                         </div> --}}
 
-                                                        <div class="color-box">
-                                                            @php
-                                                                $displayedColors = []; // Mảng lưu màu đã hiển thị
-                                                            @endphp
-                                                            <ul class="color-variant"
-                                                                style="list-style-type: none; padding: 0;">
-                                                                @foreach ($product->product_variants as $variant)
-                                                                    @foreach ($variant->variant_attribute_values as $variantAttributeValue)
-                                                                        @php
-                                                                            $attributeValue =
-                                                                                $variantAttributeValue->attribute_value;
-                                                                        @endphp
-
-                                                                        @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
-                                                                            <li class="color-item"
-                                                                                data-color="{{ $attributeValue->id }}"
-                                                                                style="background-color:{{ $attributeValue->value }};">
-                                                                                <a href="javascript:void(0)"
-                                                                                    class="color-picker"></a>
-                                                                            </li>
+                                                            <div class="color-box">
+                                                                @php
+                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                @endphp
+                                                                <ul class="color-variant"
+                                                                    style="list-style-type: none; padding: 0;">
+                                                                    @foreach ($product->product_variants as $variant)
+                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
-                                                                                $displayedColors[] =
-                                                                                    $attributeValue->value; // Thêm màu vào mảng
+                                                                                $attributeValue =
+                                                                                    $variantAttributeValue->attribute_value;
                                                                             @endphp
-                                                                        @endif
-                                                                    @endforeach
-                                                                @endforeach
-                                                            </ul>
-                                                            <span>4.5 <i class="fa-solid fa-star"></i></span>
 
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li class="color-item"
+                                                                                    data-color="{{ $attributeValue->id }}"
+                                                                                    style="background-color:{{ $attributeValue->value }};">
+                                                                                    <a href="javascript:void(0)"
+                                                                                        class="color-picker"></a>
+                                                                                </li>
+                                                                                @php
+                                                                                    $displayedColors[] =
+                                                                                        $attributeValue->value; // Thêm màu vào mảng
+                                                                                @endphp
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                                <span>4.5 <i class="fa-solid fa-star"></i></span>
+
+                                                            </div>
+
+
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                   <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                                                </a>
+                                                            @endif
+                                                            <p>
+                                                                {{ $product->priceRange }}
+                                                            </p>
                                                         </div>
 
 
-                                                        @if ($product)
-                                                            <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                <h6>{{ $product->name }}</h6>
-                                                            </a>
-                                                        @else
-                                                            <a href="#">
-                                                                <h6>{{ $product->name }}</h6>
-                                                            </a>
-                                                        @endif
-                                                        <p>
-                                                            {{ $product->priceRange }}
-                                                        </p>
                                                     </div>
-
-
                                                 </div>
-                                            </div>
                                             @endforeach
                                         </div>
                                     </div>
@@ -776,246 +780,90 @@
                 </div>
                 <div class="swiper fashikart-slide">
                     <div class="swiper-wrapper trending-products ratio_square">
-                        <div class="swiper-slide product-box">
-                            <div class="img-wrapper">
-                                <div class="label-block"><img src="{{ asset('assets/images/product/2.png') }}"
-                                        alt="lable"><span>on
-                                        <br>Sale!</span>
+                        @foreach ($products as $product)
+                            <div class="swiper-slide product-box">
+                                <div class="img-wrapper">
+
+                                    <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}"
+                                            alt="lable"><span>on <br>Sale!</span></div>
+                                    <div class="product-image">
+                                        @if ($product)
+                                            <a href="{{ route('product.detail', $product->SKU) }}">
+                                                <img class="bg-img"
+                                                    src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                    alt="Product Image">
+                                            </a>
+                                        @else
+                                            <a href="#">
+                                                <img class="bg-img"
+                                                    src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                    alt="Product Image">
+                                            </a>
+                                        @endif
+                                    </div>
+                                    <div class="cart-info-icon">
+                                        <a class="wishlist-icon" href="javascript:void(0)" tabindex="0">
+                                            <i class="iconsax" data-icon="heart" aria-hidden="true"
+                                                data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i>
+                                        </a>
+                                        {{-- <a href="javascript:void(0)" class="quick-view-btn"
+                                        data-bs-toggle="modal" data-bs-target="#quick-view"
+                                        tabindex="0">
+                                        <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-title="Quick View"></i>
+                                    </a> --}}
+                                    </div>
                                 </div>
-                                <div class="product-image"><a href="#"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-4/7.jpg') }}"
-                                            alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
-                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
-                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Quick View"></i></a></div>
-                            </div>
-                            <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
-                                        details</a>
-                                </div>
-                                <div class="color-box">
-                                    <ul class="color-variant">
-                                        <li class="bg-color-purple"></li>
-                                        <li class="bg-color-blue"></li>
-                                        <li class="bg-color-red"></li>
-                                        <li class="bg-color-yellow"></li>
-                                    </ul>
-                                    <span>4.5 <i class="fa-solid fa-star"></i></span>
-                                </div>
-                                <a href="#">
-                                    <h6>ASIAN Women's Barfi-02 Shoes</h6>
-                                </a>
-                                <p>$100.00 <del>$140.00</del></p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide product-box">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="#"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-4/8.jpg') }}"
-                                            alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
-                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
-                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Quick View"></i></a></div>
-                                <div class="countdown">
-                                    <ul class="clockdiv4">
-                                        <li>
-                                            <div class="timer">
-                                                <div class="days"></div>
-                                            </div>
-                                            <span class="title">Days</span>
-                                        </li>
-                                        <li class="dot"> <span>:</span></li>
-                                        <li>
-                                            <div class="timer">
-                                                <div class="hours"></div>
-                                            </div>
-                                            <span class="title">Hours</span>
-                                        </li>
-                                        <li class="dot"> <span>:</span></li>
-                                        <li>
-                                            <div class="timer">
-                                                <div class="minutes"></div>
-                                            </div>
-                                            <span class="title">Min</span>
-                                        </li>
-                                        <li class="dot"> <span>:</span></li>
-                                        <li>
-                                            <div class="timer">
-                                                <div class="seconds"></div>
-                                            </div>
-                                            <span class="title">Sec</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
-                                        details</a>
-                                </div>
-                                <div class="color-box">
-                                    <ul class="color-variant">
-                                        <li class="bg-color-purple"></li>
-                                        <li class="bg-color-blue"></li>
-                                        <li class="bg-color-red"></li>
-                                        <li class="bg-color-yellow"></li>
-                                    </ul>
-                                    <span>3.5 <i class="fa-solid fa-star"></i></span>
-                                </div>
-                                <a href="#">
-                                    <h6>Women Rayon Solid Hat</h6>
-                                </a>
-                                <p>$120.00<del>$140.00</del></p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide product-box">
-                            <div class="img-wrapper">
-                                <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}"
-                                        alt="lable"><span>on
-                                        <br>Sale!</span>
-                                </div>
-                                <div class="product-image"><a href="#"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-4/9.jpg') }}"
-                                            alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
-                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
-                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Quick View"></i></a></div>
-                            </div>
-                            <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
-                                        details</a>
-                                </div>
-                                <div class="color-box">
-                                    <ul class="color-variant">
-                                        <li class="bg-color-purple"></li>
-                                        <li class="bg-color-blue"></li>
-                                        <li class="bg-color-red"></li>
-                                        <li class="bg-color-yellow"></li>
-                                    </ul>
-                                    <span>2.5 <i class="fa-solid fa-star"></i></span>
-                                </div>
-                                <a href="#">
-                                    <h6>OJASS Men's Solid Regular Jacket</h6>
-                                </a>
-                                <p>$1300 <del>$140.00</del></p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide product-box">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="#"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-4/10.jpg') }}"
-                                            alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
-                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
-                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Quick View"></i></a></div>
-                                <div class="countdown">
-                                    <ul class="clockdiv5">
-                                        <li>
-                                            <div class="timer">
-                                                <div class="days"></div>
-                                            </div>
-                                            <span class="title">Days</span>
-                                        </li>
-                                        <li class="dot"> <span>:</span></li>
-                                        <li>
-                                            <div class="timer">
-                                                <div class="hours"></div>
-                                            </div>
-                                            <span class="title">Hours</span>
-                                        </li>
-                                        <li class="dot"> <span>:</span></li>
-                                        <li>
-                                            <div class="timer">
-                                                <div class="minutes"></div>
-                                            </div>
-                                            <span class="title">Min</span>
-                                        </li>
-                                        <li class="dot"> <span>:</span></li>
-                                        <li>
-                                            <div class="timer">
-                                                <div class="seconds"></div>
-                                            </div>
-                                            <span class="title">Sec</span>
-                                        </li>
-                                    </ul>
+                                <div class="product-detail">
+                                    <div class="add-button">
+                                        <a href="javascript:void(0)" class="add-to-cart quick-view-btn"
+                                            data-product-id="{{ $product->id }}" data-bs-toggle="modal"
+                                            data-bs-target="#quick-view" tabindex="0">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </a>
+                                    </div>
+                                    <div class="color-box">
+                                        @php
+                                            $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                        @endphp
+                                        <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                            @foreach ($product->product_variants as $variant)
+                                                @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                    @php
+                                                        $attributeValue = $variantAttributeValue->attribute_value;
+                                                    @endphp
+
+                                                    @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                        <li class="color-item" data-color="{{ $attributeValue->id }}"
+                                                            style="background-color:{{ $attributeValue->value }};">
+                                                            <a href="javascript:void(0)" class="color-picker"></a>
+                                                        </li>
+                                                        @php
+                                                            $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                        @endphp
+                                                    @endif
+                                                @endforeach
+                                            @endforeach
+                                        </ul>
+                                        <span>4.5 <i class="fa-solid fa-star"></i></span>
+
+                                    </div>
+                                    @if ($product)
+                                        <a href="{{ route('product.detail', $product->SKU) }}">
+                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                        </a>
+                                    @else
+                                        <a href="#">
+                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                        </a>
+                                    @endif
+                                    <p>
+                                        {{ $product->priceRange }}
+                                    </p>
                                 </div>
                             </div>
-                            <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
-                                        details</a>
-                                </div>
-                                <div class="color-box">
-                                    <ul class="color-variant">
-                                        <li class="bg-color-purple"></li>
-                                        <li class="bg-color-blue"></li>
-                                        <li class="bg-color-red"></li>
-                                        <li class="bg-color-yellow"></li>
-                                    </ul>
-                                    <span>3.5 <i class="fa-solid fa-star"></i></span>
-                                </div>
-                                <a href="#">
-                                    <h6>Fiesto Fashion Women's Handbag</h6>
-                                </a>
-                                <p>$120.00<del>$140.00</del></p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide product-box">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="#"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-4/3.jpg') }}"
-                                            alt="product"></a></div>
-                                <div class="cart-info-icon"> <a class="wishlist-icon" href="javascript:void(0)"
-                                        tabindex="0"><i class="iconsax" data-icon="heart" aria-hidden="true"
-                                            data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a><a
-                                        href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Compare"></i></a><a href="#" data-bs-toggle="modal"
-                                        data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye"
-                                            aria-hidden="true" data-bs-toggle="tooltip"
-                                            data-bs-title="Quick View"></i></a></div>
-                            </div>
-                            <div class="product-detail">
-                                <div class="add-button"><a href="#"><i class="fa-regular fa-eye"></i> View
-                                        details</a>
-                                </div>
-                                <div class="color-box">
-                                    <ul class="color-variant">
-                                        <li class="bg-color-purple"></li>
-                                        <li class="bg-color-blue"></li>
-                                        <li class="bg-color-red"></li>
-                                        <li class="bg-color-yellow"></li>
-                                    </ul>
-                                    <span>2.5 <i class="fa-solid fa-star"></i></span>
-                                </div>
-                                <a href="#">
-                                    <h6>Beautiful Lycra Solid Women's High Zipper </h6>
-                                </a>
-                                <p>$1300 <del>$140.00</del></p>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-button-next"></div>
@@ -1023,7 +871,105 @@
             </div>
         </section>
         <!-- End Trending Products -->
+        <!-- News Products -->
+        <section class="section-t-space">
+            <div class="custom-container container product-contain">
+                <div class="title">
+                    <h3>News Products</h3>
+                </div>
+                <div class="swiper fashikart-slide">
+                    <div class="swiper-wrapper trending-products ratio_square">
+                        @foreach ($newProducts as $product)
+                            <div class="swiper-slide product-box">
+                                <div class="img-wrapper">
 
+                                    <div class="label-block"><img src="{{ asset('assets/images/product/3.png') }}"
+                                            alt="lable"><span>on <br>Sale!</span></div>
+                                    <div class="product-image">
+                                        @if ($product)
+                                            <a href="{{ route('product.detail', $product->SKU) }}">
+                                                <img class="bg-img"
+                                                    src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                    alt="Product Image">
+                                            </a>
+                                        @else
+                                            <a href="#">
+                                                <img class="bg-img"
+                                                    src="{{ asset('uploads/products/images/' . $product->product_files[0]->file_name) }}"
+                                                    alt="Product Image">
+                                            </a>
+                                        @endif
+                                    </div>
+                                    <div class="cart-info-icon">
+                                        <a class="wishlist-icon" href="javascript:void(0)" tabindex="0">
+                                            <i class="iconsax" data-icon="heart" aria-hidden="true"
+                                                data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i>
+                                        </a>
+                                        {{-- <a href="javascript:void(0)" class="quick-view-btn"
+                                        data-bs-toggle="modal" data-bs-target="#quick-view"
+                                        tabindex="0">
+                                        <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-title="Quick View"></i>
+                                    </a> --}}
+                                    </div>
+                                </div>
+                                <div class="product-detail">
+                                    <div class="add-button">
+                                        <a href="javascript:void(0)" class="add-to-cart quick-view-btn"
+                                            data-product-id="{{ $product->id }}" data-bs-toggle="modal"
+                                            data-bs-target="#quick-view" tabindex="0">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </a>
+                                    </div>
+                                    <div class="color-box">
+                                        @php
+                                            $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                        @endphp
+                                        <ul class="color-variant" style="list-style-type: none; padding: 0;">
+                                            @foreach ($product->product_variants as $variant)
+                                                @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                    @php
+                                                        $attributeValue = $variantAttributeValue->attribute_value;
+                                                    @endphp
+
+                                                    @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                        <li class="color-item" data-color="{{ $attributeValue->id }}"
+                                                            style="background-color:{{ $attributeValue->value }};">
+                                                            <a href="javascript:void(0)" class="color-picker"></a>
+                                                        </li>
+                                                        @php
+                                                            $displayedColors[] = $attributeValue->value; // Thêm màu vào mảng
+                                                        @endphp
+                                                    @endif
+                                                @endforeach
+                                            @endforeach
+                                        </ul>
+                                        <span>4.5 <i class="fa-solid fa-star"></i></span>
+
+                                    </div>
+                                    @if ($product)
+                                        <a href="{{ route('product.detail', $product->SKU) }}">
+                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                        </a>
+                                    @else
+                                        <a href="#">
+                                           <h6>{{ \Illuminate\Support\Str::limit($product->name, 50) }}</h6>
+                                        </a>
+                                    @endif
+                                    <p>
+                                        {{ $product->priceRange }}
+                                    </p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+        </section>
+        <!-- End Trending Products -->
         <!-- Blog -->
         <section class="section-t-space">
             <div class="custom-container container">
@@ -1165,22 +1111,12 @@
             <div class="custom-container container">
                 <div class="swiper logo-slider">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/1.png') }}"
-                                    alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/2.png') }}"
-                                    alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/3.png') }}"
-                                    alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/4.png') }}"
-                                    alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/5.png') }}"
-                                    alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/6.png') }}"
-                                    alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/7.png') }}"
-                                    alt="logo"></a></div>
-                        <div class="swiper-slide"><a href="#"> <img src="{{ asset('assets/images/logos/3.png') }}"
-                                    alt="logo"></a></div>
+                        @foreach ($brands as $item)
+                            <div class="swiper-slide"><a href="#"> <img style="width: 125px; height:125px;"
+                                        src="{{ asset('storage/uploads/brands/images/' . $item->image) }}"
+                                        alt="logo"></a></div>
+                        @endforeach
+
                     </div>
                 </div>
             </div>
@@ -1188,18 +1124,21 @@
         <!-- End thương hiệu -->
 
         <!-- Modal quikview -->
-        <div class="modal theme-modal fade" id="quick-view" tabindex="-1" role="dialog" aria-modal="true" data-product-id="" data-variant-id="">
+        <div class="modal theme-modal fade" id="quick-view" tabindex="-1" role="dialog" aria-modal="true"
+            data-product-id="" data-variant-id="">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" id="close_modal"></button>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"
+                            id="close_modal"></button>
                         <div class="row align-items-center">
                             <div class="col-lg-6 col-xs-12">
                                 <div class="quick-view-img">
                                     <div class="swiper modal-slide-1">
                                         <div class="swiper-wrapper ratio_square-2">
                                             <div class="swiper-slide">
-                                                <img class="img-fluid" id="product-image" src="" alt="Product Image">
+                                                <img class="img-fluid" id="product-image" src=""
+                                                    alt="Product Image">
                                             </div>
                                         </div>
                                     </div>
@@ -1215,12 +1154,12 @@
                                     <h4 id="product-name"></h4>
                                     <p id="product-sku"></p>
                                     <h4 id="product-price" style="color: #ba372a"></h4>
-        
+
                                     <!-- Hiển thị danh sách thuộc tính -->
                                     <div class="blink-border attributes-container" id="attributes-container">
                                         <!-- Các thuộc tính sẽ được cập nhật qua JS -->
                                     </div>
-        
+
                                     <div class="border-product">
                                         <h6>Mô tả sản phẩm</h6>
                                         <p id="product-description"></p>
@@ -1228,12 +1167,15 @@
                                     <div class="product-description">
                                         <h6 class="product-title">Quantity</h6>
                                         <div class="quantity">
-                                            <button class="reduce" type="button"><i class="fa-solid fa-minus"></i></button>
-                                            <input type="number" id="quantity" value="1" min="1" max="10">
-                                            <button class="increment" type="button"><i class="fa-solid fa-plus"></i></button>
+                                            <button class="reduce" type="button"><i
+                                                    class="fa-solid fa-minus"></i></button>
+                                            <input type="number" id="quantity" value="1" min="1"
+                                                max="10">
+                                            <button class="increment" type="button"><i
+                                                    class="fa-solid fa-plus"></i></button>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="product-buttons">
                                         <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
                                         <a class="btn btn-solid" href="#">View detail</a>
@@ -1245,7 +1187,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <!-- End model quikview -->
 

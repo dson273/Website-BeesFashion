@@ -17,8 +17,9 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Tên sản phẩm</th>
                                     <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                   
                                     <th>Mô tả</th>
                                     <th>Chọn</th>
                                 </tr>
@@ -27,10 +28,12 @@
                                 @foreach ($allProducts as $index => $item)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
+                                        <td><img src="{{ $item->product_files[0]->file_name ? asset('uploads/products/images/' .  $item->product_files[0]->file_name) : asset('assets/images/icons/noimage.png') }}" 
+                                            width="50px" ></td>
                                         <td>{{ $item->name }}</td>
-                                        <td><img src="{{ asset('uploads/products/images/' . $item->product_files[0]->file_name) }}"
-                                                width="50px" alt=""></td>
-                                        <td>{{ $item->description }}</td>
+                                        
+                                        <td>{{ \Illuminate\Support\Str::limit(str_replace(['<p>', '</p>'], '', $item->description), 10, '...') }}</td>
+
                                         <td>
                                             @if (in_array($item->id, $bestSellingProductIds))
                                                 <i class="fa-solid fa-x text-danger"></i>
