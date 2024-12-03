@@ -293,20 +293,20 @@
                                             aria-expanded="false" aria-controls="collapseTwo"><span>Instructions for use and storage</span></button></h2>
                                     <div class="accordion-collapse collapse" id="collapseTwo" data-bs-parent="#accordionDescription">
                                         <div class="accordion-body">
-                                                <p>- KHÔNG giặt máy. KHÔNG sử dụng nước giặt chứa chất tẩy.</p>
-                                                <p>- KHÔNG ngâm trong nước. KHÔNG giặt chung với quần áo có màu.</p>
-                                                <p>- KHÔNG giặt khô. KHÔNG là.</p>
-                                                <p>- KHÔNG sấy áo lông vũ trong máy sấy nhiệt độ cao.</p>
-                                                <p>- KHÔNG phơi sản phẩm dưới ánh nắng trực tiếp, để khô tự nhiên ở nơi thoáng mát.</p>
-                                                <p>- KHÔNG cất sản phẩm khi còn ẩm, chưa khô hoàn toàn.</p>
-                                                <p>- KHÔNG nên cho sản phẩm sau khi sử dụng vào túi nylon hoặc các hộp kín</p>
-                                                <p>- Giặt tay nước mát và ấn, bóp nhẹ sản phẩm</p>
-                                                <p>- Vỗ nhẹ sản phẩm sau khi phơi khô và kéo căng về mặt vải để lông vũ phục hồi trạng thái ban đầu.</p>
-                                                <p>- Xử lý lông lông vũ bị rút ra ngoài đường chỉ may bằng cách kéo ngược lại sợi vào trong áo (Do ma sát khi sử dụng hoặc do tĩnh
-                                                    điện).</p>
-                                                <p>- Sản phẩm được gấp/gói trong thời gian dài có thể bị nhăn vải bề mặt. Kéo căng bề mặt vải và treo sản phẩm để được phục hồi
-                                                    nguyên bản trạng thái ban đầu.</p>
-                                                <p>- Khi không sử dụng cần giặt sạch sản phẩm và bảo quản tại nơi khô thoáng sau khi đã phơi khô hoàn toàn.</p>
+                                            <p>- KHÔNG giặt máy. KHÔNG sử dụng nước giặt chứa chất tẩy.</p>
+                                            <p>- KHÔNG ngâm trong nước. KHÔNG giặt chung với quần áo có màu.</p>
+                                            <p>- KHÔNG giặt khô. KHÔNG là.</p>
+                                            <p>- KHÔNG sấy áo lông vũ trong máy sấy nhiệt độ cao.</p>
+                                            <p>- KHÔNG phơi sản phẩm dưới ánh nắng trực tiếp, để khô tự nhiên ở nơi thoáng mát.</p>
+                                            <p>- KHÔNG cất sản phẩm khi còn ẩm, chưa khô hoàn toàn.</p>
+                                            <p>- KHÔNG nên cho sản phẩm sau khi sử dụng vào túi nylon hoặc các hộp kín</p>
+                                            <p>- Giặt tay nước mát và ấn, bóp nhẹ sản phẩm</p>
+                                            <p>- Vỗ nhẹ sản phẩm sau khi phơi khô và kéo căng về mặt vải để lông vũ phục hồi trạng thái ban đầu.</p>
+                                            <p>- Xử lý lông lông vũ bị rút ra ngoài đường chỉ may bằng cách kéo ngược lại sợi vào trong áo (Do ma sát khi sử dụng hoặc do tĩnh
+                                                điện).</p>
+                                            <p>- Sản phẩm được gấp/gói trong thời gian dài có thể bị nhăn vải bề mặt. Kéo căng bề mặt vải và treo sản phẩm để được phục hồi
+                                                nguyên bản trạng thái ban đầu.</p>
+                                            <p>- Khi không sử dụng cần giặt sạch sản phẩm và bảo quản tại nơi khô thoáng sau khi đã phơi khô hoàn toàn.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -888,13 +888,37 @@
                             $('.blink-border-text').removeClass('animation-blink-border');
                         }, 950);
                         notification('warning', 'Đã đạt đến số lượng tối đa trong kho!', 'Cảnh báo!');
-                    } else if ($('.quantity').val() >= 10) {
-                        notification('warning', 'Mỗi lần chỉ được phép mua tối đa 10 sản phẩm!',
+                    } else if ($('.quantity').val() >= 20) {
+                        notification('warning', 'Mỗi lần chỉ được phép mua tối đa 20 sản phẩm!',
                             'Cảnh báo!');
                     } else {
                         $('.quantity').val(function(i, val) {
                             return parseInt(val) + 1;
                         });
+                    }
+                }
+            });
+
+            $('.quantity').on('input', function() {
+                let currentVal = parseInt($(this).val());
+                let maxStock = getStockVariantClicked;
+                if (!variantSelected) {
+                    $('.blink-border').addClass('animation-blink-border');
+                    setTimeout(() => {
+                        $('.blink-border').removeClass('animation-blink-border');
+                    }, 950);
+                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
+                    $(this).val(1);
+                } else {
+                    if (isNaN(currentVal) || currentVal < 1) {
+                        $(this).val(1);
+                        notification('warning', 'Số lượng không hợp lệ!', 'Cảnh báo!');
+                    } else if (currentVal > maxStock) {
+                        $(this).val(maxStock);
+                        notification('warning', `Không được vượt quá số lượng tối đa trong kho: ${maxStock}`, 'Cảnh báo!');
+                    } else if (currentVal > 20) {
+                        $(this).val(20);
+                        notification('warning', 'Mỗi lần chỉ được phép mua tối đa 20 sản phẩm!', 'Cảnh báo!');
                     }
                 }
             });
@@ -920,7 +944,11 @@
                                 // Cập nhật số lượng giỏ hàng trong header
                                 $('.shoping-prize .cart-count').text(response.cartCount);
                                 notification('success', response.message, 'Thành công!');
+                                //Thông báo hết hàng
                             } else if (response.status === 'error') {
+                                notification('warning', response.message, 'Thông báo!');
+                                //Thông báo chưa đăng nhập
+                            } else if (response.status === 'unauthenticated') {
                                 notification('warning', response.message, 'Thông báo!');
                             }
                         },
