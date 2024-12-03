@@ -142,6 +142,12 @@ class ProductDetailController extends Controller
     }
     public function addToCart(string $variant_id, string $quantity)
     {
+        if (!auth()->check()) {
+            return response()->json([
+                'status' => 'unauthenticated',
+                'message' => 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.'
+            ]);
+        }
         // Lấy thông tin biến thể
         $variant = Product_variant::select('stock', 'is_active')
             ->where('id', $variant_id)
@@ -162,11 +168,11 @@ class ProductDetailController extends Controller
         if ($checkCart) {
             // Tính toán số lượng mới
             $newQuantity = $checkCart->quantity + $quantity;
-            // Đảm bảo không vượt quá tồn kho hoặc giới hạn 10 sản phẩm
+            // Đảm bảo không vượt quá tồn kho hoặc giới hạn 20 sản phẩm
             if ($newQuantity > $checkCart->product_variant->stock) {
                 $checkCart->quantity = $checkCart->product_variant->stock;
-            } elseif ($newQuantity > 10) {
-                $checkCart->quantity = 10; //Giới hạn chỉ thêm được 10 vào cart
+            } elseif ($newQuantity > 20) {
+                $checkCart->quantity = 20; //Giới hạn chỉ thêm được 20 vào cart
             } else {
                 $checkCart->quantity = $newQuantity;
             }
@@ -175,7 +181,7 @@ class ProductDetailController extends Controller
         } else {
             if ($variant) {
                 Cart::create([
-                    'quantity' => $quantity <= min($variant->stock, 10) ? $quantity : min($variant->stock, 10),
+                    'quantity' => $quantity <= min($variant->stock, 20) ? $quantity : min($variant->stock, 20),
                     'product_variant_id' => $variant_id,
                     'user_id' => Auth::user()->id,
                     'created_at' => now()
