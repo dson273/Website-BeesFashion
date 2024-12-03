@@ -44,34 +44,34 @@ Danh sách sản phẩm
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Product ID</th>
-                            <th>SKU</th>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Views</th>
-                            <th>Total variations</th>
-                            <th>Purchases</th>
-                            <th>Status</th>
-                            <th>Created at</th>
-                            <th>Updated at</th>
-                            <th>Control</th>
+                            <th class="fs-12">#</th>
+                            <th class="fs-12">Product ID</th>
+                            <th class="fs-12">SKU</th>
+                            <th class="fs-12">Image</th>
+                            <th class="fs-12">Name</th>
+                            <th class="fs-12">Views</th>
+                            <th class="fs-12">Total variations</th>
+                            <th class="fs-12">Purchases</th>
+                            <th class="fs-12">Status</th>
+                            <th class="fs-12">Created at</th>
+                            <th class="fs-12">Updated at</th>
+                            <th class="fs-12">Control</th>
                         </tr>
                     </thead>
                     <tfoot class="sticky-bottom">
                         <tr>
-                            <th>#</th>
-                            <th>Product ID</th>
-                            <th>SKU</th>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Views</th>
-                            <th>Total variations</th>
-                            <th>Purchases</th>
-                            <th>Status</th>
-                            <th>Created at</th>
-                            <th>Updated at</th>
-                            <th>Control</th>
+                            <th class="fs-12">#</th>
+                            <th class="fs-12">Product ID</th>
+                            <th class="fs-12">SKU</th>
+                            <th class="fs-12">Image</th>
+                            <th class="fs-12">Name</th>
+                            <th class="fs-12">Views</th>
+                            <th class="fs-12">Total variations</th>
+                            <th class="fs-12">Purchases</th>
+                            <th class="fs-12">Status</th>
+                            <th class="fs-12">Created at</th>
+                            <th class="fs-12">Updated at</th>
+                            <th class="fs-12">Control</th>
                         </tr>
                     </tfoot>
                     <tbody>

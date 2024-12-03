@@ -1177,13 +1177,10 @@ $(document).on('click', '.btn_view_order_detail', async function () {
             }
 
             if (data_order_detail_by_id[0]['order_details'].length > 0) {
-                data_order_detail_by_id[0]['order_details'].forEach(async function (order_detail_item) {
-                    loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
-                })
-                setTimeout(function () {
-                    loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
-                }, 1000);
-                // Tạo phần tử <tr>
+                for (const order_detail_item of data_order_detail_by_id[0]['order_details']) {
+                    await loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
+                }
+                loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
             } else {
                 let notHaveProductRow = document.createElement('tr');
 
@@ -1413,7 +1410,7 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
     if (show_star) {
         $("#order_detail_" + order_detail_item['id']).rateYo({
             rating: parseFloat(sub_data_vote.star),
-            fullStar: false,
+            fullStar: true,
             precision: 1,
             starWidth: "15px",
             readOnly: true,
@@ -1421,6 +1418,7 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
         });
     }
 }
+//===========================================Xử lý tải dòng hiển thị tổng sp phụ===========================================
 function loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product) {
     let toSumUpRow = document.createElement('tr');
 
@@ -1515,23 +1513,27 @@ $(document).on('click', '.btn_vote_order_detail', function () {
             voted_star = 0;
             voted = false;
             order_detail_id_of_order_detail_voting = order_detail_id;
+
             $("#vote_by_star").rateYo({
-                rating: 0,
-                fullStar: false,
+                rating: 5,
+                fullStar: true,
                 precision: 1,
                 starWidth: "35px",
                 readOnly: false,
+                step: 1,
                 ratedFill: "#cca270",
                 onSet: function (rating) {
                     number_of_stars = rating;
                     notification('success', 'Đánh giá của bạn là: ' + number_of_stars + ' sao!', '', 2000);
-                    if (rating != 0) {
+                    if (rating > 0) {
                         voted = true;
                         voted_star = rating;
+                    } else {
+                        $(this).rateYo("rating", 1);
                     }
                 },
             });
-            $("#vote_by_star").rateYo("rating", 0);
+            $("#vote_by_star").rateYo("rating", 5);
             $('#product_name_vote_order_detail_modal').text(order_detail_product_name);
             $('#product_variant_name_vote_order_detail_modal').text(order_detail_product_variant_name);
             $('#product_variant_image_vote_order_detail_modal').attr('src', `uploads/products/images/${order_detail_product_variant_image}`);
@@ -1571,12 +1573,10 @@ $('#btn_submit_vote_order_detail').on('click', async function () {
                 }
 
                 if (result_of_vote_order_detail['order_details'].length > 0) {
-                    result_of_vote_order_detail['order_details'].forEach(async function (order_detail_item) {
-                        loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
-                    })
-                    setTimeout(function () {
-                        loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
-                    }, 1000);
+                    for (const order_detail_item of result_of_vote_order_detail['order_details']) {
+                        await loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
+                    }
+                    loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
                     // Tạo phần tử <tr>
                 } else {
                     let notHaveProductRow = document.createElement('tr');
@@ -1655,17 +1655,23 @@ $(document).on('click', '.btn_view_rated', function () {
         var order_detail_star = $(this).data('star');
         var order_detail_review_content = $(this).data('review-content');
         var order_detail_edit_status = $(this).data('edit-status');
-        console.log(order_detail_edit_status);
+
 
 
         var number_of_stars = 0;
+
+        console.log(order_detail_id_of_review_order_detail_voting);
         if (order_detail_id_of_review_order_detail_voting != order_detail_id) {
             edit_voted_star = order_detail_star;
             edit_voted = false;
+            if (order_detail_id_of_review_order_detail_voting != null) {
+                $("#review_vote_by_star_modal").rateYo("destroy");
+            }
             order_detail_id_of_review_order_detail_voting = order_detail_id;
+
             $("#review_vote_by_star_modal").rateYo({
                 rating: order_detail_star,
-                fullStar: false,
+                fullStar: true,
                 precision: 1,
                 starWidth: "35px",
                 readOnly: true,
@@ -1701,7 +1707,13 @@ $(document).on('click', '.btn_view_rated', function () {
         $('.container-spinner').addClass('hidden');
     }
 })
-
+//)===========================================Xử lý khi modal review ẩn)===========================================
+$('#review-vote-order-detail-modal').on('hidden.bs.modal', function (e) {
+    $('#btn_edit_vote_order_detail').removeClass('hidden');
+    $('#div_btn_confirm_edit_done_and_btn_cancel_edit').addClass('hidden');
+    $('#review_content_vote_modal').attr('disabled', true);
+});
+//===========================================Xử lý khi bấm vào nút edit của form review modal===========================================
 $(document).on('click', '#btn_edit_vote_order_detail', function () {
     $('.container-spinner').removeClass('hidden');
     try {
@@ -1712,19 +1724,21 @@ $(document).on('click', '#btn_edit_vote_order_detail', function () {
         $("#review_vote_by_star_modal").rateYo("destroy");
         $("#review_vote_by_star_modal").rateYo({
             rating: old_star,
-            fullStar: false,
+            fullStar: true,
             precision: 1,
             starWidth: "35px",
             readOnly: false,
+            step: 1,
             ratedFill: "#cca270",
             onSet: function (rating) {
                 notification('success', 'Đánh giá của bạn là: ' + rating + ' sao!', '', 2000);
-                if (rating != 0) {
+                if (rating > 0) {
                     edit_voted = true;
                     edit_voted_star = rating;
                 } else {
                     edit_voted_star = 0;
                     edit_voted = false;
+                    $(this).rateYo("rating", 1);
                 }
             },
         });
@@ -1734,15 +1748,15 @@ $(document).on('click', '#btn_edit_vote_order_detail', function () {
         $('.container-spinner').addClass('hidden');
     }
 })
+//===========================================Xử lý khi bấm vào nút hủy edit của form review modal===========================================
 $(document).on('click', '#btn_cancel_edit_vote_order_detail', function () {
     $('.container-spinner').removeClass('hidden');
     try {
         var old_star = $(this).data('star');
-        $('#review_content_vote_modal').attr('disabled');
         $("#review_vote_by_star_modal").rateYo("destroy");
         $("#review_vote_by_star_modal").rateYo({
             rating: old_star,
-            fullStar: false,
+            fullStar: true,
             precision: 1,
             starWidth: "35px",
             readOnly: true,
@@ -1784,12 +1798,10 @@ $('#btn_submit_edit_vote_order_detail').on('click', async function () {
                 }
 
                 if (result_of_edit_vote_order_detail['order_details'].length > 0) {
-                    result_of_edit_vote_order_detail['order_details'].forEach(async function (order_detail_item) {
-                        loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
-                    })
-                    setTimeout(function () {
-                        loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
-                    }, 1000);
+                    for (const order_detail_item of result_of_edit_vote_order_detail['order_details']) {
+                        await loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
+                    }
+                    loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
                     // Tạo phần tử <tr>
                 } else {
                     let notHaveProductRow = document.createElement('tr');
@@ -1821,6 +1833,7 @@ $('#btn_submit_edit_vote_order_detail').on('click', async function () {
                 edit_voted = false;
                 edit_voted_star = 0;
                 order_detail_id_of_review_order_detail_voting = null;
+                $("#review_vote_by_star_modal").rateYo("destroy");
             } else {
                 notification('error', 'Có lỗi xảy ra khi sửa đánh giá sản phẩm, vui lòng tải lại trang!', 'Error!', 2000);
             }
@@ -1833,6 +1846,7 @@ $('#btn_submit_edit_vote_order_detail').on('click', async function () {
         $('.container-spinner').addClass('hidden');
     }
 })
+//===========================================Xử lý khi cập nhật đánh giá===========================================
 function edit_vote_order_detail(order_detail_id, vote_id, content, star) {
     return new Promise((resolve, reject) => {
         $.ajax({

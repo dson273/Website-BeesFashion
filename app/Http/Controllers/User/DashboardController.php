@@ -238,9 +238,26 @@ class DashboardController extends Controller
             $get_order_by_id = Order::find($order_id)->first();
             if ($get_order_by_id) {
                 $get_cancelled_status = Status::where('name', 'Cancelled')->first();
-                if ($get_cancelled_status) {
+                $get_shipping_status = Status::where('name', 'Shipping')->first();
+                if ($get_cancelled_status && $get_shipping_status) {
+                    $valid = true;
                     $get_cancelled_status_order = Status_order::where('order_id', $order_id)->where('status_id', $get_cancelled_status->id)->first();
-                    if (!$get_cancelled_status_order) {
+                    $get_shipping_status_order = Status_order::where('order_id', $order_id)->where('status_id', $get_shipping_status->id)->first();
+                    if ($get_cancelled_status_order) {
+                        $valid = false;
+                        $response = [
+                            'success' => false,
+                            'message' => 'Đơn hàng này đã trong trạng thái hủy!',
+                        ];
+                    }
+                    if ($get_shipping_status_order) {
+                        $valid = false;
+                        $response = [
+                            'success' => false,
+                            'message' => 'Đơn hàng này đã trong trạng vận chuyển, không thể hủy!',
+                        ];
+                    }
+                    if ($valid) {
                         Status_order::create([
                             'order_id' => $order_id,
                             'status_id' => $get_cancelled_status->id
@@ -249,12 +266,12 @@ class DashboardController extends Controller
                             'success' => true,
                             'message' => 'Hủy đơn hàng thành công!',
                         ];
-                    } else {
-                        $response = [
-                            'success' => false,
-                            'message' => 'Đơn hàng này đã trong trạng thái hủy!',
-                        ];
                     }
+                } else {
+                    $response = [
+                        'success' => false,
+                        'message' => 'Không tìm thấy trạng thái!',
+                    ];
                 }
             } else {
                 $response = [
