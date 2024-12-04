@@ -18,11 +18,7 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
+
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -50,8 +46,8 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>
-                                        <img src="{{ $cate->image ? asset('uploads/categories/images/' . $cate->image) : asset('assets/images/icons/noimage.png') }}" 
-                                             width="50px" >
+                                        <img src="{{ $cate->image ? asset('uploads/categories/images/' . $cate->image) : asset('assets/images/icons/noimage.png') }}"
+                                            width="50px">
                                         {{ $cate->name }}
                                     </td>
 
@@ -60,13 +56,16 @@
                                     <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
                                         @if ($cate->fixed == 1)
-                                            <a href="{{ route('admin.categories.show', $cate->id) }}" style="margin-right: 10px;"> <img
+                                            <a href="{{ route('admin.categories.show', $cate->id) }}"
+                                                style="margin-right: 10px;"> <img
                                                     src="{{ asset('assets/images/icons/eye.svg') }}" alt="img"></a>
                                         @else
-                                            <a href="{{ route('admin.categories.product', $cate->id) }}" style="margin-right: 10px;"> <img
+                                            <a href="{{ route('admin.categories.product', $cate->id) }}"
+                                                style="margin-right: 10px;"> <img
                                                     src="{{ asset('assets/images/icons/eye.svg') }}" alt="img"></a>
                                         @endif
-                                        <a href="{{ route('admin.categories.edit', $cate->id) }}" style="margin-right: 10px;"> <img
+                                        <a href="{{ route('admin.categories.edit', $cate->id) }}"
+                                            style="margin-right: 10px;"> <img
                                                 src="{{ asset('assets/images/icons/edit.svg') }}" alt="img"></a>
                                         <form action="{{ route('admin.categories.destroy', $cate->id) }}" class="d-inline"
                                             method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">

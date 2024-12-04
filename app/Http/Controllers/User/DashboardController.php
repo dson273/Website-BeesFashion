@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
+use App\Models\Order;
+use App\Models\Status;
+use App\Models\Product;
+use App\Models\Order_detail;
+use App\Models\Product_vote;
+use App\Models\Status_order;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
-use App\Models\Order;
-use App\Models\Order_detail;
-use App\Models\Product;
-use App\Models\Product_vote;
-use App\Models\Status;
-use App\Models\Status_order;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User_shipping_address;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User_shipping_address;
 
 class DashboardController extends Controller
 {
@@ -24,6 +24,8 @@ class DashboardController extends Controller
     {
         return view('user.dashboard');
     }
+
+
     public function editProfile(Request $request)
     {
         /** @var \App\Models\User $user */
@@ -471,4 +473,6 @@ class DashboardController extends Controller
             return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
         }
     }
+
+    
 }

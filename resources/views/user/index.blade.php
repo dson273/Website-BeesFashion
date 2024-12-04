@@ -128,6 +128,13 @@
                                                     style="cursor: pointer; font-size: 10pt; color:#ba372a"
                                                     data-code="{{ $item->code }}" data-copied-text="Đã chép">Sao
                                                     chép</span></div>
+                                                    @if ($item->is_public != 1)
+                                                    <div class="action">
+                                                        <span class="save-content"
+                                                            style="cursor: pointer; font-size: 10pt; color:#ba372a"
+                                                            data-id="{{ $item->id }}" data-save-text="Đã lưu">Lưu mã</span>
+                                                    </div>
+                                                @endif
                                         </div>
                                     </div>
                                 </div>
@@ -931,6 +938,7 @@
         </div>
         <!-- End seach -->
     </div> --}}
+    {{-- //Moda thêm giỏ hàng thành công --}}
         <div class="add-card-size" id="fancybox-add-to-cart">
             <div class="thank-you__icon"><svg width="160" height="160" viewBox="0 0 160 160" fill="none"
                     xmlns="http://www.w3.org/2000/svg">

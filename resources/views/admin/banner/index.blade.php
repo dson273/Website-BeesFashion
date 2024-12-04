@@ -18,18 +18,12 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
-
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Banner trang web</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Banner</h6>
                 <a href="{{ route('admin.banner.create') }}" class="btn btn-primary text-white text-decoration-none"><i
-                        class="fas fa-plus"></i> Thêm mới banner</a>
+                        class="fas fa-plus"></i> Thêm mới</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
