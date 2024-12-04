@@ -102,10 +102,7 @@
                                     </button>
                                 </li>
                             </ul>
-
-                        </div>
                     </div>
-
                 </div>
                 <div class="col-xl-9 col-lg-8">
                     <div class="tab-content" id="v-pills-tabContent">
@@ -164,896 +161,765 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="profile-about">
-                                            <div class="row">
-                                                <div class="col-xl-7">
-                                                    <div class="sidebar-title">
-                                                        <div class="loader-line"></div>
-                                                        <h5>Profile Information</h5>
-                                                    </div>
-                                                    <ul class="profile-information">
-                                                        <li>
-                                                            <h6>Username:</h6>
-                                                            <p>{{ Auth::user()->username }}
-                                                            </p>
-                                                        </li>
-                                                        <li>
-                                                            <h6>Name:</h6>
-                                                            <p>{{ Auth::user()->full_name ? Auth::user()->full_name : 'Not updated yet' }}
-                                                            </p>
-                                                        </li>
-                                                        <li>
-                                                            <h6>Phone:</h6>
-                                                            <p>{{ Auth::user()->phone ? Auth::user()->phone : 'Not updated yet' }}
-                                                            </p>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="sidebar-title">
-                                                        <div class="loader-line"></div>
-                                                        <h5>Login Details</h5>
-                                                    </div>
-                                                    <ul class="profile-information mb-0">
-                                                        <li>
-                                                            <h6>Email :</h6>
-                                                            <p>{{ Auth::user()->email }}</p>
-                                                        </li>
-                                                        <li>
-                                                            <h6>Password :</h6>
-                                                            <p>●●●●●●<span data-bs-toggle="modal"
-                                                                    data-bs-target="#edit-password" title="Edit Password"
-                                                                    tabindex="0">Edit</span></p>
-                                                        </li>
-                                                    </ul>
+                                    </div>
+                                    <div class="profile-about">
+                                        <div class="row">
+                                            <div class="col-xl-7">
+                                                <div class="sidebar-title">
+                                                    <div class="loader-line"></div>
+                                                    <h5>Profile Information</h5>
                                                 </div>
-                                                <div class="col-xl-5">
-                                                    <div class="profile-image d-none d-xl-block"> <img class="img-fluid"
-                                                            src="{{ asset('assets/images/other-img/dashboard.png') }}"
-                                                            alt="">
-                                                    </div>
+                                                <ul class="profile-information">
+                                                    <li>
+                                                        <h6>Username:</h6>
+                                                        <p>{{ Auth::user()->username }}
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Name:</h6>
+                                                        <p>{{ Auth::user()->full_name ? Auth::user()->full_name : 'Not updated yet' }}
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Phone:</h6>
+                                                        <p>{{ Auth::user()->phone ? Auth::user()->phone : 'Not updated yet' }}
+                                                        </p>
+                                                    </li>
+                                                </ul>
+                                                <div class="sidebar-title">
+                                                    <div class="loader-line"></div>
+                                                    <h5>Login Details</h5>
+                                                </div>
+                                                <ul class="profile-information mb-0">
+                                                    <li>
+                                                        <h6>Email :</h6>
+                                                        <p>{{ Auth::user()->email }}</p>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Password :</h6>
+                                                        <p>●●●●●●<span data-bs-toggle="modal" data-bs-target="#edit-password" title="Edit Password" tabindex="0">Edit</span></p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-xl-5">
+                                                <div class="profile-image d-none d-xl-block"> <img class="img-fluid" src="{{ asset('assets/images/other-img/dashboard.png') }}" alt="">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {{-- End dashboard --}}
+                        </div>
+                        {{-- End dashboard --}}
 
-                            {{-- Notifications --}}
-                            <div class="tab-pane fade" id="notifications" role="tabpanel"
-                                aria-labelledby="notifications-tab">
-                                <div class="dashboard-right-box">
-                                    <div class="notification-tab">
-                                        <div class="sidebar-title">
-                                            <div class="loader-line"></div>
-                                            <h4>Notifications</h4>
-                                        </div>
-                                        <ul class="notification-body">
-                                            <li>
-                                                <div class="user-img"> <img src="../assets/images/notification/1.jpg"
-                                                        alt=""></div>
-                                                <div class="user-contant">
-                                                    <h6>Mint - is your budget ready for spring
-                                                        spending?<span>2:14PM</span>
-                                                    </h6>
-                                                    <p>A quick weekend trip, a staycation in your own town, or a
-                                                        weeklong
-                                                        vacay with the family—it’s your choice if it’s in the budget. No
-                                                        matter what you plan on doing during spring break, budget ahead
-                                                        for
-                                                        it.</p>
+                        {{-- Notifications --}}
+                        <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
+                            <div class="dashboard-right-box">
+                                <div class="notification-tab">
+                                    <div class="sidebar-title">
+                                        <div class="loader-line"></div>
+                                        <h4>Notifications</h4>
+                                    </div>
+                                    <ul class="notification-body">
+                                        <li>
+                                            <div class="user-img"> <img src="../assets/images/notification/1.jpg" alt=""></div>
+                                            <div class="user-contant">
+                                                <h6>Mint - is your budget ready for spring
+                                                    spending?<span>2:14PM</span>
+                                                </h6>
+                                                <p>A quick weekend trip, a staycation in your own town, or a
+                                                    weeklong
+                                                    vacay with the family—it’s your choice if it’s in the budget. No
+                                                    matter what you plan on doing during spring break, budget ahead
+                                                    for
+                                                    it.</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="user-img"> <img src="../assets/images/notification/2.jpg" alt=""></div>
+                                            <div class="user-contant">
+                                                <h6>Flipkart - Confirmed order<span>2:14PM</span></h6>
+                                                <p>Thanks for signing up for CodePen! We're happy you're here. Let's
+                                                    get
+                                                    your email address verified:</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End notifications --}}
+
+                        {{-- Whishlist --}}
+                        <div class="tab-pane fade" id="wishlist" role="tabpanel" aria-labelledby="wishlist-tab">
+                            <div class="dashboard-right-box">
+                                <div class="wishlist-box ratio1_3">
+                                    <div class="sidebar-title">
+                                        <div class="loader-line"></div>
+                                        <h4>Wishlist</h4>
+                                    </div>
+                                    <div class="row-cols-md-3 row-cols-2 grid-section view-option row gy-4 g-xl-4">
+                                        <div class="col">
+                                            <div class="product-box-3 product-wishlist">
+                                                <div class="img-wrapper">
+                                                    <div class="label-block"><a class="label-2 wishlist-icon delete-button" href="javascript:void(0)" title="Add to Wishlist" tabindex="0"><i
+                                                                class="iconsax" data-icon="trash" aria-hidden="true"></i></a></div>
+                                                    <div class="product-image"><a class="pro-first" href="product.html">
+                                                            <img class="bg-img" src="../assets/images/product/product-3/11.jpg" alt="product"></a><a class="pro-sec" href="product.html"> <img
+                                                                class="bg-img" src="../assets/images/product/product-3/14.jpg" alt="product"></a></div>
+                                                    <div class="cart-info-icon"> <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart" tabindex="0"><i
+                                                                class="iconsax" data-icon="basket-2" aria-hidden="true"> </i></a><a href="compare.html" title="Compare" tabindex="0"><i
+                                                                class="iconsax" data-icon="arrow-up-down" aria-hidden="true"></i></a><a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#quick-view" title="Quick View" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true"></i></a></div>
                                                 </div>
+                                                <div class="product-detail">
+                                                    <ul class="rating">
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li>4.3</li>
+                                                    </ul><a href="product.html">
+                                                        <h6>Long Sleeve Rounded T-Shirt</h6>
+                                                    </a>
+                                                    <p>$120.30 <del>$140.00</del><span>-20% </span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="product-box-3 product-wishlist">
+                                                <div class="img-wrapper">
+                                                    <div class="label-block"><a class="label-2 wishlist-icon delete-button" href="javascript:void(0)" title="Add to Wishlist" tabindex="0"><i
+                                                                class="iconsax" data-icon="trash" aria-hidden="true"></i></a></div>
+                                                    <div class="product-image"><a class="pro-first" href="product.html">
+                                                            <img class="bg-img" src="../assets/images/product/product-3/12.jpg" alt="product"></a><a class="pro-sec" href="product.html"> <img
+                                                                class="bg-img" src="../assets/images/product/product-3/13.jpg" alt="product"></a></div>
+                                                    <div class="cart-info-icon"> <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart" tabindex="0"><i
+                                                                class="iconsax" data-icon="basket-2" aria-hidden="true"> </i></a><a href="compare.html" title="Compare" tabindex="0"><i
+                                                                class="iconsax" data-icon="arrow-up-down" aria-hidden="true"></i></a><a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#quick-view" title="Quick View" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true"></i></a></div>
+                                                    <div class="countdown">
+                                                        <ul class="clockdiv4">
+                                                            <li>
+                                                                <div class="timer">
+                                                                    <div class="days"></div>
+                                                                </div><span class="title">Days</span>
+                                                            </li>
+                                                            <li class="dot"> <span>:</span></li>
+                                                            <li>
+                                                                <div class="timer">
+                                                                    <div class="hours"></div>
+                                                                </div><span class="title">Hours</span>
+                                                            </li>
+                                                            <li class="dot"> <span>:</span></li>
+                                                            <li>
+                                                                <div class="timer">
+                                                                    <div class="minutes"></div>
+                                                                </div><span class="title">Min</span>
+                                                            </li>
+                                                            <li class="dot"> <span>:</span></li>
+                                                            <li>
+                                                                <div class="timer">
+                                                                    <div class="seconds"></div>
+                                                                </div><span class="title">Sec</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="product-detail">
+                                                    <ul class="rating">
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li><i class="fa-solid fa-star"></i></li>
+                                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
+                                                        <li>4.3</li>
+                                                    </ul><a href="product.html">
+                                                        <h6>Blue lined White T-Shirt</h6>
+                                                    </a>
+                                                    <p>$190.00 <del>$210.00</del></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End whishlist --}}
+
+                        {{-- Order --}}
+                        <div class="tab-pane fade" id="order" role="tabpanel" aria-labelledby="order-tab">
+                            <div class="dashboard-right-box">
+                                <div class="order">
+                                    <div class="sidebar-title">
+                                        <div class="loader-line"></div>
+                                        <h4>My Orders History</h4>
+                                    </div>
+                                    <div class="dashboard-left-sidebar position-sticky top-0 z-3">
+                                        <ul class="nav flex-row nav-pills order-dashboard-tab justify-content-between" role="tablist" aria-orientation="vertical">
+                                            <li>
+                                                <button class="order_menu nav-link active" id="order_all_tab" data-id="0" data-bs-toggle="pill" role="tab" aria-controls="order-all" aria-selected="true" onclick="change_order_status(0)">
+                                                    All
+                                                </button>
                                             </li>
                                             <li>
-                                                <div class="user-img"> <img src="../assets/images/notification/2.jpg"
-                                                        alt=""></div>
-                                                <div class="user-contant">
-                                                    <h6>Flipkart - Confirmed order<span>2:14PM</span></h6>
-                                                    <p>Thanks for signing up for CodePen! We're happy you're here. Let's
-                                                        get
-                                                        your email address verified:</p>
-                                                </div>
+                                                <button class="order_menu nav-link" id="order_to_pay_tab" data-id="1" data-bs-toggle="pill" role="tab" aria-controls="order-to-pay" aria-selected="false" onclick="change_order_status(1)">
+                                                    To Pay
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="order_menu nav-link" id="order_to_confirmation_tab" data-id="2" data-bs-toggle="pill" role="tab" aria-controls="order-to-confirmation" aria-selected="false" onclick="change_order_status(2)">
+                                                    To Confirmation
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="order_menu nav-link" id="order_to_receive_tab" data-id="3" data-bs-toggle="pill" role="tab" aria-controls="order-to-receive" aria-selected="false" onclick="change_order_status(3)">
+                                                    To Receive
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="order_menu nav-link" id="order_completed_tab" data-id="4" data-bs-toggle="pill" role="tab" aria-controls="order-completed" aria-selected="false" onclick="change_order_status(4)">
+                                                    Completed
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="order_menu nav-link" id="order_cancelled_tab" data-id="5" data-bs-toggle="pill" role="tab" aria-controls="order-cancelled" aria-selected="false" onclick="change_order_status(5)">
+                                                    Cancelled
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="order_menu nav-link" id="order_return_refund_tab" data-id="6" data-bs-toggle="pill" role="tab" aria-controls="order-return-refund" aria-selected="false" onclick="change_order_status(6)">
+                                                    Return/Refund
+                                                </button>
                                             </li>
                                         </ul>
                                     </div>
+
+                                    <div class="row gy-4 mt-1" id="list_orders">
+                                        <!-- Order items -->
+                                        <!-- Hiển thị danh sách đơn hàng ở đây -->
+                                    </div>
                                 </div>
                             </div>
-                            {{-- End notifications --}}
-
-                            {{-- Whishlist --}}
-                            <div class="tab-pane fade" id="wishlist" role="tabpanel" aria-labelledby="wishlist-tab">
-                                <div class="dashboard-right-box">
-                                    <div class="wishlist-box ratio1_3">
-                                        <div class="sidebar-title">
-                                            <div class="loader-line"></div>
-                                            <h4>Wishlist</h4>
+                        </div>
+                        {{-- End Order --}}
+                        {{-- Order Details --}}
+                        <div class="tab-pane fade" id="order_details" role="tabpanel" aria-labelledby="order-details-tab">
+                            <div class="dashboard-right-box">
+                                <div class="notification-tab">
+                                    <div class="mb-2 d-flex flex-row justify-content-between position-sticky top-0 z-3">
+                                        <a class="btn btn-dark color-of-theme border" id="btn_back_to_list_orders">
+                                            <i class="fas fa-arrow-left me-1 color-of-theme"></i>
+                                            Back
+                                        </a>
+                                        <div class="d-flex flex-row">
+                                            <div>
+                                                <span class="fs-6 text-dark">ORDER CODE:</span>
+                                                <span class="fs-6 text-dark" id="span_order_code">123</span>
+                                            </div>
+                                            <span class="fs-6 ms-2 me-2">|</span>
+                                            <span class="fs-6 text-danger" id="span_order_status">WAITING FOR PAYMENT</span>
                                         </div>
-                                        <div class="row-cols-md-3 row-cols-2 grid-section view-option row gy-4 g-xl-4">
-                                            <div class="col">
-                                                <div class="product-box-3 product-wishlist">
-                                                    <div class="img-wrapper">
-                                                        <div class="label-block"><a
-                                                                class="label-2 wishlist-icon delete-button"
-                                                                href="javascript:void(0)" title="Add to Wishlist"
-                                                                tabindex="0"><i class="iconsax" data-icon="trash"
-                                                                    aria-hidden="true"></i></a></div>
-                                                        <div class="product-image"><a class="pro-first"
-                                                                href="product.html">
-                                                                <img class="bg-img"
-                                                                    src="../assets/images/product/product-3/11.jpg"
-                                                                    alt="product"></a><a class="pro-sec"
-                                                                href="product.html"> <img class="bg-img"
-                                                                    src="../assets/images/product/product-3/14.jpg"
-                                                                    alt="product"></a></div>
-                                                        <div class="cart-info-icon"> <a href="#"
-                                                                data-bs-toggle="modal" data-bs-target="#addtocart"
-                                                                title="Add to cart" tabindex="0"><i class="iconsax"
-                                                                    data-icon="basket-2" aria-hidden="true"> </i></a><a
-                                                                href="compare.html" title="Compare" tabindex="0"><i
-                                                                    class="iconsax" data-icon="arrow-up-down"
-                                                                    aria-hidden="true"></i></a><a href="#"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                title="Quick View" tabindex="0"><i class="iconsax"
-                                                                    data-icon="eye" aria-hidden="true"></i></a></div>
-                                                    </div>
-                                                    <div class="product-detail">
-                                                        <ul class="rating">
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li>4.3</li>
-                                                        </ul><a href="product.html">
-                                                            <h6>Long Sleeve Rounded T-Shirt</h6>
-                                                        </a>
-                                                        <p>$120.30 <del>$140.00</del><span>-20% </span></p>
-                                                    </div>
+                                    </div>
+                                    <div class="sidebar-title mt-4">
+                                        <div class="loader-line"></div>
+                                        <h4>Order details</h4>
+                                    </div>
+                                    <ul class="notification-body">
+                                        <!-- Content order details -->
+                                        <div class="p-3">
+                                            <div class="progress-container" id="progress-container">
+                                                <div class="progress-step completed">
+                                                    <div class="step-icon">📄</div>
+                                                    <div class="step-text">Tạo Mới Đơn Hàng</div>
+                                                    <span class="step-time no-wrap">23:13 22-05-2024</span>
+                                                </div>
+                                                <div class="progress-line bg-of-theme"></div>
+                                                <div class="progress-step completed">
+                                                    <div class="step-icon">💳</div>
+                                                    <div class="step-text">Đã Xác Nhận TTTT & Đặt Hàng</div>
+                                                    <span class="step-time no-wrap">03:13 23-05-2024</span>
+                                                </div>
+                                                <div class="progress-line bg-of-theme"></div>
+                                                <div class="progress-step completed">
+                                                    <div class="step-icon">✅</div>
+                                                    <div class="step-text">Đã Kiểm Tra Đơn Hàng</div>
+                                                    <div class="step-time no-wrap">08:51 29-05-2024</div>
+                                                </div>
+                                                <div class="progress-line bg-of-theme"></div>
+                                                <div class="progress-step completed">
+                                                    <div class="step-icon">🚚</div>
+                                                    <div class="step-text">Đã Giao Cho DVC</div>
+                                                    <span class="step-time no-wrap">13:34 23-05-2024</span>
+                                                </div>
+                                                <div class="progress-line bg-of-theme"></div>
+                                                <div class="progress-step completed">
+                                                    <div class="step-icon">🌟</div>
+                                                    <div class="step-text">Đơn Hàng Đã Hoàn Thành</div>
+                                                    <span class="step-time no-wrap">23:59 28-06-2024</span>
+                                                </div>
+                                                <div class="progress-line"></div>
+                                                <div class="progress-step completed">
+                                                    <div class="step-icon">❌</div>
+                                                    <div class="step-text">Đã Hủy</div>
+                                                    <span class="step-time no-wrap">23:59 28-06-2024</span>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="product-box-3 product-wishlist">
-                                                    <div class="img-wrapper">
-                                                        <div class="label-block"><a
-                                                                class="label-2 wishlist-icon delete-button"
-                                                                href="javascript:void(0)" title="Add to Wishlist"
-                                                                tabindex="0"><i class="iconsax" data-icon="trash"
-                                                                    aria-hidden="true"></i></a></div>
-                                                        <div class="product-image"><a class="pro-first"
-                                                                href="product.html">
-                                                                <img class="bg-img"
-                                                                    src="../assets/images/product/product-3/12.jpg"
-                                                                    alt="product"></a><a class="pro-sec"
-                                                                href="product.html"> <img class="bg-img"
-                                                                    src="../assets/images/product/product-3/13.jpg"
-                                                                    alt="product"></a></div>
-                                                        <div class="cart-info-icon"> <a href="#"
-                                                                data-bs-toggle="modal" data-bs-target="#addtocart"
-                                                                title="Add to cart" tabindex="0"><i class="iconsax"
-                                                                    data-icon="basket-2" aria-hidden="true"> </i></a><a
-                                                                href="compare.html" title="Compare" tabindex="0"><i
-                                                                    class="iconsax" data-icon="arrow-up-down"
-                                                                    aria-hidden="true"></i></a><a href="#"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                title="Quick View" tabindex="0"><i class="iconsax"
-                                                                    data-icon="eye" aria-hidden="true"></i></a></div>
-                                                        <div class="countdown">
-                                                            <ul class="clockdiv4">
-                                                                <li>
-                                                                    <div class="timer">
-                                                                        <div class="days"></div>
-                                                                    </div><span class="title">Days</span>
+                                            <div class="text-center border-top border-bottom mt-3 p-3 bg-of-theme">
+                                                <span class="text-white">Thank you for shopping at our store!</span>
+                                            </div>
+                                        </div>
+
+                                        <section class="section-b-space">
+                                            <div class="custom-container container order-success">
+                                                <div class="row gy-4">
+                                                    <div class="col-xl-8">
+                                                        <div class="order-items sticky">
+                                                            <h4>Order Information </h4>
+                                                            <p>Order invoice has been send to your registered email account. double check your order
+                                                                details
+                                                            </p>
+                                                            <div class="order-table">
+                                                                <div class="table-responsive theme-scrollbar">
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <tr class="tr_of_list_products_in_order">
+                                                                                <th>Product </th>
+                                                                                <th>Price </th>
+                                                                                <th>Quantity</th>
+                                                                                <th>Total</th>
+                                                                                <th>Applied voucher</th>
+                                                                                <th>Control</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="body_of_list_product">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <div class="cart-box">
+                                                                                        <a href="">
+                                                                                            <img src="https://via.placeholder.com/300x200" alt="">
+                                                                                        </a>
+                                                                                        <div class="d-flex flex-column">
+                                                                                            <a href="#">
+                                                                                                <h5 class="fs-12">abc</h5>
+                                                                                            </a>
+                                                                                            <span class="fs-12">Xl</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="fs-12">123 đ</span>
+                                                                                </td>
+                                                                                <td class="fs-12">123</td>
+                                                                                <td>
+                                                                                    <div class="d-flex flex-column justify-content-end">
+                                                                                        <span class="fs-12">123 đ</span>
+                                                                                        <span class="text-danger fs-12">-123 đ</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="fw-bold text-success fs-12">321 đ</td>
+                                                                                <td>
+                                                                                    <div class="d-flex flex-column">
+                                                                                        <span class="btn btn-outline-dark btn-sm mb-1">View rated</span>
+                                                                                        <div id="order_detail_1"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td colspan="6" class="text-center">
+                                                                                    <span class="text-danger">Không có dữ liệu sản phẩm</span>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td class="total fw-bold">
+                                                                                    Total :
+                                                                                </td>
+                                                                                <td class="total fw-bold">
+                                                                                    <div class="d-flex flex-column align-items-end">
+                                                                                        <span class="fs-6 text-dark {{123!=0?"text-decoration-line-through":"fw-bold"}}">321 đ</span>
+                                                                                        <span class="fs-6 text-success fw-bold">234 đ</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-4">
+                                                        <div class="summery-box">
+                                                            <div class="sidebar-title">
+                                                                <div class="loader-line"></div>
+                                                                <h4>Sub Order Details </h4>
+                                                            </div>
+                                                            <div class="summery-content">
+                                                                <ul>
+                                                                    <li>
+                                                                        <p class="fw-semibold">Product total (<span id="sod_total_products"></span>)</p>
+                                                                        <h6 id="sod_sub_total_payment">123 đ</h6>
+                                                                    </li>
+                                                                    <li>
+                                                                        <p>Shipping to </p><span>vietnam</span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <p>Payment method </p><span id="sod_payment_method">vnpay</span>
+                                                                    </li>
+                                                                </ul>
+                                                                <ul>
+                                                                    <li>
+                                                                        <p>Shipping Costs</p><span id="sod_shipping_costs">123 đ</span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <p>Tax <span>(0,5% of total order value)</span> </p><span id="sod_tax">123 đ</span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <p>Shipping voucher </p><span class="text-danger" id="sod_shipping_voucher">-123 đ</span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <p>Voucher </p><span class="text-danger" id="sod_voucher">-123 đ</span>
+                                                                    </li>
+                                                                </ul>
+                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                    <h6>Total (VND)</h6>
+                                                                    <h5 id="sod_total_payment">455555 đ</h5>
+                                                                </div>
+                                                                <div class="note-box">
+                                                                    <p>I'm hoping the store can work with me to get it delivered as soon as possible
+                                                                        because
+                                                                        I really need it to gift to my friend for her party next week.Many thanks for
+                                                                        it.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="summery-footer">
+                                                            <div class="sidebar-title">
+                                                                <div class="loader-line"></div>
+                                                                <h4>Shipping Address</h4>
+                                                            </div>
+                                                            <ul>
+                                                                <li class="d-flex flex-column">
+                                                                    <h6 id="sod_full_name">Phạm chình</h6>
+                                                                    <h6 id="sod_phone_number">0987654321 </h6>
+                                                                    <h6 id="sod_address">abc</h6>
                                                                 </li>
-                                                                <li class="dot"> <span>:</span></li>
                                                                 <li>
-                                                                    <div class="timer">
-                                                                        <div class="hours"></div>
-                                                                    </div><span class="title">Hours</span>
+                                                                    <h6>Expected Date Of Delivery: <span>Track Order</span></h6>
                                                                 </li>
-                                                                <li class="dot"> <span>:</span></li>
                                                                 <li>
-                                                                    <div class="timer">
-                                                                        <div class="minutes"></div>
-                                                                    </div><span class="title">Min</span>
-                                                                </li>
-                                                                <li class="dot"> <span>:</span></li>
-                                                                <li>
-                                                                    <div class="timer">
-                                                                        <div class="seconds"></div>
-                                                                    </div><span class="title">Sec</span>
+                                                                    <h5 id="sod_ordered_at">November</h5>
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                    <div class="product-detail">
-                                                        <ul class="rating">
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li><i class="fa-solid fa-star"></i></li>
-                                                            <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                                            <li>4.3</li>
-                                                        </ul><a href="product.html">
-                                                            <h6>Blue lined White T-Shirt</h6>
-                                                        </a>
-                                                        <p>$190.00 <del>$210.00</del></p>
-                                                    </div>
                                                 </div>
                                             </div>
+                                        </section>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End Order Details --}}
+                        <!-- Form tiếp tục thanh toán -->
+                        <form action="{{route('checkout.vnpay_payment')}}" method="post" id="form_vnpay">
+                            @csrf
+                            <input type="hidden" name="order_id" class="order_id">
+                            <input type="hidden" name="amount" class="amount">
+                            <input type="hidden" name="redirect">
+                        </form>
+                        <form action="{{route('checkout.momo_payment')}}" method="post" id="form_momo">
+                            @csrf
+                            <input type="hidden" name="order_id" class="order_id">
+                            <input type="hidden" name="amount" class="amount">
+                            <input type="hidden" name="payUrl">
+                        </form>
+
+                        {{-- Modal cancel order --}}
+                        <div class="modal theme-modal fade confirmation-modal" id="cancel-order-modal" tabindex="-1" role="dialog" aria-modal="true">
+                            <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body"> <img class="img-fluid" src="../assets/images/gif/question.gif" alt="">
+                                        <h4>Are You Sure ?</h4>
+                                        <p>Confirm cancel this order. Are you sure?</p>
+                                        <div class="submit-button">
+                                            <button class="btn" data-bs-dismiss="modal" aria-label="Close">No</button>
+                                            <button class="btn" data-bs-dismiss="modal" aria-label="Close" id="btn_confirm_cancel_order">Yes</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {{-- End whishlist --}}
-
-                            {{-- Order --}}
-                            <div class="tab-pane fade" id="order" role="tabpanel" aria-labelledby="order-tab">
-                                <div class="dashboard-right-box">
-                                    <div class="order">
-                                        <div class="sidebar-title">
-                                            <div class="loader-line"></div>
-                                            <h4>My Orders History</h4>
-                                        </div>
-                                        <div class="dashboard-left-sidebar position-sticky top-0 z-3">
-                                            <ul class="nav flex-row nav-pills order-dashboard-tab justify-content-between"
-                                                role="tablist" aria-orientation="vertical">
-                                                <li>
-                                                    <button class="order_menu nav-link active" id="order_all_tab"
-                                                        data-id="0" data-bs-toggle="pill" role="tab"
-                                                        aria-controls="order-all" aria-selected="true"
-                                                        onclick="change_order_status(0)">
-                                                        All
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="order_menu nav-link" id="order_to_pay_tab"
-                                                        data-id="1" data-bs-toggle="pill" role="tab"
-                                                        aria-controls="order-to-pay" aria-selected="false"
-                                                        onclick="change_order_status(1)">
-                                                        To Pay
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="order_menu nav-link" id="order_to_confirmation_tab"
-                                                        data-id="2" data-bs-toggle="pill" role="tab"
-                                                        aria-controls="order-to-confirmation" aria-selected="false"
-                                                        onclick="change_order_status(2)">
-                                                        To Confirmation
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="order_menu nav-link" id="order_to_receive_tab"
-                                                        data-id="3" data-bs-toggle="pill" role="tab"
-                                                        aria-controls="order-to-receive" aria-selected="false"
-                                                        onclick="change_order_status(3)">
-                                                        To Receive
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="order_menu nav-link" id="order_completed_tab"
-                                                        data-id="4" data-bs-toggle="pill" role="tab"
-                                                        aria-controls="order-completed" aria-selected="false"
-                                                        onclick="change_order_status(4)">
-                                                        Completed
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="order_menu nav-link" id="order_cancelled_tab"
-                                                        data-id="5" data-bs-toggle="pill" role="tab"
-                                                        aria-controls="order-cancelled" aria-selected="false"
-                                                        onclick="change_order_status(5)">
-                                                        Cancelled
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="order_menu nav-link" id="order_return_refund_tab"
-                                                        data-id="6" data-bs-toggle="pill" role="tab"
-                                                        aria-controls="order-return-refund" aria-selected="false"
-                                                        onclick="change_order_status(6)">
-                                                        Return/Refund
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                        <div class="row gy-4 mt-1" id="list_orders">
-                                            <!-- Order items -->
-                                            <!-- Hiển thị danh sách đơn hàng ở đây -->
+                        </div>
+                        {{-- Modal confirm done order --}}
+                        <div class="modal theme-modal fade confirmation-modal" id="confirm-done-order-modal" tabindex="-1" role="dialog" aria-modal="true">
+                            <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body"> <img class="img-fluid" src="../assets/images/gif/question.gif" alt="">
+                                        <h4>Are You Sure ?</h4>
+                                        <p>Confirm completion of this order?</p>
+                                        <div class="submit-button">
+                                            <button class="btn" data-bs-dismiss="modal" aria-label="Close">No</button>
+                                            <button class="btn" data-bs-dismiss="modal" aria-label="Close" id="btn_confirm_done_order">Yes</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {{-- End Order --}}
-                            {{-- Order Details --}}
-                            <div class="tab-pane fade" id="order_details" role="tabpanel"
-                                aria-labelledby="order-details-tab">
-                                <div class="dashboard-right-box">
-                                    <div class="notification-tab">
-                                        <div
-                                            class="mb-2 d-flex flex-row justify-content-between position-sticky top-0 z-3">
-                                            <a class="btn btn-dark color-of-theme border" id="btn_back_to_list_orders">
-                                                <i class="fas fa-arrow-left me-1 color-of-theme"></i>
-                                                Back
-                                            </a>
-                                            <div class="d-flex flex-row">
-                                                <div>
-                                                    <span class="fs-6 text-dark">ORDER CODE:</span>
-                                                    <span class="fs-6 text-dark" id="span_order_code">123</span>
-                                                </div>
-                                                <span class="fs-6 ms-2 me-2">|</span>
-                                                <span class="fs-6 text-danger" id="span_order_status">WAITING FOR
-                                                    PAYMENT</span>
-                                            </div>
-                                        </div>
-                                        <div class="sidebar-title mt-4">
-                                            <div class="loader-line"></div>
-                                            <h4>Order details</h4>
-                                        </div>
-                                        <ul class="notification-body">
-                                            <!-- Content order details -->
-                                            <div class="p-3">
-                                                <div class="progress-container" id="progress-container">
-                                                    <div class="progress-step completed">
-                                                        <div class="step-icon">📄</div>
-                                                        <div class="step-text">Tạo Mới Đơn Hàng</div>
-                                                        <span class="step-time no-wrap">23:13 22-05-2024</span>
-                                                    </div>
-                                                    <div class="progress-line bg-of-theme"></div>
-                                                    <div class="progress-step completed">
-                                                        <div class="step-icon">💳</div>
-                                                        <div class="step-text">Đã Xác Nhận TTTT & Đặt Hàng</div>
-                                                        <span class="step-time no-wrap">03:13 23-05-2024</span>
-                                                    </div>
-                                                    <div class="progress-line bg-of-theme"></div>
-                                                    <div class="progress-step completed">
-                                                        <div class="step-icon">✅</div>
-                                                        <div class="step-text">Đã Kiểm Tra Đơn Hàng</div>
-                                                        <div class="step-time no-wrap">08:51 29-05-2024</div>
-                                                    </div>
-                                                    <div class="progress-line bg-of-theme"></div>
-                                                    <div class="progress-step completed">
-                                                        <div class="step-icon">🚚</div>
-                                                        <div class="step-text">Đã Giao Cho DVC</div>
-                                                        <span class="step-time no-wrap">13:34 23-05-2024</span>
-                                                    </div>
-                                                    <div class="progress-line bg-of-theme"></div>
-                                                    <div class="progress-step completed">
-                                                        <div class="step-icon">🌟</div>
-                                                        <div class="step-text">Đơn Hàng Đã Hoàn Thành</div>
-                                                        <span class="step-time no-wrap">23:59 28-06-2024</span>
-                                                    </div>
-                                                    <div class="progress-line"></div>
-                                                    <div class="progress-step completed">
-                                                        <div class="step-icon">❌</div>
-                                                        <div class="step-text">Đã Hủy</div>
-                                                        <span class="step-time no-wrap">23:59 28-06-2024</span>
-                                                    </div>
-                                                </div>
-                                                <div class="text-center border-top border-bottom mt-3 p-3 bg-of-theme">
-                                                    <span class="text-white">Thank you for shopping at our store!</span>
-                                                </div>
-                                            </div>
+                        </div>
+                        {{-- End modal --}}
 
-                                            <section class="section-b-space">
-                                                <div class="custom-container container order-success">
-                                                    <div class="row gy-4">
-                                                        <div class="col-xl-8">
-                                                            <div class="order-items sticky">
-                                                                <h4>Order Information </h4>
-                                                                <p>Order invoice has been send to your registered email
-                                                                    account. double check your order
-                                                                    details
-                                                                </p>
-                                                                <div class="order-table">
-                                                                    <div class="table-responsive theme-scrollbar">
-                                                                        <table class="table">
-                                                                            <thead>
-                                                                                <tr class="tr_of_list_products_in_order">
-                                                                                    <th>Product </th>
-                                                                                    <th>Price </th>
-                                                                                    <th>Quantity</th>
-                                                                                    <th>Total</th>
-                                                                                    <th>Applied voucher</th>
-                                                                                    <th>Control</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody id="body_of_list_product">
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <div class="cart-box">
-                                                                                            <a href="">
-                                                                                                <img src="https://via.placeholder.com/300x200"
-                                                                                                    alt="">
-                                                                                            </a>
-                                                                                            <div
-                                                                                                class="d-flex flex-column">
-                                                                                                <a href="#">
-                                                                                                    <h5 class="fs-12">abc
-                                                                                                    </h5>
-                                                                                                </a>
-                                                                                                <span
-                                                                                                    class="fs-12">Xl</span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <span class="fs-12">123 đ</span>
-                                                                                    </td>
-                                                                                    <td class="fs-12">123</td>
-                                                                                    <td>
-                                                                                        <div
-                                                                                            class="d-flex flex-column justify-content-end">
-                                                                                            <span class="fs-12">123
-                                                                                                đ</span>
-                                                                                            <span
-                                                                                                class="text-danger fs-12">-123
-                                                                                                đ</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td class="fw-bold text-success fs-12">
-                                                                                        321 đ</td>
-                                                                                    <td>
-                                                                                        <div class="d-flex flex-column">
-                                                                                            <span
-                                                                                                class="btn btn-outline-dark btn-sm mb-1">View
-                                                                                                rated</span>
-                                                                                            <div id="order_detail_1"></div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-
-                                                                                <tr>
-                                                                                    <td colspan="6"
-                                                                                        class="text-center">
-                                                                                        <span class="text-danger">Không có
-                                                                                            dữ liệu sản phẩm</span>
-                                                                                    </td>
-                                                                                </tr>
-
-                                                                                <tr>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td class="total fw-bold">
-                                                                                        Total :
-                                                                                    </td>
-                                                                                    <td class="total fw-bold">
-                                                                                        <div
-                                                                                            class="d-flex flex-column align-items-end">
-                                                                                            <span
-                                                                                                class="fs-6 text-dark {{ 123 != 0 ? 'text-decoration-line-through' : 'fw-bold' }}">321
-                                                                                                đ</span>
-                                                                                            <span
-                                                                                                class="fs-6 text-success fw-bold">234
-                                                                                                đ</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-4">
-                                                            <div class="summery-box">
-                                                                <div class="sidebar-title">
-                                                                    <div class="loader-line"></div>
-                                                                    <h4>Sub Order Details </h4>
-                                                                </div>
-                                                                <div class="summery-content">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <p class="fw-semibold">Product total (<span
-                                                                                    id="sod_total_products"></span>)</p>
-                                                                            <h6 id="sod_sub_total_payment">123 đ</h6>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>Shipping to </p><span>vietnam</span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>Payment method </p><span
-                                                                                id="sod_payment_method">vnpay</span>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <ul>
-                                                                        <li>
-                                                                            <p>Shipping Costs</p><span
-                                                                                id="sod_shipping_costs">123 đ</span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>Tax <span>(0,5% of total order value)</span>
-                                                                            </p><span id="sod_tax">123 đ</span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>Shipping voucher </p><span
-                                                                                class="text-danger"
-                                                                                id="sod_shipping_voucher">-123 đ</span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>Voucher </p><span class="text-danger"
-                                                                                id="sod_voucher">-123 đ</span>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-between">
-                                                                        <h6>Total (VND)</h6>
-                                                                        <h5 id="sod_total_payment">455555 đ</h5>
-                                                                    </div>
-                                                                    <div class="note-box">
-                                                                        <p>I'm hoping the store can work with me to get it
-                                                                            delivered as soon as possible
-                                                                            because
-                                                                            I really need it to gift to my friend for her
-                                                                            party next week.Many thanks for
-                                                                            it.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="summery-footer">
-                                                                <div class="sidebar-title">
-                                                                    <div class="loader-line"></div>
-                                                                    <h4>Shipping Address</h4>
-                                                                </div>
-                                                                <ul>
-                                                                    <li class="d-flex flex-column">
-                                                                        <h6 id="sod_full_name">Phạm chình</h6>
-                                                                        <h6 id="sod_phone_number">0987654321 </h6>
-                                                                        <h6 id="sod_address">abc</h6>
-                                                                    </li>
-                                                                    <li>
-                                                                        <h6>Expected Date Of Delivery: <span>Track
-                                                                                Order</span></h6>
-                                                                    </li>
-                                                                    <li>
-                                                                        <h5 id="sod_ordered_at">November</h5>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </ul>
+                        {{-- Save card --}}
+                        <div class="tab-pane fade" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
+                            <div class="dashboard-right-box">
+                                <div class="saved-card">
+                                    <div class="sidebar-title">
+                                        <div class="loader-line"></div>
+                                        <h4>My vouchers</h4>
                                     </div>
-                                </div>
-                            </div>
-                            {{-- End Order Details --}}
-                            <!-- Form tiếp tục thanh toán -->
-                            <form action="{{ route('checkout.vnpay_payment') }}" method="post" id="form_vnpay">
-                                @csrf
-                                <input type="hidden" name="order_id" class="order_id">
-                                <input type="hidden" name="amount" class="amount">
-                                <input type="hidden" name="redirect">
-                            </form>
-                            <form action="{{ route('checkout.momo_payment') }}" method="post" id="form_momo">
-                                @csrf
-                                <input type="hidden" name="order_id" class="order_id">
-                                <input type="hidden" name="amount" class="amount">
-                                <input type="hidden" name="payUrl">
-                            </form>
-
-                            {{-- Modal cancel order --}}
-                            <div class="modal theme-modal fade confirmation-modal" id="cancel-order-modal" tabindex="-1"
-                                role="dialog" aria-modal="true">
-                                <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body"> <img class="img-fluid"
-                                                src="../assets/images/gif/question.gif" alt="">
-                                            <h4>Are You Sure ?</h4>
-                                            <p>Confirm cancel this order. Are you sure?</p>
-                                            <div class="submit-button">
-                                                <button class="btn" data-bs-dismiss="modal"
-                                                    aria-label="Close">No</button>
-                                                <button class="btn" data-bs-dismiss="modal" aria-label="Close"
-                                                    id="btn_confirm_cancel_order">Yes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Modal confirm done order --}}
-                            <div class="modal theme-modal fade confirmation-modal" id="confirm-done-order-modal"
-                                tabindex="-1" role="dialog" aria-modal="true">
-                                <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body"> <img class="img-fluid"
-                                                src="../assets/images/gif/question.gif" alt="">
-                                            <h4>Are You Sure ?</h4>
-                                            <p>Confirm completion of this order?</p>
-                                            <div class="submit-button">
-                                                <button class="btn" data-bs-dismiss="modal"
-                                                    aria-label="Close">No</button>
-                                                <button class="btn" data-bs-dismiss="modal" aria-label="Close"
-                                                    id="btn_confirm_done_order">Yes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- End modal --}}
-
-                            {{-- Save card --}}
-                            <div class="tab-pane fade" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
-                                <div class="dashboard-right-box">
-                                    <div class="saved-card">
-                                        <div class="sidebar-title">
-                                            <div class="loader-line"></div>
-                                            <h4>My vouchers</h4>
-                                        </div>
-                                        <div class="block-vouchers">
-                                            <div class="voucher-items-lists">
-                                                <div class="row">
-                                                    @foreach (Auth::user()->user_vouchers as $item)
-                                                        <div class="col-md-6">
-                                                            <div class="voucher-item">
-                                                                <div class="voucher-item-info">
-                                                                    <div class="voucher-item-detail">
-                                                                        <div class="voucher-item-des">
-                                                                            <strong>
-                                                                                <span style="font-size: 12pt;">
-                                                                                    <span
-                                                                                        style="color: #ba372a;">{{ $item->voucher->name }}
-                                                                                    </span>
-                                                                                    <br>
+                                    <div class="block-vouchers">
+                                        <div class="voucher-items-lists">
+                                            <div class="row">
+                                                @foreach (Auth::user()->user_vouchers as $item)
+                                                    <div class="col-md-6">
+                                                        <div class="voucher-item">
+                                                            <div class="voucher-item-info">
+                                                                <div class="voucher-item-detail">
+                                                                    <div class="voucher-item-des">
+                                                                        <strong>
+                                                                            <span style="font-size: 12pt;">
+                                                                                <span
+                                                                                    style="color: #ba372a;">{{ $item->voucher->name }}
                                                                                 </span>
-                                                                            </strong>
-                                                                        </div>
-                                                                        <div class="voucher-item-des"><span
-                                                                                style="font-size: 10pt; color:black">Nhập
-                                                                                mã
-                                                                                <strong><span
-                                                                                        style="font-size: 12pt; color:black">{{ $item->voucher->code }}</span></strong><span
-                                                                                    style="color: #e03e2d;"><strong><br></strong></span></span>
-                                                                        </div>
-                                                                        <div class="voucher-item-des"><span
-                                                                                style="font-size: 10pt; color:black">
-                                                                                @if ($item->voucher->amount < 100)
-                                                                                    <!-- Dưới 100 -->
-                                                                                    Giảm
-                                                                                    {{ number_format($item->voucher->amount) . '%' }}
-                                                                                    cho đơn hàng từ
-                                                                                    {{ number_format($item->voucher->minimum_order_value / 1000) . 'K' }}
-                                                                                @else
-                                                                                    <!-- Bằng hoặc trên 100 -->
-                                                                                    Giảm
-                                                                                    {{ number_format($item->voucher->amount / 1000) . 'K' }}
-                                                                                    cho đơn hàng từ
-                                                                                    {{ number_format($item->voucher->minimum_order_value / 1000) . 'K' }}
-                                                                                @endif
+                                                                                <br>
                                                                             </span>
-                                                                        </div>
-                                                                        <div class="voucher-item-date">
-                                                                            <span class="expire"
-                                                                                style="font-size: 10pt; color:#ba372a"
-                                                                                data-end-date="{{ \Carbon\Carbon::parse($item->voucher->end_date)->toIso8601String() }}">
-                                                                                Hạn sử dụng: <span class="countdown"
-                                                                                    style="font-size: 10pt; color:#ba372a"></span>
-                                                                            </span>
-                                                                        </div>
+                                                                        </strong>
                                                                     </div>
-                                                                    <div class="voucher-item-action">
-                                                                        <div class="action"><a href="{{ route('product') }}">
-                                                                            <span class="copy-content"
-                                                                                style="cursor: pointer; font-size: 10pt; color:#ba372a">Dùng
-                                                                                ngay</span></a>
-                                                                        </div>
+                                                                    <div class="voucher-item-des"><span
+                                                                            style="font-size: 10pt; color:black">Nhập
+                                                                            mã
+                                                                            <strong><span
+                                                                                    style="font-size: 12pt; color:black">{{ $item->voucher->code }}</span></strong><span
+                                                                                style="color: #e03e2d;"><strong><br></strong></span></span>
                                                                     </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- End save card --}}
-
-                            {{-- Address --}}
-                            <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
-                                <div class="dashboard-right-box">
-                                    <div class="address-tab">
-                                        <div class="sidebar-title">
-                                            <div class="loader-line"></div>
-                                            <h4>My Address Details</h4>
-                                        </div>
-                                        <div class="row gy-3">
-                                            @if (Auth::user()->user_shipping_addresses && Auth::user()->user_shipping_addresses->count() > 0)
-                                                @foreach (Auth::user()->user_shipping_addresses as $shippingAddress)
-                                                    <div class="col-xxl-12 col-md-6">
-                                                        <div class="address-option">
-                                                            <label for="address-billing-0">
-                                                                <div class="delivery-address-box d-flex"
-                                                                    data-id="{{ $shippingAddress->id }}">
-                                                                    <div class="address-detail">
-                                                                        {{-- <span class="address">
-                                                                        <span class="address-title">Home</span>
-                                                                    </span> --}}
-                                                                        <span class="address">
-                                                                            <span class="address-home d-flex">
-                                                                                <span
-                                                                                    class="address-title">{{ $shippingAddress->full_name }}</span>
-                                                                                @if ($shippingAddress->is_active)
-                                                                                    <span class="ms-3 mt-1">
-                                                                                        <span
-                                                                                            class="custom-status-set-address">Default</span>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </span>
-                                                                        </span>
-                                                                        <span class="address">
-                                                                            <span class="address-home d-flex">
-                                                                                <span
-                                                                                    class="address-tag-office">Address:</span>
-                                                                                <p>{{ $shippingAddress->address }}</p>
-                                                                            </span>
-                                                                        </span>
-                                                                        <span class="address"><span
-                                                                                class="address-home d-flex">
-                                                                                <span
-                                                                                    class="address-tag-office">Phone:</span>
-                                                                                <p>{{ $shippingAddress->phone_number }}</p>
-                                                                            </span>
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="address-action">
-                                                                        <div>
-                                                                            <a class="btn_edit_address" href="#"
-                                                                                data-id="{{ $shippingAddress->id }}"
-                                                                                data-full_name="{{ $shippingAddress->full_name }}"
-                                                                                data-phone_number="{{ $shippingAddress->phone_number }}"
-                                                                                data-address="{{ $shippingAddress->address }}"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#edit-address"
-                                                                                title="Edit Address"
-                                                                                tabindex="0">Edit</a>
-                                                                        </div>
-                                                                        <div>
-                                                                            <a class="btn_delete_address" href="#"
-                                                                                title="Delete" tabindex="0"
-                                                                                onclick="event.preventDefault();document.getElementById('delete-address-form').action='{{ route('dashboard.deleteAddress', $shippingAddress->id) }}';$('#delete-address-modal').modal('show');">Delete</a>
-                                                                        </div>
-                                                                        <div>
-                                                                            @if (!$shippingAddress->is_active)
-                                                                                <span class="">
-                                                                                    <form
-                                                                                        action="{{ route('dashboard.addresses.set.default', $shippingAddress->id) }}"
-                                                                                        method="POST" class="d-inline">
-                                                                                        @csrf
-                                                                                        <button type="submit"
-                                                                                            class="custom-set-address">Set
-                                                                                            as default</button>
-                                                                                    </form>
-                                                                                </span>
+                                                                    <div class="voucher-item-des"><span
+                                                                            style="font-size: 10pt; color:black">
+                                                                            @if ($item->voucher->amount < 100)
+                                                                                <!-- Dưới 100 -->
+                                                                                Giảm
+                                                                                {{ number_format($item->voucher->amount) . '%' }}
+                                                                                cho đơn hàng từ
+                                                                                {{ number_format($item->voucher->minimum_order_value / 1000) . 'K' }}
+                                                                            @else
+                                                                                <!-- Bằng hoặc trên 100 -->
+                                                                                Giảm
+                                                                                {{ number_format($item->voucher->amount / 1000) . 'K' }}
+                                                                                cho đơn hàng từ
+                                                                                {{ number_format($item->voucher->minimum_order_value / 1000) . 'K' }}
                                                                             @endif
-                                                                        </div>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="voucher-item-date">
+                                                                        <span class="expire"
+                                                                            style="font-size: 10pt; color:#ba372a"
+                                                                            data-end-date="{{ \Carbon\Carbon::parse($item->voucher->end_date)->toIso8601String() }}">
+                                                                            Hạn sử dụng: <span class="countdown"
+                                                                                style="font-size: 10pt; color:#ba372a"></span>
+                                                                        </span>
                                                                     </div>
                                                                 </div>
-                                                            </label>
+                                                                <div class="voucher-item-action">
+                                                                    <div class="action"><a href="{{ route('product') }}">
+                                                                        <span class="copy-content"
+                                                                            style="cursor: pointer; font-size: 10pt; color:#ba372a">Dùng
+                                                                            ngay</span></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 @endforeach
-                                            @else
-                                                <div class="text-center">
-                                                    <div class="col-xxl-12 col-md-6">
-                                                        <div class="address-option">
-                                                            <label for="address-billing-0">
-                                                                <h4 class="mt-2">Bạn chưa thêm địa chỉ</h4>
-                                                                <div>
-                                                                    <img class="img-fluid"
-                                                                        src="{{ asset('assets/images/user/empty-cart.jpg') }}"
-                                                                        width="250">
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        </div>
-                                        <button class="btn add-address" data-bs-toggle="modal"
-                                            data-bs-target="#add-address" title="Quick View" tabindex="0">+ Add
-                                            Address</button>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- End address --}}
-
-                            {{-- Privacy --}}
-                            <div class="tab-pane fade" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
-                                <div class="dashboard-right-box">
-                                    <div class="privacy-tab">
-                                        <div class="sidebar-title">
-                                            <div class="loader-line"></div>
-                                            <h4>Privacy</h4>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="privacy-title">
-                                                    <h5>Allows others to see my profile</h5>
-                                                    <p>Choose who can access your app and if users need to <a
-                                                            href="sign-up.html"> sign up.</a></p>
-                                                </div><span class="short-title">access</span>
-                                                <ul class="privacy-items">
-                                                    <li>
-                                                        <div class="privacy-icon"> <i class="iconsax"
-                                                                data-icon="lock-2"></i></div>
-                                                        <div class="privacy-contant">
-                                                            <h6>Private</h6>
-                                                            <p>Only users you choose can access</p>
-                                                        </div><label class="switch"><input type="checkbox"
-                                                                checked=""><span class="slider round"></span></label>
-                                                    </li>
-                                                    <li>
-                                                        <div class="privacy-icon"> <i class="iconsax"
-                                                                data-icon="globe"></i>
-                                                        </div>
-                                                        <div class="privacy-contant">
-                                                            <h6>Public</h6>
-                                                            <p>Anyone with the link can</p>
-                                                        </div><label class="switch"><input type="checkbox"><span
-                                                                class="slider round"></span></label>
-                                                    </li>
-                                                </ul><span class="short-title">Users</span>
-                                                <ul class="privacy-items">
-                                                    <li>
-                                                        <div class="privacy-icon"> <i class="iconsax"
-                                                                data-icon="package"></i></div>
-                                                        <div class="privacy-contant">
-                                                            <h6>Users in the users table </h6>
-                                                            <p>Only users in the users table can sign in </p>
-                                                        </div><label class="switch"><input type="checkbox"
-                                                                checked=""><span class="slider round"></span></label>
-                                                    </li>
-                                                    <li>
-                                                        <div class="privacy-icon"> <i class="iconsax"
-                                                                data-icon="fingerprint-circle"></i></div>
-                                                        <div class="privacy-contant">
-                                                            <h6>ongoing production team </h6>
-                                                            <p>only members of your team can sign in </p>
-                                                        </div><label class="switch"><input type="checkbox"><span
-                                                                class="slider round"></span></label>
-                                                    </li>
-                                                    <li>
-                                                        <div class="privacy-icon"> <i class="iconsax"
-                                                                data-icon="add-layer"></i></div>
-                                                        <div class="privacy-contant">
-                                                            <h6>anyone form domain(s)</h6>
-                                                            <p>only users with your email domain </p>
-                                                        </div><label class="switch"><input type="checkbox"
-                                                                checked=""><span class="slider round"></span></label>
-                                                    </li>
-                                                    <li>
-                                                        <div class="privacy-icon"> <i class="iconsax"
-                                                                data-icon="mail"></i>
-                                                        </div>
-                                                        <div class="privacy-contant">
-                                                            <h6>any email in table </h6>
-                                                            <p>Anyone with email included in a table </p>
-                                                        </div><label class="switch"><input type="checkbox"><span
-                                                                class="slider round"></span></label>
-                                                    </li>
-                                                </ul><span class="short-title"> </span>
-                                                <ul class="privacy-items">
-                                                    <li>
-                                                        <div class="privacy-contant">
-                                                            <h6>Publishing </h6>
-                                                            <p>Your Project is Published</p>
-                                                        </div>
-                                                        <div class="publish-button"> <button
-                                                                class="btn">Unpublish</button>
-                                                        </div>
-                                                    </li>
-                                                </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {{-- End Privacy --}}
                         </div>
+                        {{-- End save card --}}
+
+                        {{-- Address --}}
+                        <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                            <div class="dashboard-right-box">
+                                <div class="address-tab">
+                                    <div class="sidebar-title">
+                                        <div class="loader-line"></div>
+                                        <h4>My Address Details</h4>
+                                    </div>
+                                    <div class="row gy-3">
+                                        @if (Auth::user()->user_shipping_addresses && Auth::user()->user_shipping_addresses->count() > 0)
+                                        @foreach (Auth::user()->user_shipping_addresses as $shippingAddress)
+                                        <div class="col-xxl-12 col-md-6">
+                                            <div class="address-option">
+                                                <label for="address-billing-0">
+                                                    <div class="delivery-address-box d-flex" data-id="{{ $shippingAddress->id }}">
+                                                        <div class="address-detail">
+                                                            {{-- <span class="address">
+                                                                        <span class="address-title">Home</span>
+                                                                    </span> --}}
+                                                            <span class="address">
+                                                                <span class="address-home d-flex">
+                                                                    <span class="address-title">{{ $shippingAddress->full_name }}</span>
+                                                                    @if ($shippingAddress->is_active)
+                                                                    <span class="ms-3 mt-1">
+                                                                        <span class="custom-status-set-address">Default</span>
+                                                                    </span>
+                                                                    @endif
+                                                                </span>
+                                                            </span>
+                                                            <span class="address">
+                                                                <span class="address-home d-flex">
+                                                                    <span class="address-tag-office">Address:</span>
+                                                                    <p>{{ $shippingAddress->address }}</p>
+                                                                </span>
+                                                            </span>
+                                                            <span class="address"><span class="address-home d-flex">
+                                                                    <span class="address-tag-office">Phone:</span>
+                                                                    <p>{{ $shippingAddress->phone_number }}</p>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="address-action">
+                                                            <div>
+                                                                <a class="btn_edit_address" href="#" data-id="{{ $shippingAddress->id }}"
+                                                                    data-full_name="{{ $shippingAddress->full_name }}" data-phone_number="{{ $shippingAddress->phone_number }}"
+                                                                    data-address="{{ $shippingAddress->address }}" data-bs-toggle="modal" data-bs-target="#edit-address"
+                                                                    title="Edit Address" tabindex="0">Edit</a>
+                                                            </div>
+                                                            <div>
+                                                                <a class="btn_delete_address" href="#" title="Delete" tabindex="0"
+                                                                    onclick="event.preventDefault();document.getElementById('delete-address-form').action='{{ route('dashboard.deleteAddress', $shippingAddress->id) }}';$('#delete-address-modal').modal('show');">Delete</a>
+                                                            </div>
+                                                            <div>
+                                                                @if (!$shippingAddress->is_active)
+                                                                <span class="">
+                                                                    <form action="{{ route('dashboard.addresses.set.default', $shippingAddress->id) }}" method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        <button type="submit" class="custom-set-address">Set as default</button>
+                                                                    </form>
+                                                                </span>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                        @else
+                                        <div class="text-center">
+                                            <div class="col-xxl-12 col-md-6">
+                                                <div class="address-option">
+                                                    <label for="address-billing-0">
+                                                        <h4 class="mt-2">Bạn chưa thêm địa chỉ</h4>
+                                                        <div>
+                                                            <img class="img-fluid" src="{{ asset('assets/images/user/empty-cart.jpg') }}" width="250">
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <button class="btn add-address" data-bs-toggle="modal" data-bs-target="#add-address" title="Quick View" tabindex="0">+ Add
+                                        Address</button>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End address --}}
+
+                        {{-- Privacy --}}
+                        <div class="tab-pane fade" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
+                            <div class="dashboard-right-box">
+                                <div class="privacy-tab">
+                                    <div class="sidebar-title">
+                                        <div class="loader-line"></div>
+                                        <h4>Privacy</h4>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="privacy-title">
+                                                <h5>Allows others to see my profile</h5>
+                                                <p>Choose who can access your app and if users need to <a href="sign-up.html"> sign up.</a></p>
+                                            </div><span class="short-title">access</span>
+                                            <ul class="privacy-items">
+                                                <li>
+                                                    <div class="privacy-icon"> <i class="iconsax" data-icon="lock-2"></i></div>
+                                                    <div class="privacy-contant">
+                                                        <h6>Private</h6>
+                                                        <p>Only users you choose can access</p>
+                                                    </div><label class="switch"><input type="checkbox" checked=""><span class="slider round"></span></label>
+                                                </li>
+                                                <li>
+                                                    <div class="privacy-icon"> <i class="iconsax" data-icon="globe"></i>
+                                                    </div>
+                                                    <div class="privacy-contant">
+                                                        <h6>Public</h6>
+                                                        <p>Anyone with the link can</p>
+                                                    </div><label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                                                </li>
+                                            </ul><span class="short-title">Users</span>
+                                            <ul class="privacy-items">
+                                                <li>
+                                                    <div class="privacy-icon"> <i class="iconsax" data-icon="package"></i></div>
+                                                    <div class="privacy-contant">
+                                                        <h6>Users in the users table </h6>
+                                                        <p>Only users in the users table can sign in </p>
+                                                    </div><label class="switch"><input type="checkbox" checked=""><span class="slider round"></span></label>
+                                                </li>
+                                                <li>
+                                                    <div class="privacy-icon"> <i class="iconsax" data-icon="fingerprint-circle"></i></div>
+                                                    <div class="privacy-contant">
+                                                        <h6>ongoing production team </h6>
+                                                        <p>only members of your team can sign in </p>
+                                                    </div><label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                                                </li>
+                                                <li>
+                                                    <div class="privacy-icon"> <i class="iconsax" data-icon="add-layer"></i></div>
+                                                    <div class="privacy-contant">
+                                                        <h6>anyone form domain(s)</h6>
+                                                        <p>only users with your email domain </p>
+                                                    </div><label class="switch"><input type="checkbox" checked=""><span class="slider round"></span></label>
+                                                </li>
+                                                <li>
+                                                    <div class="privacy-icon"> <i class="iconsax" data-icon="mail"></i>
+                                                    </div>
+                                                    <div class="privacy-contant">
+                                                        <h6>any email in table </h6>
+                                                        <p>Anyone with email included in a table </p>
+                                                    </div><label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                                                </li>
+                                            </ul><span class="short-title"> </span>
+                                            <ul class="privacy-items">
+                                                <li>
+                                                    <div class="privacy-contant">
+                                                        <h6>Publishing </h6>
+                                                        <p>Your Project is Published</p>
+                                                    </div>
+                                                    <div class="publish-button"> <button class="btn">Unpublish</button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End Privacy --}}
                     </div>
                 </div>
             </div>
@@ -1527,7 +1393,7 @@
             });
         });
 
-    });
+ 
 </script>
 
 @endsection
