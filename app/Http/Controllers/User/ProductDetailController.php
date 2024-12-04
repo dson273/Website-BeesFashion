@@ -223,13 +223,14 @@ class ProductDetailController extends Controller
 
         // Lấy đánh giá
         $reviews = Product_vote::whereIn('product_variant_id', $variantIds)
-            ->where('is_active', 1)
             ->with(['user', 'product_variant'])
             ->orderBy('created_at', 'desc')
             ->get();
-
+        // Lấy đánh giá active để hiển thị trong comments
+        $activeReviews = $reviews->where('is_active', 1);
         // Tính toán thống kê
         $totalReviews = $reviews->count();
+        $activeReviewCount = $activeReviews->count();
         $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 5;
 
         // Tính phần trăm cho từng số sao
@@ -251,10 +252,11 @@ class ProductDetailController extends Controller
         $totalSold += $product->fake_sales ?? 0;
 
         return [
-            'reviews' => $reviews,
+            'reviews' => $activeReviews,
             'stats' => [
                 'average_rating' => $averageRating,
                 'total_reviews' => $totalReviews,
+                'active_review_count' => $activeReviewCount,
                 'star_percentages' => $starPercentages,
                 'total_sold' => $totalSold
             ]
