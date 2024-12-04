@@ -16,7 +16,7 @@ use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\ImportHistoryController;
 use App\Http\Controllers\admin\AttributeValueController;
 use App\Http\Controllers\Admin\ManagerSettingController;
-
+use App\Http\Controllers\Admin\RatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -154,6 +154,13 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::post('customers/ban/{id}', [CustomerController::class, 'ban'])->name('customers.ban'); //Ban nhân viên
             Route::post('customers/unban/{id}', [CustomerController::class, 'unban'])->name('customers.unban'); //Unban nhân viên
             Route::get('customers/history/{id}', [CustomerController::class, 'history'])->name('customers.history'); //Lịch sử ban/unban
+        });
+
+        //==========================================Quản lý đánh giá=====================================================
+        Route::middleware(['checkPermission:Quản lý đánh giá'])->group(function () {
+            Route::resource('ratings', RatingController::class);
+            Route::put('ratings/{id}/toggle-visibility', [RatingController::class, 'toggleVisibility'])->name('ratings.toggleVisibility');
+
         });
     });
 });
