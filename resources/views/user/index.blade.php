@@ -11,60 +11,53 @@
         <section class="section-space">
             <div class="custom-container container ">
                 <!-- Carousel Wrapper -->
-                <div id="bannerCarousel" class="carousel slide " data-bs-ride="carousel">
-                    <div class="carousel-inner ">
-                        <!-- Slide 1 -->
-                        @foreach ($sliders as $slider)
-                            @foreach ($slider->banner_images as $key => $banner_image)
-                                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                    <div class="row">
-                                        <a href="#">
-                                            <img class="img-fluid"
-                                                src="{{ asset('uploads/banners/images/id_' . $slider->id . '/' . $banner_image->file_name) }}"
-                                                alt="Banner Image">
-                                        </a>
+                <div class="box-slide">
+                    <div id="bannerCarousel" class="carousel slide " data-bs-ride="carousel">
+                        <div class="carousel-inner ">
+                            <!-- Slide 1 -->
+                            @foreach ($sliders as $slider)
+                                @foreach ($slider->banner_images as $key => $banner_image)
+                                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                        <div class="row">
+                                            <a href="#">
+                                                <img class="img-fluid"
+                                                    src="{{ asset('uploads/banners/images/id_' . $slider->id . '/' . $banner_image->file_name) }}"
+                                                    alt="Banner Image">
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endforeach
                             @endforeach
-                        @endforeach
-                    </div>
-                    <!-- Slide 2 -->
-                    {{-- <div class="carousel-item  ">
-                            <div class="row ">
-                                <a href="#">
-                                    <img class="img-fluid" src="{{ asset('assets/images/banner/b-2.jpg') }}" alt="">
-                                </a>
-                            </div>
-                        </div> --}}
-                    <!-- Indicators/dots -->
-                    <div class="carousel-indicators">
-                        @foreach ($sliders as $slider)
-                            @foreach ($slider->banner_images as $key => $banner_image)
-                                <button type="button" data-bs-target="#bannerCarousel"
-                                    data-bs-slide-to="{{ $key }}"
-                                    class="{{ $key === 0 ? 'active' : '' }}"></button>
+                        </div>
+                        <div class="carousel-indicators">
+                            @foreach ($sliders as $slider)
+                                @foreach ($slider->banner_images as $key => $banner_image)
+                                    <button type="button" data-bs-target="#bannerCarousel"
+                                        data-bs-slide-to="{{ $key }}"
+                                        class="{{ $key === 0 ? 'active' : '' }}"></button>
+                                @endforeach
                             @endforeach
-                        @endforeach
-                    </div>
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                        </div>
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
 
+                    </div>
                 </div>
             </div>
         </section>
         <!-- End Banner -->
 
         <!-- Category -->
-        <section class="section-t-space">
+        <section class="section-t-space mb-3">
             <div class="container-fluid fashion-images">
                 <div class="swiper fashion-images-slide">
                     <div class="swiper-wrapper ratio_square-2">
@@ -109,7 +102,7 @@
                                                         style="color: #e03e2d;"><strong><br></strong></span></span></div>
                                             <div class="voucher-item-des"><span style="font-size: 10pt; color:black">
                                                  @if ($item->amount < 100) <!-- Dưới 100 -->
-                                                Giảm {{ number_format($item->amount) . '%' }} cho đơn hàng từ 
+                                                Giảm {{ number_format($item->amount) . '%' }} cho đơn hàng từ
                                                 {{ number_format($item->minimum_order_value / 1000) . 'K' }}
                                             @else <!-- Bằng hoặc trên 100 -->
                                             Giảm {{ number_format($item->amount /1000) . 'K' }} cho đơn hàng từ {{ number_format($item->minimum_order_value / 1000) . 'K' }}
@@ -139,7 +132,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                           
+
                         </div>
                     </div>
                 </div>
@@ -245,7 +238,7 @@
                                                                                 </li>
                                                                                 @php
                                                                                     $displayedColors[] =
-                                                                                        $attributeValue->value; 
+                                                                                        $attributeValue->value;
                                                                                 @endphp
                                                                             @endif
                                                                         @endforeach
@@ -714,12 +707,12 @@
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
-                                        
+
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
-                                        
+
                                     </a>
                                 </div>
                             </div>
@@ -735,12 +728,12 @@
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
-                                        
+
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
-                                        
+
                                     </a>
                                 </div>
                             </div>
@@ -756,12 +749,12 @@
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
-                                        
+
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
-                                        
+
                                     </a>
                                 </div>
                             </div>
@@ -779,7 +772,7 @@
                     <div class="swiper-wrapper">
                         @foreach ($brands as $item)
                             <div class="swiper-slide"><a href="#"> <img style="width: 125px; height:125px;"
-                                        src="{{ asset('storage/uploads/brands/images/' . $item->image) }}"
+                                        src="{{ asset('uploads/brands/images/' . $item->image) }}"
                                         alt="logo"></a></div>
                         @endforeach
 

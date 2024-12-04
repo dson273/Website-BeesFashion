@@ -23,7 +23,7 @@ class UpdateBrandRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255', // Quy tắc cho trường 'name'
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Quy tắc cho trường 'image'
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048', // Quy tắc cho trường 'image'
             'is_active' => 'required|boolean', // Quy tắc cho trường 'is_active'
         ];
     }
@@ -35,7 +35,7 @@ class UpdateBrandRequest extends FormRequest
             'name.string' => 'Tên thương hiệu phải là chuỗi.',
             'name.max' => 'Tên thương hiệu không được vượt quá 255 ký tự.',
             'image.image' => 'Tệp tải lên phải là một hình ảnh.',
-            'image.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif, svg.',
+            'image.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif, svg, webp.',
             'image.max' => 'Dung lượng ảnh tối đa là 2MB.',
             'is_active.required' => 'Trạng thái hoạt động là bắt buộc.',
             'is_active.boolean' => 'Trạng thái hoạt động phải là true hoặc false.',
