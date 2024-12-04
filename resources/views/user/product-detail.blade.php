@@ -57,7 +57,7 @@
                 <div class="col-lg-6">
                     <div class="product-detail-box">
                         <div class="product-option">
-                            <div class="move-fast-box d-flex align-items-center gap-1"><img src="../assets/images/gif/fire.gif" alt="">
+                            <div class="move-fast-box d-flex align-items-center gap-1"><img src="{{asset('assets/images/gif/fire.gif')}}" alt="">
                                 <p>Move fast!</p>
                             </div>
                             <h1 class="css-w60u47">{{ $product->name }}</h1>
@@ -205,7 +205,7 @@
                                 </ul>
                             </div>
                             <div class="sale-box">
-                                <div class="d-flex align-items-center gap-2"><img src="../assets/images/gif/timer.gif" alt="">
+                                <div class="d-flex align-items-center gap-2"><img src="{{asset('assets/images/gif/timer.gif')}}" alt="">
                                     <p>Limited Time Left! Hurry, Sale Ending!</p>
                                 </div>
                                 <div class="countdown">
@@ -266,7 +266,7 @@
                                     </ul>
                                 </div> --}}
                             <div class="share-option">
-                                <h5>Secure Checkout </h5><img class="img-fluid" src="../assets/images/other-img/secure_payments.png" alt="">
+                                <h5>Secure Checkout </h5><img class="img-fluid" src="{{asset('assets/images/other-img/secure_payments.png')}}" alt="">
                             </div>
                         </div>
                     </div>

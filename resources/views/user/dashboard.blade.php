@@ -115,31 +115,31 @@
                                         <div class="row gy-4">
                                             <div class="col-xl-4">
                                                 <div class="totle-contain">
-                                                    <div class="wallet-point"><img src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/wallet.svg" alt=""><img class="img-1"
-                                                            src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/wallet.svg" alt=""></div>
+                                                    <div class="wallet-point"><img src="{{asset('assets/images/user/wallet.svg')}}" alt=""><img class="img-1"
+                                                            src="{{asset('assets/images/user/wallet.svg')}}" alt=""></div>
                                                     <div class="totle-detail">
-                                                        <h6>Balance</h6>
-                                                        <h4>$ 84.40 </h4>
+                                                        <h6>Spent</h6>
+                                                        <h4>{{number_format(Auth::user()->getTotalSpent(),0,',','.')}}đ</h4>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="totle-contain">
-                                                    <div class="wallet-point"><img src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/coin.svg" alt=""><img class="img-1"
-                                                            src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/coin.svg" alt=""></div>
+                                                    <div class="wallet-point"><img src="{{asset('assets/images/user/coin.svg')}}" alt=""><img class="img-1"
+                                                            src="{{asset('assets/images/user/coin.svg')}}" alt=""></div>
                                                     <div class="totle-detail">
-                                                        <h6>Total Points</h6>
-                                                        <h4>500</h4>
+                                                        <h6>Rank</h6>
+                                                        <h4>{{Auth::user()->getMembershipRank()}}</h4>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4">
                                                 <div class="totle-contain">
-                                                    <div class="wallet-point"><img src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/order.svg" alt=""><img class="img-1"
-                                                            src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/order.svg" alt=""></div>
+                                                    <div class="wallet-point"><img src="{{asset('assets/images/user/order.svg')}}" alt=""><img class="img-1"
+                                                            src="{{asset('assets/images/user/order.svg')}}" alt=""></div>
                                                     <div class="totle-detail">
                                                         <h6>Total Orders</h6>
-                                                        <h4>12</h4>
+                                                        <h4>{{Auth::user()->getTotalOrders()}}</h4>
                                                     </div>
                                                 </div>
                                             </div>

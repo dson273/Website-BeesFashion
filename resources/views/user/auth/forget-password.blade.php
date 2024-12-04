@@ -25,7 +25,7 @@
             <div class="row align-items-center">
                 <div class="col-xxl-7 col-6 d-none d-lg-block">
                     <div class="login-img"> <img class="img-fluid"
-                            src="https://themes.pixelstrap.net/katie/assets/images/login/1.svg" alt=""></div>
+                            src="{{asset('assets/images/user/auth.svg')}}" alt=""></div>
                 </div>
                 <div class="col-xxl-4 col-lg-6 mx-auto">
                     <div class="log-in-box">
@@ -46,7 +46,7 @@
                                         {{-- Hiển thị thông báo lỗi --}}
                                         <span class="invalid-feedback">
                                             @error('email')
-                                            {{ $message }}
+                                                {{ $message }}
                                             @enderror
                                         </span>
                                     </div>
@@ -147,11 +147,11 @@
                     }
                 });
             } catch (error) {
-                console.error('Có lỗi xảy ra khi lấy đơn hàng:', error);
+                console.error('Có lỗi xảy ra khi gửi emai:', error);
             } finally {
                 setTimeout(function() {
                     $('.container-spinner').addClass('hidden');
-                }, 3500);
+                }, 1000);
             }
         });
     });

@@ -20,14 +20,28 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'login' => [
                 'required',
-                $fieldType === 'email' ? 'email' : 'string', // Kiểm tra định dạng email nếu nhập email
+                'string',
+                'max:100',
+                'regex:/^\S+$/', // Không cho phép khoảng trắng (cả đầu, giữa và cuối)
+                $fieldType === 'email' ? 'email' : 'string',
             ],
-            'password' => 'required|min:6',
+            'password' => [
+                'required',
+                'string',
+                'min:6', // Mật khẩu phải có ít nhất 6 ký tự
+                'regex:/^\S+$/', // Không cho phép khoảng trắng trong mật khẩu
+            ],
         ], [
-            'login.required' => 'Please enter username or email.',
-            'login.email' => 'Email is not in correct format.'
+            'login.required' => 'Vui lòng nhập tên người dùng hoặc email!',
+            'login.string' => 'Tên người dùng hoặc email phải là chuỗi ký tự hợp lệ!',
+            'login.max' => 'Tên người dùng hoặc email không được vượt quá 100 ký tự!',
+            'login.regex' => 'Tên người dùng hoặc email không được chứa khoảng trắng!',
+            'login.email' => 'Email không đúng định dạng!',
+            'password.required' => 'Vui lòng nhập mật khẩu!',
+            'password.string' => 'Mật khẩu phải là chuỗi ký tự!',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự!',
+            'password.regex' => 'Mật khẩu không được chứa khoảng trắng!',
         ]);
-
 
         if (Auth::attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']])) {
             // Đăng nhập thành công
@@ -57,7 +71,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'login' => 'Login information is incorrect!',
+            'login' => 'Thông tin đăng nhập không chính xác!',
         ])->onlyInput('login');
     }
     public function logout()

@@ -15,8 +15,6 @@ $(document).ready(function () {
                     }).format(numericValue);
                     formattedValue = formattedValue.replace(/\s?₫/, 'đ');
                     $(this).text(formattedValue);
-                } else {
-                    console.warn('Không thể định dạng giá trị:', value);
                 }
             });
             return true;

@@ -25,7 +25,7 @@
                 <div class="row align-items-center">
                     <div class="col-xxl-7 col-6 d-none d-lg-block">
                         <div class="login-img"> <img class="img-fluid"
-                                src="https://themes.pixelstrap.net/katie/assets/images/login/1.svg" alt=""></div>
+                                src="{{asset('assets/images/user/auth.svg')}}" alt=""></div>
                     </div>
                     <div class="col-xxl-4 col-lg-6 mx-auto">
                         <div class="log-in-box">
