@@ -19660,11 +19660,11 @@ svg {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
-    position: fixed;
+    position: fixed !important;
 }
 
 .overlay {
-    position: absolute;
+    position: absolute !important;
     top: 0;
     left: 0;
     width: 100%;
@@ -19675,10 +19675,12 @@ svg {
 }
 
 #loadingSpinner {
-    position: relative;
+    position: relative !important;
     z-index: 2;
     opacity: 1 !important;
 }
+
+/* End spinner */
 
 .color-of-theme {
     color: #cca270;
@@ -19881,7 +19883,6 @@ svg {
     padding: 5px 18px 7px 15px;
 }
 
-
 /* edit product-box */
 
 .product-box .img-wrapper .product-image {
@@ -19910,4 +19911,5 @@ svg {
     opacity: 1;
     visibility: visible;
 }
+
 
