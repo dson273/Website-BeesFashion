@@ -35,9 +35,8 @@
                                             <td><img src="{{ isset($item->product_files[0]) ? asset('uploads/products/images/' . $item->product_files[0]->file_name) : asset('assets/images/icons/noimage.png') }}"
                                                     width="50px">
                                             </td>
-                                            <td>{{ \Illuminate\Support\Str::limit($item->name, 20) }} </td>
-
-                                            <td>{{ \Illuminate\Support\Str::limit(str_replace(['<p>', '</p>'], '', $item->description), 10, '...') }}
+                                            <td>{{ \Illuminate\Support\Str::limit($item->name, 25) }} </td>
+                                            <td>{!! \Illuminate\Support\Str::limit(strip_tags($item->description), 25) !!}</td>
                                             </td>
 
                                             <td>

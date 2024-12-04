@@ -19,12 +19,6 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
-
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center">
@@ -74,7 +68,7 @@
             <div id="all-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -150,12 +144,16 @@
                                     @foreach ($allOrders as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>
+                                            <td> <!-- Hiển thị danh sách sản phẩm -->
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
@@ -166,7 +164,6 @@
                                                 @endforeach
                                             </td>
                                             <td>
-
                                                 <div class="order-status">
                                                     @php
                                                         // Lấy trạng thái mới nhất của đơn hàng
@@ -180,16 +177,21 @@
                                                         @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
                                                         @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
                                                     </span>
-                                                    {{ 
-                                                        $latestStatus 
-                                                        ? ($latestStatus->status->name == 'Processing' ? 'Chờ xử lý' : 
-                                                           ($latestStatus->status->name == 'Pending' ? 'Chờ xác nhận' : 
-                                                           ($latestStatus->status->name == 'Shipping' ? 'Đang vận chuyển' : 
-                                                           ($latestStatus->status->name == 'Completed' ? 'Hoàn thành' : 
-                                                           ($latestStatus->status->name == 'Cancelled' ? 'Đã hủy' : 
-                                                           ($latestStatus->status->name == 'Returned' ? 'Hoàn trả' : $latestStatus->status->name)))))) 
-                                                        : 'Chưa có trạng thái' 
-                                                    }}
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
 
 
@@ -215,7 +217,7 @@
             <div id="pending-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -294,10 +296,14 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
@@ -321,16 +327,21 @@
                                                         @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
                                                         @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
                                                     </span>
-                                                    {{ 
-                                                        $latestStatus 
-                                                        ? ($latestStatus->status->name == 'Processing' ? 'Chờ xử lý' : 
-                                                           ($latestStatus->status->name == 'Pending' ? 'Chờ xác nhận' : 
-                                                           ($latestStatus->status->name == 'Shipping' ? 'Đang vận chuyển' : 
-                                                           ($latestStatus->status->name == 'Completed' ? 'Hoàn thành' : 
-                                                           ($latestStatus->status->name == 'Cancelled' ? 'Đã hủy' : 
-                                                           ($latestStatus->status->name == 'Returned' ? 'Hoàn trả' : $latestStatus->status->name)))))) 
-                                                        : 'Chưa có trạng thái' 
-                                                    }}
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
                                             </td>
                                             <td>
@@ -367,7 +378,7 @@
             <div id="shipping-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -446,10 +457,14 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
@@ -473,16 +488,21 @@
                                                         @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
                                                         @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
                                                     </span>
-                                                    {{ 
-                                                        $latestStatus 
-                                                        ? ($latestStatus->status->name == 'Processing' ? 'Chờ xử lý' : 
-                                                           ($latestStatus->status->name == 'Pending' ? 'Chờ xác nhận' : 
-                                                           ($latestStatus->status->name == 'Shipping' ? 'Đang vận chuyển' : 
-                                                           ($latestStatus->status->name == 'Completed' ? 'Hoàn thành' : 
-                                                           ($latestStatus->status->name == 'Cancelled' ? 'Đã hủy' : 
-                                                           ($latestStatus->status->name == 'Returned' ? 'Hoàn trả' : $latestStatus->status->name)))))) 
-                                                        : 'Chưa có trạng thái' 
-                                                    }}
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
                                             </td>
                                             <td>
@@ -516,7 +536,7 @@
             <div id="completed-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -595,10 +615,14 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
@@ -622,16 +646,21 @@
                                                         @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
                                                         @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
                                                     </span>
-                                                    {{ 
-                                                        $latestStatus 
-                                                        ? ($latestStatus->status->name == 'Processing' ? 'Chờ xử lý' : 
-                                                           ($latestStatus->status->name == 'Pending' ? 'Chờ xác nhận' : 
-                                                           ($latestStatus->status->name == 'Shipping' ? 'Đang vận chuyển' : 
-                                                           ($latestStatus->status->name == 'Completed' ? 'Hoàn thành' : 
-                                                           ($latestStatus->status->name == 'Cancelled' ? 'Đã hủy' : 
-                                                           ($latestStatus->status->name == 'Returned' ? 'Hoàn trả' : $latestStatus->status->name)))))) 
-                                                        : 'Chưa có trạng thái' 
-                                                    }}
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
                                             </td>
                                             <td>
@@ -654,7 +683,7 @@
             <div id="processing-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -733,10 +762,14 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
@@ -760,16 +793,21 @@
                                                         @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
                                                         @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
                                                     </span>
-                                                    {{ 
-                                                        $latestStatus 
-                                                        ? ($latestStatus->status->name == 'Processing' ? 'Chờ xử lý' : 
-                                                           ($latestStatus->status->name == 'Pending' ? 'Chờ xác nhận' : 
-                                                           ($latestStatus->status->name == 'Shipping' ? 'Đang vận chuyển' : 
-                                                           ($latestStatus->status->name == 'Completed' ? 'Hoàn thành' : 
-                                                           ($latestStatus->status->name == 'Cancelled' ? 'Đã hủy' : 
-                                                           ($latestStatus->status->name == 'Returned' ? 'Hoàn trả' : $latestStatus->status->name)))))) 
-                                                        : 'Chưa có trạng thái' 
-                                                    }}
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
                                             </td>
                                             <td>
@@ -793,7 +831,7 @@
             <div id="cancellation-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -871,10 +909,14 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
@@ -898,16 +940,21 @@
                                                         @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
                                                         @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
                                                     </span>
-                                                    {{ 
-                                                        $latestStatus 
-                                                        ? ($latestStatus->status->name == 'Processing' ? 'Chờ xử lý' : 
-                                                           ($latestStatus->status->name == 'Pending' ? 'Chờ xác nhận' : 
-                                                           ($latestStatus->status->name == 'Shipping' ? 'Đang vận chuyển' : 
-                                                           ($latestStatus->status->name == 'Completed' ? 'Hoàn thành' : 
-                                                           ($latestStatus->status->name == 'Cancelled' ? 'Đã hủy' : 
-                                                           ($latestStatus->status->name == 'Returned' ? 'Hoàn trả' : $latestStatus->status->name)))))) 
-                                                        : 'Chưa có trạng thái' 
-                                                    }}
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
                                             </td>
                                             <td>
@@ -930,7 +977,7 @@
             <div id="fail_delivery-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -1008,10 +1055,14 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
@@ -1035,16 +1086,21 @@
                                                         @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
                                                         @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
                                                     </span>
-                                                    {{ 
-                                                        $latestStatus 
-                                                        ? ($latestStatus->status->name == 'Processing' ? 'Chờ xử lý' : 
-                                                           ($latestStatus->status->name == 'Pending' ? 'Chờ xác nhận' : 
-                                                           ($latestStatus->status->name == 'Shipping' ? 'Đang vận chuyển' : 
-                                                           ($latestStatus->status->name == 'Completed' ? 'Hoàn thành' : 
-                                                           ($latestStatus->status->name == 'Cancelled' ? 'Đã hủy' : 
-                                                           ($latestStatus->status->name == 'Returned' ? 'Hoàn trả' : $latestStatus->status->name)))))) 
-                                                        : 'Chưa có trạng thái' 
-                                                    }}
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
                                             </td>
                                             <td>

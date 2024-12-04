@@ -18,11 +18,6 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -30,7 +25,8 @@
                 <h6 class="m-0 font-weight-bold text-primary">Lịch sử nhập hàng</h6>
 
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Nhập hàng
+                    <i
+                        class="fas fa-plus"></i> Nhập hàng
                 </button>
             </div>
 
@@ -59,7 +55,7 @@
                                     <td>{{ number_format($item->import_price, 0, ',', '.') }}</td>
                                     <td>{{ number_format($item->quantity, 0, ',', '.') }}</td>
                                     <td>
-                                        {{ $item->user ? $item->user->full_name : 'Fail' }}
+                                        {{ $item->user ? $item->user->username : 'Fail' }}
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l, d F Y, H:i:s') }}</td>
                                 </tr>

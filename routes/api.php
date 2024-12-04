@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('products/all', [FilterProductController::class, 'getAllProducts']);
 Route::get('products/bestselingproduct', [FilterProductController::class, 'getBestSellingProducts']);
 Route::get('products/getNewProduct', [FilterProductController::class, 'getNewProduct']);
+Route::get('products/getDescPriceProducts', [FilterProductController::class, 'getDescPriceProducts']);
 //lọc theo danh mục
 
 //hiển thị sản phẩm sau khi lọc
@@ -36,6 +37,8 @@ Route::get('products/filter', [FilterProductController::class, 'filterProduct'])
 Route::get('/products/sort', [FilterProductController::class, 'sortProducts']);
 Route::get('/product/{id}', [FilterProductController::class, 'getProductDetails']);
 Route::get('/favorite', [WishlistController::class, 'getAllFavotited']);
-
+//cart
 Route::get('product/{product_id}/variants', [CartController::class, 'getProductVariants']);
-Route::get('test', [CustomerController::class, 'test']);
+Route::get('product/{product_id}/variantstest', [CartController::class, 'test']);
+Route::get('cart-items', [CartController::class, 'getCartItemsApi']);
+

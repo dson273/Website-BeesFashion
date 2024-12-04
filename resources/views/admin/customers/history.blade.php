@@ -5,10 +5,10 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-<h1 class="h2 mt-3 mb-4 text-center text-gray-800 fw-bold">Lịch sử bị khóa - mở khóa : {{ $customerID->full_name }}</h1>
+{{-- <h1 class="h2 mt-3 mb-4 text-center text-gray-800 fw-bold">Lịch sử bị khóa - mở khóa : {{ $customerID->full_name }}</h1> --}}
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Tất cả dữ liệu</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Lịch sử bị khóa - mở khóa</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">

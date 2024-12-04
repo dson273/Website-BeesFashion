@@ -15,6 +15,7 @@ use App\Models\Product_vote;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\User_voucher;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -247,6 +248,43 @@ class HomeController extends Controller
             'average_rating' => $averageRating,
             'total_reviews' => $totalReviews
         ];
+    }
+
+
+
+    //Lưu voucher
+    public function saveVoucher(Request $request)
+    {
+        $user = Auth::user();
+        $voucher = Voucher::find($request->id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Bạn cần đăng nhập để lưu voucher.'
+            ]);
+        }
+
+        // Kiểm tra nếu voucher đã được lưu
+        $exists = User_voucher::where('user_id', $user->id)
+            ->where('voucher_id', $voucher->id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Voucher đã được lưu trước đó.'
+            ]);
+        }
+
+        // Lưu voucher vào user_vouchers
+        User_voucher::create([
+            'user_id' => $user->id,
+            'voucher_id' => $voucher->id,
+            'is_used' => false
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'Voucher đã được lưu thành công.']);
     }
     //Trang thanh toán
     public function checkout()

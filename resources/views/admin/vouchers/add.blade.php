@@ -15,10 +15,11 @@
                         <form action="{{ route('admin.vouchers.addProductVoucher') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                         <input type="hidden" name="id" value="{{ $getVoucher->id }}">
-                        <table class="table">
+                        <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Hình ảnh</th>
                                     <th>Tên sản phẩm</th>
                                     <th>Mô tả</th>
                                     <th>Chọn</th>
@@ -30,8 +31,8 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td><img src="{{ $item->product_files[0]->file_name ? asset('uploads/products/images/' .  $item->product_files[0]->file_name) : asset('assets/images/icons/noimage.png') }}" 
                                             width="50px" ></td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ \Illuminate\Support\Str::limit(str_replace(['<p>', '</p>'], '', $item->description), 10, '...') }}</td>
+                                            <td>{{ \Illuminate\Support\Str::limit($item->name, 25) }} </td>
+                                            <td>{!! \Illuminate\Support\Str::limit(strip_tags($item->description), 25) !!}</td>
                                         <td>
                                             @if (in_array($item->id, $showProductVoucherIds))
                                             <i class="fa-solid fa-x text-danger"></i>

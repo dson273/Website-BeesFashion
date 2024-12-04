@@ -70,24 +70,23 @@ class CategoryController extends Controller
         ]);
         if ($request->isMethod('POST')) {
             $params = $request->except('_token');
-        
+
             // Kiểm tra và xử lý ảnh nếu có
             if ($image = $request->file('image')) {
                 $imageName = $image->hashName();
-                $image->move(public_path('uploads/categories/images'), $imageName); 
+                $image->move(public_path('uploads/categories/images'), $imageName);
                 $params['image'] = $imageName;
             } else {
                 $params['image'] = null;
             }
-        
+
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
-        
+
             // Tạo danh mục mới
             Category::create($params);
-        
+
             return redirect()->route('admin.categories.index')->with('statusSuccess', 'Thêm danh mục thành công');
         }
-        
     }
 
     /**
@@ -160,12 +159,12 @@ class CategoryController extends Controller
                 if ($Cate->image && file_exists(public_path('uploads/categories/images/' . $Cate->image))) {
                     unlink(public_path('uploads/categories/images/' . $Cate->image));
                 }
-        
+
                 // Tạo tên ảnh duy nhất và lưu ảnh mới
                 $image = $request->file('image');
                 $imageName = $image->hashName();
                 $image->move(public_path('uploads/categories/images'), $imageName);
-        
+
                 // Lưu tên ảnh mới
                 $params['image'] = $imageName;
             } else {
@@ -190,24 +189,24 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $Cate = Category::findOrFail($id);
-    
+
         // Kiểm tra và không cho phép xóa nếu có danh mục con
         $childCategories = Category::where('parent_category_id', $Cate->id)->count();
         if ($childCategories > 0) {
             return redirect()->route('admin.categories.index')->with('statusError', 'Không thể xóa danh mục vì có danh mục con.');
         }
-    
+
         // Xóa ảnh nếu tồn tại
         if ($Cate->image && file_exists(public_path('uploads/categories/images/' . $Cate->image))) {
             unlink(public_path('uploads/categories/images/' . $Cate->image));
         }
-    
+
         // Xóa danh mục
         $Cate->delete();
-    
+
         return redirect()->route('admin.categories.index')->with('statusSuccess', 'Xóa danh mục thành công!');
     }
-    
+
 
     public function product(Request $request, $categoryId)
     {
