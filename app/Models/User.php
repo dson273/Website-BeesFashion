@@ -109,4 +109,47 @@ class User extends Authenticatable
     {
         return $this->hasOne(User_shipping_address::class)->where('is_active', 1);
     }
+
+    // Lấy tổng số tiền đã chi tiêu từ các đơn hàng đã hoàn thành
+    public function getTotalSpent()
+    {
+        return $this->orders()
+            ->whereHas('status_orders', function ($query) {
+                $query->whereHas('status', function ($q) {
+                    $q->where('name', 'Completed');
+                });
+            })
+            ->sum('total_payment');
+    }
+
+    // Lấy hạng thành viên dựa trên tổng chi tiêu
+    public function getMembershipRank()
+    {
+        $totalSpent = $this->getTotalSpent();
+
+        if ($totalSpent == 0) {
+            return 'Chưa có';
+        } elseif ($totalSpent < 2000000) {
+            return 'Đồng';
+        } elseif ($totalSpent < 5000000) {
+            return 'Bạc';
+        } elseif ($totalSpent < 10000000) {
+            return 'Vàng';
+        } else {
+            return 'Kinh cương';
+        }
+    }
+
+
+    // Lấy tổng số đơn hàng
+    public function getTotalOrders()
+    {
+        return $this->orders()
+            ->whereHas('status_orders', function ($query) {
+                $query->whereHas('status', function ($q) {
+                    $q->where('name', 'Completed');
+                });
+            })
+            ->count();
+    }
 }

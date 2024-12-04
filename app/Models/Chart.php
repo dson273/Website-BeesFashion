@@ -405,7 +405,7 @@ class Chart extends Model
                 'tier' => $this->getCustomerTier($customer->total_spending)
             ]);
     }
-  
+
     private function getDateRange(string $type): object
     {
         $now = Carbon::now();
@@ -441,7 +441,7 @@ class Chart extends Model
         }
 
         if ($totalSpending >= self::REGULAR_THRESHOLD) {
-            return ['name' => 'Thường xuyên', 'class' => 'badge bg-primary text-light'];
+            return ['name' => 'Thường', 'class' => 'badge bg-primary text-light'];
         }
 
         return ['name' => 'Mới', 'class' => 'badge bg-secondary text-light'];

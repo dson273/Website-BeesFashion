@@ -72,7 +72,7 @@
     <script src="{{ asset('assets/js/newsletter.js') }}"></script>
     <script src="{{ asset('assets/js/skeleton-loader.js') }}"></script><!-- touchspin-->
     <script src="{{ asset('assets/js/touchspin.js') }}"></script><!-- cookie js-->
-    <script src="{{ asset('assets/js/cookie.js') }}"></script><!-- tost js -->
+    {{-- <script src="{{ asset('assets/js/cookie.js') }}"></script><!-- tost js --> --}}
     <script src="{{ asset('assets/js/toastify.js') }}"></script>
     <script src="{{ asset('assets/js/theme-setting.js') }}"></script><!-- Theme js-->
     <script src="{{ asset('assets/js/script.js') }}"></script>

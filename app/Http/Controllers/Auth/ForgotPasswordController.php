@@ -23,9 +23,9 @@ class ForgotPasswordController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ], [
-            'email.required' => 'Please enter email.',
-            'email.email' => 'Invalid email.',
-            'email.exists' => 'Your email does not exist.',
+            'email.required' => 'Vui lòng nhập email!',
+            'email.email' => 'Email không hợp lệ!',
+            'email.exists' => 'Email của bạn không tồn tại!',
         ]);
 
         // Tìm người dùng theo email
@@ -44,7 +44,7 @@ class ForgotPasswordController extends Controller
             Mail::to($user->email)->send(new ForgotPassword($newPassword, $user->email));
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => 'Unable to send email. Please try again later.'], 500);
+            return response()->json(['status' => 'error', 'message' => 'Không thể gửi email! Vui lòng thử lại sau.'], 500);
         }
     }
 }
