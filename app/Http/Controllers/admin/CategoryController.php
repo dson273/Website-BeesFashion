@@ -70,27 +70,24 @@ class CategoryController extends Controller
         ]);
         if ($request->isMethod('POST')) {
             $params = $request->except('_token');
-
+        
             // Kiểm tra và xử lý ảnh nếu có
-            if ($request->hasFile('image')) {
-                // Lấy tên ảnh và tạo tên mới duy nhất
-                $image = $request->file('image');
-                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
-                // Lưu ảnh vào thư mục 'uploads/categories/images'
-                $image->storeAs('uploads/categories/images', $imageName, 'public');
-                // Lưu chỉ tên ảnh vào params
+            if ($image = $request->file('image')) {
+                $imageName = $image->hashName();
+                $image->move(public_path('uploads/categories/images'), $imageName); 
                 $params['image'] = $imageName;
             } else {
-                $params['image'] = null;  // Trường hợp không có ảnh
+                $params['image'] = null;
             }
-
+        
             $params['is_active'] = $request->has('is_active') ? 1 : 0;
-
+        
             // Tạo danh mục mới
             Category::create($params);
-
+        
             return redirect()->route('admin.categories.index')->with('statusSuccess', 'Thêm danh mục thành công');
         }
+        
     }
 
     /**
@@ -159,16 +156,16 @@ class CategoryController extends Controller
 
             // Xử lý ảnh nếu có
             if ($request->hasFile('image')) {
-                // Nếu có ảnh cũ và ảnh mới được tải lên, xóa ảnh cũ
-                if ($Cate->image && Storage::disk('public')->exists('uploads/categories/images/' . $Cate->image)) {
-                    Storage::disk('public')->delete('uploads/categories/images/' . $Cate->image);
+                // Xóa ảnh cũ nếu có và ảnh mới được tải lên
+                if ($Cate->image && file_exists(public_path('uploads/categories/images/' . $Cate->image))) {
+                    unlink(public_path('uploads/categories/images/' . $Cate->image));
                 }
-
-                // Tạo tên ảnh duy nhất
+        
+                // Tạo tên ảnh duy nhất và lưu ảnh mới
                 $image = $request->file('image');
-                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('uploads/categories/images', $imageName, 'public');
-
+                $imageName = $image->hashName();
+                $image->move(public_path('uploads/categories/images'), $imageName);
+        
                 // Lưu tên ảnh mới
                 $params['image'] = $imageName;
             } else {
@@ -193,78 +190,116 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $Cate = Category::findOrFail($id);
-
+    
+        // Kiểm tra và không cho phép xóa nếu có danh mục con
         $childCategories = Category::where('parent_category_id', $Cate->id)->count();
         if ($childCategories > 0) {
             return redirect()->route('admin.categories.index')->with('statusError', 'Không thể xóa danh mục vì có danh mục con.');
         }
-
-        if ($Cate->image && Storage::disk('public')->exists($Cate->image)) {
-            Storage::disk('public')->delete($Cate->image);
+    
+        // Xóa ảnh nếu tồn tại
+        if ($Cate->image && file_exists(public_path('uploads/categories/images/' . $Cate->image))) {
+            unlink(public_path('uploads/categories/images/' . $Cate->image));
         }
-
+    
+        // Xóa danh mục
         $Cate->delete();
-
+    
         return redirect()->route('admin.categories.index')->with('statusSuccess', 'Xóa danh mục thành công!');
     }
+    
 
-    public function product()
+    public function product(Request $request, $categoryId)
     {
-        // Lấy danh mục bán chạy
-        $bestSellingCategory = Category::where('fixed', 0)->first();
-        // Lấy tất cả sản phẩm thuộc danh mục bán chạy
-        $bestSellingProducts = $bestSellingCategory ? $bestSellingCategory->products : [];
+        // Lấy danh mục theo ID được truyền vào
+        $currentCategory = Category::where('id', $categoryId)->where('fixed', 0)->first();
 
-        // Lấy tất cả sản phẩm
+        // Kiểm tra nếu danh mục tồn tại, lấy tất cả sản phẩm thuộc danh mục
+        $bestSellingProducts = $currentCategory ? $currentCategory->products : collect();
+
+        // Lấy tất cả sản phẩm đang hoạt động
         $allProducts = Product::where('is_active', 1)->get();
 
+        // Lấy danh sách ID của sản phẩm bán chạy
         $bestSellingProductIds = $bestSellingProducts->pluck('id')->toArray();
-        return view('admin.categories.topproduct', compact('allProducts', 'bestSellingCategory', 'bestSellingProducts', 'bestSellingProductIds'));
+
+        return view('admin.categories.topproduct', compact('currentCategory', 'allProducts', 'bestSellingProducts', 'bestSellingProductIds'));
     }
 
-    public function updateBestSelling(Request $request)
+
+
+    public function updateBestSelling(Request $request, $categoryId)
     {
-        $bestSellingCategory = Category::where('fixed', 0)->first();
+        // Lấy danh mục hiện tại thông qua ID
+        $currentCategory = Category::find($categoryId);
 
-        // Kiểm tra nếu có danh mục bán chạy và có sản phẩm được chọn
-        if ($bestSellingCategory && $request->has('product_ids')) {
-            // Lấy danh sách ID sản phẩm được chọn
-            $productIds = $request->input('product_ids');
+        // Kiểm tra nếu danh mục tồn tại
+        if (!$currentCategory) {
+            return redirect()->back()->with('statusError', 'Danh mục không tồn tại.');
+        }
 
-            // Gắn các sản phẩm vào danh mục bán chạy
-            // Tạo mảng dữ liệu cho việc chèn
-            $Data = [];
-            foreach ($productIds as $productId) {
-                $Data[] = [
+        // Kiểm tra nếu có sản phẩm được chọn
+        if (!$request->has('product_ids')) {
+            return redirect()->back()->with('statusError', 'Không có sản phẩm nào được chọn.');
+        }
+
+        // Lấy danh sách ID sản phẩm được chọn từ request
+        $productIds = $request->input('product_ids');
+
+        // Lọc các sản phẩm chưa tồn tại trong danh mục
+        $existingProductIds = $currentCategory->product_categories()->pluck('product_id')->toArray();
+        $newProductIds = array_diff($productIds, $existingProductIds);
+
+        // Thêm sản phẩm mới nếu có
+        if (!empty($newProductIds)) {
+            $data = [];
+            foreach ($newProductIds as $productId) {
+                $data[] = [
                     'product_id' => $productId,
-                    'category_id' => $bestSellingCategory->id,
+                    'category_id' => $currentCategory->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
             }
+            $currentCategory->product_categories()->insert($data);
 
-            // Chèn dữ liệu vào bảng trung gian
-            $bestSellingCategory->product_categories()->insert($Data);
-
-            return back()->with('statusSuccess', 'Sản phẩm đã được thêm vào danh mục bán chạy.');
+            return back()->with('statusSuccess', 'Sản phẩm mới đã được thêm vào danh mục.');
         }
 
-        return back()->with('statusError', 'Không có sản phẩm nào được chọn.');
+        // Nếu không có sản phẩm mới
+        return back()->with('statusInfo', 'Tất cả sản phẩm đã có trong danh mục.');
     }
 
-    public function remove($id)
+
+    public function remove(Request $request, $categoryId, $productId)
     {
-        $product = Product::find($id);
+        // Lấy danh mục theo ID
+        $currentCategory = Category::find($categoryId);
 
-        if ($product) {
-            // Gỡ sản phẩm khỏi danh mục bán chạy
-            $product->categories()->detach(); // Gỡ tất cả danh mục liên quan
-
-            return back()->with('statusSuccess', 'Sản phẩm đã được gỡ khỏi danh mục bán chạy.');
+        // Kiểm tra nếu danh mục tồn tại
+        if (!$currentCategory) {
+            return back()->with('statusError', 'Danh mục không tồn tại.');
         }
 
-        return back()->with('statusError', 'Không tìm thấy danh mục bán chạy.');
+        // Lấy sản phẩm theo ID
+        $product = Product::find($productId);
+
+        // Kiểm tra nếu sản phẩm tồn tại và thuộc danh mục hiện tại
+        if (!$product) {
+            return back()->with('statusError', 'Sản phẩm không tồn tại.');
+        }
+
+        // Kiểm tra xem sản phẩm có thuộc danh mục này không
+        if (!$product->categories->contains($currentCategory->id)) {
+            return back()->with('statusError', 'Sản phẩm không thuộc danh mục này.');
+        }
+
+        // Gỡ sản phẩm khỏi danh mục
+        $product->categories()->detach($currentCategory->id);
+
+        return back()->with('statusSuccess', 'Sản phẩm đã được gỡ khỏi danh mục.');
     }
+
     public function fake_sales(Request $request, $id)
     {
 

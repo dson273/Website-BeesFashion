@@ -35,46 +35,90 @@ class HomeController extends Controller
             ->where('end_date', '>=', Carbon::now())
             ->limit(8)
             ->get();
-        $topProducts = Product::with(['product_files','product_variants.product_votes.user'])
+        //Sản phẩm nhiều lượt xem
+        $topProducts = Product::with(['product_files', 'product_variants.product_votes.user'])
             ->where('is_active', 1)
             ->orderBy('view', 'DESC')
             ->limit(8)
             ->get()
             ->map(function ($product) {
+                $activeImage = $product->product_files->where('is_default', 1)->first();
+                $inactiveImage = $product->product_files->where('is_default', 0)->first();
+                $product->active_image = $activeImage ? $activeImage->file_name : null;
+                $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange =  $product->getPriceRange();
                 $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
                 return $product;
             });
-        $newProducts = Product::with(['product_files','product_variants.product_votes.user'])
+        //Sản phẩm mới nhất
+        $newProducts = Product::with(['product_files', 'product_variants.product_votes.user'])
             ->where('is_active', 1)
             ->orderBy('created_at', 'DESC')
             ->limit(8)
             ->get()
             ->map(function ($product) {
+                $activeImage = $product->product_files->where('is_default', 1)->first();
+                $inactiveImage = $product->product_files->where('is_default', 0)->first();
+                $product->active_image = $activeImage ? $activeImage->file_name : null;
+                $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
 
                 return $product;
             });
-        $products = Product::whereHas('categories', function ($query) {
-            $query->where('fixed', 0);
+
+        //Sản phẩm bán chạy
+        $firstCategory = Category::where('fixed', 0)->first();
+        $products = Product::whereHas('categories', function ($query) use ($firstCategory) {
+            $query->where('categories.id', $firstCategory->id); // Thêm "categories." để chỉ rõ cột id của bảng categories
         })
-            ->with(['product_files', 'product_variants','product_variants.product_votes.user'])
+            ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
             ->limit(8)
             ->get()
             ->map(function ($product) {
+                $activeImage = $product->product_files->where('is_default', 1)->first();
+                $inactiveImage = $product->product_files->where('is_default', 0)->first();
+                $product->active_image = $activeImage ? $activeImage->file_name : null;
+                $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange = $product->getPriceRange();
                 $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
                 return $product;
             });
-    
-        return view('user.index', compact('sliders','brands', 'vouchers', 'topProducts', 'newProducts', 'products'));
+
+
+        $firstCategory = Category::where('fixed', 0)
+            ->orderBy('created_at', 'desc')  // Sắp xếp theo ngày tạo giảm dần (mới nhất trước)
+            ->first();
+        $productTrending = Product::whereHas('categories', function ($query) use ($firstCategory) {
+            $query->where('categories.id', $firstCategory->id); // Thêm "categories." để chỉ rõ cột id của bảng categories
+        })
+            ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
+            ->limit(8)
+            ->get()
+            ->map(function ($product) {
+                // Xử lý hình ảnh sản phẩm
+                $activeImage = $product->product_files->where('is_default', 1)->first();
+                $inactiveImage = $product->product_files->where('is_default', 0)->first();
+                $product->active_image = $activeImage ? $activeImage->file_name : null;
+                $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
+
+                // Lấy giá sản phẩm
+                $product->priceRange = $product->getPriceRange();
+
+                // Lấy đánh giá sản phẩm
+                $rating = $this->getProductReviewData($product);
+                $product->rating = $rating;
+
+                return $product;
+            });
+        return view('user.index', compact('sliders', 'brands', 'vouchers', 'topProducts', 'newProducts', 'products', 'productTrending'));
     }
+
     public function getProductDetails($productId)
     {
         // Lấy sản phẩm từ database

@@ -60,7 +60,7 @@
                                     <td>
 
                                         @foreach ($banner->banner_images as $banner_image)
-                                            <img src="{{ asset('storage/uploads/banners/images/id_' . $banner->id . '/' . $banner_image->file_name) }}"
+                                            <img src="{{ asset('uploads/banners/images/id_' . $banner->id . '/' . $banner_image->file_name) }}"
                                                 alt="Banner Image" style="max-width: 100px;">
                                         @endforeach
 

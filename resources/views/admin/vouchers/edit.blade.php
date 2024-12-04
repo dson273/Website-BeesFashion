@@ -58,7 +58,7 @@
                     <div class="mb-3">
                         <label for="image" class="form-label">Ảnh Voucher</label>
                         <input type="file" class="form-control form-control-sm" name="image" id="image">
-                        <img src="{{ asset('storage/uploads/vouchers/images/' . $vouchers->image) }}" width="100px"
+                        <img src="{{ asset('uploads/vouchers/images/' . $vouchers->image) }}" width="100px"
                             alt="">
                         @error('image')
                             <div class="text-danger">{{ $message }}</div>
