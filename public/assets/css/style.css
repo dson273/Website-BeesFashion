@@ -18899,10 +18899,16 @@ body div canvas:first-child {
 }
 
 .block-voucher .voucher-item-action .action {
-    width: auto;
     font-weight: 600;
+    margin: 0;
 }
 
+.block-voucher .voucher-item-action{
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    gap: 10px;
+}
 .block-voucher .voucher-item-date .date {
     color: #74869b
 }

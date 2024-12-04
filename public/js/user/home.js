@@ -392,3 +392,36 @@ document.addEventListener("DOMContentLoaded", function () {
         setInterval(updateCountdown, 1000);
     });
 });
+
+
+
+//Lấy thông tin voucher
+$(document).ready(function () {
+    $('.save-content').on('click', function () {
+        const $this = $(this);
+        const voucherId = $this.data('id');
+        const saveText = $this.data('save-text');
+
+        // Gửi yêu cầu lưu voucher
+        $.ajax({
+            url: '/save-voucher',
+            method: 'POST',
+            data: {
+                id: voucherId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if (response.status == 'success') {
+                    notification('success', response.message, 'Thành công!');
+                    $this.text(saveText); 
+                } else if (response.status === 'error') {
+                    notification('warning', response.message, 'Thông báo!');
+                }
+            },
+            error: function () {
+                alert('Không thể lưu voucher. Vui lòng thử lại.');
+            }
+        });
+    });
+});
+

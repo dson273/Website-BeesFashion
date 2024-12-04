@@ -18,11 +18,6 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
         <div class="mb-2 ml-3">
             <a href="{{ route('admin.categories.index') }}" class="btn btn-dark text-white text-decoration-none"><i
                     class="fas fa-arrow-left"></i> Quay lại</a>
@@ -30,10 +25,11 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm bán chạy</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Thêm sản phẩm bán chạy
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i
+                    class="fas fa-plus"></i>
+                    Thêm sản phẩm
                 </button>
             </div>
 
@@ -44,7 +40,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Mô tả sản phẩm</th>
+                                <th>Mô tả</th>
                                 <th>Số đơn ảo</th>
                                 <th>Tạo đơn ảo</th>
                                 <th>Thao tác</th>
@@ -58,11 +54,10 @@
                                     <td>
                                         <img src="{{ $item->product_files[0]->file_name ? asset('uploads/products/images/' .  $item->product_files[0]->file_name) : asset('assets/images/icons/noimage.png') }}" 
                                              width="50px" >
-                                    <td>{{ \Illuminate\Support\Str::limit($item->name, 30) }}   
+                                        {{ \Illuminate\Support\Str::limit($item->name, 30) }}  
                                     </td>
-                                   
-                                    <td>{{ \Illuminate\Support\Str::limit(str_replace(['<p>', '</p>'], '', $item->description), 10, '...') }}</td>
-                                    <td>{{ $item->fake_sales }} đơn</td>
+                                    <td>{!! \Illuminate\Support\Str::limit(strip_tags($item->description), 25) !!}</td>
+                                    <td>{{ $item->fake_sales ?? 'Dữ liệu trống' }}</td>
                                     <td>
                                         <form action="{{ route('admin.categories.fake_sales', $item->id) }}" method="POST"
                                             onsubmit="return confirm('Bạn có muốn thay đổi không?')">
