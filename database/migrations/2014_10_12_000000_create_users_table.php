@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('full_name')->nullable()->comment('Họ và tên');
-            $table->string('username')->comment('Tên đăng nhập');
-            $table->string('email')->unique()->comment('Email của người dùng');
             $table->string('phone')->nullable()->comment('Số điện thoại');
             $table->string('address')->nullable()->comment('Địa chỉ');
+            $table->string('email')->unique()->comment('Email của người dùng');
+            $table->string('username')->comment('Tên đăng nhập');
             $table->timestamp('email_verified_at')->nullable()->comment('Email đã được xác minh lúc nào');
             $table->string('password')->comment('Mật khẩu');
             $table->enum('role', ['member', 'staff', 'admin'])->default('member')

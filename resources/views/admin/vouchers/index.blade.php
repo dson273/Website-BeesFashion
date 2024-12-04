@@ -30,19 +30,19 @@
                 <h6 class="m-0 font-weight-bold text-primary">Danh sách vouchers</h6>
 
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Thêm vouchers mới
+                    <i
+                    class="fas fa-plus"></i> Thêm vouchers
                 </button>
             </div>
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Tên Voucher</th>
                                 <th>Mã Voucher</th>
-                                <th>Ảnh Voucher</th>
                                 <th>Giá Trị Giảm</th>
                                 <th>Số Lượng</th>
                                 <th>Loại Voucher</th>
@@ -54,31 +54,16 @@
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên Voucher</th>
-                                <th>Mã Voucher</th>
-                                <th>Ảnh Voucher</th>
-                                <th>Giá Trị Giảm</th>
-                                <th>Số Lượng</th>
-                                <th>Loại Voucher</th>
-                                <th>Giá Tối Thiểu</th>
-                                <th>Ngày Bắt Đầu</th>
-                                <th>Ngày Hết Hạn</th>
-                                <th>Mã được áp dụng</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </tfoot>
+
                         <tbody>
                             @foreach ($listVouchers as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $item->name }}</td>
+                                    <td> <img
+                                            src="{{ $item->image ? asset('uploads/vouchers/images/' . $item->image) : asset('assets/images/icons/noimage.png') }}"
+                                            width="50px">
+                                        {{ $item->name }}</td>
                                     <td>{{ $item->code }}</td>
-                                    <td><img src="{{ asset('storage/uploads/vouchers/images/' . $item->image) }}"
-                                            width="100px" alt=""></td>
                                     <td>{{ number_format($item->amount, 0, ',', '.') }}</td>
                                     <td>{{ number_format($item->quantity, 0, ',', '.') }}</td>
                                     <td>
@@ -97,21 +82,25 @@
                                     <td>{{ $item->end_date }}</td>
                                     <td>{{ $item->is_public == 1 ? 'Tất cả' : 'Tùy chỉnh' }}</td>
                                     <td>{{ $item->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
-                                    <td>
-                                        <a href="{{ route('admin.vouchers.show', $item->id) }}" class="btn btn-success"><i
-                                                class="fa fa-eye"></i></a>
+                                    <td style="white-space: nowrap;">
                                         <a href="{{ route($item->is_active ? 'admin.vouchers.offactive' : 'admin.vouchers.onactive', $item->id) }}"
-                                            class="btn {{ $item->is_active ? 'btn-danger' : 'btn-success' }}">
-                                            <i class="fa {{ $item->is_active ? 'fa-power-off' : 'fa-power-off' }}"></i>
+                                            style="margin-right: 10px; text-decoration: none; color: {{ $item->is_active ? 'red' : 'green' }};">
+                                            <i class="fa fa-power-off"></i>
                                         </a>
-                                        <a href="{{ route('admin.vouchers.edit', $item->id) }}" class="btn btn-warning"><i
-                                                class="fa fa-wrench"></i></a>
+                                        <a href="{{ route('admin.vouchers.show', $item->id) }}"
+                                            style="margin-right: 10px;"> <img
+                                                src="{{ asset('assets/images/icons/eye.svg') }}" alt="img"></a>
+                                       
+                                        <a href="{{ route('admin.vouchers.edit', $item->id) }}"
+                                            style="margin-right: 10px;"><img
+                                                src="{{ asset('assets/images/icons/edit.svg') }}" alt="img"></a>
                                         <form action="{{ route('admin.vouchers.destroy', $item->id) }}" class="d-inline"
                                             method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"><i
-                                                    class="fa fa-trash"></i></button>
+                                            <button type="submit" style="all: unset; cursor: pointer;">
+                                                <img src="{{ asset('assets/images/icons/delete.svg') }}" alt="Delete">
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>

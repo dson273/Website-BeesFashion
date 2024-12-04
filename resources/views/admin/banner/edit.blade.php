@@ -53,7 +53,7 @@
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <img class="me-3" id="preview_{{ $index }}"
-                                                    src="{{ Storage::url('uploads//banners/images/id_' . $Ban->id . '/' . $image->file_name) }}"
+                                                    src="{{ asset('uploads/banners/images/id_' . $Ban->id . '/' . $image->file_name) }}"
                                                     alt="Hình ảnh sản phẩm" style="width: 50px;">
                                                 <input type="file" id="hinh_anh" class="form-control"
                                                     name="file_name[{{ $image->id }}]"

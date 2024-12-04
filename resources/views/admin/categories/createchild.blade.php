@@ -13,18 +13,24 @@
                     @csrf
                     <div class="mt-3 mb-3">
                         <label for="" class="form-label">Tên danh mục</label>
-                        <input type="text" name="name" class="form-control">
-
+                        <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+                        @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                     </div>
                     <div class="mt-3 mb-3">
                         <label for="" class="form-label">Ảnh</label>
-                        <input type="file" name="image" class="form-control">
-
+                        <input type="file" name="image" class="form-control" value="{{ old('image') }}">
+                        @error('image')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                     </div>
                     <div class="mt-3 mb-3">
                         <label for="" class="form-label">Mô tả</label>
-                        <textarea name="description" id="" cols="40" rows="4" class="form-control"></textarea>
-
+                        <textarea name="description" id="" cols="40" rows="4" class="form-control" value="{{ old('description') }}"></textarea>
+                        @error('description')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                     </div>
                     <div class="mt-3 mb-3">
                         <label for="" class="form-label">Thuộc danh mục</label>
@@ -35,10 +41,8 @@
                     </div>
                     <div class="mt-3 mb-3">
                         <label for="" class="form-label">Trạng thái</label>
-                        <select name="is_active" class="form-control">
-                            <option value="1" selected>Hiển Thị</option>
-                            <option value="0">Ẩn</option>
-                        </select>
+                        <input type="checkbox" name="is_active" id="is_active" value="1"
+                        {{ old('is_active') ? 'checked' : '' }} checked>
                     </div>
             </div>
             <div class="modal-footer">
@@ -49,3 +53,10 @@
         </div>
     </div>
 </div>
+@if ($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $('#exampleModalCenter').modal('show');
+        });
+    </script>
+@endif

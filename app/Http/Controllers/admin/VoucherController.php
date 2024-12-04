@@ -15,7 +15,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $listVouchers = Voucher::all();
+        $listVouchers = Voucher::orderBy('created_at', 'desc')->get();
         return view('admin.vouchers.index', compact('listVouchers'));
     }
 
@@ -36,27 +36,42 @@ class VoucherController extends Controller
             'name' => 'required|string|max:255',
             'code' => 'required|regex:/^[a-zA-Z0-9]+$/|unique:vouchers,code', // Mã voucher phải viết liền (không khoảng trắng)
             'amount' => 'required|numeric|min:0',
+            'image' => 'required|image',
             'quantity' => 'required|integer|min:1',
             'start_date' => 'required|date|before_or_equal:end_date', // Ngày bắt đầu phải có và trước hoặc bằng ngày hết hạn
             'end_date' => 'required|date|after_or_equal:start_date',   // Ngày hết hạn phải có và sau hoặc bằng ngày bắt đầu
             'minimum_order_value' => 'required|numeric|min:0',
+            'maximum_reduction' => 'required|numeric|min:0',
         ], [
             'name.required' => 'Tên voucher là bắt buộc.',
             'code.required' => 'Mã voucher là bắt buộc.',
+
             'code.regex' => 'Mã voucher phải viết liền, không chứa khoảng trắng.',
             'code.unique' => 'Mã voucher đã tồn tại.',
+
             'amount.required' => 'Giá trị giảm là bắt buộc.',
             'amount.numeric' => 'Giá trị giảm phải là một số.',
             'amount.min' => 'Giá trị giảm phải lớn hơn hoặc bằng 0.',
+
+            'image.required' => 'Không được để trống ảnh.',
+            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
+
             'quantity.required' => 'Số lượng là bắt buộc.',
             'quantity.integer' => 'Số lượng phải là một số nguyên.',
             'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1.',
+
             'minimum_order_value.required' => 'Giá trị tối thiểu đơn hàng là bắt buộc.',
             'minimum_order_value.numeric' => 'Giá trị tối thiểu đơn hàng phải là một số.',
             'minimum_order_value.min' => 'Giá trị tối thiểu đơn hàng phải lớn hơn hoặc bằng 0.',
+
+            'maximum_reduction.required' => 'Giá tiền giảm tối đa là bắt buộc.',
+            'maximum_reduction.numeric' => 'Giá tiền giảm tối đa phải là một số.',
+            'maximum_reduction.min' => 'Giá tiền giảm tối đa phải lớn hơn hoặc bằng 0.',
+
             'start_date.required' => 'Ngày bắt đầu là bắt buộc.',
             'start_date.date' => 'Ngày bắt đầu phải là một ngày hợp lệ.',
             'start_date.before_or_equal' => 'Ngày bắt đầu phải trước hoặc bằng ngày hết hạn.',
+
             'end_date.required' => 'Ngày hết hạn là bắt buộc.',
             'end_date.date' => 'Ngày hết hạn phải là một ngày hợp lệ.',
             'end_date.after_or_equal' => 'Ngày hết hạn phải sau hoặc bằng ngày bắt đầu.',
@@ -68,9 +83,9 @@ class VoucherController extends Controller
 
         $params = $request->except('_token');
 
-        if ($request->hasFile('image')) {
-            $imageName = $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('uploads/vouchers/images', $imageName, 'public');
+        if ($image = $request->file('image')) {
+            $imageName = $image->hashName();
+            $image->move(public_path('uploads/vouchers/images'), $imageName); 
             $params['image'] = $imageName;
         } else {
             $params['image'] = null;
@@ -166,14 +181,15 @@ class VoucherController extends Controller
             $vouchers = Voucher::findOrFail($id);
 
             if ($request->hasFile('image')) {
-                if ($vouchers->image && Storage::disk('public')->exists($vouchers->image)) {
-                    Storage::disk('public')->delete($vouchers->image);
+                if ($vouchers->image && file_exists(public_path('uploads/vouchers/images/' . $vouchers->image))) {
+                    unlink(public_path('uploads/vouchers/images/' . $vouchers->image));
                 }
 
-                $name = $request->file('image')->getClientOriginalName();
-                $request->file('image')->storeAs('uploads/vouchers/images', $name, 'public');
+                $image = $request->file('image');
+                $imageName = $image->hashName();
+                $image->move(public_path('uploads/vouchers/images'), $imageName);
 
-                $params['image'] = $name;
+                $params['image'] = $imageName;
             } else {
                 $params['image'] = $vouchers->image;
             }
@@ -193,8 +209,8 @@ class VoucherController extends Controller
     {
         $vouchers = Voucher::findOrFail($id);
 
-        if ($vouchers->image && Storage::disk('public')->exists($vouchers->image)) {
-            Storage::disk('public')->delete($vouchers->image);
+        if ($vouchers->image && file_exists(public_path('uploads/vouchers/images/' . $vouchers->image))) {
+            unlink(public_path('uploads/vouchers/images/' . $vouchers->image));
         }
 
         $vouchers->delete();

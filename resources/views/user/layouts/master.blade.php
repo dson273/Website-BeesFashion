@@ -72,7 +72,7 @@
     <script src="{{ asset('assets/js/newsletter.js') }}"></script>
     <script src="{{ asset('assets/js/skeleton-loader.js') }}"></script><!-- touchspin-->
     <script src="{{ asset('assets/js/touchspin.js') }}"></script><!-- cookie js-->
-    <script src="{{ asset('assets/js/cookie.js') }}"></script><!-- tost js -->
+    {{-- <script src="{{ asset('assets/js/cookie.js') }}"></script><!-- tost js --> --}}
     <script src="{{ asset('assets/js/toastify.js') }}"></script>
     <script src="{{ asset('assets/js/theme-setting.js') }}"></script><!-- Theme js-->
     <script src="{{ asset('assets/js/script.js') }}"></script>
@@ -130,7 +130,6 @@
 
         const routeStoreOrder = "{{ route('checkout.storeOrder') }}";
         //===============Cart===============
-        //route UpdateQuatity
         const routeUpdateQuantity = "{{ route('cart.updateQuantity') }}";
 
         //===============Dashboard (Order)===============
@@ -141,6 +140,10 @@
         const routeGetVoteOrderDetail = "{{route('dashboard.getVoteOrderDetail')}}";
         const routeSubmitVoteOrderDetail = "{{route('dashboard.submitVoteOrderDetail')}}";
         const routeSubmitEditVoteOrderDetail = "{{route('dashboard.submitEditVoteOrderDetail')}}";
+
+        //======================Product detail====================
+        const routeUserProductDetailFocused = "{{route('userProductDetailFocused')}}";
+        const routeAddToCart = "{{route('addToCart')}}";
     </script>
 
     <!-- Short notification commands -->

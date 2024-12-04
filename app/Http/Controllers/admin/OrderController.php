@@ -15,33 +15,53 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $allCount  = Order::orderBy('created_at', 'desc')->get();
-
+        //tất cả đơn hàng
+        $allOrders = Order::with(['status_orders' => function ($query) {
+            $query->orderBy('created_at', 'desc')->take(1);  // Lấy trạng thái mới nhất
+        }])->orderBy('created_at', 'desc')->get();
+        $allCount = $allOrders->count();
+        //đơn hàng chờ xác nhận
         $pendingOrders = Order::whereHas('status_orders', function ($query) {
+            // Chỉ lấy các đơn hàng có trạng thái "Pending" (status_id = 2)
             $query->where('status_id', 2);
-        })->orderBy('created_at', 'desc')
-            ->get();
+        })->whereDoesntHave('status_orders', function ($query) {
+            // Loại bỏ các đơn hàng đã có trạng thái "Cancelled" (status_id = 5) hoặc "Shipping" (status_id = 3)
+            $query->whereIn('status_id', [5, 3]);
+        })->orderBy('created_at', 'desc')->get();
         $pendingCount = $pendingOrders->count();
 
+        //đơn hàng chờ xử lý
         $processingOrders = Order::with('status_orders')
             ->whereHas('status_orders', function ($query) {
-                $query->where('status_id', 1);
-            })->orderBy('created_at', 'desc')
+                $query->where('status_id', 1); // Lọc đơn hàng có trạng thái "Processing"
+            })
+            ->whereDoesntHave('status_orders', function ($query) {
+                $query->where('status_id', [5, 2]); 
+            })
+            ->orderBy('created_at', 'desc') // Sắp xếp theo thời gian tạo đơn hàng
             ->get();
-        $processingCount = $processingOrders->count();
 
+        $processingCount = $processingOrders->count();
+        //Đơn hàng đã giao 
         $shippingOrders = Order::whereHas('status_orders', function ($query) {
-            $query->where('status_id', 3);
-        })->orderBy('created_at', 'desc')
+            $query->where('status_id', 3);  // Trạng thái 'Shipping'
+        })
+            ->whereDoesntHave('status_orders', function ($query) {
+                $query->whereIn('status_id', [4, 6, 5]); 
+            })
+            ->orderBy('created_at', 'desc')
             ->get();
         $shippingCount = $shippingOrders->count();
 
+        //Đơn hàng đã hoàn thành
         $completedOrders = Order::whereHas('status_orders', function ($query) {
             $query->where('status_id', 4);
         })->orderBy('created_at', 'desc')
             ->get();
         $completedCount = $completedOrders->count();
 
+
+        //Đơn hàng đã hủy
         $cancelledOrders = Order::whereHas('status_orders', function ($query) {
             $query->where('status_id', 5);
         })->orderBy('created_at', 'desc')
@@ -56,6 +76,7 @@ class OrderController extends Controller
         $fail_deliveryCount = $fail_delivery->count();
 
         return view('admin.orders.index', compact(
+            'allOrders',
             'allCount',
             'pendingOrders',
             'pendingCount',
@@ -71,6 +92,7 @@ class OrderController extends Controller
             'fail_deliveryCount'
         ));
     }
+
     public function printOrder($id)
     {
         // Tìm đơn hàng và load các quan hệ liên quan
@@ -102,34 +124,56 @@ class OrderController extends Controller
     {
         $order = Order::with('order_details.product_variant')->findOrFail($id);
         if ($order) {
-            // Cập nhật trạng thái của đơn hàng
-            foreach ($order->status_orders as $statusOrder) {
-                $statusOrder->update(['status_id' => 4]);
-            }
-        }
+            // Kiểm tra xem trạng thái Shipping (3) đã có chưa
+            $shippingStatus = $order->status_orders()->where('status_id', 3)->first();
 
-        return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được giao');
+            // Nếu trạng thái Shipping (3) tồn tại, tạo trạng thái Completed (4)
+            if ($shippingStatus) {
+                // Tạo bản ghi trạng thái Completed (4)
+                $order->status_orders()->create(['status_id' => 4]);
+
+                return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được giao thành công');
+            }
+
+            return redirect()->route('admin.orders.index')->with('statusError', 'Không tìm thấy trạng thái vận chuyển cho đơn hàng này.');
+        }
+        return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đang xảy ra lỗi');
     }
+
+    // TAB Cần gửi
     public function onSuccess(Request $request, string $id)
     {
         $order = Order::with('order_details.product_variant')->findOrFail($id);
         if ($order) {
-            // Cập nhật trạng thái của đơn hàng
-            foreach ($order->status_orders as $statusOrder) {
-                $statusOrder->update(['status_id' => 3]);
+
+        $existingCancelledStatus = $order->status_orders()->where('status_id', 5)->first();
+
+            // Thêm bản ghi trạng thái "Shipping" (status_id = 3)
+            if (!$existingCancelledStatus) {
+                $order->status_orders()->create(['status_id' => 3]);
             }
+
+            return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được gửi đi');
         }
 
-        return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được gửi đi');
+        return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đã bị hủy');
     }
     public function cancelOrder(Request $request, string $id)
     {
         $order = Order::with('order_details.product_variant')->findOrFail($id);
         if ($order) {
-            // Cập nhật trạng thái của đơn hàng
-            foreach ($order->status_orders as $statusOrder) {
-                $statusOrder->update(['status_id' => 5]);
+            // Kiểm tra xem đơn hàng đã có trạng thái Cancelled (status_id = 5) chưa
+            $existingCancelledStatus = $order->status_orders()->where('status_id', 5)->first();
+
+            // Nếu chưa có trạng thái Cancelled, tạo bản ghi mới
+            if (!$existingCancelledStatus) {
+                $order->status_orders()->create(['status_id' => 5]);
             }
+
+            // Đảm bảo đơn hàng không còn trong tab Pending (tự động loại bỏ trạng thái Pending)
+            // Bạn có thể thêm logic tại đây nếu cần (ví dụ: thông báo cho admin)
+
+            return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đã được hủy bởi khách hàng');
         }
 
         return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được hủy');
@@ -139,8 +183,17 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        $getInfo = Order::with('order_details.product_variant')->findOrFail($id);
-        return view('admin.orders.info', compact('getInfo'));
+        $getInfo = Order::with('order_details.product_variant')
+            ->findOrFail($id);
+
+        // Lấy bản ghi trạng thái thay đổi gần đây nhất của đơn hàng
+        $latestStatus = $getInfo->status_orders()->latest()->first();
+        // Lấy tất cả trạng thái của đơn hàng và sắp xếp theo thời gian tạo
+        $statusOrders = $getInfo->status_orders()->orderBy('created_at', 'asc')->get();
+
+
+        // Trả về view và truyền dữ liệu
+        return view('admin.orders.info', compact('getInfo', 'latestStatus', 'statusOrders'));
     }
 
 

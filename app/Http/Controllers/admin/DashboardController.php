@@ -18,7 +18,10 @@ class DashboardController extends Controller
     {
         $totalProducts = Product::count();
         $totalView = Product::where('is_active', '1')->sum('view');
-        $totalOrders = Order::count();
+        $allOrders = Order::with(['status_orders' => function ($query) {
+            $query->orderBy('created_at', 'desc')->take(1);  // Lấy trạng thái mới nhất
+        }])->orderBy('created_at', 'desc')->get();
+        $totalOrders = $allOrders->count();
         $totalUsers = User::where('role', 'member')->count();
 
         return view('admin.dashboard', compact('totalProducts', 'totalOrders', 'totalView', 'totalUsers'));

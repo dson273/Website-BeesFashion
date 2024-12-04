@@ -34,56 +34,49 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Tên danh mục</th>
-                                <th>Hình Ảnh</th>
                                 <th>Mô tả danh mục</th>
                                 <th>Phân loại danh mục</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên danh mục</th>
-                                <th>Hình Ảnh</th>
-                                <th>Mô tả danh mục</th>
-                                <th>Phân loại danh mục</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </tfoot>
                         <tbody>
                             @foreach ($listCategory as $index => $cate)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $cate->name }}</td>
-                                    <td><img src="{{ asset('storage/uploads/categories/images/' . $cate->image) }}"
-                                            width="150px" alt=""></td>
+                                    <td>
+                                        <img src="{{ $cate->image ? asset('uploads/categories/images/' . $cate->image) : asset('assets/images/icons/noimage.png') }}" 
+                                             width="50px" >
+                                        {{ $cate->name }}
+                                    </td>
+
                                     <td>{{ $cate->description }}</td>
                                     <td>{{ $cate->fixed == 1 ? 'Danh mục thường' : 'Danh mục tùy chỉnh' }}</td>
                                     <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
                                         @if ($cate->fixed == 1)
-                                            <a href="{{ route('admin.categories.show', $cate->id) }}"
-                                                class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                            <a href="{{ route('admin.categories.show', $cate->id) }}" style="margin-right: 10px;"> <img
+                                                    src="{{ asset('assets/images/icons/eye.svg') }}" alt="img"></a>
                                         @else
-                                            <a href="{{ route('admin.categories.product', $cate->id) }}"
-                                                class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                            <a href="{{ route('admin.categories.product', $cate->id) }}" style="margin-right: 10px;"> <img
+                                                    src="{{ asset('assets/images/icons/eye.svg') }}" alt="img"></a>
                                         @endif
-                                        <a href="{{ route('admin.categories.edit', $cate->id) }}"
-                                            class="btn btn-warning"><i class="fa fa-wrench"></i></a>
+                                        <a href="{{ route('admin.categories.edit', $cate->id) }}" style="margin-right: 10px;"> <img
+                                                src="{{ asset('assets/images/icons/edit.svg') }}" alt="img"></a>
                                         <form action="{{ route('admin.categories.destroy', $cate->id) }}" class="d-inline"
                                             method="POST" onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"><i
-                                                    class="fa fa-trash"></i></button>
+                                            <button type="submit" style="all: unset; cursor: pointer;">
+                                                <img src="{{ asset('assets/images/icons/delete.svg') }}" alt="Delete">
+                                            </button>
                                         </form>
+
                                     </td>
                                 </tr>
                             @endforeach

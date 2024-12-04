@@ -36,36 +36,26 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>SKU / Tên sản phẩm</th>
-                                <th>Ảnh</th>
+                                <th>Sản phẩm</th>
                                 <th>Đơn giá</th>
                                 <th>Số lượng</th>
                                 <th>Người nhập</th>
                                 <th>Thời gian nhập</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>#</th>
-                                <th>SKU / Tên sản phẩm</th>
-                                <th>Ảnh</th>
-                                <th>Đơn giá</th>
-                                <th>Số lượng</th>
-                                <th>Người nhập</th>
-                                <th>Thời gian nhập</th>
-                            </tr>
-                        </tfoot>
+                       
                         <tbody>
                             @foreach ($importHistories as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $item->product_variant->SKU }} / {{ $item->product_variant->product->name }}</td>
-                                    <td><img src="{{ asset('uploads/products/images/' . $item->product_variant->image) }}"
-                                            width="100px" alt=""></td>
+                                    <td><img src="{{ $item->product_variant->image ? asset('uploads/products/images/' .  $item->product_variant->image) : asset('assets/images/icons/noimage.png') }}" 
+                                        width="50px" >
+                                        {{ $item->product_variant->SKU }} / {{ $item->product_variant->product->name }}
+                                    </td>
                                     <td>{{ number_format($item->import_price, 0, ',', '.') }}</td>
                                     <td>{{ number_format($item->quantity, 0, ',', '.') }}</td>
                                     <td>

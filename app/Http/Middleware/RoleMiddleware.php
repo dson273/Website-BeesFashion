@@ -22,6 +22,6 @@ class RoleMiddleware
         if (auth()->check() && in_array(auth()->user()->role, $roles)) {
             return $next($request);
         }
-        return redirect('/')->with('error', 'Bạn không có quyền truy cập vào chức năng này.');
+        return redirect('/')->with('statusError', 'Bạn không có quyền truy cập vào chức năng này.');
     }
 }

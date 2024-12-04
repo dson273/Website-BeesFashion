@@ -43,76 +43,76 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                @foreach ($getInfo->status_orders as $item)
-                                    <div class="col-md-12">
-                                        <div class="flex justify-between">
-                                            <div class="index__card-title--rzIx0 font-semibold">
-                                                <div class="flex items-center"><span class="mr-2">
-                                                        @if ($item->status_id == 1)
-                                                            Chờ xử lý
-                                                        @elseif ($item->status_id == 2)
-                                                            Chờ xác nhận
-                                                        @elseif ($item->status_id == 3)
-                                                            Đang vận chuyển
-                                                        @elseif ($item->status_id == 4)
-                                                            Hoàn thành
-                                                        @elseif ($item->status_id == 6)
-                                                        Đơn hàng giao không thành công
-                                                        @else
-                                                            Đã hủy
-                                                        @endif
-                                                        <br>
-                                                    </span></div>
-                                            </div>
-                                            <div></div>
+
+                                <div class="col-md-12">
+                                    <div class="flex justify-between">
+                                        <div class="index__card-title--rzIx0 font-semibold">
+                                            <div class="flex items-center"><span class="mr-2">
+                                                {{ 
+                                                    $latestStatus 
+                                                    ? ($latestStatus->status->name == 'Processing' ? 'Chờ xử lý' : 
+                                                       ($latestStatus->status->name == 'Pending' ? 'Chờ xác nhận' : 
+                                                       ($latestStatus->status->name == 'Shipping' ? 'Đang vận chuyển' : 
+                                                       ($latestStatus->status->name == 'Completed' ? 'Đã hoàn thành' : 
+                                                       ($latestStatus->status->name == 'Cancelled' ? 'Đã hủy' : 
+                                                       ($latestStatus->status->name == 'Returned' ? 'Hoàn trả' : $latestStatus->status->name)))))) 
+                                                    : 'Chưa có trạng thái' 
+                                                }}
+                                                
+                                                    <br>
+                                                </span></div>
                                         </div>
-                                        <div class="completed-box">
-                                            <div class="KeyValuePair">
-                                                <div class="text-header">
-                                                    <div class="truncate">Vị trí</div>
-                                                </div>
-                                                <div class="text-footer">Việt Nam</div>
+                                        <div></div>
+                                    </div>
+                                    <div class="completed-box">
+                                        <div class="KeyValuePair">
+                                            <div class="text-header">
+                                                <div class="truncate">Vị trí</div>
                                             </div>
-                                            <div class="KeyValuePair">
-                                                <div class="text-header">
-                                                    <div class="truncate">Thời gian tạo</div>
-                                                </div>
-                                                <div class="text-footer">{{ $item->created_at->format('d/m/Y H:i:s') }}
-                                                </div>
+                                            <div class="text-footer">Việt Nam</div>
+                                        </div>
+                                        <div class="KeyValuePair">
+                                            <div class="text-header">
+                                                <div class="truncate">Thời gian tạo</div>
                                             </div>
-                                            <div class="KeyValuePair">
-                                                <div class="text-header">
-                                                    <div class="truncate">Phương thức thanh toán</div>
-                                                </div>
-                                                <div class="text-footer">@if ($getInfo->payment_method === 'cod')
+                                            <div class="text-footer">{{ $getInfo->created_at->format('d/m/Y H:i:s') }}
+                                            </div>
+                                        </div>
+                                        <div class="KeyValuePair">
+                                            <div class="text-header">
+                                                <div class="truncate">Phương thức thanh toán</div>
+                                            </div>
+                                            <div class="text-footer">
+                                                @if ($getInfo->payment_method === 'cod')
                                                     Thanh toán khi nhận hàng
                                                 @else
                                                     Thanh toán online
-                                                @endif</div>
+                                                @endif
                                             </div>
-                                            <div class="KeyValuePair">
-                                                <div class="text-header">
-                                                    <div class="truncate">Tên người đặt</div>
-                                                </div>
-                                                <div class="text-footer">{{ $getInfo->full_name }}</div>
-                                            </div>
-                                            <div class="KeyValuePair">
-                                                <div class="text-header">
-                                                    <div class="truncate">Địa chỉ</div>
-                                                </div>
-                                                <div class="text-footer">{{ $getInfo->address }}</div>
-                                            </div>
-                                            <div class="KeyValuePair">
-                                                <div class="text-header">
-                                                    <div class="truncate">Thông tin liên hệ</div>
-                                                </div>
-                                                <div class="text-footer">{{ $getInfo->phone_number }}</div>
-                                            </div>
-
-
                                         </div>
+                                        <div class="KeyValuePair">
+                                            <div class="text-header">
+                                                <div class="truncate">Tên người đặt</div>
+                                            </div>
+                                            <div class="text-footer">{{ $getInfo->full_name }}</div>
+                                        </div>
+                                        <div class="KeyValuePair">
+                                            <div class="text-header">
+                                                <div class="truncate">Địa chỉ</div>
+                                            </div>
+                                            <div class="text-footer">{{ $getInfo->address }}</div>
+                                        </div>
+                                        <div class="KeyValuePair">
+                                            <div class="text-header">
+                                                <div class="truncate">Thông tin liên hệ</div>
+                                            </div>
+                                            <div class="text-footer">{{ $getInfo->phone_number }}</div>
+                                        </div>
+
+
                                     </div>
-                                @endforeach
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -171,233 +171,63 @@
                                     </div>
                                 </div>
                                 <div class="list-history">
-                                    @foreach ($getInfo->status_orders as $item)
-                                        @if ($item->status_id == 5)
-                                            <div class="listitem">
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                        style="border-left-style: dashed;"></div>
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="theme-arco-timeline-item-dot-custom5"
-                                                            data-status="{{ $item->status_id }}">
-                                                            <div
-                                                                class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                            </div>
-                                                        </div>
+                                    @foreach ($statusOrders->reverse() as $status)
+                                        <div class="listitem">
+                                            <div class="theme-arco-timeline-item-dot-wrapper">
+                                                <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical" style="border-left-style: dashed;"></div>
+                                                <div class="theme-arco-timeline-item-dot-content">
+                                                    <div class="theme-arco-timeline-item-dot-custom
+                                                        @if ($status->status_id == 1 ) active @endif
+                                                        @if ($status->status_id == 2 ) active @endif
+                                                        @if ($status->status_id == 3 ) active @endif
+                                                        @if ($status->status_id == 4 ) active @endif
+                                                        @if ($status->status_id == 5) active @endif
+                                                        @if ($status->status_id == 6) active @endif
+                                                    ">
+                                                        <div class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-finished theme-arco-timeline-item-dotType-hollow-finished"></div>
                                                     </div>
                                                 </div>
-
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="sc-jeGSBP">Yêu cầu hủy được gửi bởi khách hàng</div>
+                                            </div>
+                                
+                                            <div class="theme-arco-timeline-item-dot-wrapper">
+                                                <div class="theme-arco-timeline-item-dot-content">
+                                                    @if ($status->status_id == 2)
+                                                        <div class="sc-jeGSBP">Đơn hàng đang chờ xác nhận</div>
                                                         <div class="text-sm font-regular text-gray-3">
-                                                            Đơn hàng bị hủy theo yêu cầu của khách hàng hoặc do quy định
+                                                            {{ $status->created_at->format('d/m/Y H:i:s') }}
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="listitem">
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                        style="border-left-style: dashed;"></div>
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="theme-arco-timeline-item-dot-custom1 active"
-                                                            data-status="{{ $item->status_id }}">
-                                                            <div
-                                                                class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="sc-jeGSBP">Đơn hàng do khách hàng tạo</div>
+                                                    @elseif($status->status_id == 3)
+                                                        <div class="sc-jeGSBP">Đơn hàng đã đang được vận chuyển</div>
                                                         <div class="text-sm font-regular text-gray-3">
-                                                            Đơn hàng đã được tiếp nhận và xác nhận từ hệ thống</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                           @elseif($item->status_id == 6) 
-                                           <div class="listitem">
-                                            <div class="theme-arco-timeline-item-dot-wrapper">
-                                                <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                    style="border-left-style: dashed;"></div>
-                                                <div class="theme-arco-timeline-item-dot-content">
-                                                    <div class="theme-arco-timeline-item-dot-custom5"
-                                                        data-status="{{ $item->status_id }}">
-                                                        <div
-                                                            class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
+                                                            {{ $status->created_at->format('d/m/Y H:i:s') }}
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="theme-arco-timeline-item-dot-wrapper">
-                                                <div class="theme-arco-timeline-item-dot-content">
-                                                    <div class="sc-jeGSBP">Đơn hàng giao không thành công</div>
-                                                    <div class="text-sm font-regular text-gray-3">
-                                                        Đơn hàng giao đến khách hàng không thành công
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="listitem">
-                                            <div class="theme-arco-timeline-item-dot-wrapper">
-                                                <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                    style="border-left-style: dashed;"></div>
-                                                <div class="theme-arco-timeline-item-dot-content">
-                                                    <div class="theme-arco-timeline-item-dot-custom3"
-                                                        data-status="{{ $item->status_id }}">
-                                                        <div
-                                                            class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="theme-arco-timeline-item-dot-wrapper">
-                                                <div class="theme-arco-timeline-item-dot-content">
-                                                    <div class="sc-jeGSBP">Đơn hàng đang được vận chuyển
-                                                    </div>
-                                                    <div class="text-sm font-regular text-gray-3">
-                                                        Đơn hàng đã được giao cho đơn vị vận chuyển và đang trên đường giao đến bạn</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="listitem">
-                                            <div class="theme-arco-timeline-item-dot-wrapper">
-                                                <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                    style="border-left-style: dashed;"></div>
-                                                <div class="theme-arco-timeline-item-dot-content">
-                                                    <div class="theme-arco-timeline-item-dot-custom2"
-                                                        data-status="{{ $item->status_id }}">
-                                                        <div
-                                                            class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="theme-arco-timeline-item-dot-wrapper">
-                                                <div class="theme-arco-timeline-item-dot-content">
-                                                    <div class="sc-jeGSBP">Đơn hàng đang được chuẩn bị</div>
-                                                    <div class="text-sm font-regular text-gray-3">
-                                                        Đơn hàng đang được chuẩn bị để giao cho đơn bị vận chuyển</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="listitem">
-                                            <div class="theme-arco-timeline-item-dot-wrapper">
-                                                <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                    style="border-left-style: dashed;"></div>
-                                                <div class="theme-arco-timeline-item-dot-content">
-                                                    <div class="theme-arco-timeline-item-dot-custom1 active"
-                                                        data-status="{{ $item->status_id }}">
-                                                        <div
-                                                            class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="theme-arco-timeline-item-dot-wrapper">
-                                                <div class="theme-arco-timeline-item-dot-content">
-                                                    <div class="sc-jeGSBP">Đơn hàng do khách hàng tạo</div>
-                                                    <div class="text-sm font-regular text-gray-3">
-                                                        Đơn hàng đã được tiếp nhận và xác nhận từ hệ thống</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @else
-                                            <div class="listitem">
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                        style="border-left-style: dashed;"></div>
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="theme-arco-timeline-item-dot-custom4"
-                                                            data-status="{{ $item->status_id }}">
-                                                            <div
-                                                                class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-content">
+                                                    @elseif($status->status_id == 4)
                                                         <div class="sc-jeGSBP">Đơn đặt hàng đã hoàn thành</div>
                                                         <div class="text-sm font-regular text-gray-3">
-                                                            Đơn hàng đã được giao thành công đến bạn</div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="listitem">
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                        style="border-left-style: dashed;"></div>
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="theme-arco-timeline-item-dot-custom3"
-                                                            data-status="{{ $item->status_id }}">
-                                                            <div
-                                                                class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                            </div>
+                                                            {{ $status->created_at->format('d/m/Y H:i:s') }}
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="sc-jeGSBP">Đơn hàng đang được vận chuyển
-                                                        </div>
-                                                        <div class="text-sm font-regular text-gray-3">
-                                                            Đơn hàng đã được giao cho đơn vị vận chuyển và đang trên đường giao đến bạn</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="listitem">
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                        style="border-left-style: dashed;"></div>
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="theme-arco-timeline-item-dot-custom2"
-                                                            data-status="{{ $item->status_id }}">
-                                                            <div
-                                                                class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="sc-jeGSBP">Đơn hàng đang được chuẩn bị</div>
-                                                        <div class="text-sm font-regular text-gray-3">
-                                                            Đơn hàng đang được chuẩn bị để giao cho đơn bị vận chuyển</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="listitem">
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical"
-                                                        style="border-left-style: dashed;"></div>
-                                                    <div class="theme-arco-timeline-item-dot-content">
-                                                        <div class="theme-arco-timeline-item-dot-custom1 active"
-                                                            data-status="{{ $item->status_id }}">
-                                                            <div
-                                                                class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-normal theme-arco-timeline-item-dotType-hollow-normal">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="theme-arco-timeline-item-dot-wrapper">
-                                                    <div class="theme-arco-timeline-item-dot-content">
+                                                    @elseif($status->status_id == 1)
                                                         <div class="sc-jeGSBP">Đơn hàng do khách hàng tạo</div>
                                                         <div class="text-sm font-regular text-gray-3">
-                                                            Đơn hàng đã được tiếp nhận và xác nhận từ hệ thống</div>
-                                                    </div>
+                                                            {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                        </div>
+                                                    @elseif($status->status_id == 5)
+                                                        <div class="sc-jeGSBP">Đơn hàng đã bị hủy bởi khách hàng</div>
+                                                        <div class="text-sm font-regular text-gray-3">
+                                                            {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                        </div>
+                                                        @elseif($status->status_id == 6)
+                                                        <div class="sc-jeGSBP">Đơn hàng giao không thành công</div>
+                                                        <div class="text-sm font-regular text-gray-3">
+                                                            {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
                                     @endforeach
                                 </div>
+                                
 
                             </div>
                         </div>
@@ -529,32 +359,3 @@
     </div>
     <!-- /.container-fluid -->
 @endsection
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const timelineItems = document.querySelectorAll(
-            '.theme-arco-timeline-item-dot-custom2, .theme-arco-timeline-item-dot-custom3, .theme-arco-timeline-item-dot-custom4, .theme-arco-timeline-item-dot-custom5'
-        );
-
-        timelineItems.forEach((item) => {
-            const status = parseInt(item.getAttribute('data-status'));
-
-            // Thêm active cho các trạng thái thông thường
-            if (status === 2 || status === 3 || status === 4) {
-                for (let i = 2; i <= status; i++) {
-                    document.querySelectorAll(`.theme-arco-timeline-item-dot-custom${i}`).forEach(el =>
-                        el.classList.add('active'));
-                }
-            } else if (status === 5) {
-                // Nếu là trạng thái 5, thêm active cho 2 và 5
-                document.querySelectorAll(
-                        '.theme-arco-timeline-item-dot-custom2, .theme-arco-timeline-item-dot-custom5')
-                    .forEach(el => el.classList.add('active'));
-            }  else if (status === 6) {
-                // Nếu là trạng thái 5, thêm active cho 2 và 5
-                document.querySelectorAll(
-                        '.theme-arco-timeline-item-dot-custom2,.theme-arco-timeline-item-dot-custom3 , .theme-arco-timeline-item-dot-custom5')
-                    .forEach(el => el.classList.add('active'));
-            }
-        });
-    });
-</script>

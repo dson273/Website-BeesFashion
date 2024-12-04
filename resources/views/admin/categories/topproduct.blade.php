@@ -23,10 +23,10 @@
         <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
             For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
                 DataTables documentation</a>.</p>
-                <div class="mb-2 ml-3">
-                    <a href="{{ route('admin.categories.index') }}" class="btn btn-dark text-white text-decoration-none"><i
-                            class="fas fa-arrow-left"></i> Quay lại</a>
-                </div>
+        <div class="mb-2 ml-3">
+            <a href="{{ route('admin.categories.index') }}" class="btn btn-dark text-white text-decoration-none"><i
+                    class="fas fa-arrow-left"></i> Quay lại</a>
+        </div>
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between">
@@ -39,49 +39,54 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Hình Ảnh</th>
-                                    <th>Mô tả sản phẩm</th>
-                                    <th>Số đơn ảo</th>
-                                    <th>Tạo đơn ảo</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
+                    <table class="table" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Mô tả sản phẩm</th>
+                                <th>Số đơn ảo</th>
+                                <th>Tạo đơn ảo</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
 
-                            <tbody>
-                                @foreach ($bestSellingProducts as $index => $item)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td><img src="{{ asset('uploads/products/images/' . $item->product_files[0]->file_name) }}"
-                                                width="100px" alt="">
-                                        </td>
-                                        <td>{{ $item->description }}</td>
-                                        <td>{{ $item->fake_sales }} đơn</td>
-                                        <td>
-                                            <form action="{{ route('admin.categories.fake_sales', $item->id) }}" method="POST" onsubmit="return confirm('Bạn có muốn thay đổi không?')">
-                                                @csrf
-                                                <input type="number" name="fake_sales" class="form-control form-control-sm d-inline-block w-50" placeholder="Số lượng" min="1">
-                                                <button type="submit" class="btn btn-success btn-sm d-inline-block w-25">Xác nhận</button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('admin.categories.remove', $item->id) }}" method="POST"
-                                                onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"><i
-                                                        class="fa fa-trash"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <tbody>
+                            @foreach ($bestSellingProducts as $index => $item)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>
+                                        <img src="{{ $item->product_files[0]->file_name ? asset('uploads/products/images/' .  $item->product_files[0]->file_name) : asset('assets/images/icons/noimage.png') }}" 
+                                             width="50px" >
+                                    <td>{{ \Illuminate\Support\Str::limit($item->name, 30) }}   
+                                    </td>
+                                   
+                                    <td>{{ \Illuminate\Support\Str::limit(str_replace(['<p>', '</p>'], '', $item->description), 10, '...') }}</td>
+                                    <td>{{ $item->fake_sales }} đơn</td>
+                                    <td>
+                                        <form action="{{ route('admin.categories.fake_sales', $item->id) }}" method="POST"
+                                            onsubmit="return confirm('Bạn có muốn thay đổi không?')">
+                                            @csrf
+                                            <input type="number" name="fake_sales"
+                                                class="form-control form-control-sm d-inline-block w-50"
+                                                placeholder="Số lượng" min="1">
+                                            <button type="submit" class="btn btn-success btn-sm d-inline-block w-25">Xác
+                                                nhận</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('admin.categories.remove', ['categoryId' => $currentCategory->id, 'productId' => $item->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" style="all: unset; cursor: pointer;">
+                                                <img src="{{ asset('assets/images/icons/delete.svg') }}" alt="Delete">
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

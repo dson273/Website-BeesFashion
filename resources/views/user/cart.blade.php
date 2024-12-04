@@ -254,12 +254,8 @@
                                                                                 class="fa-solid fa-chevron-down"></i></span>
                                                                     </button>
 
-                                                                    <div id="variantBox" class="variant-box">
-                                                                        <div id="variantsContainer"></div>
-                                                                        <!-- Hiển thị các biến thể sản phẩm -->
-                                                                        <div id="attributesContainer"></div>
-                                                                        <!-- Hiển thị các thuộc tính -->
-                                                                        <!-- Các nút xác nhận và trở lại -->
+                                                                    <div id="variantBox" class="variant-box" data-product-id="" data-variant-id="">
+                                                                        <div id="attributes-container"></div>
                                                                         <div class="buttons-container">
                                                                             <button type="button" class="back-button"
                                                                                 id="backButton">Trở lại</button>

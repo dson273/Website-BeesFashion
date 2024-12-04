@@ -2,8 +2,8 @@
 //-----------------Định dạng tiền tệ-----------------
 function formatCurrency(amount) {
     amount = parseFloat(amount);
-    if (isNaN(amount)) return "0 VND";
-    return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    if (isNaN(amount)) return "0 đ";
+    return amount.toLocaleString('vi-VN') + "đ";
 }
 // ----------------Chuyển đổi đối tượng thành mảng-----------------
 function convertObjectToArray(object) {
@@ -36,324 +36,214 @@ function formatDate(dateString) {
     // Sử dụng Intl.DateTimeFormat để định dạng
     return new Intl.DateTimeFormat('en-US', options).format(date);
 }
-
-//Cập nhật profile
-$('#edit-profile').on('hidden.bs.modal', function () {
-    $('#edit-profile-form')[0].reset();
-    // Xóa các class lỗi (nếu cần)
-    $('.is-invalid').removeClass('is-invalid');
-    $('.invalid-feedback').remove();
-});
 $(document).ready(function () {
-    $('#edit-profile-form').on('submit', function (event) {
-        event.preventDefault();
+    // Validation utilities
+    const ValidationUtils = {
+        clearFormErrors: (formElement) => {
+            $(formElement).find('.is-invalid').removeClass('is-invalid');
+            $(formElement).find('.invalid-feedback').remove();
+        },
 
-        // Lấy dữ liệu từ form
-        let full_name = $('#edit-profile-form').find('input[name="full_name"]').val().trim();
-        let phone = $('#edit-profile-form').find('input[name="phone"]').val().trim();
-        let email = $('#edit-profile-form').find('input[name="email"]').val().trim();
-        let _token = $('input[name="_token"]').val();
-        let url = $(this).attr('action');
+        displayErrors: (form, errors) => {
+            ValidationUtils.clearFormErrors(form);
 
-        // Gửi AJAX request
-        $.ajax({
-            url: url,
-            type: 'PUT',
-            data: {
-                full_name: full_name,
-                phone: phone,
-                email: email,
-                _token: _token
-            },
-            dataType: 'json',
-            success: function (response) {
-                if (response.success) {
-                    // Thay đổi dữ liệu trên profile
-                    $('.profile-name h6').text(email);
-                    $('.profile-information li:contains("Name") p').text(response.data
-                        .full_name || 'Not updated yet');
-                    $('.profile-information li:contains("Phone") p').text(response.data
-                        .phone || 'Not updated yet');
-                    $('.profile-information li:contains("Email") p').text(response.data
-                        .email);
-                    $('.dashboard-user-name b').text(response.data.full_name ? response
-                        .data.full_name : response.data.username);
-                    // Đóng modal sau khi thành công
-                    $('#edit-profile').modal('hide');
-                    // Hiển thị thông báo thành công
-                    notification('success', response.message, 'Successfully!');
-                    // Xóa dữ liệu trong các ô input
-                    $('#edit-profile-form')[0].reset();
-                }
-            },
-            error: function (error) {
-                // Xử lý lỗi trả về từ server (validation errors)
-                if (error.responseJSON && error.responseJSON.errors) {
-                    let errors = error.responseJSON.errors;
-                    // Xóa các lỗi cũ
-                    $('.invalid-feedback').text('');
-                    $('.form-control').removeClass('is-invalid');
-                    for (let key in errors) {
-                        let input = $('input[name="' + key + '"]');
-                        let errMsg = errors[key][0];
-                        // Hiển thị thông báo lỗi
-                        if (input.length) {
-                            input.addClass('is-invalid');
-                            input.next('.invalid-feedback').text(errMsg);
-                        }
-                    }
-                } else {
-                    console.error('Unknown error occurred');
-                }
+            for (let key in errors) {
+                const input = $(form).find(`[name="${key}"]`);
+                const textarea = $(form).find(`textarea[name="${key}"]`);
+                const element = input.length ? input : textarea;
+
+                if (!element.length) continue;
+
+                const errorMessage = errors[key][0];
+                element.addClass('is-invalid');
+                element.siblings('.invalid-feedback').remove();
+                element.after('<div class="invalid-feedback">' + errorMessage + '</div>');
             }
-        });
-    });
-});
+        }
+    };
 
-//Edit password
-$('#edit-password').on('hidden.bs.modal', function () {
-    $('#edit-password-form')[0].reset();
-    // Xóa các class lỗi (nếu cần)
-    $('.is-invalid').removeClass('is-invalid');
-    $('.invalid-feedback').remove();
-});
-$(document).ready(function () {
-    $('#edit-password-form').on('submit', function (e) {
-        e.preventDefault();
-        // Lấy dữ liệu từ form
-        let current_password = $('#edit-password-form').find('input[name="current_password"]').val()
-            .trim();
-        let new_password = $('#edit-password-form').find('input[name="new_password"]').val().trim();
-        let new_password_confirmation = $('#edit-password-form').find(
-            'input[name="new_password_confirmation"]').val().trim();
-        let _token = $('input[name="_token"]').val();
-        let url = $(this).attr('action');
+    // Base Modal Handler Class
+    class ModalHandler {
+        constructor(modalId, formId) {
+            this.modal = $(`#${modalId}`);
+            this.form = $(`#${formId}`);
+            this.setupModalEvents();
+        }
 
-        // Xóa các lỗi cũ
-        $('.invalid-feedback').text('');
-        $('.form-control').removeClass('is-invalid');
-        $.ajax({
-            url: url,
-            type: 'PUT',
-            data: {
-                current_password: current_password,
-                new_password: new_password,
-                new_password_confirmation: new_password_confirmation,
-                _token: _token
-            },
-            dataType: 'json',
-            success: function (response) {
-                // Đóng modal sau khi thành công
-                $('#edit-password').modal('hide');
-                // Hiển thị thông báo thành công
-                notification('success', response.message, 'Successfully!');
-                // Xóa dữ liệu trong các ô input
-                $('#edit-password-form')[0].reset();
-            },
-            error: function (error) {
-                // Xử lý lỗi trả về từ server (validation errors)
-                if (error.responseJSON && error.responseJSON.errors) {
-                    let errors = error.responseJSON.errors;
-                    for (let key in errors) {
-                        let input = $('input[name="' + key + '"]');
-                        let errMsg = errors[key][0];
+        setupModalEvents() {
+            this.modal.on('hidden.bs.modal', () => {
+                this.form[0].reset();
+                ValidationUtils.clearFormErrors(this.form);
+            });
 
-                        // Tìm phần tử chứa thông báo lỗi và đặt thông báo lỗi vào đó
-                        let feedbackElement = input.siblings('.invalid-feedback');
-                        if (feedbackElement.length) {
-                            feedbackElement.text(errMsg);
-                        } else {
-                            // Nếu không tìm thấy phần tử invalid-feedback, tạo mới
-                            input.after('<div class="invalid-feedback">' + errMsg +
-                                '</div>');
-                        }
+            this.modal.on('show.bs.modal', () => {
+                ValidationUtils.clearFormErrors(this.form);
+            });
+        }
 
-                        input.addClass('is-invalid');
+        handleSubmit(url, method, data, successCallback) {
+            $.ajax({
+                url: url,
+                type: method,
+                data: data,
+                dataType: 'json',
+                success: (response) => {
+                    if (response.success) {
+                        this.modal.modal('hide');
+                        this.form[0].reset();
+                        notification('success', response.message, 'Successfully!');
+                        if (successCallback) successCallback(response);
                     }
-                    notification('error', error.responseJSON.errors, 'Error!');
-                } else {
-                    console.error('Unknown error occurred');
-                }
-            }
-        })
-    })
-});
-
-//Add address
-$('#add-address').on('hidden.bs.modal', function () {
-    $('#add-address-form')[0].reset();
-    // Xóa các class lỗi (nếu cần)
-    $('.is-invalid').removeClass('is-invalid');
-    $('.invalid-feedback').remove();
-});
-$(document).ready(function () {
-    $('#add-address-form').on('submit', function (event) {
-        event.preventDefault();
-
-        // Lấy dữ liệu từ form
-        let full_name = $('#add-address-form').find('input[name="full_name"]').val().trim();
-        let phone_number = $('#add-address-form').find('input[name="phone_number"]').val().trim();
-        let address = $('#add-address-form').find('textarea[name="address"]').val().trim();
-        let _token = $('input[name="_token"]').val();
-        let url = $(this).attr('action');
-
-        // Gửi AJAX request
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-                full_name: full_name,
-                phone_number: phone_number,
-                address: address,
-                _token: _token
-            },
-            dataType: 'json',
-            success: function (response) {
-                if (response.success) {
-                    // Đóng modal sau khi thành công
-                    $('#add-address').modal('hide');
-                    // Xóa dữ liệu trong các ô input
-                    $('#add-address-form')[0].reset();
-                    window.location.reload();
-                    // Hiển thị thông báo thành công
-                    notification('success', response.message, 'Successfully!');
-                }
-            },
-            error: function (error) {
-                // Xử lý lỗi trả về từ server (validation errors)
-                if (error.responseJSON && error.responseJSON.errors) {
-                    let errors = error.responseJSON.errors;
-
-                    // Xóa các thông báo lỗi cũ
-                    $('.invalid-feedback').remove();
-                    $('.form-control').removeClass('is-invalid');
-
-                    for (let key in errors) {
-                        let input = $('input[name="' + key + '"]');
-                        let textarea = $('textarea[name="' + key + '"]');
-                        let errorMessage = errors[key][0];
-
-                        // Thêm thông báo lỗi cho input
-                        if (input.length) {
-                            input.addClass('is-invalid');
-                            let feedbackElement = input.siblings('.invalid-feedback');
-                            if (feedbackElement.length) {
-                                feedbackElement.text(errorMessage);
-                            } else {
-                                input.after('<div class="invalid-feedback">' +
-                                    errorMessage + '</div>');
-                            }
+                },
+                error: (error) => {
+                    if (error.responseJSON?.errors) {
+                        ValidationUtils.displayErrors(this.form[0], error.responseJSON.errors);
+                        if (error.responseJSON.errors.constructor === String) {
+                            notification('error', error.responseJSON.errors, 'Error!');
                         }
-
-                        // Thêm thông báo lỗi cho textarea
-                        if (textarea.length) {
-                            textarea.addClass('is-invalid');
-                            let feedbackElements = textarea.siblings(
-                                '.invalid-feedback');
-                            if (feedbackElements.length) {
-                                feedbackElements.text(errorMessage);
-                            } else {
-                                textarea.after('<div class="invalid-feedback">' +
-                                    errorMessage + '</div>');
-                            }
-                        }
+                    } else {
+                        console.error('Unknown error occurred');
                     }
-                } else {
-                    console.error('Unknown error occurred');
                 }
-            }
+            });
+        }
+    }
 
-        });
-    });
-});
+    // Edit Profile Handler
+    class EditProfileHandler extends ModalHandler {
+        constructor() {
+            super('edit-profile', 'edit-profile-form');
+            this.setupSubmitHandler();
+        }
 
-//edit address
-$('#edit-address').on('hidden.bs.modal', function () {
-    $('#edit-address-form')[0].reset();
-    // Xóa các class lỗi (nếu cần)
-    $('.is-invalid').removeClass('is-invalid');
-    $('.invalid-feedback').remove();
-});
-$(document).ready(function () {
-    // Mở modal và điền thông tin khi bấm "Edit"
-    $('.btn_edit_address').on('click', function () {
-        let addressId = $(this).data('id');
-        let url = '/dashboard/edit-address/' + addressId;
+        setupSubmitHandler() {
+            this.form.on('submit', (event) => {
+                event.preventDefault();
+                const formData = {
+                    full_name: this.form.find('input[name="full_name"]').val().trim(),
+                    phone: this.form.find('input[name="phone"]').val().trim(),
+                    email: this.form.find('input[name="email"]').val().trim(),
+                    _token: $('input[name="_token"]').val()
+                };
 
-        // Lấy thông tin hiện tại từ các thẻ HTML và điền vào form
-        let full_name = $(this).data('full_name');
-        let phone_number = $(this).data('phone_number');
-        let address = $(this).data('address');
+                this.handleSubmit(
+                    this.form.attr('action'),
+                    'PUT',
+                    formData,
+                    this.updateProfileUI
+                );
+            });
+        }
 
-        $('#edit-address-form').find('input[name="full_name"]').val(full_name);
-        $('#edit-address-form').find('input[name="phone_number"]').val(phone_number);
-        $('#edit-address-form').find('textarea[name="address"]').val(address);
-        $('#edit-address-form').attr('action', url);
-        $('#edit-address-form').data('box', $(this).closest('.delivery-address-box'));
-    });
+        updateProfileUI(response) {
+            $('.profile-name h6').text(response.data.email);
+            $('.profile-information li:contains("Name") p').text(response.data.full_name || 'Not updated yet');
+            $('.profile-information li:contains("Phone") p').text(response.data.phone || 'Not updated yet');
+            $('.profile-information li:contains("Email") p').text(response.data.email);
+            $('.dashboard-user-name b').text(response.data.full_name ? response.data.full_name : response.data.username);
+        }
+    }
 
-    // Gửi form qua AJAX khi nhấn Submit
-    $('#edit-address-form').on('submit', function (e) {
-        e.preventDefault();
+    class EditPasswordHandler extends ModalHandler {
+        constructor() {
+            super('edit-password', 'edit-password-form');
+            this.setupSubmitHandler();
+        }
 
-        let formData = $(this).serialize();
-        let url = $(this).attr('action');
-        let addressBox = $(this).data('box');
-        $.ajax({
-            url: url,
-            type: 'PUT',
-            data: formData,
-            success: function (response) {
-                //Thay đổi dữ liệu trên address
-                addressBox.find('.address-title').text(response.data.full_name);
-                addressBox.find('.address-tag-office:contains("Address:")').next('p').text(response.data.address);
-                addressBox.find('.address-tag-office:contains("Phone:")').next('p').text(response.data.phone_number);
-                $('#edit-address').modal('hide');
-                notification('success', response.message, 'Successfully!');
-            },
-            error: function (error) {
-                if (error.responseJSON && error.responseJSON.errors) {
-                    let errors = error.responseJSON.errors;
-                    // Xóa lỗi cũ
-                    $('.invalid-feedback').text('');
-                    $('.form-control').removeClass('is-invalid');
+        setupSubmitHandler() {
+            this.form.on('submit', (event) => {
+                event.preventDefault();
+                const formData = {
+                    current_password: this.form.find('input[name="current_password"]').val().trim(),
+                    new_password: this.form.find('input[name="new_password"]').val().trim(),
+                    new_password_confirmation: this.form.find('input[name="new_password_confirmation"]').val().trim(),
+                    _token: $('input[name="_token"]').val()
+                };
 
-                    for (let key in errors) {
-                        let input = $('input[name="' + key + '"]');
-                        let textarea = $('textarea[name="' + key + '"]');
-                        let errorMessage = errors[key][0];
+                this.handleSubmit(
+                    this.form.attr('action'),
+                    'PUT',
+                    formData
+                );
+            });
+        }
+    }
 
-                        // Thêm thông báo lỗi cho input
-                        if (input.length) {
-                            input.addClass('is-invalid');
-                            let feedbackElement = input.siblings('.invalid-feedback');
-                            if (feedbackElement.length) {
-                                feedbackElement.text(errorMessage);
-                            } else {
-                                input.after('<div class="invalid-feedback">' +
-                                    errorMessage + '</div>');
-                            }
-                        }
+    // Add Address Handler
+    class AddAddressHandler extends ModalHandler {
+        constructor() {
+            super('add-address', 'add-address-form');
+            this.setupSubmitHandler();
+        }
 
-                        // Thêm thông báo lỗi cho textarea
-                        if (textarea.length) {
-                            textarea.addClass('is-invalid');
-                            let feedbackElements = textarea.siblings(
-                                '.invalid-feedback');
-                            if (feedbackElements.length) {
-                                feedbackElements.text(errorMessage);
-                            } else {
-                                textarea.after('<div class="invalid-feedback">' +
-                                    errorMessage + '</div>');
-                            }
-                        }
-                    }
-                } else {
-                    console.error('Unknown error occurred');
-                }
-            }
-        });
-    });
+        setupSubmitHandler() {
+            this.form.on('submit', (event) => {
+                event.preventDefault();
+                const formData = {
+                    full_name: this.form.find('input[name="full_name"]').val().trim(),
+                    phone_number: this.form.find('input[name="phone_number"]').val().trim(),
+                    address: this.form.find('textarea[name="address"]').val().trim(),
+                    _token: $('input[name="_token"]').val()
+                };
+
+                this.handleSubmit(
+                    this.form.attr('action'),
+                    'POST',
+                    formData,
+                    () => window.location.reload()
+                );
+            });
+        }
+    }
+
+    // Edit Address Handler
+    class EditAddressHandler extends ModalHandler {
+        constructor() {
+            super('edit-address', 'edit-address-form');
+            this.setupEditButtons();
+            this.setupSubmitHandler();
+        }
+
+        setupEditButtons() {
+            $('.btn_edit_address').on('click', (event) => {
+                const button = $(event.currentTarget);
+                const addressId = button.data('id');
+                const url = '/dashboard/edit-address/' + addressId;
+
+                this.form.find('input[name="full_name"]').val(button.data('full_name'));
+                this.form.find('input[name="phone_number"]').val(button.data('phone_number'));
+                this.form.find('textarea[name="address"]').val(button.data('address'));
+                this.form.attr('action', url);
+                this.form.data('box', button.closest('.delivery-address-box'));
+            });
+        }
+
+        setupSubmitHandler() {
+            this.form.on('submit', (event) => {
+                event.preventDefault();
+                const addressBox = this.form.data('box');
+
+                this.handleSubmit(
+                    this.form.attr('action'),
+                    'PUT',
+                    this.form.serialize(),
+                    (response) => this.updateAddressUI(addressBox, response)
+                );
+            });
+        }
+
+        updateAddressUI(addressBox, response) {
+            addressBox.find('.address-title').text(response.data.full_name);
+            addressBox.find('.address-tag-office:contains("Address:")').next('p').text(response.data.address);
+            addressBox.find('.address-tag-office:contains("Phone:")').next('p').text(response.data.phone_number);
+        }
+    }
+
+    // Initialize all handlers
+    new EditProfileHandler();
+    new EditPasswordHandler();
+    new AddAddressHandler();
+    new EditAddressHandler();
 });
 
 //==================================ORDER==================================
@@ -593,8 +483,8 @@ function load_orders(list_orders, status_order = 0) {
                 ['fa-solid', 'fa-star'],
                 ['fa-solid', 'fa-star'],
                 ['fa-solid', 'fa-star'],
-                ['fa-solid', 'fa-star-half-stroke'],
-                ['fa-regular', 'fa-star']
+                ['fa-solid', 'fa-star'],
+                ['fa-solid', 'fa-star'],
             ];
             starIcons.forEach(iconClasses => {
                 let star = document.createElement('i');
@@ -713,7 +603,7 @@ function load_orders(list_orders, status_order = 0) {
         })
     }
 }
-
+//===============================Xử lý thay đổi trạng thái đơn hàng===============================
 var order_status_selected = 0;
 async function change_order_status(status_of_order) {
     if (order_status_selected != status_of_order) {
@@ -1177,13 +1067,10 @@ $(document).on('click', '.btn_view_order_detail', async function () {
             }
 
             if (data_order_detail_by_id[0]['order_details'].length > 0) {
-                data_order_detail_by_id[0]['order_details'].forEach(async function (order_detail_item) {
-                    loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
-                })
-                setTimeout(function () {
-                    loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
-                }, 1000);
-                // Tạo phần tử <tr>
+                for (const order_detail_item of data_order_detail_by_id[0]['order_details']) {
+                    await loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
+                }
+                loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
             } else {
                 let notHaveProductRow = document.createElement('tr');
 
@@ -1296,7 +1183,7 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
 
     const productTitle = document.createElement("h5");
     productTitle.classList.add("fs-12");
-    productTitle.textContent = order_detail_item['product_variant']['product']['name'];
+    productTitle.textContent = order_detail_item['product_variant']['product']['name'].substring(0, 20) + "...";
 
     const sizeSpan = document.createElement("span");
     sizeSpan.classList.add("fs-12");
@@ -1413,7 +1300,7 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
     if (show_star) {
         $("#order_detail_" + order_detail_item['id']).rateYo({
             rating: parseFloat(sub_data_vote.star),
-            fullStar: false,
+            fullStar: true,
             precision: 1,
             starWidth: "15px",
             readOnly: true,
@@ -1421,6 +1308,7 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
         });
     }
 }
+//===========================================Xử lý tải dòng hiển thị tổng sp phụ===========================================
 function loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product) {
     let toSumUpRow = document.createElement('tr');
 
@@ -1515,23 +1403,27 @@ $(document).on('click', '.btn_vote_order_detail', function () {
             voted_star = 0;
             voted = false;
             order_detail_id_of_order_detail_voting = order_detail_id;
+
             $("#vote_by_star").rateYo({
-                rating: 0,
-                fullStar: false,
+                rating: 5,
+                fullStar: true,
                 precision: 1,
                 starWidth: "35px",
                 readOnly: false,
+                step: 1,
                 ratedFill: "#cca270",
                 onSet: function (rating) {
                     number_of_stars = rating;
                     notification('success', 'Đánh giá của bạn là: ' + number_of_stars + ' sao!', '', 2000);
-                    if (rating != 0) {
+                    if (rating > 0) {
                         voted = true;
                         voted_star = rating;
+                    } else {
+                        $(this).rateYo("rating", 1);
                     }
                 },
             });
-            $("#vote_by_star").rateYo("rating", 0);
+            $("#vote_by_star").rateYo("rating", 5);
             $('#product_name_vote_order_detail_modal').text(order_detail_product_name);
             $('#product_variant_name_vote_order_detail_modal').text(order_detail_product_variant_name);
             $('#product_variant_image_vote_order_detail_modal').attr('src', `uploads/products/images/${order_detail_product_variant_image}`);
@@ -1571,12 +1463,10 @@ $('#btn_submit_vote_order_detail').on('click', async function () {
                 }
 
                 if (result_of_vote_order_detail['order_details'].length > 0) {
-                    result_of_vote_order_detail['order_details'].forEach(async function (order_detail_item) {
-                        loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
-                    })
-                    setTimeout(function () {
-                        loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
-                    }, 1000);
+                    for (const order_detail_item of result_of_vote_order_detail['order_details']) {
+                        await loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
+                    }
+                    loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
                     // Tạo phần tử <tr>
                 } else {
                     let notHaveProductRow = document.createElement('tr');
@@ -1655,17 +1545,23 @@ $(document).on('click', '.btn_view_rated', function () {
         var order_detail_star = $(this).data('star');
         var order_detail_review_content = $(this).data('review-content');
         var order_detail_edit_status = $(this).data('edit-status');
-        console.log(order_detail_edit_status);
+
 
 
         var number_of_stars = 0;
+
+        console.log(order_detail_id_of_review_order_detail_voting);
         if (order_detail_id_of_review_order_detail_voting != order_detail_id) {
             edit_voted_star = order_detail_star;
             edit_voted = false;
+            if (order_detail_id_of_review_order_detail_voting != null) {
+                $("#review_vote_by_star_modal").rateYo("destroy");
+            }
             order_detail_id_of_review_order_detail_voting = order_detail_id;
+
             $("#review_vote_by_star_modal").rateYo({
                 rating: order_detail_star,
-                fullStar: false,
+                fullStar: true,
                 precision: 1,
                 starWidth: "35px",
                 readOnly: true,
@@ -1701,7 +1597,13 @@ $(document).on('click', '.btn_view_rated', function () {
         $('.container-spinner').addClass('hidden');
     }
 })
-
+//)===========================================Xử lý khi modal review ẩn)===========================================
+$('#review-vote-order-detail-modal').on('hidden.bs.modal', function (e) {
+    $('#btn_edit_vote_order_detail').removeClass('hidden');
+    $('#div_btn_confirm_edit_done_and_btn_cancel_edit').addClass('hidden');
+    $('#review_content_vote_modal').attr('disabled', true);
+});
+//===========================================Xử lý khi bấm vào nút edit của form review modal===========================================
 $(document).on('click', '#btn_edit_vote_order_detail', function () {
     $('.container-spinner').removeClass('hidden');
     try {
@@ -1712,19 +1614,21 @@ $(document).on('click', '#btn_edit_vote_order_detail', function () {
         $("#review_vote_by_star_modal").rateYo("destroy");
         $("#review_vote_by_star_modal").rateYo({
             rating: old_star,
-            fullStar: false,
+            fullStar: true,
             precision: 1,
             starWidth: "35px",
             readOnly: false,
+            step: 1,
             ratedFill: "#cca270",
             onSet: function (rating) {
                 notification('success', 'Đánh giá của bạn là: ' + rating + ' sao!', '', 2000);
-                if (rating != 0) {
+                if (rating > 0) {
                     edit_voted = true;
                     edit_voted_star = rating;
                 } else {
                     edit_voted_star = 0;
                     edit_voted = false;
+                    $(this).rateYo("rating", 1);
                 }
             },
         });
@@ -1734,15 +1638,15 @@ $(document).on('click', '#btn_edit_vote_order_detail', function () {
         $('.container-spinner').addClass('hidden');
     }
 })
+//===========================================Xử lý khi bấm vào nút hủy edit của form review modal===========================================
 $(document).on('click', '#btn_cancel_edit_vote_order_detail', function () {
     $('.container-spinner').removeClass('hidden');
     try {
         var old_star = $(this).data('star');
-        $('#review_content_vote_modal').attr('disabled');
         $("#review_vote_by_star_modal").rateYo("destroy");
         $("#review_vote_by_star_modal").rateYo({
             rating: old_star,
-            fullStar: false,
+            fullStar: true,
             precision: 1,
             starWidth: "35px",
             readOnly: true,
@@ -1784,12 +1688,10 @@ $('#btn_submit_edit_vote_order_detail').on('click', async function () {
                 }
 
                 if (result_of_edit_vote_order_detail['order_details'].length > 0) {
-                    result_of_edit_vote_order_detail['order_details'].forEach(async function (order_detail_item) {
-                        loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
-                    })
-                    setTimeout(function () {
-                        loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
-                    }, 1000);
+                    for (const order_detail_item of result_of_edit_vote_order_detail['order_details']) {
+                        await loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
+                    }
+                    loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
                     // Tạo phần tử <tr>
                 } else {
                     let notHaveProductRow = document.createElement('tr');
@@ -1821,6 +1723,7 @@ $('#btn_submit_edit_vote_order_detail').on('click', async function () {
                 edit_voted = false;
                 edit_voted_star = 0;
                 order_detail_id_of_review_order_detail_voting = null;
+                $("#review_vote_by_star_modal").rateYo("destroy");
             } else {
                 notification('error', 'Có lỗi xảy ra khi sửa đánh giá sản phẩm, vui lòng tải lại trang!', 'Error!', 2000);
             }
@@ -1833,6 +1736,7 @@ $('#btn_submit_edit_vote_order_detail').on('click', async function () {
         $('.container-spinner').addClass('hidden');
     }
 })
+//===========================================Xử lý khi cập nhật đánh giá===========================================
 function edit_vote_order_detail(order_detail_id, vote_id, content, star) {
     return new Promise((resolve, reject) => {
         $.ajax({

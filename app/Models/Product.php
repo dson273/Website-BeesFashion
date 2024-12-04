@@ -66,41 +66,60 @@ class Product extends Model
     {
         return $this->hasMany(Product_view_history::class);
     }
-    public function getPriceRangeAttribute()
+  
+    public function getPriceRange()
     {
-        $salePrices = $this->product_variants->pluck('sale_price');
-        $importPrices = $this->product_variants->pluck('regular_price');
+        $variants = $this->product_variants;
 
-        $minSalePrice = $salePrices->min();
-        $maxSalePrice = $salePrices->max();
-        $minImportPrice = $importPrices->min();
-        $maxImportPrice = $importPrices->max();
+        // Lọc các biến thể có `sale_price` không null
+        $variantsWithSalePrice = $variants->filter(function ($variant) {
+            return $variant->sale_price !== null;
+        });
 
-        if ($salePrices->every(fn($price) => $price === null)) {
-            // Tất cả sale_price đều là null
-            return number_format($minImportPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxImportPrice, 0, ',', '.') . 'đ';
-        } elseif ($salePrices->contains(null)) {
-            // Có sale_price null
-            if ($minSalePrice === null) {
-                return $maxSalePrice === $minImportPrice
-                    ? number_format($maxSalePrice, 0, ',', '.')
-                    : number_format($minImportPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxSalePrice, 0, ',', '.') . 'đ';
-            } elseif ($maxSalePrice === null) {
-                return $minSalePrice === $maxImportPrice
-                    ? number_format($minSalePrice, 0, ',', '.')
-                    : number_format($minSalePrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxImportPrice, 0, ',', '.') . 'đ';
-            } else {
-                return $minImportPrice === $maxSalePrice
-                    ? number_format($minImportPrice, 0, ',', '.')
-                    : number_format($maxSalePrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxImportPrice, 0, ',', '.') . 'đ';
-            }
+        // Lọc các biến thể chỉ có `regular_price`
+        $variantsWithoutSalePrice = $variants->filter(function ($variant) {
+            return $variant->sale_price === null;
+        });
+
+        // Tìm giá trị thấp nhất và cao nhất
+        if ($variantsWithSalePrice->isNotEmpty()) {
+            $minPrice = $variantsWithSalePrice->min('sale_price');
+            $maxPrice = $variantsWithoutSalePrice->isNotEmpty()
+                ? $variantsWithoutSalePrice->max('regular_price')
+                : $variantsWithSalePrice->max('sale_price');
         } else {
-            // Có sale_price cho tất cả
-            if ($minSalePrice === $maxSalePrice || $minSalePrice === $maxImportPrice || $maxSalePrice === $minImportPrice) {
-                return number_format(min($minSalePrice, $maxSalePrice, $minImportPrice, $maxImportPrice), 0, ',', '.') . 'đ';
-            }
-            return number_format($minSalePrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxSalePrice, 0, ',', '.') . 'đ';
+            $minPrice = $variantsWithoutSalePrice->min('regular_price');
+            $maxPrice = $variantsWithoutSalePrice->max('regular_price');
         }
+
+        // Trả về khoảng giá
+        return $minPrice === $maxPrice
+            ? number_format($minPrice, 0, ',', '.') . 'đ'
+            : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
+    }
+
+    public function getRegularPrice()
+    {
+        $variants = $this->product_variants;
+        return $variants->max('regular_price');
+    }
+
+    public function getDiscountPercent()
+    {
+        $variants = $this->product_variants;
+        $maxRegularPrice = $variants->max('regular_price');
+        $variantsWithSalePrice = $variants->filter(function ($variant) {
+            return $variant->sale_price !== null;
+        });
+
+        $minSalePrice = $variantsWithSalePrice->min('sale_price');
+
+        if ($maxRegularPrice && $minSalePrice) {
+            $discountPercent = number_format((100 - ($minSalePrice / $maxRegularPrice * 100)), 1, '.', '');
+            return '-' . $discountPercent . '%';
+        }
+
+        return 'Hot!';
     }
 
 }

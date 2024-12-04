@@ -19,7 +19,7 @@ Route::get('/', [HomeController::class, 'index'])->name('/');
 //Trang chi tiết sản phẩm
 Route::get('productDetail/{sku}', [ProductDetailController::class, 'index'])->name('product.detail');
 Route::post('productDetail', [ProductDetailController::class, 'updateInformationProduct'])->name('userProductDetailFocused');
-
+Route::post('cart', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
 
 //Thêm sản phẩm vào giỏ trang chủ
 Route::get('/get-product-details/{productId}', [HomeController::class, 'getProductDetails']);
@@ -84,19 +84,19 @@ Route::middleware('auth')->group(function () {
 
     //Trang giỏ hàng
     Route::get('cart', [CartController::class, 'index'])->name('cart');
-    Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
     Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
     Route::get('cart/product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('getProductVariants');
     Route::post('product/{product_id}/update-variant', [CartController::class, 'updateVariant']);//cập nhật biến thể trong giỏ hàng
     Route::get('product/{product_id}/variants', [CartController::class, 'getProductVariants']);
     Route::get('api/cart-items', [CartController::class, 'getCartItemsApi']);
+
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     //Trang yêu thích
     Route::get('wishlist/{product_id}', [WishlistController::class, 'index']);
     //Checkout
- Route::prefix('check-out')->group(function () {
+    Route::prefix('check-out')->group(function () {
         Route::get('/', [CheckOutController::class, 'index'])->name('checkout');
         Route::post('/add-address', [CheckOutController::class, 'addAddress'])->name('checkout.addAddress');
         Route::post('/get-list-addresses', [CheckOutController::class, 'getListAddresses'])->name('checkout.getListAddresses');
@@ -120,6 +120,6 @@ Route::middleware('auth')->group(function () {
 
 
     //Thêm sản phẩm vào giỏ trang chủ
-//     Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
+    //     Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
 
 });
