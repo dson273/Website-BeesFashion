@@ -12,15 +12,15 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Danh sách khách hàng</h1>
-        <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+        <!--<h1 class="h3 mb-2 text-gray-800">Danh sách khách hàng</h1>
+         <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
                                             For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                                                DataTables documentation</a>.</p> -->
-        <p class="mb-2">Dưới đây là danh sách khách hàng</p>
+                                                DataTables documentation</a>.</p> 
+        <p class="mb-2">Dưới đây là danh sách khách hàng</p>-->
         <!-- DataTales Example -->
-        <div class="card shadow mb-4 ">
+        <div class="card shadow mb-2 ">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Dữ liệu của khách hàng</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Quản lý khách hàng</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -29,7 +29,7 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Tên đầy đủ</th>
-                                <th>Tên người đùng</th>
+                                <th>Tên người dùng</th>
                                 <th>Email</th>
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>

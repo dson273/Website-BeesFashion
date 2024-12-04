@@ -28,7 +28,7 @@
                     <!-- Hiển thị ảnh cũ nếu có -->
                     @if ($brandID->image)
                         <div class="mt-2">
-                            <img src="{{ asset('storage/uploads/brands/images/' .$brandID->image) }}" width="150px" alt="Brand Image">
+                            <img src="{{ asset('uploads/brands/images/' .$brandID->image) }}" width="150px" alt="Brand Image">
                         </div>
                     @endif
                     

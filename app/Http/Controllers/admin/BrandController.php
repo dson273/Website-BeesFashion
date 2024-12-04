@@ -42,7 +42,7 @@ class BrandController extends Controller
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('uploads/brands/images', $imageName, 'public');
+                $image->move(public_path('uploads/brands/images'), $imageName); 
                 $params['image'] = $imageName;
             } else {
                 $params['image'] = null;
@@ -83,15 +83,20 @@ class BrandController extends Controller
             $brandID = Brand::query()->findOrFail($id);
 
             if ($request->hasFile('image')) {
-                if ($brandID->image && Storage::disk('public')->exists($brandID->image)) {
-                    Storage::disk('public')->delete($brandID->image);
+                // Xóa ảnh cũ nếu có và ảnh mới được tải lên
+                if ($brandID->image && file_exists(public_path('uploads/brands/images/' . $brandID->image))) {
+                    unlink(public_path('uploads/brands/images/' . $brandID->image));
                 }
-
-                $name = $request->file('image')->getClientOriginalName();
-                $request->file('image')->storeAs('uploads/brands/images', $name, 'public');
-
-                $params['image'] = $name;
+        
+                // Tạo tên ảnh duy nhất và lưu ảnh mới
+                $image = $request->file('image');
+                $imageName = $image->hashName();
+                $image->move(public_path('uploads/brands/images'), $imageName);
+        
+                // Lưu tên ảnh mới
+                $params['image'] = $imageName;
             } else {
+                // Nếu không có ảnh mới, giữ ảnh cũ
                 $params['image'] = $brandID->image;
             }
 
@@ -110,10 +115,22 @@ class BrandController extends Controller
             // Tìm thương hiệu theo ID, nếu không tìm thấy sẽ trả về lỗi 404
             $brand = Brand::findOrFail($id);
 
-            // Kiểm tra nếu có hình ảnh và hình ảnh tồn tại trong storage
+            // Kiểm tra nếu thương hiệu này có sản phẩm liên kết
+            if ($brand->products()->exists()) {
+                // Nếu có sản phẩm, trả về thông báo lỗi
+                return redirect()->route('admin.brands.index')->with(
+                    'statusError',
+                    'Không thể xóa thương hiệu đã có sản phẩm nằm trong thương hiệu này!'
+                );
+            }
+
+            // Nếu không có sản phẩm liên kết, tiến hành xóa hình ảnh nếu có
             if ($brand->image && Storage::disk('public')->exists('uploads/brands/images/' . $brand->image)) {
                 // Xóa ảnh từ storage
                 Storage::disk('public')->delete('uploads/brands/images/' . $brand->image);
+            }
+            if ($brand->image && file_exists(public_path('uploads/brands/images/' . $brand->image))) {
+                unlink(public_path('uploads/brands/images/' . $brand->image));
             }
 
             // Xóa thương hiệu
@@ -123,7 +140,10 @@ class BrandController extends Controller
             return redirect()->route('admin.brands.index')->with('statusSuccess', 'Xóa thương hiệu thành công!');
         } catch (\Exception $e) {
             // Nếu có lỗi, thông báo lỗi và chuyển hướng về danh sách
-            return redirect()->route('admin.brands.index')->with('statusError', 'Có lỗi xảy ra khi xóa thương hiệu!');
+            return redirect()->route('admin.brands.index')->with(
+                'statusError',
+                'Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.'
+            );
         }
     }
 }

@@ -105,70 +105,61 @@
 
                         </div>
                     </div>
-                    <div class="col-xl-9 col-lg-8">
-                        <div class="tab-content" id="v-pills-tabContent">
-                            {{-- Dashboard --}}
-                            <div class="tab-pane fade show active" id="dashboard" role="tabpanel"
-                                aria-labelledby="dashboard-tab">
-                                <div class="dashboard-right-box">
-                                    <div class="my-dashboard-tab">
-                                        <div class="dashboard-items"> </div>
-                                        <div class="sidebar-title">
-                                            <div class="loader-line"></div>
-                                            <h4>My Dashboard</h4>
-                                        </div>
-                                        <div class="dashboard-user-name">
-                                            <h6>Hello,
-                                                <b>{{ Auth::user()->full_name ? Auth::user()->full_name : Auth::user()->username }}</b>
-                                            </h6>
-                                            <p>My dashboard provides a comprehensive overview of key metrics and data
-                                                relevant to your operations. It offers real-time insights into
-                                                performance,
-                                                including sales figures, website traffic, customer engagement, and more.
-                                                With customizable widgets and intuitive visualizations, it facilitates
-                                                quick
-                                                decision-making and allows you to track progress towards your goals
-                                                effectively.</p>
-                                        </div>
-                                        <div class="total-box">
-                                            <div class="row gy-4">
-                                                <div class="col-xl-4">
-                                                    <div class="totle-contain">
-                                                        <div class="wallet-point"><img
-                                                                src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/wallet.svg"
-                                                                alt=""><img class="img-1"
-                                                                src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/wallet.svg"
-                                                                alt=""></div>
-                                                        <div class="totle-detail">
-                                                            <h6>Balance</h6>
-                                                            <h4>$ 84.40 </h4>
-                                                        </div>
+
+                </div>
+                <div class="col-xl-9 col-lg-8">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        {{-- Dashboard --}}
+                        <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                            <div class="dashboard-right-box">
+                                <div class="my-dashboard-tab">
+                                    <div class="dashboard-items"> </div>
+                                    <div class="sidebar-title">
+                                        <div class="loader-line"></div>
+                                        <h4>My Dashboard</h4>
+                                    </div>
+                                    <div class="dashboard-user-name">
+                                        <h6>Hello,
+                                            <b>{{ Auth::user()->full_name ? Auth::user()->full_name : Auth::user()->username }}</b>
+                                        </h6>
+                                        <p>My dashboard provides a comprehensive overview of key metrics and data
+                                            relevant to your operations. It offers real-time insights into
+                                            performance,
+                                            including sales figures, website traffic, customer engagement, and more.
+                                            With customizable widgets and intuitive visualizations, it facilitates
+                                            quick
+                                            decision-making and allows you to track progress towards your goals
+                                            effectively.</p>
+                                    </div>
+                                    <div class="total-box">
+                                        <div class="row gy-4">
+                                            <div class="col-xl-4">
+                                                <div class="totle-contain">
+                                                    <div class="wallet-point"><img src="{{asset('assets/images/user/wallet.svg')}}" alt=""><img class="img-1"
+                                                            src="{{asset('assets/images/user/wallet.svg')}}" alt=""></div>
+                                                    <div class="totle-detail">
+                                                        <h6>Spent</h6>
+                                                        <h4>{{number_format(Auth::user()->getTotalSpent(),0,',','.')}}đ</h4>
                                                     </div>
                                                 </div>
-                                                <div class="col-xl-4">
-                                                    <div class="totle-contain">
-                                                        <div class="wallet-point"><img
-                                                                src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/coin.svg"
-                                                                alt=""><img class="img-1"
-                                                                src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/coin.svg"
-                                                                alt=""></div>
-                                                        <div class="totle-detail">
-                                                            <h6>Total Points</h6>
-                                                            <h4>500</h4>
-                                                        </div>
+                                            </div>
+                                            <div class="col-xl-4">
+                                                <div class="totle-contain">
+                                                    <div class="wallet-point"><img src="{{asset('assets/images/user/coin.svg')}}" alt=""><img class="img-1"
+                                                            src="{{asset('assets/images/user/coin.svg')}}" alt=""></div>
+                                                    <div class="totle-detail">
+                                                        <h6>Rank</h6>
+                                                        <h4>{{Auth::user()->getMembershipRank()}}</h4>
                                                     </div>
                                                 </div>
-                                                <div class="col-xl-4">
-                                                    <div class="totle-contain">
-                                                        <div class="wallet-point"><img
-                                                                src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/order.svg"
-                                                                alt=""><img class="img-1"
-                                                                src="https://themes.pixelstrap.net/katie/assets/images/svg-icon/order.svg"
-                                                                alt=""></div>
-                                                        <div class="totle-detail">
-                                                            <h6>Total Orders</h6>
-                                                            <h4>12</h4>
-                                                        </div>
+                                            </div>
+                                            <div class="col-xl-4">
+                                                <div class="totle-contain">
+                                                    <div class="wallet-point"><img src="{{asset('assets/images/user/order.svg')}}" alt=""><img class="img-1"
+                                                            src="{{asset('assets/images/user/order.svg')}}" alt=""></div>
+                                                    <div class="totle-detail">
+                                                        <h6>Total Orders</h6>
+                                                        <h4>{{Auth::user()->getTotalOrders()}}</h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -855,9 +846,6 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -1538,5 +1526,8 @@
                 });
             });
         });
-    </script>
+
+    });
+</script>
+
 @endsection

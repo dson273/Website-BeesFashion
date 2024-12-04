@@ -674,7 +674,7 @@
                 <div class="title">
                     <h3>Latest Blog</h3>
                     <svg>
-                        <use href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#main-line"></use>
+                        <use href="{{asset('assets/images/user/icon-sprite.svg#zigzag')}}"></use>
                     </svg>
                 </div>
                 <div class="swiper blog-slide">
@@ -693,19 +693,11 @@
                                         <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                             Read
                                             More
-                                            <svg>
-                                                <use
-                                                    href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                                </use>
-                                            </svg>
+
                                         </a>
                                         <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                             Read More
-                                            <svg>
-                                                <use
-                                                    href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                                </use>
-                                            </svg>
+
                                         </a>
                                     </div>
                                 </div>
@@ -722,20 +714,12 @@
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
-                                        <svg>
-                                            <use
-                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                            </use>
-                                        </svg>
+                                        
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
-                                        <svg>
-                                            <use
-                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                            </use>
-                                        </svg>
+                                        
                                     </a>
                                 </div>
                             </div>
@@ -751,20 +735,12 @@
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
-                                        <svg>
-                                            <use
-                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                            </use>
-                                        </svg>
+                                        
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
-                                        <svg>
-                                            <use
-                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                            </use>
-                                        </svg>
+                                        
                                     </a>
                                 </div>
                             </div>
@@ -780,20 +756,12 @@
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
-                                        <svg>
-                                            <use
-                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                            </use>
-                                        </svg>
+                                        
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
-                                        <svg>
-                                            <use
-                                                href="https://themes.pixelstrap.net/katie/assets/svg/icon-sprite.svg#arrow">
-                                            </use>
-                                        </svg>
+                                        
                                     </a>
                                 </div>
                             </div>

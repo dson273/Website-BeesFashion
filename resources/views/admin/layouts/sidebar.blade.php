@@ -211,6 +211,20 @@
             </div>
         </div>
     </li>
+
+    {{-- Quản lý đánh giá --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRatings" aria-expanded="true" aria-controls="collapseRatings">
+            <i class="fa-regular fa-comment-dots text-light fa-5xl"></i>
+            <span>Quản lý đánh giá</span>
+        </a>
+        <div id="collapseRatings" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{ route('admin.ratings.index') }}">Danh sách</a>
+            </div>
+        </div>
+    </li>
     {{-- <!-- Divider -->
     <hr class="sidebar-divider">
 
