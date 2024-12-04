@@ -15059,7 +15059,7 @@ body.skeleton_body {
 
 .product-box .product-detail {
     padding-top: 18px;
-    position: relative
+    /* position: relative */
 }
 
 .product-box .product-detail .color-box {
@@ -15158,9 +15158,9 @@ body.skeleton_body {
 }
 
 .product-box .product-detail .add-button {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    position: absolute !important;
+    bottom: 0 !important;
+    right: 12px !important;
     background: #221F20;
     border-radius: 8px 0;
     width: 40px;
@@ -19847,25 +19847,27 @@ svg {
     pointer-events: auto;
 }
 
-.info-ticket{
-	position: absolute;
-	color: #fff;
-	font-weight: 600;
-	font-size: 14px;
-	line-height: 16px;
-	top: 0;
-	left: -7px;
-	z-index: 3;
+.info-ticket {
+    position: absolute;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    top: 0;
+    left: -7px;
+    z-index: 3;
 }
 
-.ticket-news{
-	background: url('../images/ticket/bg_news.png') no-repeat center/cover;
-	padding: 7px 18px 7px 15px;
-	text-transform: uppercase;
+.ticket-news {
+    background: url('../images/ticket/bg_news.png') no-repeat center/cover;
+    padding: 7px 18px 7px 15px;
+    text-transform: uppercase;
 }
+
 .info-ticket.ticket-news:after {
     border-top: 17px solid #AC2F33;
 }
+
 .info-ticket:after {
     content: "";
     position: absolute;
@@ -19877,6 +19879,7 @@ svg {
     left: 0px;
     z-index: -1;
 }
+
 .seller {
     background: url(../images/ticket/bg-seller.png) no-repeat center / cover;
     padding: 5px 18px 7px 15px;

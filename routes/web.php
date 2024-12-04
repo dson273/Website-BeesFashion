@@ -19,7 +19,7 @@ Route::get('/', [HomeController::class, 'index'])->name('/');
 //Trang chi tiết sản phẩm
 Route::get('productDetail/{sku}', [ProductDetailController::class, 'index'])->name('product.detail');
 Route::post('productDetail', [ProductDetailController::class, 'updateInformationProduct'])->name('userProductDetailFocused');
-Route::get('cart/{variant_id}/{quantity}', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
+Route::post('cart', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
 
 //Thêm sản phẩm vào giỏ trang chủ
 Route::get('/get-product-details/{productId}', [HomeController::class, 'getProductDetails']);

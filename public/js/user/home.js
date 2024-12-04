@@ -124,7 +124,7 @@ function displayProductDetailsInModal(product) {
     // Hiển thị thông tin cơ bản
     modal.find('#product-name').text(product.name);
     modal.find('#product-sku').text(`SKU: ${product.sku}`);
-    
+    $('#btn_view_detail_of_quick_view_product').attr('href', 'productDetail/' + product.sku);
     // Lọc các biến thể có sale_price và regular_price
     const variantsWithSalePrice = product.array_variants.filter((variant) => variant.sale_price !== null);
     const variantsWithoutSalePrice = product.array_variants.filter((variant) => variant.sale_price === null);
