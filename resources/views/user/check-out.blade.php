@@ -113,10 +113,10 @@
                                                 </div>
                                                 <div class="d-flex flex-column align-items-end">
                                                     <p class="text-nowrap" style="font-size: 14px;">
-                                                        {{ number_format($item['price'], 0, '.', ',') }}đ</p>
+                                                        {{ number_format($item['price'], 0, '.', '.') }}đ</p>
                                                     <p class="text-nowrap p_value_reduced hidden"
                                                         style="font-size: 13px;">-<span
-                                                            class="value_reduced text-success">{{ number_format($item['price'], 0, '.', ',') }}đ</span>
+                                                            class="value_reduced text-success">{{ number_format($item['price'], 0, '.', '.') }}đ</span>
                                                     </p>
                                                 </div>
                                                 <span
@@ -133,23 +133,23 @@
                                             <p>Subtotal</p>
                                             <div class="d-flex flex-column align-items-end">
                                                 <span
-                                                    id="sub_total">{{ number_format($check_out_data['sub_total'], 0, '.', ',') }}đ</span>
+                                                    id="sub_total">{{ number_format($check_out_data['sub_total'], 0, '.', '.') }}đ</span>
                                                 <span class="hidden text-danger fw-bold"
-                                                    id="new_sub_total">{{ number_format($check_out_data['sub_total'], 0, '.', ',') }}đ</span>
+                                                    id="new_sub_total">{{ number_format($check_out_data['sub_total'], 0, '.', '.') }}đ</span>
                                             </div>
                                             <input id="base_sub_total" type="hidden"
                                                 value="{{ $check_out_data['sub_total'] }}">
                                         </li>
                                         <li>
                                             <p>Shipping</p>
-                                            <span>{{ number_format($check_out_data['shipping_fee'], 0, '.', ',') }}đ</span>
+                                            <span>{{ number_format($check_out_data['shipping_fee'], 0, '.', '.') }}đ</span>
                                             <input type="hidden" id="shipping_price"
                                                 value="{{ $check_out_data['shipping_fee'] }}">
                                         </li>
                                         <li>
                                             <p>Tax <span class="color-of-theme" style="font-size:10px;">(0,5% tổng giá trị
                                                     đơn hàng)</span></p>
-                                            <span>{{ number_format($check_out_data['tax'], 0, '.', ',') }}đ</span>
+                                            <span>{{ number_format($check_out_data['tax'], 0, '.', '.') }}đ</span>
                                             <input id="base_tax" type="hidden" value="{{ $check_out_data['tax'] }}">
                                         </li>
 
@@ -165,7 +165,7 @@
                                             <span class="color-of-theme">
                                                 -
                                                 <span class="color-of-theme"
-                                                    id="shipping_voucher">{{ number_format($check_out_data['minimum_payment_for_free_ship'] > $check_out_data['sub_total'] ? 0 : $check_out_data['shipping_fee'], 0, '.', ',') }}đ</span>
+                                                    id="shipping_voucher">{{ number_format($check_out_data['minimum_payment_for_free_ship'] > $check_out_data['sub_total'] ? 0 : $check_out_data['shipping_fee'], 0, '.', '.') }}đ</span>
                                             </span>
                                         </li>
                                         <li id="liVoucher" class="hidden">
@@ -173,7 +173,7 @@
                                             <span class="color-of-theme">
                                                 -
                                                 <span class="color-of-theme"
-                                                    id="voucher">{{ number_format($check_out_data['shipping_fee'], 0, '.', ',') }}đ</span>
+                                                    id="voucher">{{ number_format($check_out_data['shipping_fee'], 0, '.', '.') }}đ</span>
                                             </span>
                                         </li>
 

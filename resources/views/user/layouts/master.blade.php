@@ -130,7 +130,6 @@
 
         const routeStoreOrder = "{{ route('checkout.storeOrder') }}";
         //===============Cart===============
-        //route UpdateQuatity
         const routeUpdateQuantity = "{{ route('cart.updateQuantity') }}";
 
         //===============Dashboard (Order)===============
@@ -141,6 +140,10 @@
         const routeGetVoteOrderDetail = "{{route('dashboard.getVoteOrderDetail')}}";
         const routeSubmitVoteOrderDetail = "{{route('dashboard.submitVoteOrderDetail')}}";
         const routeSubmitEditVoteOrderDetail = "{{route('dashboard.submitEditVoteOrderDetail')}}";
+
+        //======================Product detail====================
+        const routeUserProductDetailFocused = "{{route('userProductDetailFocused')}}";
+        const routeAddToCart = "{{route('addToCart')}}";
     </script>
 
     <!-- Short notification commands -->

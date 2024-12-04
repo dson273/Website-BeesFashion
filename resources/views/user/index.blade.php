@@ -177,7 +177,7 @@
                                         tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($newProducts as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="col-xxl-3 col-md-4 col-6 position-relative">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
                                                             <div class="info-ticket ticket-news">NEW</div>
@@ -867,7 +867,7 @@
 
                                     <div class="product-buttons">
                                         <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
-                                        <a class="btn btn-solid" href="#">View detail</a>
+                                        <a class="btn btn-solid" href="#" id="btn_view_detail_of_quick_view_product">View detail</a>
                                     </div>
                                 </div>
                             </div>

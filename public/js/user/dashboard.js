@@ -2,8 +2,8 @@
 //-----------------Định dạng tiền tệ-----------------
 function formatCurrency(amount) {
     amount = parseFloat(amount);
-    if (isNaN(amount)) return "0 VND";
-    return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    if (isNaN(amount)) return "0 đ";
+    return amount.toLocaleString('vi-VN') + "đ";
 }
 // ----------------Chuyển đổi đối tượng thành mảng-----------------
 function convertObjectToArray(object) {
@@ -593,8 +593,8 @@ function load_orders(list_orders, status_order = 0) {
                 ['fa-solid', 'fa-star'],
                 ['fa-solid', 'fa-star'],
                 ['fa-solid', 'fa-star'],
-                ['fa-solid', 'fa-star-half-stroke'],
-                ['fa-regular', 'fa-star']
+                ['fa-solid', 'fa-star'],
+                ['fa-solid', 'fa-star'],
             ];
             starIcons.forEach(iconClasses => {
                 let star = document.createElement('i');
@@ -713,7 +713,7 @@ function load_orders(list_orders, status_order = 0) {
         })
     }
 }
-
+//===============================Xử lý thay đổi trạng thái đơn hàng===============================
 var order_status_selected = 0;
 async function change_order_status(status_of_order) {
     if (order_status_selected != status_of_order) {
@@ -1293,7 +1293,7 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
 
     const productTitle = document.createElement("h5");
     productTitle.classList.add("fs-12");
-    productTitle.textContent = order_detail_item['product_variant']['product']['name'];
+    productTitle.textContent = order_detail_item['product_variant']['product']['name'].substring(0, 20) + "...";
 
     const sizeSpan = document.createElement("span");
     sizeSpan.classList.add("fs-12");

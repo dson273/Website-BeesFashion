@@ -94,8 +94,8 @@ class Product extends Model
 
         // Trả về khoảng giá
         return $minPrice === $maxPrice
-            ? number_format($minPrice, 0, ',', '.') . '₫'
-            : number_format($minPrice, 0, ',', '.') . '₫' . ' - ' . number_format($maxPrice, 0, ',', '.') . '₫';
+            ? number_format($minPrice, 0, ',', '.') . 'đ'
+            : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
     }
 
     public function getRegularPrice()
