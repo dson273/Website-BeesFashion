@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\user;
 
-use App\Models\Category;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Attribute_value;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Attribute;
 use App\Models\Product_file;
-use App\Models\Product_category;
+use Illuminate\Http\Request;
+use App\Models\Attribute_value;
 use App\Models\Product_variant;
+use App\Models\Product_category;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class FilterProductController extends Controller
 {
@@ -193,8 +195,7 @@ class FilterProductController extends Controller
             $query->whereIn('brand_id', $brandIds);
         }
 
-        // Lọc theo giá nếu có
-        // Lấy các sản phẩm đã lọc và tính toán giá min/max
+        // Lọc theo khoảng giá
         if ($request->has('min_price') || $request->has('max_price')) {
             $minPrice = $request->min_price;
             $maxPrice = $request->max_price;
@@ -279,7 +280,7 @@ class FilterProductController extends Controller
         $products = $products->map(function ($product) {
             $product->productURL = route('product.detail', ['sku' => $product->SKU]);
             // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
-            
+
             if ($product->image) {
                 $product->image_url = asset('uploads/products/images/' . $product->image);
             } else {
@@ -340,7 +341,8 @@ class FilterProductController extends Controller
         ]);
     }
 
-    public function getNewProduct(){
+    public function getNewProduct()
+    {
         $products = Product::with(['product_variants', 'product_files'])
             ->leftJoin('product_files', function ($join) {
                 $join->on('product_files.product_id', '=', 'products.id')
@@ -349,7 +351,7 @@ class FilterProductController extends Controller
             })
             ->where('products.is_active', 1)
             ->select('products.*', 'product_files.file_name as image')
-            ->orderBy('products.created_at', 'desc') 
+            ->orderBy('products.created_at', 'desc')
             ->get();
 
         // Tính toán giá trị min và max
@@ -442,49 +444,124 @@ class FilterProductController extends Controller
     }
 
 
-    public function sortProducts(Request $request)
+    public function getDescPriceProducts()
     {
-        // Mặc định sắp xếp theo "Sản phẩm bán chạy"
-        $sortBy = $request->input('sort_by', 'best_selling');
-
-        $query = Product::with(['product_variants', 'product_files'])
+        $products = Product::with(['product_variants', 'product_files'])
             ->leftJoin('product_files', function ($join) {
                 $join->on('product_files.product_id', '=', 'products.id')
                     ->where('product_files.is_default', 1)
                     ->where('product_files.file_type', 'image');
             })
             ->where('products.is_active', 1)
-            ->select('products.*', 'product_files.file_name as image');
-        // Tạo query builder để lấy danh sách sản phẩm
+            ->select('products.*', 'product_files.file_name as image')
+            ->get();
 
-        switch ($sortBy) {
-            case 'alphabetical_desc':
-                $query->orderByDesc('name');
-                break;
-            default:
-                // Sắp xếp theo mặc định (sản phẩm bán chạy hoặc tiêu chí khác)
-                $query->orderByDesc('sales_count');
-                break;
-        }
+        // Sắp xếp sản phẩm theo giá trị minPriceProduct (theo thứ tự giảm dần)
+        $products = $products->sortByDesc(function ($product) {
+            // Lấy giá trị minPrice từ biến thể sản phẩm
+            $minPriceProduct = $product->product_variants->min('sale_price') ?: $product->product_variants->min('regular_price');
+            return $minPriceProduct; // Trả về giá trị minPriceProduct để sắp xếp
+        });
 
-        // Lấy danh sách sản phẩm đã sắp xếp
-        $products = $query->get();
+        // Tính toán giá trị min và max
+        list($minPriceProduct, $maxPriceProduct) = $this->calculatePriceRange($products);
 
-        // Trả về kết quả dưới dạng JSON để cập nhật giao diện người dùng
+        // Xử lý đường dẫn ảnh cho mỗi sản phẩm
+        $products = $products->map(function ($product) {
+            $product->productURL = route('product.detail', ['sku' => $product->SKU]);
+            // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
+            if ($product->image) {
+                $product->image_url = asset('uploads/products/images/' . $product->image);
+            } else {
+                $product->image_url = null; // Nếu không có ảnh thì để null
+            }
+            return $product;
+        });
+
         return response()->json([
-            'products' => $products
+            'products' => $products,
+            'minPrice' => $minPriceProduct,
+            'maxPrice' => $maxPriceProduct,
         ]);
     }
 
-    // public function showProductDetails($id)
-    // {
-    //     $product = Product::with(['images', 'sizes', 'colors'])->findOrFail($id);  // Tải thông tin sản phẩm và các mối quan hệ
 
-    //     return response()->json([
-    //         'product' => $product
-    //     ]);
-    // }
 
+
+    public function getProductDetail($productId)
+    {
+        // Lấy sản phẩm từ database
+        $product = Product::with([
+            'product_variants.variant_attribute_values.attribute_value.attribute',
+            'product_files'
+        ])->findOrFail($productId);
+
+        // Chuẩn bị dữ liệu cần trả về
+        $productDetails = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'sku' => $product->SKU,
+            'price' => $product->getPriceRangeAttribute(),  // Giá sản phẩm (ví dụ: dải giá)
+            'description' => $product->description,
+            'imageUrl' => asset('uploads/products/images/' . $product->product_files->first()->file_name), // Ảnh sản phẩm chính
+            'relatedImages' => $product->product_files->map(function ($file) {
+                return asset('uploads/products/images/' . $file->file_name);
+            })->toArray(),
+            'array_variants' => $product->product_variants->map(function ($variant) {
+                return [
+                    'variant_id' => $variant->id,
+                    'regular_price' => $variant->regular_price,
+                    'sale_price' => $variant->sale_price,
+                    'stock' => $variant->stock,
+                    'is_active' => $variant->is_active,
+                    'attribute_values' => $variant->variant_attribute_values->pluck('attribute_value_id')->toArray()
+                ];
+            })->toArray(),
+
+            $attribute_value_ids = $product->product_variants
+                ->pluck('variant_attribute_values.*.attribute_value_id')
+                ->flatten()
+                ->unique()
+                ->toArray(),
+
+            $attribute_ids = Attribute_value::whereIn('id', $attribute_value_ids)
+                ->pluck('attribute_id')
+                ->unique()
+                ->sort()
+                ->toArray(),
+
+            'array_attributes' => Attribute::with([
+                'attribute_values' => function ($query) use ($attribute_value_ids) {
+                    $query->whereIn('id', $attribute_value_ids);
+                },
+                'attribute_type' // Lấy thông tin loại thuộc tính
+            ])->whereIn('id', $attribute_ids)->get()->mapWithKeys(function ($attribute) {
+                return [
+                    $attribute->id => [
+                        'id' => $attribute->id,
+                        'name' => $attribute->name,
+                        'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null, // Lấy tên loại thuộc tính
+                        'attribute_values' => $attribute->attribute_values->sortBy(function ($value) {
+                            // Sắp xếp theo thứ tự "S", "M", "L", "XL", nếu giá trị khác số
+                            $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
+                            return $sizes[$value->name] ?? $value->name; // Sắp xếp theo thứ tự định trước hoặc theo tên
+                        })->values()->map(function ($value) {
+                            return [
+                                'id' => $value->id,
+                                'name' => $value->name,
+                                'value' => $value->value
+                            ];
+                        })->toArray()
+                    ]
+                ];
+            })->toArray(),
+
+
+        ];
+
+        // Trả về dữ liệu sản phẩm dưới dạng JSON
+        return response()->json($productDetails);
+    }
     public function getColor() {}
     /**
      * Show the form for creating a new resource.

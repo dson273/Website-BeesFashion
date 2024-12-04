@@ -132,7 +132,7 @@
 
         .btn-variant.selected {
             background-color: #ffcccc;
-            color: #ff0000; 
+            color: #ff0000;
             border: 2px solid #ff0000;
             position: relative;
             transform: scale(1.05);
@@ -152,16 +152,24 @@
         .attribute_item:hover {
             opacity: 1;
         }
+
         .attribute_item.disabled {
             opacity: 0.5;
             pointer-events: none;
         }
+
         .btn-variant.disabled {
             opacity: 0.5;
             pointer-events: none;
         }
+
         .attribute_item.disabled:hover {
             cursor: not-allowed;
+        }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
         }
     </style>
     <main>
@@ -178,20 +186,20 @@
                                 <li class="breadcrumb-item active"> <a href="#">Cart</a></li>
                             </ul>
                         </div> --}}
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
         <section class="section-b-space pt-0">
             <div class="custom-container container">
                 <div class="row g-4">
                     @if (count($cart_list) > 0)
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <div class="cart-countdown"><img src="../assets/images/gif/fire-2.gif" alt="">
                                 <h6>Please, hurry! Someone has placed an order on one of the items you have in the cart.
                                     We'll keep it for you for<span id="countdown"></span>minutes.</h6>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-xxl-9 col-xl-8">
                             <div class="cart-table">
                                 <div class="table-title">
@@ -232,7 +240,7 @@
                                                             <a href="{{ route('product.detail', $item_cart['sku']) }}">
                                                                 <img src="{{ asset('uploads/products/images/' . $item_cart['image']) }}"
                                                                     alt="{{ $item_cart['product_name'] }}"
-                                                                    class="product-image"></a>
+                                                                    class="product-image text-start"></a>
                                                             <div class="cart-box-variant">
                                                                 <a href="{{ route('product.detail', $item_cart['sku']) }}">
                                                                     <h5 class="text-wrap">{{ $item_cart['product_name'] }}
@@ -259,8 +267,6 @@
                                                                                 id="confirmButton">Xác nhận</button>
                                                                         </div>
                                                                     </div>
-
-
                                                                 </div>
 
 
@@ -379,7 +385,7 @@
                         </div>
                     @endif
 
-                    <div class="col-12">
+                    {{-- <div class="col-12">
                         <div class="cart-slider">
                             <div class="d-flex align-items-start justify-content-between">
                                 <div>
@@ -394,8 +400,8 @@
                             <div class="swiper cart-slider-box">
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
-                                        {{-- <div class="cart-box"> <a href="product-detail.html"> <img
-                                                    src="../assets/images/user/4.jpg" alt=""></a> --}}
+                                         <div class="cart-box"> <a href="product-detail.html"> <img
+                                                    src="../assets/images/user/4.jpg" alt=""></a> 
                                         <div> <a href="product-detail.html">
                                                 <h5>Polo-neck Body Dress</h5>
                                             </a>
@@ -412,8 +418,8 @@
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
-                                    {{-- <div class="cart-box"> <a href="product-detail.html"> <img
-                                                    src="../assets/images/user/5.jpg" alt=""></a> --}}
+                                     <div class="cart-box"> <a href="product-detail.html"> <img
+                                                    src="../assets/images/user/5.jpg" alt=""></a> 
                                     <div> <a href="product-detail.html">
                                             <h5>Short Sleeve Sweater</h5>
                                         </a>
@@ -430,8 +436,8 @@
                                 </div>
                             </div>
                             <div class="swiper-slide">
-                                {{-- <div class="cart-box"> <a href="product-detail.html"> <img
-                                                    src="../assets/images/user/6.jpg" alt=""></a> --}}
+                                <div class="cart-box"> <a href="product-detail.html"> <img
+                                                    src="../assets/images/user/6.jpg" alt=""></a>
                                 <div> <a href="product-detail.html">
                                         <h5>Oversized Cotton Short</h5>
                                     </a>
@@ -446,9 +452,9 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="swiper-slide">
+                        <div class="swiper-slide">
                                         <div class="cart-box"> <a href="product-detail.html"> <img
-                                                    src="../assets/images/user/7.jpg" alt=""></a> --}}
+                                                    src="../assets/images/user/7.jpg" alt=""></a>
                         <div> <a href="product-detail.html">
                                 <h5>Oversized Women Shirt</h5>
                             </a>
@@ -461,7 +467,7 @@
                                 </select></div>
                             <p>$15.90 <span> <del>$20.90 </del></span></p><a class="btn" href="#">Add</a>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
