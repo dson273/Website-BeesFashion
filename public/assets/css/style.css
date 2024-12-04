@@ -14878,7 +14878,8 @@ body.skeleton_body {
 }
 
 .product-box .img-wrapper {
-    position: relative
+    overflow: hidden;
+    position: relative;
 }
 
 .product-box .img-wrapper .label-block {
@@ -19886,5 +19887,33 @@ svg {
 .seller {
     background: url(../images/ticket/bg-seller.png) no-repeat center / cover;
     padding: 5px 18px 7px 15px;
+}
 
+/* edit product-box */
+
+.product-box .img-wrapper .product-image {
+    background-color: rgba(var(--box-background), 1)
+}
+
+.product-box .img-wrapper .product-image .pro-first {
+    transition: opacity .4s ease;
+}
+
+.product-box .img-wrapper .product-image .pro-sec {
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    transition: opacity 0.4s ease;
+    width: 100%
+}
+.product-box:hover .product-image .pro-first {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.product-box:hover .product-image .pro-sec {
+    left: 0;
+    opacity: 1;
+    visibility: visible;
 }

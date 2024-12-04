@@ -75,8 +75,7 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="{{ route('admin.categories.remove', $item->id) }}" method="POST"
-                                            onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
+                                        <form action="{{ route('admin.categories.remove', ['categoryId' => $currentCategory->id, 'productId' => $item->id]) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" style="all: unset; cursor: pointer;">

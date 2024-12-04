@@ -60,7 +60,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td> <img
-                                            src="{{ $item->image ? asset('storage/uploads/vouchers/images/' . $item->image) : asset('assets/images/icons/noimage.png') }}"
+                                            src="{{ $item->image ? asset('uploads/vouchers/images/' . $item->image) : asset('assets/images/icons/noimage.png') }}"
                                             width="50px">
                                         {{ $item->name }}</td>
                                     <td>{{ $item->code }}</td>
