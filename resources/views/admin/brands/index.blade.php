@@ -25,7 +25,7 @@
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Thương Hiệu Sản Phẩm</h6>
                 <a href="{{ route('admin.brands.create') }}" class="btn btn-success text-white text-decoration-none"><i
-                    class="fas fa-plus"></i> Create</a>
+                    class="fas fa-plus"></i> Thêm mới</a>
             </div>
 
             <div class="card-body">
@@ -54,7 +54,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td><img src="{{ asset('storage/uploads/brands/images/' .$item->image) }}" width="150px "
+                                    <td><img src="{{ asset('uploads/brands/images/' .$item->image) }}" width="150px "
                                             alt=""></td>
                                     <td>{{ $item->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>

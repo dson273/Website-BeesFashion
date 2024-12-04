@@ -55,6 +55,7 @@ Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPasswor
 
 //filterProduct
 Route::get('product', [FilterProductController::class, 'index'])->name('product');
+Route::get('/getProductDetail/{productId}', [FilterProductController::class, 'getProductDetail']);
 Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'getMinMaxPriceProduct'])->name('getMinMaxPriceProduct');
 // web.php hoặc api.php
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
@@ -86,8 +87,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
     Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
     Route::get('cart/product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('getProductVariants');
-    Route::post('cart//update-variant', [CartController::class, 'updateVariant'])->name('updateVariant'); //cập nhật biến thể trong giỏ hàng
-    Route::post('product/{product_id}/update-variant', [CartController::class, 'updateVariant']);
+    Route::post('product/{product_id}/update-variant', [CartController::class, 'updateVariant']);//cập nhật biến thể trong giỏ hàng
+    Route::get('product/{product_id}/variants', [CartController::class, 'getProductVariants']);
+    Route::get('api/cart-items', [CartController::class, 'getCartItemsApi']);
 
     // Cập nhật số lượng sản phẩm trong giỏ hàng
     Route::post('cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');

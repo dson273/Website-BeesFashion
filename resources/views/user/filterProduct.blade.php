@@ -237,7 +237,7 @@
                                 <label class="m-2" for="priceSort">Sắp xếp theo :</label>
                                 <div class="d-flex">
                                     <div class="filter-option m-3">
-                                        <button class="btn btn-outline-secondary" id="filterBestSelling">Bán chạy
+                                        <button class="btn btn-outline-secondary " id="filterBestSelling">Bán chạy
                                             nhất</button>
                                     </div>
                                     <div class="filter-option m-3">
@@ -245,17 +245,17 @@
                                     </div>
                                 </div>
                                 <!-- Dropdown select cho sắp xếp theo giá -->
-                                {{-- <div class="category-dropdown m-3">
+                                <div class="category-dropdown m-3">
                                     <select class="form-select" id="priceSort" name="priceSort" style="width: 200px;">
                                         <option value="price_default">Giá</option>
-                                        <option value="price_asc">Giá : Thấp - Cao</option>
-                                        <option value="price_desc">Giá : Cao - Thấp</option>
+                                        <option id="price_asc" value="price_asc">Giá : Thấp - Cao</option>
+                                        <option id="price_desc" value="price_desc">Giá : Cao - Thấp</option>
                                     </select>
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                         <div class="product-tab-content ratio1_3">
-                            <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 ">
+                            <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 align-items-center">
                                  {{-- Sản phẩm sẽ được hiển thị ở đây --}}
                             </div>
                         </div>
@@ -265,97 +265,65 @@
         </div>
     </section>
 
-    <!-- Modal quikview 
-    <div class="modal theme-modal fade" id="quick-view" tabindex="-1" role="dialog" aria-modal="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 col-xs-12">
-                            <div class="quick-view-img">
-                                <div class="swiper modal-slide-1">
-                                    <div class="swiper-wrapper ratio_square-2">
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/1.jpg') }}" alt="">
-                                        </div>
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/2.jpg') }}" alt="">
-                                        </div>
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/3.jpg') }}" alt="">
-                                        </div>
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/4.jpg') }}" alt="">
+     {{-- Modal add-to-cart  --}}
+    <div class="modal theme-modal fade" id="addtocart" tabindex="-1" role="dialog" aria-modal="true" data-product-id="" data-variant-id="">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" id="close_modal"></button>
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-xs-12">
+                                <div class="quick-view-img">
+                                    <div class="swiper modal-slide-1">
+                                        <div class="swiper-wrapper ratio_square-2">
+                                            <div class="swiper-slide">
+                                                <img class="img-fluid" id="product-image" src="" alt="Product Image">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="swiper modal-slide-2">
-                                    <div class="swiper-wrapper ratio3_4">
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/5.jpg') }}" alt="">
-                                        </div>
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/6.jpg') }}" alt="">
-                                        </div>
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/7.jpg') }}" alt="">
-                                        </div>
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/8.jpg') }}" alt="">
-                                        </div>
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/8.jpg') }}" alt="">
-                                        </div>
-                                        <div class="swiper-slide"><img class="bg-img"
-                                                src="{{ asset('assets/images/pro/8.jpg') }}" alt="">
+                                    <div class="swiper modal-slide-2">
+                                        <div class="swiper-wrapper ratio3_4">
+                                            <!-- Dữ liệu các ảnh khác sẽ được cập nhật qua JS -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 rtl-text">
-                            <div class="product-right">
-                                <h3>khó vcl</h3>
-                                <h5>$32.96<del>$50.12</del></h5>
-                                <ul class="color-variant">
-                                    <li class="bg-color-brown"></li>
-                                    <li class="bg-color-chocolate"></li>
-                                    <li class="bg-color-coffee"></li>
-                                    <li class="bg-color-black"></li>
-                                </ul>
-                                <div class="border-product">
-                                    <h6>Product details</h6>
-                                    <p>Western yoke on an Indigo shirt made of 100% cotton. Ideal for informal
-                                        gatherings, this top will ensure your comfort and style throughout the day.
-                                    </p>
-                                </div>
-                                <div class="product-description">
-                                    <div class="size-box">
-                                        <ul>
-                                            <li class="active"><a href="#">s</a></li>
-                                            <li><a href="#">m</a></li>
-                                            <li><a href="#">l</a></li>
-                                            <li><a href="#">xl</a></li>
-                                        </ul>
+                            <div class="col-lg-6 rtl-text">
+                                <div class="product-right">
+                                    <h4 id="product-name"></h4>
+                                    <p id="product-sku"></p>
+                                    <h4 id="product-price" style="color: #ba372a"></h4>
+        
+                                    <!-- Hiển thị danh sách thuộc tính -->
+                                    <div class="blink-border attributes-container" id="attributes-container">
+                                        <!-- Các thuộc tính sẽ được cập nhật qua JS -->
                                     </div>
-                                    <h6 class="product-title">Quantity</h6>
-                                    <div class="quantity"><button class="minus" type="button"><i
-                                                class="fa-solid fa-minus"></i></button><input type="number"
-                                            value="1" min="1" max="20"><button class="plus"
-                                            type="button"><i class="fa-solid fa-plus"></i></button></div>
+        
+                                    <div class="border-product">
+                                        <h6>Mô tả sản phẩm</h6>
+                                        <p id="product-description"></p>
+                                    </div>
+                                    <div class="product-description">
+                                        <h6 class="product-title">Quantity</h6>
+                                        <div class="quantity">
+                                            <button class="reduce" type="button"><i class="fa-solid fa-minus"></i></button>
+                                            <input type="number" id="quantity" value="1" min="1" max="10">
+                                            <button class="increment" type="button"><i class="fa-solid fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="product-buttons">
+                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
+                                        <a class="btn btn-solid" href="#">View detail</a>
+                                    </div>
                                 </div>
-                                <div class="product-buttons"><a class="btn btn-solid" href="cart.html">Add to
-                                        cart</a><a class="btn btn-solid" href="">View
-                                        detail</a></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-     End model quikview -->
+     {{-- End model add-to-cart  --}}
 @endsection
 
 @section('script-libs')
