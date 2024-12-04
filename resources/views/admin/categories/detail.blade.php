@@ -55,7 +55,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>
-                                        <img src="{{ $cate->image ? asset('storage/uploads/categories/images/' . $cate->image) : asset('assets/images/icons/noimage.png') }}" 
+                                        <img src="{{ $cate->image ? asset('uploads/categories/images/' . $cate->image) : asset('assets/images/icons/noimage.png') }}" 
                                              width="50px" >
                                         {{ $cate->name }}
                                     </td>

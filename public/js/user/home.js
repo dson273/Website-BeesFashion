@@ -302,7 +302,21 @@ $(document).on('click', '#add-to-cart-btn', function (event) {
 
     // Kiểm tra xem đã chọn đầy đủ thuộc tính chưa
     if (!selectedVariantId) {
-        notification('warning', 'Vui lòng chọn đầy đủ thuộc tính sản phẩm!');
+        const unselectedAttributes = [];
+        
+        // Kiểm tra các thuộc tính chưa được chọn
+        $('.attribute_section').each(function () {
+            if ($(this).find('.attribute_item.active').length === 0) {
+                unselectedAttributes.push($(this).find('p').text());
+            }
+        });
+
+        // Hiển thị thông báo lỗi với danh sách thuộc tính chưa được chọn
+        if (unselectedAttributes.length > 0) {
+            notification('warning', `Vui lòng chọn các thuộc tính sau: ${unselectedAttributes.join(', ')}`);
+        } else {
+            notification('warning', 'Vui lòng chọn đầy đủ thuộc tính sản phẩm!');
+        }
         return;
     }
 
@@ -316,6 +330,7 @@ $(document).on('click', '#add-to-cart-btn', function (event) {
 
     addToCart(selectedVariantId, quantity);
 });
+
 
 function addToCart(variantId, quantity) {
     $.ajax({
@@ -347,3 +362,33 @@ function addToCart(variantId, quantity) {
         }
     });
 }
+
+
+//Hiển thị ngày giờ đếm ngược
+document.addEventListener("DOMContentLoaded", function () {
+    const countdownElements = document.querySelectorAll(".expire");
+
+    countdownElements.forEach(el => {
+        const endDate = new Date(el.dataset.endDate).getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = endDate - now;
+
+            if (distance <= 0) {
+                el.querySelector(".countdown").textContent = "Đã hết hạn";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            el.querySelector(".countdown").textContent = `${days} ngày ${hours}:${minutes}:${seconds}`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    });
+});
