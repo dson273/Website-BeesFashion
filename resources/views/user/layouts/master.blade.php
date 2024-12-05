@@ -58,7 +58,7 @@
     <!-- End content -->
 
     <!-- Footer -->
-    @include('user.layouts.footer')
+    @include('user.layouts.footer',['products' => $products ?? []])
     <!-- End footer -->
 
     <!-- Bootstrap js-->

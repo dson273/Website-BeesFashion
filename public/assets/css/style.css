@@ -14878,7 +14878,7 @@ body.skeleton_body {
 }
 
 .product-box .img-wrapper {
-    overflow: hidden;
+    /* overflow: hidden; */
     position: relative;
 }
 
