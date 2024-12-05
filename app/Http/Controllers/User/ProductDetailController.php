@@ -93,7 +93,8 @@ class ProductDetailController extends Controller
 
         // Lấy danh sách sản phẩm liên quan qua danh mục
         $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
-            $query->whereIn('category_id', $product->categories->pluck('id'));
+            $query->whereIn('category_id', $product->categories->pluck('id'))
+            ->where('categories.fixed', 1);
         })->where('id', '!=', $product->id)
             ->take(8)
             ->get();

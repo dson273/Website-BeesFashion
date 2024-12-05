@@ -674,21 +674,21 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="blog-main">
-                                <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
+                                <div class="blog-box ratio3_2"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
                                             src="{{ asset('assets/images/blog/layout-4/1.jpg') }}" alt=""></a>
                                 </div>
                                 <div class="blog-txt">
                                     <p>By: Admin / 26th aug 2020</p>
-                                    <a href="#">
+                                    <a href="{{route('blog-detail')}}">
                                         <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                     </a>
                                     <div class="link-hover-anim underline">
-                                        <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
+                                        <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
                                             Read
                                             More
 
                                         </a>
-                                        <a class="btn btn_underline link-strong link-strong-hovered" href="#">
+                                        <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
                                             Read More
 
                                         </a>
@@ -697,19 +697,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
+                            <div class="blog-box ratio_55"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/2.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="#">
+                                <a href="{{route('blog-detail')}}">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
                                         Read
                                         More
 
@@ -718,19 +718,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
+                            <div class="blog-box ratio3_2"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/3.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="#">
+                                <a href="{{route('blog-detail')}}">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
                                         Read
                                         More
 
@@ -739,19 +739,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
+                            <div class="blog-box ratio_55"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/4.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="#">
+                                <a href="{{route('blog-detail')}}">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
                                         Read
                                         More
 

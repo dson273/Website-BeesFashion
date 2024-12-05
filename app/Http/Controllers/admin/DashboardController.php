@@ -17,7 +17,7 @@ class DashboardController extends Controller
     //View dashboard
     public function index()
     {
-      
+
         $totalProducts = Product::count();
         $totalView = Product::where('is_active', '1')->sum('view');
         $allOrders = Order::with(['status_orders' => function ($query) {
@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $totalOrders = $allOrders->count();
         $totalUsers = User::where('role', 'member')->count();
 
-        return view('admin.dashboard', compact('vouchers','totalProducts', 'totalOrders', 'totalView', 'totalUsers'));
+        return view('admin.dashboard', compact('totalProducts', 'totalOrders', 'totalView', 'totalUsers'));
     }
 
     //Thống kê doanh thu shop theo thời gian

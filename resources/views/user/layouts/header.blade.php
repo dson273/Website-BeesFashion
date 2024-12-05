@@ -1,7 +1,7 @@
 <!-- Start header -->
 <header>
     <div class="top_header">
-        <p>Free Coupe Code: Summer Sale On Selected items Use:<span>NEW 26</span><a href="product-select.html">SHOP
+        <p>Free Coupe Code: Summer Sale On Selected items Use:<span>NEW 26</span><a href="{{ route('product') }}">SHOP
                 NOW</a></p>
     </div>
     <div class="box-header">
@@ -50,9 +50,7 @@
                                     <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
                                     </li> --}}
                                 <li>
-                                    <a class="nav-link" href="{{ route('product') }}">Shop
-                                        <i class="fa-solid fa-angle-down"></i>
-                                    </a>
+                                    <a class="nav-link" href="{{ route('product') }}">Shop</a>
                                     <ul class="nav-submenu">
                                         @foreach ($categoryLimit as $parentCategory)
                                             <li class="has-submenu">
@@ -64,6 +62,15 @@
                                             </li>
                                         @endforeach
                                     </ul>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="{{ route('blog') }}">Blog</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="{{ route('about-us') }}">About Us</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                                 </li>
 
                                 {{-- <li>
@@ -190,7 +197,7 @@
                     window.history.replaceState({}, '', current_url);
                 }
 
-                
+
                 // Chuyển hướng đến trang product và thêm query string 'name' với từ khóa tìm kiếm
                 window.location.href = '/product?search=' + encodeURIComponent(searchValue);
             }
