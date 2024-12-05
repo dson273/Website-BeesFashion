@@ -83,60 +83,74 @@
                 <div class="detail-content MuiBox-root css-0">
                     <div class="block-voucher">
                         <div class="voucher-items-list">
-                            @foreach ($vouchers as $item)
-                                <div class="voucher-item">
-                                    <div class="voucher-item-info">
-                                        <div class="voucher-item-detail">
-                                            <div class="voucher-item-des">
-                                                <strong>
-                                                    <span style="font-size: 12pt;">
-                                                        <span style="color: #ba372a;">{{ $item->name }}
-                                                        </span>
-                                                        <br>
-                                                    </span>
-                                                </strong>
-                                            </div>
-                                            <div class="voucher-item-des"><span style="font-size: 10pt; color:black">Nhập mã
-                                                    <strong><span
-                                                            style="font-size: 12pt; color:black">{{ $item->code }}</span></strong><span
-                                                        style="color: #e03e2d;"><strong><br></strong></span></span></div>
-                                            <div class="voucher-item-des"><span style="font-size: 10pt; color:black">
-                                                 @if ($item->amount < 100) <!-- Dưới 100 -->
-                                                Giảm {{ number_format($item->amount) . '%' }} cho đơn hàng từ
-                                                {{ number_format($item->minimum_order_value / 1000) . 'K' }}
-                                            @else <!-- Bằng hoặc trên 100 -->
-                                            Giảm {{ number_format($item->amount /1000) . 'K' }} cho đơn hàng từ {{ number_format($item->minimum_order_value / 1000) . 'K' }}
-                                            @endif</span>
-                                            </div>
-                                            <div class="voucher-item-date">
-                                                <span class="expire"
-                                                style="font-size: 10pt; color:#ba372a"
-                                                data-end-date="{{ \Carbon\Carbon::parse($item->end_date)->toIso8601String() }}">
-                                              Hạn sử dụng: <span class="countdown" style="font-size: 10pt; color:#ba372a"></span>
-                                          </span>
-                                            </div>
-                                        </div>
-                                        <div class="voucher-item-action">
-                                            <div class="action"><span class="copy-content"
-                                                    style="cursor: pointer; font-size: 10pt; color:#ba372a"
-                                                    data-code="{{ $item->code }}" data-copied-text="Đã chép">Sao
-                                                    chép</span></div>
-                                                    @if ($item->is_public != 1)
-                                                    <div class="action">
-                                                        <span class="save-content"
-                                                            style="cursor: pointer; font-size: 10pt; color:#ba372a"
-                                                            data-id="{{ $item->id }}" data-save-text="Đã lưu">Lưu mã</span>
+                            <div class="swiper voucher-slider">
+                                <div class="swiper-wrapper ratio_square-2">
+                                    @foreach ($vouchers as $item)
+                                        <div class="voucher-item swiper-slide">
+                                            <div class="voucher-item-info">
+                                                <div class="voucher-item-detail">
+                                                    <div class="voucher-item-des">
+                                                        <strong>
+                                                            <span style="font-size: 12pt;">
+                                                                <span style="color: #ba372a;">{{ $item->name }}
+                                                                </span>
+                                                                <br>
+                                                            </span>
+                                                        </strong>
                                                     </div>
-                                                @endif
+                                                    <div class="voucher-item-des"><span
+                                                            style="font-size: 10pt; color:black">Nhập mã
+                                                            <strong><span
+                                                                    style="font-size: 12pt; color:black">{{ $item->code }}</span></strong><span
+                                                                style="color: #e03e2d;"><strong><br></strong></span></span>
+                                                    </div>
+                                                    <div class="voucher-item-des"><span
+                                                            style="font-size: 10pt; color:black">
+                                                            @if ($item->amount < 100)
+                                                                <!-- Dưới 100 -->
+                                                                Giảm {{ number_format($item->amount) . '%' }} cho đơn hàng
+                                                                từ
+                                                                {{ number_format($item->minimum_order_value / 1000) . 'K' }}
+                                                            @else
+                                                                <!-- Bằng hoặc trên 100 -->
+                                                                Giảm {{ number_format($item->amount / 1000) . 'K' }} cho
+                                                                đơn hàng từ
+                                                                {{ number_format($item->minimum_order_value / 1000) . 'K' }}
+                                                            @endif
+                                                        </span>
+                                                    </div>
+                                                    <div class="voucher-item-date">
+                                                        <span class="expire" style="font-size: 10pt; color:#ba372a"
+                                                            data-end-date="{{ \Carbon\Carbon::parse($item->end_date)->toIso8601String() }}">
+                                                            Hạn sử dụng: <span class="countdown"
+                                                                style="font-size: 10pt; color:#ba372a"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="voucher-item-action">
+                                                    <div class="action"><span class="copy-content"
+                                                            style="cursor: pointer; font-size: 10pt; color:#ba372a"
+                                                            data-code="{{ $item->code }}" data-copied-text="Đã chép">Sao
+                                                            chép</span></div>
+                                                    @if ($item->is_public != 1)
+                                                        <div class="action">
+                                                            <span class="save-content"
+                                                                style="cursor: pointer; font-size: 10pt; color:#ba372a"
+                                                                data-id="{{ $item->id }}" data-save-text="Đã lưu">Lưu
+                                                                mã</span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endforeach
                                 </div>
-                            @endforeach
-
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
         </section>
         <!-- Fashikart specials -->
         <section class="section-t-space">
@@ -182,14 +196,20 @@
                                                         <div class="img-wrapper">
                                                             <div class="info-ticket ticket-news">NEW</div>
                                                             <div class="product-image">
-                                                                <a class="pro-first" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->active_image) }}" alt="product"></a>
-                                                                <a class="pro-sec" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
+                                                                <a class="pro-first"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                                        alt="product"></a>
+                                                                <a class="pro-sec"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                                        alt="product"></a>
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" data-id="{{ $product->id }}" href="javascript:void(0)"
-                                                                    tabindex="0">
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}"
+                                                                    href="javascript:void(0)" tabindex="0">
                                                                     <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
                                                                         data-bs-title="Add to Wishlistt"></i>
@@ -283,34 +303,41 @@
                                     <div class="tab-pane fade" id="features-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($products as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="col-xxl-3 col-md-4 col-6 position-relative">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
                                                             <div class="info-ticket seller">Best Seller</div>
                                                             <div class="product-image">
-                                                                <a class="pro-first" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->active_image) }}" alt="product"></a>
-                                                                <a class="pro-sec" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
+                                                                <a class="pro-first"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                                        alt="product"></a>
+                                                                <a class="pro-sec"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                                        alt="product"></a>
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" href="javascript:void(0)"
-                                                                    tabindex="0">
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}"
+                                                                    href="javascript:void(0)" tabindex="0">
                                                                     <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i>
+                                                                        data-bs-title="Add to Wishlistt"></i>
                                                                 </a>
-                                                                {{-- <a href="javascript:void(0)" class="quick-view-btn"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                tabindex="0">
-                                                                <i class="iconsax" data-icon="eye" aria-hidden="true"
-                                                                    data-bs-toggle="tooltip"
-                                                                    data-bs-title="Quick View"></i>
-                                                            </a> --}}
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
+                                                                    <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
-
                                                             <div class="add-button">
                                                                 <a href="javascript:void(0)"
                                                                     class="add-to-cart quick-view-btn"
@@ -320,12 +347,13 @@
                                                                     <i class="fa fa-shopping-cart"></i>
                                                                 </a>
                                                             </div>
+
                                                             <div class="color-box">
                                                                 @php
-                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                    $displayedColors = [];
                                                                 @endphp
                                                                 <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                    style="list-style-type: none; padding: 0; ">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
@@ -342,7 +370,7 @@
                                                                                 </li>
                                                                                 @php
                                                                                     $displayedColors[] =
-                                                                                        $attributeValue->value; // Thêm màu vào mảng
+                                                                                        $attributeValue->value;
                                                                                 @endphp
                                                                             @endif
                                                                         @endforeach
@@ -355,9 +383,12 @@
                                                                     $emptyStars =
                                                                         5 - $fullStars - ($hasHalfStar ? 1 : 0);
                                                                 @endphp
-                                                                    {{ number_format($rating, 1) }} <i
-                                                                        class="fa-solid fa-star"></i></span>
+                                                                    {{ number_format($rating, 1) }}
+                                                                    <i class="fa-solid fa-star"></i></span>
+
                                                             </div>
+
+
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
@@ -384,37 +415,43 @@
                                     <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($topProducts as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="col-xxl-3 col-md-4 col-6 position-relative">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
-
                                                             <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
                                                             <div class="product-image">
-                                                                <a class="pro-first" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->active_image) }}" alt="product"></a>
-                                                                <a class="pro-sec" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
+                                                                <a class="pro-first"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                                        alt="product"></a>
+                                                                <a class="pro-sec"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                                        alt="product"></a>
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" href="javascript:void(0)"
-                                                                    tabindex="0">
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}"
+                                                                    href="javascript:void(0)" tabindex="0">
                                                                     <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i>
+                                                                        data-bs-title="Add to Wishlistt"></i>
                                                                 </a>
-                                                                {{-- <a href="javascript:void(0)" class="quick-view-btn"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                tabindex="0">
-                                                                <i class="iconsax" data-icon="eye" aria-hidden="true"
-                                                                    data-bs-toggle="tooltip"
-                                                                    data-bs-title="Quick View"></i>
-                                                            </a> --}}
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
+                                                                    <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
-
                                                             <div class="add-button">
                                                                 <a href="javascript:void(0)"
                                                                     class="add-to-cart quick-view-btn"
@@ -424,12 +461,13 @@
                                                                     <i class="fa fa-shopping-cart"></i>
                                                                 </a>
                                                             </div>
+
                                                             <div class="color-box">
                                                                 @php
-                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                    $displayedColors = [];
                                                                 @endphp
                                                                 <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                    style="list-style-type: none; padding: 0; ">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
@@ -446,7 +484,7 @@
                                                                                 </li>
                                                                                 @php
                                                                                     $displayedColors[] =
-                                                                                        $attributeValue->value; // Thêm màu vào mảng
+                                                                                        $attributeValue->value;
                                                                                 @endphp
                                                                             @endif
                                                                         @endforeach
@@ -459,8 +497,8 @@
                                                                     $emptyStars =
                                                                         5 - $fullStars - ($hasHalfStar ? 1 : 0);
                                                                 @endphp
-                                                                    {{ number_format($rating, 1) }} <i
-                                                                        class="fa-solid fa-star"></i></span>
+                                                                    {{ number_format($rating, 1) }}
+                                                                    <i class="fa-solid fa-star"></i></span>
 
                                                             </div>
 
@@ -580,9 +618,13 @@
                                             alt="lable"><span>on <br>Sale!</span></div>
                                     <div class="product-image">
                                         <a class="pro-first" href="{{ route('product.detail', $product->SKU) }}">
-                                            <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->active_image) }}" alt="product"></a>
+                                            <img class="bg-img"
+                                                src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                alt="product"></a>
                                         <a class="pro-sec" href="{{ route('product.detail', $product->SKU) }}">
-                                            <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
+                                            <img class="bg-img"
+                                                src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                alt="product"></a>
                                     </div>
                                     <div class="cart-info-icon">
                                         <a class="wishlist-icon" href="javascript:void(0)" tabindex="0">
@@ -667,7 +709,7 @@
                 <div class="title">
                     <h3>Latest Blog</h3>
                     <svg>
-                        <use href="{{asset('assets/images/user/icon-sprite.svg#zigzag')}}"></use>
+                        <use href="{{ asset('assets/images/user/icon-sprite.svg#zigzag') }}"></use>
                     </svg>
                 </div>
                 <div class="swiper blog-slide">
@@ -835,7 +877,8 @@
 
                                     <div class="product-buttons">
                                         <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
-                                        <a class="btn btn-solid" href="#" id="btn_view_detail_of_quick_view_product">View detail</a>
+                                        <a class="btn btn-solid" href="#"
+                                            id="btn_view_detail_of_quick_view_product">View detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -899,7 +942,7 @@
         </div>
         <!-- End seach -->
     </div> --}}
-    {{-- //Moda thêm giỏ hàng thành công --}}
+        {{-- //Moda thêm giỏ hàng thành công --}}
         <div class="add-card-size" id="fancybox-add-to-cart">
             <div class="thank-you__icon"><svg width="160" height="160" viewBox="0 0 160 160" fill="none"
                     xmlns="http://www.w3.org/2000/svg">

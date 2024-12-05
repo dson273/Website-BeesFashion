@@ -88,6 +88,7 @@ class HomeController extends Controller
                 $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
+             
                 return $product;
             });
 
@@ -249,7 +250,6 @@ class HomeController extends Controller
             'total_reviews' => $totalReviews
         ];
     }
-
 
 
     //Lưu voucher
