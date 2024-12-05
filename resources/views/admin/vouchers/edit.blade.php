@@ -1,19 +1,32 @@
 @extends('admin.layouts.master')
-
 @section('title')
-    Sửa vouchers
+    Cập nhật vouchers
 @endsection
+@section('style-libs')
+    <!-- Custom styles for this page -->
+    <link href="{{ asset('theme/admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endsection
+@section('script-libs')
+    <!-- Page level plugins -->
+    <script src="{{ asset('theme/admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('theme/admin/js/demo/datatables-demo.js') }}"></script>
+@endsection
 @section('content')
-    <div class="card-body">
-        <div class="mb-3">
-            <a href="{{ route('admin.vouchers.index') }}" class="btn btn-dark text-white text-decoration-none">
-                <i class="fas fa-arrow-left"></i> Quay lại
-            </a>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <div class="mb-2 ml-3">
+            <a href="{{ route('admin.vouchers.index') }}" class="btn btn-dark text-white text-decoration-none"><i
+                    class="fas fa-arrow-left"></i> Quay lại</a>
         </div>
 
+        <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <h1 class="h2 text-center text-gray-800 fw-bold">Sửa vouchers</h1>
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Cập nhật vouchers</h6>
+            </div>
             <div class="card-body">
                 <form action="{{ route('admin.vouchers.update', $vouchers->id) }}" method="POST"
                     enctype="multipart/form-data">
@@ -58,7 +71,7 @@
                     <div class="mb-3">
                         <label for="image" class="form-label">Ảnh Voucher</label>
                         <input type="file" class="form-control form-control-sm" name="image" id="image">
-                        <img src="{{ asset('storage/uploads/vouchers/images/' . $vouchers->image) }}" width="100px"
+                        <img src="{{ asset('uploads/vouchers/images/' . $vouchers->image) }}" width="100px"
                             alt="">
                         @error('image')
                             <div class="text-danger">{{ $message }}</div>
@@ -114,7 +127,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="is_public" class="form-label">is_public</label>
+                        <label for="is_public" class="form-label">Áp dụng cho tất cả người dùng</label>
                         <input type="checkbox" name="is_public" id="is_public" value="1"
                         {{ $vouchers->is_public ? 'checked' : '' }}>
                     </div>

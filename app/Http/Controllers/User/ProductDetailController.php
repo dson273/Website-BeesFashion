@@ -29,6 +29,10 @@ class ProductDetailController extends Controller
         //View tăng lên 1
         if ($product) {
             $product->increment('view');
+            // Gán giá và phần trăm giảm giá
+            $product->priceRange = $product->getPriceRange();
+            $product->regularPrice = $product->getRegularPrice();
+            $product->discountPercent = $product->getDiscountPercent();
         }
 
         // Mảng chứa các biến thể với các attribute_value_id liên quan
@@ -87,44 +91,6 @@ class ProductDetailController extends Controller
         // Tính tổng số lượng hàng tồn kho của sản phẩm
         $total_stock = Product_variant::where('product_id', $product->id)->sum('stock');
 
-        // Lấy giá của biến thể
-        if ($product) {
-            $variants = $product->product_variants;
-            // Lọc các biến thể có `sale_price` không null
-            $variantsWithSalePrice = $variants->filter(function ($variant) {
-                return $variant->sale_price !== null;
-            });
-            // Lọc các biến thể chỉ có `regular_price`
-            $variantsWithoutSalePrice = $variants->filter(function ($variant) {
-                return $variant->sale_price === null;
-            });
-            // Tìm giá trị thấp nhất và cao nhất
-            if ($variantsWithSalePrice->isNotEmpty()) {
-                $minPrice = $variantsWithSalePrice->min('sale_price');
-                $maxPrice = $variantsWithoutSalePrice->isNotEmpty()
-                    ? $variantsWithoutSalePrice->max('regular_price')
-                    : $variantsWithSalePrice->max('sale_price');
-            } else {
-                $minPrice = $variantsWithoutSalePrice->min('regular_price');
-                $maxPrice = $variantsWithoutSalePrice->max('regular_price');
-            }
-            // Gán giá trị khoảng giá vào thuộc tính mới
-            $product->priceRange = $minPrice === $maxPrice
-                ? number_format($minPrice, 0, ',', '.') . 'đ'
-                : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
-            $product->regularPrice = $variants->max('regular_price');
-            // Tính phần trăm giảm giá
-            $maxRegularPrice = $variants->max('regular_price');
-            $minSalePrice = $variantsWithSalePrice->min('sale_price');
-
-            if ($maxRegularPrice && $minSalePrice) {
-                $discountPercent = number_format((100 - ($minSalePrice / $maxRegularPrice * 100)), 1, '.', '');
-                $product->discountPercent = '-' . $discountPercent . '%';
-            } else {
-                $product->discountPercent = 'Hot!';
-            }
-        }
-
         // Lấy danh sách sản phẩm liên quan qua danh mục
         $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
             $query->whereIn('category_id', $product->categories->pluck('id'));
@@ -133,26 +99,8 @@ class ProductDetailController extends Controller
             ->get();
 
         $relatedProducts = $relatedProducts->map(function ($relatedProduct) {
-            $variants = $relatedProduct->product_variants;
-            $variantsWithSalePrice = $variants->filter(function ($variant) {
-                return $variant->sale_price !== null;
-            });
-            $variantsWithoutSalePrice = $variants->filter(function ($variant) {
-                return $variant->sale_price === null;
-            });
-            if ($variantsWithSalePrice->isNotEmpty()) {
-                $minPrice = $variantsWithSalePrice->min('sale_price');
-                $maxPrice = $variantsWithoutSalePrice->isNotEmpty()
-                    ? $variantsWithoutSalePrice->max('regular_price')
-                    : $variantsWithSalePrice->max('sale_price');
-            } else {
-                $minPrice = $variantsWithoutSalePrice->min('regular_price');
-                $maxPrice = $variantsWithoutSalePrice->max('regular_price');
-            }
-            $relatedProduct->priceRange = $minPrice === $maxPrice
-                ? number_format($minPrice, 0, ',', '.') . 'đ'
-                : number_format($minPrice, 0, ',', '.') . 'đ' . ' - ' . number_format($maxPrice, 0, ',', '.') . 'đ';
 
+            $relatedProduct->priceRange = $relatedProduct->getPriceRange();
             $activeImage = $relatedProduct->product_files->where('is_default', 1)->first();
             $inactiveImage = $relatedProduct->product_files->where('is_default', 0)->first();
             $relatedProduct->active_image = $activeImage ? $activeImage->file_name : null;
@@ -192,8 +140,16 @@ class ProductDetailController extends Controller
             ]);
         }
     }
-    public function addToCart(string $variant_id, string $quantity)
+    public function addToCart()
     {
+        $variant_id = request()->input('variant_id');
+        $quantity = request()->input('quantity');
+        if (!auth()->check()) {
+            return response()->json([
+                'status' => 'unauthenticated',
+                'message' => 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.'
+            ]);
+        }
         // Lấy thông tin biến thể
         $variant = Product_variant::select('stock', 'is_active')
             ->where('id', $variant_id)
@@ -214,11 +170,11 @@ class ProductDetailController extends Controller
         if ($checkCart) {
             // Tính toán số lượng mới
             $newQuantity = $checkCart->quantity + $quantity;
-            // Đảm bảo không vượt quá tồn kho hoặc giới hạn 10 sản phẩm
+            // Đảm bảo không vượt quá tồn kho hoặc giới hạn 20 sản phẩm
             if ($newQuantity > $checkCart->product_variant->stock) {
                 $checkCart->quantity = $checkCart->product_variant->stock;
-            } elseif ($newQuantity > 10) {
-                $checkCart->quantity = 10; //Giới hạn chỉ thêm được 10 vào cart
+            } elseif ($newQuantity > 20) {
+                $checkCart->quantity = 20; //Giới hạn chỉ thêm được 20 vào cart
             } else {
                 $checkCart->quantity = $newQuantity;
             }
@@ -227,7 +183,7 @@ class ProductDetailController extends Controller
         } else {
             if ($variant) {
                 Cart::create([
-                    'quantity' => $quantity <= min($variant->stock, 10) ? $quantity : min($variant->stock, 10),
+                    'quantity' => $quantity <= min($variant->stock, 20) ? $quantity : min($variant->stock, 20),
                     'product_variant_id' => $variant_id,
                     'user_id' => Auth::user()->id,
                     'created_at' => now()
@@ -267,14 +223,15 @@ class ProductDetailController extends Controller
 
         // Lấy đánh giá
         $reviews = Product_vote::whereIn('product_variant_id', $variantIds)
-        ->where('is_active',1)
             ->with(['user', 'product_variant'])
             ->orderBy('created_at', 'desc')
             ->get();
-
+        // Lấy đánh giá active để hiển thị trong comments
+        $activeReviews = $reviews->where('is_active', 1);
         // Tính toán thống kê
         $totalReviews = $reviews->count();
-        $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 0;
+        $activeReviewCount = $activeReviews->count();
+        $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 5;
 
         // Tính phần trăm cho từng số sao
         $starCounts = $reviews->groupBy('star');
@@ -286,7 +243,7 @@ class ProductDetailController extends Controller
 
         // Tính tổng số lượng đã bán
         $totalSold = Order_detail::whereIn('product_variant_id', $variantIds)
-            ->whereHas('order.status_orders.status', function($query) {
+            ->whereHas('order.status_orders.status', function ($query) {
                 $query->where('name', 'Completed');
             })
             ->sum('quantity');
@@ -295,10 +252,11 @@ class ProductDetailController extends Controller
         $totalSold += $product->fake_sales ?? 0;
 
         return [
-            'reviews' => $reviews,
+            'reviews' => $activeReviews,
             'stats' => [
                 'average_rating' => $averageRating,
                 'total_reviews' => $totalReviews,
+                'active_review_count' => $activeReviewCount,
                 'star_percentages' => $starPercentages,
                 'total_sold' => $totalSold
             ]

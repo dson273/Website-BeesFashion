@@ -19,12 +19,6 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
-
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center">
@@ -34,7 +28,7 @@
             <div class="card-header py-3 d-flex flex-row align-items-center">
                 <a href="javascript:void(0)">
                     <span class="ml-3 btn status-tab" id="all">
-                        Tất cả <span id="all-count" class="badge badge-light">{{ $allCount->count() }}</span>
+                        Tất cả <span id="all-count" class="badge badge-light">{{ $allCount }}</span>
                     </span>
                 </a>
                 <a href="javascript:void(0)">
@@ -74,7 +68,7 @@
             <div id="all-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -87,7 +81,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($allCount->count() == 0)
+                                @if ($allOrders->isEmpty())
                                     <tr>
                                         <td colspan="8" class="text-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"
@@ -147,48 +141,60 @@
                                         </td>
                                     </tr>
                                 @else
-                                    @foreach ($allCount as $index => $item)
+                                    @foreach ($allOrders as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>
+                                            <td> <!-- Hiển thị danh sách sản phẩm -->
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
                                                     <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        alt="Product Image" width="50" height="50"> x
+                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
                                                 @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    @php
+                                                        // Lấy trạng thái mới nhất của đơn hàng
+                                                        $latestStatus = $item->status_orders()->latest()->first();
+                                                    @endphp
+                                                    <span
+                                                        class="status-circle @if ($latestStatus && $latestStatus->status_id == 1) badge-info
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 2) badge-warning
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 3) badge-primary
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 4) badge-success
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
+                                                    </span>
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
-                                            @endforeach
-                                            
+
+
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -211,7 +217,7 @@
             <div id="pending-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -290,42 +296,53 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
                                                     <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50">x {{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        alt="Product Image" width="50" height="50">x
+                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
                                                 @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    @php
+                                                        // Lấy trạng thái mới nhất của đơn hàng
+                                                        $latestStatus = $item->status_orders()->latest()->first();
+                                                    @endphp
+                                                    <span
+                                                        class="status-circle @if ($latestStatus && $latestStatus->status_id == 1) badge-info
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 2) badge-warning
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 3) badge-primary
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 4) badge-success
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
+                                                    </span>
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
-                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -361,7 +378,7 @@
             <div id="shipping-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -440,42 +457,53 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
-                                            @endforeach
+                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                        alt="Product Image" width="50" height="50"> x
+                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
+                                                @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    @php
+                                                        // Lấy trạng thái mới nhất của đơn hàng
+                                                        $latestStatus = $item->status_orders()->latest()->first();
+                                                    @endphp
+                                                    <span
+                                                        class="status-circle @if ($latestStatus && $latestStatus->status_id == 1) badge-info
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 2) badge-warning
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 3) badge-primary
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 4) badge-success
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
+                                                    </span>
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
-                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -495,7 +523,7 @@
                                                     onclick="return confirm('Xác nhận giao đơn hàng?')">
                                                     <i class="fa fa-check"></i> Xác nhận
                                                 </a>
-                                                
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -508,7 +536,7 @@
             <div id="completed-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -587,42 +615,53 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
-                                            @endforeach
+                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                        alt="Product Image" width="50" height="50"> x
+                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
+                                                @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    @php
+                                                        // Lấy trạng thái mới nhất của đơn hàng
+                                                        $latestStatus = $item->status_orders()->latest()->first();
+                                                    @endphp
+                                                    <span
+                                                        class="status-circle @if ($latestStatus && $latestStatus->status_id == 1) badge-info
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 2) badge-warning
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 3) badge-primary
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 4) badge-success
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
+                                                    </span>
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
-                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -644,7 +683,7 @@
             <div id="processing-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -654,7 +693,7 @@
                                     <th>Trạng thái đơn hàng</th>
                                     <th>Phương thức vận chuyển</th>
                                     <th>Tổng</th>
-                                    <th>Thao tác</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -723,42 +762,53 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
-                                            @endforeach
+                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                        alt="Product Image" width="50" height="50"> x
+                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
+                                                @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    @php
+                                                        // Lấy trạng thái mới nhất của đơn hàng
+                                                        $latestStatus = $item->status_orders()->latest()->first();
+                                                    @endphp
+                                                    <span
+                                                        class="status-circle @if ($latestStatus && $latestStatus->status_id == 1) badge-info
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 2) badge-warning
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 3) badge-primary
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 4) badge-success
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
+                                                    </span>
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
-                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -768,7 +818,7 @@
                                                 @endif
                                             </td>
                                             <td>{{ number_format($item->total_payment, 0, ',', '.') }} đ</td>
-                                            <td></td>
+
                                         </tr>
                                     @endforeach
                                 @endif
@@ -781,7 +831,7 @@
             <div id="cancellation-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -859,42 +909,53 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
-                                            @endforeach
+                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                        alt="Product Image" width="50" height="50"> x
+                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
+                                                @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                    Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    @php
+                                                        // Lấy trạng thái mới nhất của đơn hàng
+                                                        $latestStatus = $item->status_orders()->latest()->first();
+                                                    @endphp
+                                                    <span
+                                                        class="status-circle @if ($latestStatus && $latestStatus->status_id == 1) badge-info
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 2) badge-warning
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 3) badge-primary
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 4) badge-success
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
+                                                    </span>
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
-                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')
@@ -916,7 +977,7 @@
             <div id="fail_delivery-content" class="tab-content">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -994,42 +1055,53 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                    <a
-                                                        href="{{ route('admin.orders.info', $item->id) }}"><strong>{{ $detail->product_variant->product->SKU }}</strong></a><br>
-                                                    {{ \Carbon\Carbon::parse($detail->created_at)->translatedFormat('l, H:i:s') }}
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
+                                                    </a><br>
                                                 @endforeach
+                                                <br>
+                                                @if ($item->order_details->isNotEmpty())
+                                                    {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
+                                                @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
                                                 @foreach ($item->order_details as $detail)
-                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                    alt="Product Image" width="50" height="50"> x {{ number_format($detail->quantity, 0, ',', '.') }}
-                                            @endforeach
+                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                        alt="Product Image" width="50" height="50"> x
+                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
+                                                @endforeach
                                             </td>
                                             <td>
-                                                @foreach ($item->status_orders as $statusOrder)
                                                 <div class="order-status">
-                                                    <span class="status-circle @if($statusOrder->status_id == 1) processing 
-                                                                                @elseif($statusOrder->status_id == 2) pending 
-                                                                                @elseif($statusOrder->status_id == 3) shipped 
-                                                                                @elseif($statusOrder->status_id == 4) completed 
-                                                                                @elseif($statusOrder->status_id == 5) cancelled 
-                                                                                @else failed @endif"></span>
-                                                    @if ($statusOrder->status_id == 1)
-                                                        Chờ xử lý
-                                                    @elseif($statusOrder->status_id == 2)
-                                                        Chờ xác nhận
-                                                    @elseif($statusOrder->status_id == 3)
-                                                        Đang vận chuyển
-                                                    @elseif($statusOrder->status_id == 4)
-                                                        Hoàn thành
-                                                    @elseif($statusOrder->status_id == 5)
-                                                        Đã hủy
-                                                    @else
-                                                        Đơn hàng giao không thành công
-                                                    @endif
+                                                    @php
+                                                        // Lấy trạng thái mới nhất của đơn hàng
+                                                        $latestStatus = $item->status_orders()->latest()->first();
+                                                    @endphp
+                                                    <span
+                                                        class="status-circle @if ($latestStatus && $latestStatus->status_id == 1) badge-info
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 2) badge-warning
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 3) badge-primary
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 4) badge-success
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 5) badge-danger
+                                                        @elseif ($latestStatus && $latestStatus->status_id == 6) badge-secondary @endif">
+                                                    </span>
+                                                    {{ $latestStatus
+                                                        ? ($latestStatus->status->name == 'Processing'
+                                                            ? 'Chờ xử lý'
+                                                            : ($latestStatus->status->name == 'Pending'
+                                                                ? 'Chờ xác nhận'
+                                                                : ($latestStatus->status->name == 'Shipping'
+                                                                    ? 'Đang vận chuyển'
+                                                                    : ($latestStatus->status->name == 'Completed'
+                                                                        ? 'Hoàn thành'
+                                                                        : ($latestStatus->status->name == 'Cancelled'
+                                                                            ? 'Đã hủy'
+                                                                            : ($latestStatus->status->name == 'Returned'
+                                                                                ? 'Hoàn trả'
+                                                                                : $latestStatus->status->name))))))
+                                                        : 'Chưa có trạng thái' }}
                                                 </div>
-                                            @endforeach
                                             </td>
                                             <td>
                                                 @if ($item->payment_method == 'cod')

@@ -57,7 +57,7 @@
                     <div class="col-lg-6">
                         <div class="product-detail-box">
                             <div class="product-option">
-                                <div class="move-fast-box d-flex align-items-center gap-1"><img src="../assets/images/gif/fire.gif" alt="">
+                                <div class="move-fast-box d-flex align-items-center gap-1"><img src="{{ asset('assets/images/gif/fire.gif') }}" alt="">
                                     <p>Move fast!</p>
                                 </div>
                                 <h1 class="css-w60u47">{{ $product->name }}</h1>
@@ -205,7 +205,7 @@
                                     </ul>
                                 </div>
                                 <div class="sale-box">
-                                    <div class="d-flex align-items-center gap-2"><img src="../assets/images/gif/timer.gif" alt="">
+                                    <div class="d-flex align-items-center gap-2"><img src="{{ asset('assets/images/gif/timer.gif') }}" alt="">
                                         <p>Limited Time Left! Hurry, Sale Ending!</p>
                                     </div>
                                     <div class="countdown">
@@ -266,7 +266,7 @@
                                     </ul>
                                 </div> --}}
                                 <div class="share-option">
-                                    <h5>Secure Checkout </h5><img class="img-fluid" src="../assets/images/other-img/secure_payments.png" alt="">
+                                    <h5>Secure Checkout </h5><img class="img-fluid" src="{{ asset('assets/images/other-img/secure_payments.png') }}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -293,20 +293,20 @@
                                             aria-expanded="false" aria-controls="collapseTwo"><span>Instructions for use and storage</span></button></h2>
                                     <div class="accordion-collapse collapse" id="collapseTwo" data-bs-parent="#accordionDescription">
                                         <div class="accordion-body">
-                                                <p>- KHÔNG giặt máy. KHÔNG sử dụng nước giặt chứa chất tẩy.</p>
-                                                <p>- KHÔNG ngâm trong nước. KHÔNG giặt chung với quần áo có màu.</p>
-                                                <p>- KHÔNG giặt khô. KHÔNG là.</p>
-                                                <p>- KHÔNG sấy áo lông vũ trong máy sấy nhiệt độ cao.</p>
-                                                <p>- KHÔNG phơi sản phẩm dưới ánh nắng trực tiếp, để khô tự nhiên ở nơi thoáng mát.</p>
-                                                <p>- KHÔNG cất sản phẩm khi còn ẩm, chưa khô hoàn toàn.</p>
-                                                <p>- KHÔNG nên cho sản phẩm sau khi sử dụng vào túi nylon hoặc các hộp kín</p>
-                                                <p>- Giặt tay nước mát và ấn, bóp nhẹ sản phẩm</p>
-                                                <p>- Vỗ nhẹ sản phẩm sau khi phơi khô và kéo căng về mặt vải để lông vũ phục hồi trạng thái ban đầu.</p>
-                                                <p>- Xử lý lông lông vũ bị rút ra ngoài đường chỉ may bằng cách kéo ngược lại sợi vào trong áo (Do ma sát khi sử dụng hoặc do tĩnh
-                                                    điện).</p>
-                                                <p>- Sản phẩm được gấp/gói trong thời gian dài có thể bị nhăn vải bề mặt. Kéo căng bề mặt vải và treo sản phẩm để được phục hồi
-                                                    nguyên bản trạng thái ban đầu.</p>
-                                                <p>- Khi không sử dụng cần giặt sạch sản phẩm và bảo quản tại nơi khô thoáng sau khi đã phơi khô hoàn toàn.</p>
+                                            <p>- KHÔNG giặt máy. KHÔNG sử dụng nước giặt chứa chất tẩy.</p>
+                                            <p>- KHÔNG ngâm trong nước. KHÔNG giặt chung với quần áo có màu.</p>
+                                            <p>- KHÔNG giặt khô. KHÔNG là.</p>
+                                            <p>- KHÔNG sấy áo lông vũ trong máy sấy nhiệt độ cao.</p>
+                                            <p>- KHÔNG phơi sản phẩm dưới ánh nắng trực tiếp, để khô tự nhiên ở nơi thoáng mát.</p>
+                                            <p>- KHÔNG cất sản phẩm khi còn ẩm, chưa khô hoàn toàn.</p>
+                                            <p>- KHÔNG nên cho sản phẩm sau khi sử dụng vào túi nylon hoặc các hộp kín</p>
+                                            <p>- Giặt tay nước mát và ấn, bóp nhẹ sản phẩm</p>
+                                            <p>- Vỗ nhẹ sản phẩm sau khi phơi khô và kéo căng về mặt vải để lông vũ phục hồi trạng thái ban đầu.</p>
+                                            <p>- Xử lý lông lông vũ bị rút ra ngoài đường chỉ may bằng cách kéo ngược lại sợi vào trong áo (Do ma sát khi sử dụng hoặc do tĩnh
+                                                điện).</p>
+                                            <p>- Sản phẩm được gấp/gói trong thời gian dài có thể bị nhăn vải bề mặt. Kéo căng bề mặt vải và treo sản phẩm để được phục hồi
+                                                nguyên bản trạng thái ban đầu.</p>
+                                            <p>- Khi không sử dụng cần giặt sạch sản phẩm và bảo quản tại nơi khô thoáng sau khi đã phơi khô hoàn toàn.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -384,7 +384,7 @@
                                     <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
                                             aria-expanded="false" aria-controls="collapseThree"><span>Reviews</span></button></h2>
                                     <div class="accordion-collapse collapse" id="collapseFour" data-bs-parent="#accordionDescription">
-                                        <div class="accordion-body">
+                                        <div class="accordion-body mb-4">
                                             @if ($reviewData['stats']['total_reviews'] > 0)
                                                 <div class="row gy-4">
                                                     <div class="col-lg-4">
@@ -431,7 +431,7 @@
                                                     </div>
                                                     <div class="col-lg-8">
                                                         <div class="comments-box">
-                                                            <h5>Comments Rating ({{ $reviewData['stats']['total_reviews'] }})</h5>
+                                                            <h5>Comments Rating ({{ $reviewData['stats']['active_review_count'] }})</h5>
                                                             <ul class="theme-scrollbar">
                                                                 @foreach ($reviewData['reviews'] as $review)
                                                                     <li class="w-100">
@@ -695,257 +695,7 @@
 @section('script-libs')
     <script src="{{ asset('assets/js/grid-option.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            //-----------------------currency------------------------------
-            function currency() {
-                try {
-                    $('.currency').each(function() {
-                        // Lấy giá trị hiện tại
-                        const value = $(this).text().trim();
-                        // Lọc bỏ các ký tự không phải số và dấu phân cách
-                        const numericValue = parseFloat(value.replace(/[^\d]/g, ''));
-                        // Kiểm tra giá trị hợp lệ
-                        if (!isNaN(numericValue)) {
-                            // Định dạng giá trị sang VND
-                            let formattedValue = new Intl.NumberFormat('vi-VN', {
-                                style: 'currency',
-                                currency: 'VND',
-                            }).format(numericValue);
-                            formattedValue = formattedValue.replace(/\s?₫/, 'đ');
-                            $(this).text(formattedValue);
-                        } else {
-                            console.warn('Không thể định dạng giá trị:', value);
-                        }
-                    });
-                    return true;
-                } catch (error) {
-                    console.error('Lỗi định dạng tiền tệ:', error);
-                    return false;
-                }
-            }
-            currency();
-
-            //------------------------ Global Variables ----------------------
-            const variants = @json($array_variants) || [];
-            let attributeValueIds = [];
-            let variantSelected = false;
-            let variantId = null;
-            let getStockVariantClicked = null;
-            const totalStock = $("#update-stock").text();
-            const productId = $('.product_id').val();
-            $('#sale-price, #regular-price, #percent-discount, .reset_selected').hide()
-            //------------- Đặt lại trạng thái khi bấm nút reset --------------
-            function resetAttributes() {
-                attributeValueIds = [];
-                $('.attribute_item').removeClass('active disabled').addClass('able');
-                $('#update-stock').text(totalStock);
-                $('#sale-price, #regular-price, #percent-discount').hide();
-                $('#price, #regular, #discount').show();
-                $('.reset_selected').hide();
-                variantSelected = false;
-                getStockVariantClicked = null;
-            }
-            //------------- Cập nhật giá và số lượng --------------
-            function updatePrices(response) {
-                const {
-                    sale_price,
-                    regular_price,
-                    stock
-                } = response.data;
-                const percentDiscount = (100 - (sale_price / regular_price * 100)).toFixed(1);
-
-                if (variantSelected) {
-                    if (sale_price > 0) {
-                        $('#regular-price').text(regular_price);
-                        $('#sale-price').text(sale_price);
-                        $('#update-stock').text(stock);
-                        $('#percent-discount').text(`-${percentDiscount}%`);
-                    } else {
-                        $('#sale-price').text(regular_price);
-                        $('#regular-price').text(regular_price);
-                        $('#percent-discount').hide();
-                        $('#update-stock').text(stock);
-                    }
-                    currency();
-                }
-            }
-            //-------- Lấy thông tin biến thể dựa trên thuộc tính đã chọn ----------
-            function handleAjax(attributeValueIds) {
-                $.ajax({
-                    url: "{{ route('userProductDetailFocused') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        attribute_value_ids: attributeValueIds,
-                        product_id: productId,
-                    },
-                    success(response) {
-                        if (response.status === "success") {
-                            updatePrices(response);
-                        } else {
-                            $('#update-stock').text(0);
-                            notification('error', 'Sản phẩm không có sẵn', 'Hết hàng');
-                        }
-                    },
-                    error(xhr) {
-                        console.error('AJAX error:', xhr);
-                        alert('Đã xảy ra lỗi trong quá trình xử lý yêu cầu.');
-                    },
-                });
-            }
-
-            //----------Khi 1 thuộc tính được chọn-----------------
-            $(".attribute_item").click(function() {
-                if (!$(this).hasClass('able')) return;
-                // Lấy và cập nhật danh sách các giá trị thuộc tính đã chọn
-                const attributeValueId = $(this).data("id");
-                if ($(this).hasClass('active')) {
-                    $(this).removeClass('active');
-                    attributeValueIds = attributeValueIds.filter((id) => id !== attributeValueId);
-                } else {
-                    $(this).addClass('active');
-                    attributeValueIds.push(attributeValueId);
-                }
-                if (attributeValueIds.length > 0) {
-                    $('.reset_selected').show();
-                } else {
-                    $('.reset_selected').hide();
-                }
-                // Xác định các thuộc tính khác có thể chọn được
-                const arrayAllowClickAttributeValueIds = [];
-                variants.forEach((variant) => {
-                    const isSubset = attributeValueIds.every((id) => variant.attribute_values.includes(id));
-                    if (isSubset && variant.stock > 0) {
-                        variant.attribute_values.forEach((id) => {
-                            if (!arrayAllowClickAttributeValueIds.includes(id)) {
-                                arrayAllowClickAttributeValueIds.push(id);
-                            }
-                        });
-                    }
-                });
-                // Cập nhật trạng thái các thuộc tính trên giao diện
-                $('.attribute_item').each(function() {
-                    const id = $(this).data('id');
-                    if (arrayAllowClickAttributeValueIds.includes(id)) {
-                        $(this).removeClass('disabled').addClass('able');
-                    } else {
-                        $(this).removeClass('able active').addClass('disabled');
-                    }
-                });
-                // Tìm biến thể phù hợp với thuộc tính đã chọn
-                const variant = variants.find((v) =>
-                    v.attribute_values.length === attributeValueIds.length &&
-                    v.attribute_values.every((id) => attributeValueIds.includes(id))
-                );
-                // Cập nhật trạng thái sản phẩm và hiển thị giá
-                if (variant) {
-                    variantSelected = true;
-                    variantId = variant.variant_id;
-                    getStockVariantClicked = variant.stock;
-                    handleAjax(attributeValueIds);
-                    $('#price, #regular, #discount').hide();
-                    $('#sale-price, #regular-price, #percent-discount').show();
-                } else {
-                    variantSelected = false;
-                    variantId = null;
-                    $('#update-stock').text(totalStock);
-                    $('#price, #regular, #discount').show();
-                    $('#sale-price, #regular-price, #percent-discount').hide();
-                }
-            });
-
-            //----------------------- Reset Button ----------------------
-            $('.reset_selected').click(resetAttributes);
-
-            //----------------------- Quantity Handlers ----------------------
-            $('.reduce').click(function() {
-                if (!variantSelected) {
-                    $('.blink-border').addClass('animation-blink-border');
-                    setTimeout(() => {
-                        $('.blink-border').removeClass('animation-blink-border');
-                    }, 950);
-                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
-                } else {
-                    if ($('.quantity').val() <= 1) {
-                        $('.quantity').val(1);
-                    } else {
-                        $('.quantity').val($('.quantity').val() - 1);
-                    }
-                }
-            });
-
-            $('.increment').click(function() {
-                if (!variantSelected) {
-                    $('.blink-border').addClass('animation-blink-border');
-                    setTimeout(() => {
-                        $('.blink-border').removeClass('animation-blink-border');
-                    }, 950);
-                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
-                } else {
-                    if ($('.quantity').val() >= getStockVariantClicked) {
-                        $('.blink-border-text').addClass('animation-blink-border');
-                        setTimeout(() => {
-                            $('.blink-border-text').removeClass('animation-blink-border');
-                        }, 950);
-                        notification('warning', 'Đã đạt đến số lượng tối đa trong kho!', 'Cảnh báo!');
-                    } else if ($('.quantity').val() >= 10) {
-                        notification('warning', 'Mỗi lần chỉ được phép mua tối đa 10 sản phẩm!',
-                            'Cảnh báo!');
-                    } else {
-                        $('.quantity').val(function(i, val) {
-                            return parseInt(val) + 1;
-                        });
-                    }
-                }
-            });
-
-            $('.add-to-cart').click(function() {
-                if (!variantSelected) {
-                    $('.blink-border').addClass('animation-blink-border');
-                    setTimeout(() => {
-                        $('.blink-border').removeClass('animation-blink-border');
-                    }, 950);
-                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
-                } else {
-                    const quantity = $('.quantity').val();
-                    const url = `{{ route('addToCart', ['variant_id' => ':variant_id', 'quantity' => ':quantity']) }}`
-                        .replace(':variant_id', variantId)
-                        .replace(':quantity', quantity);
-                    $.ajax({
-                        url: url,
-                        method: 'GET',
-                        success: function(response) {
-                            if (response.status === 'success') {
-                                console.log(response.cartCount);
-                                // Cập nhật số lượng giỏ hàng trong header
-                                $('.shoping-prize .cart-count').text(response.cartCount);
-                                notification('success', response.message, 'Thành công!');
-                            } else if (response.status === 'error') {
-                                notification('warning', response.message, 'Thông báo!');
-                            }
-                        },
-                        error: function() {
-                            notification('error', 'Có lỗi xảy ra. Vui lòng thử lại.', 'Lỗi!');
-                        }
-                    });
-                }
-            });
-            //Xử lý đặt hàng
-            $('#buy_now').on('click', function(e) {
-                if (!variantSelected) {
-                    $('.blink-border').addClass('animation-blink-border');
-                    setTimeout(() => {
-                        $('.blink-border').removeClass('animation-blink-border');
-                    }, 950);
-                    notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
-                } else {
-                    const quantity = $('.quantity').val();
-                    $('#input_post_data_to_check_out').val(variantId);
-                    $('#quantity').val(quantity);
-                    $('#is_cart').val(false);
-                    $('#form_post_data_to_check_out').submit();
-                }
-            })
-        });
+        const array_variants = @json($array_variants) || [];
     </script>
+    <script src="{{ asset('js/user/product-detail.js') }}"></script>
 @endsection

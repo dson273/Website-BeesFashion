@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Chart;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
@@ -16,12 +17,16 @@ class DashboardController extends Controller
     //View dashboard
     public function index()
     {
+      
         $totalProducts = Product::count();
         $totalView = Product::where('is_active', '1')->sum('view');
-        $totalOrders = Order::count();
+        $allOrders = Order::with(['status_orders' => function ($query) {
+            $query->orderBy('created_at', 'desc')->take(1);  // Lấy trạng thái mới nhất
+        }])->orderBy('created_at', 'desc')->get();
+        $totalOrders = $allOrders->count();
         $totalUsers = User::where('role', 'member')->count();
 
-        return view('admin.dashboard', compact('totalProducts', 'totalOrders', 'totalView', 'totalUsers'));
+        return view('admin.dashboard', compact('vouchers','totalProducts', 'totalOrders', 'totalView', 'totalUsers'));
     }
 
     //Thống kê doanh thu shop theo thời gian

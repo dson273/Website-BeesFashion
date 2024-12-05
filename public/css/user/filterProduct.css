@@ -59,3 +59,7 @@ option[style*="display: none"] {
 .selected-item span:hover {
     color: #f1f1f1;
 }
+#price-range{
+    color: rgba(var(--theme-default));
+    font-size: 15px;
+}

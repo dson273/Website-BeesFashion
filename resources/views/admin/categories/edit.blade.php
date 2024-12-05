@@ -17,12 +17,6 @@
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
         <div class="mb-2 ml-3">
             <a href="{{ route('admin.categories.index') }}" class="btn btn-dark text-white text-decoration-none"><i
                     class="fas fa-arrow-left"></i> Quay lại</a>
@@ -49,7 +43,7 @@
                         <div class="mt-3 mb-3">
                             <label for="" class="form-label">Ảnh</label>
                             <input type="file" name="image" class="form-control">
-                            <img src="{{ asset('storage/uploads/categories/images/' . $Cate->image) }}" width="150px"
+                            <img src="{{ asset('uploads/categories/images/' . $Cate->image) }}" width="150px"
                                 alt="">
 
                         </div>

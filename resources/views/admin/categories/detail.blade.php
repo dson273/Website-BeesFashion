@@ -17,12 +17,6 @@
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
                 <div class="mb-2 ml-3">
                     <a href="{{ route('admin.categories.index') }}" class="btn btn-dark text-white text-decoration-none"><i
                             class="fas fa-arrow-left"></i> Quay lại</a>
@@ -32,48 +26,46 @@
             <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Chi Tiết Danh Mục</h6>
                 {{-- <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Thêm danh mục con</a> --}}
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"><i
+                    class="fas fa-plus"></i>
                     Thêm danh mục con
                 </button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Tên danh mục</th>
-                                <th>Hình Ảnh</th>
                                 <th>Mô tả danh mục</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên danh mục</th>
-                                <th>Hình Ảnh</th>
-                                <th>Mô tả danh mục</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </tfoot>
+                    
                         <tbody>
                             @foreach ($childCategories as $index => $cate)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $cate->name }}</td>
-                                    <td><img src="{{ asset('storage/uploads/categories/images/' . $cate->image) }}" width="150px" alt=""></td>
+                                    <td>
+                                        <img src="{{ $cate->image ? asset('uploads/categories/images/' . $cate->image) : asset('assets/images/icons/noimage.png') }}" 
+                                             width="50px" >
+                                        {{ $cate->name }}
+                                    </td>
+                                   
                                     <td>{{ $cate->description }}</td>
                                     <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
-                                        <a href="{{ route('admin.categories.edit', $cate->id) }}" class="btn btn-warning"><i class="fa fa-wrench"></i></a>
+                                        <a href="{{ route('admin.categories.edit', $cate->id) }}" style="margin-right: 10px;"><img
+                                            src="{{ asset('assets/images/icons/edit.svg') }}" alt="img"></a>
                                         <form action="{{ route('admin.categories.destroy', $cate->id) }}" class="d-inline" method="POST"
                                             onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                            <button type="submit" style="all: unset; cursor: pointer;">
+                                                <img src="{{ asset('assets/images/icons/delete.svg') }}" alt="Delete">
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>

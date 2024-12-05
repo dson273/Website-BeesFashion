@@ -14,7 +14,7 @@
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="SKU" class="form-label">Sản phẩm/SKU</label>
+                            <label for="SKU" class="form-label">Sản phẩm</label>
                             <select class="form-control form-control-sm" name="SKU" id="SKU">
                                 @foreach ($importHistories as $item)
                                     <option value="{{ $item->product_variant_id }}">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                 </div>
             </form>
         </div>

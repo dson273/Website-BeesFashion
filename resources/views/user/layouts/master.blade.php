@@ -28,9 +28,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/swiper-slider/swiper-bundle.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/toastify.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
-    <script defer src="{{ asset('assets/css/landing_page.js') }}"></script>
     <script defer src="{{ asset('assets/css/style.js') }}"></script>
-    <link href="{{ asset('assets/css/landing_page.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <!-- Notification library -->
@@ -41,7 +39,7 @@
     @yield('css-libs')
 </head>
 
-<body>
+<body class="skeleton_body">
     <div class="tap-top">
         <div><i class="fa-solid fa-angle-up"></i></div>
     </div>
@@ -69,12 +67,12 @@
     <script src="{{ asset('assets/js/swiper-slider/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/swiper-slider/swiper-custom.js') }}"></script>
     <script src="{{ asset('assets/js/countdown.js') }}"></script>
-    <script src="{{ asset('assets/js/newsletter.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/newsletter.js') }}"></script> --}}
     <script src="{{ asset('assets/js/skeleton-loader.js') }}"></script><!-- touchspin-->
     <script src="{{ asset('assets/js/touchspin.js') }}"></script><!-- cookie js-->
-    <script src="{{ asset('assets/js/cookie.js') }}"></script><!-- tost js -->
+    {{-- <script src="{{ asset('assets/js/cookie.js') }}"></script><!-- tost js --> --}}
     <script src="{{ asset('assets/js/toastify.js') }}"></script>
-    <script src="{{ asset('assets/js/theme-setting.js') }}"></script><!-- Theme js-->
+    {{-- <script src="{{ asset('assets/js/theme-setting.js') }}"></script><!-- Theme js--> --}}
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Notification library -->
@@ -130,30 +128,33 @@
 
         const routeStoreOrder = "{{ route('checkout.storeOrder') }}";
         //===============Cart===============
-        //route UpdateQuatity
         const routeUpdateQuantity = "{{ route('cart.updateQuantity') }}";
 
         //===============Dashboard (Order)===============
-        const routeGetOrders = "{{route('dashboard.getOrders')}}";
-        const routeCancelOrder = "{{route('dashboard.cancelOrder')}}";
-        const routeConfirmDoneOrder = "{{route('dashboard.confirmDoneOrder')}}";
-        const routeGetOrderDetail = "{{route('dashboard.orderDetail')}}";
-        const routeGetVoteOrderDetail = "{{route('dashboard.getVoteOrderDetail')}}";
-        const routeSubmitVoteOrderDetail = "{{route('dashboard.submitVoteOrderDetail')}}";
-        const routeSubmitEditVoteOrderDetail = "{{route('dashboard.submitEditVoteOrderDetail')}}";
+        const routeGetOrders = "{{ route('dashboard.getOrders') }}";
+        const routeCancelOrder = "{{ route('dashboard.cancelOrder') }}";
+        const routeConfirmDoneOrder = "{{ route('dashboard.confirmDoneOrder') }}";
+        const routeGetOrderDetail = "{{ route('dashboard.orderDetail') }}";
+        const routeGetVoteOrderDetail = "{{ route('dashboard.getVoteOrderDetail') }}";
+        const routeSubmitVoteOrderDetail = "{{ route('dashboard.submitVoteOrderDetail') }}";
+        const routeSubmitEditVoteOrderDetail = "{{ route('dashboard.submitEditVoteOrderDetail') }}";
+
+        //======================Product detail====================
+        const routeUserProductDetailFocused = "{{ route('userProductDetailFocused') }}";
+        const routeAddToCart = "{{ route('addToCart') }}";
     </script>
 
     <!-- Short notification commands -->
     <script>
-        @if(session('statusSuccess'))
-        var message = @json(session('statusSuccess'));
-        notification('success', message, 'Successfully!');
-        @elseif(session('statusError'))
-        var message = @json(session('statusError'));
-        notification('error', message, 'Error!');
-        @elseif(session('statusWarning'))
-        var message = @json(session('statusWarning'));
-        notification('warning', message, 'Warning!');
+        @if (session('statusSuccess'))
+            var message = @json(session('statusSuccess'));
+            notification('success', message, 'Successfully!');
+        @elseif (session('statusError'))
+            var message = @json(session('statusError'));
+            notification('error', message, 'Error!');
+        @elseif (session('statusWarning'))
+            var message = @json(session('statusWarning'));
+            notification('warning', message, 'Warning!');
         @endif
     </script>
 

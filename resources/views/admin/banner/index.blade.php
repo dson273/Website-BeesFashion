@@ -18,18 +18,12 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
-
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Banner trang web</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Banner</h6>
                 <a href="{{ route('admin.banner.create') }}" class="btn btn-primary text-white text-decoration-none"><i
-                        class="fas fa-plus"></i> Thêm mới banner</a>
+                        class="fas fa-plus"></i> Thêm mới</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -60,29 +54,28 @@
                                     <td>
 
                                         @foreach ($banner->banner_images as $banner_image)
-                                            <img src="{{ asset('storage/uploads/banners/images/id_' . $banner->id . '/' . $banner_image->file_name) }}"
+                                            <img src="{{ asset('uploads/banners/images/id_' . $banner->id . '/' . $banner_image->file_name) }}"
                                                 alt="Banner Image" style="max-width: 100px;">
                                         @endforeach
 
                                     </td>
                                     <td>{{ $banner->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
-                                    <td>
+                                    <td style="white-space: nowrap;">
                                         @if ($banner->is_active == 1)
-                                            <a href="{{ route('admin.banner.offactive', $banner->id) }}"
-                                                class="btn btn-danger"><i class="fa fa-power-off"></i></a>
+                                            <a href="{{ route('admin.banner.offactive', $banner->id) }}" style="margin-right: 10px;"><i class="fa fa-power-off"></i></a>
                                         @else
-                                            <a href="{{ route('admin.banner.onactive', $banner->id) }}"
-                                                class="btn btn-success"><i class="fa fa-power-off"></i></a>
+                                            <a href="{{ route('admin.banner.onactive', $banner->id) }}" style="margin-right: 10px;"><i class="fa fa-power-off"></i></a>
                                         @endif
-                                        <a href="{{ route('admin.banner.edit', $banner->id) }}" class="btn btn-warning"><i
-                                                class="fa fa-wrench"></i></a>
+                                        <a href="{{ route('admin.banner.edit', $banner->id) }}" style="margin-right: 10px;"><img
+                                            src="{{ asset('assets/images/icons/edit.svg') }}" alt="img"></a>
                                         <form action="{{ route('admin.banner.destroy', $banner->id) }}" method="POST"
                                             style="display: inline;"
                                             onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"><i
-                                                    class="fa fa-trash"></i></button>
+                                            <button type="submit" style="all: unset; cursor: pointer;">
+                                                <img src="{{ asset('assets/images/icons/delete.svg') }}" alt="Delete">
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>

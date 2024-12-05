@@ -18,11 +18,6 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -30,46 +25,37 @@
                 <h6 class="m-0 font-weight-bold text-primary">Lịch sử nhập hàng</h6>
 
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Nhập hàng
+                    <i
+                        class="fas fa-plus"></i> Nhập hàng
                 </button>
             </div>
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>SKU / Tên sản phẩm</th>
-                                <th>Ảnh</th>
+                                <th>Sản phẩm</th>
                                 <th>Đơn giá</th>
                                 <th>Số lượng</th>
                                 <th>Người nhập</th>
                                 <th>Thời gian nhập</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>#</th>
-                                <th>SKU / Tên sản phẩm</th>
-                                <th>Ảnh</th>
-                                <th>Đơn giá</th>
-                                <th>Số lượng</th>
-                                <th>Người nhập</th>
-                                <th>Thời gian nhập</th>
-                            </tr>
-                        </tfoot>
+                       
                         <tbody>
                             @foreach ($importHistories as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $item->product_variant->SKU }} / {{ $item->product_variant->product->name }}</td>
-                                    <td><img src="{{ asset('uploads/products/images/' . $item->product_variant->image) }}"
-                                            width="100px" alt=""></td>
+                                    <td><img src="{{ $item->product_variant->image ? asset('uploads/products/images/' .  $item->product_variant->image) : asset('assets/images/icons/noimage.png') }}" 
+                                        width="50px" >
+                                        {{ $item->product_variant->SKU }} / {{ $item->product_variant->product->name }}
+                                    </td>
                                     <td>{{ number_format($item->import_price, 0, ',', '.') }}</td>
                                     <td>{{ number_format($item->quantity, 0, ',', '.') }}</td>
                                     <td>
-                                        {{ $item->user ? $item->user->full_name : 'Fail' }}
+                                        {{ $item->user ? $item->user->username : 'Fail' }}
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l, d F Y, H:i:s') }}</td>
                                 </tr>

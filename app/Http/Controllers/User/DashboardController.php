@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
+use App\Models\Order;
+use App\Models\Status;
+use App\Models\Product;
+use App\Models\Order_detail;
+use App\Models\Product_vote;
+use App\Models\Status_order;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
-use App\Models\Order;
-use App\Models\Order_detail;
-use App\Models\Product;
-use App\Models\Product_vote;
-use App\Models\Status;
-use App\Models\Status_order;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User_shipping_address;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User_shipping_address;
 
 class DashboardController extends Controller
 {
@@ -24,25 +24,42 @@ class DashboardController extends Controller
     {
         return view('user.dashboard');
     }
+
+
     public function editProfile(Request $request)
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $validatedData = $request->validate([
-            'full_name' => 'required|string|max:255',
+            'full_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
+            ],
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($user->id),
+                Rule::unique('users', 'email')->ignore($user->id), // Không kiểm tra trùng email của chính người dùng hiện tại
             ],
-            'phone' => 'required|regex:/^0\d{9,10}$/',  // Số điện thoại bắt đầu bằng 0 và có 10 hoặc 11 chữ số
+            'phone' => [
+                'required',
+                'regex:/^0\d{9,10}$/', // Số điện thoại bắt đầu bằng 0 và có 10 hoặc 11 chữ số
+            ],
         ], [
-            'full_name.required' => 'Please enter your full name.',
-            'phone.required' => 'Please enter phone number.',
-            'email.required' => 'Please enter email.',
-            'email.unique' => 'This email is already in use.',
-            'phone.regex' => 'The phone number must start with 0 and have 10 or 11 digits.',
+            'full_name.required' => 'Vui lòng nhập họ và tên.',
+            'full_name.string' => 'Họ và tên phải là một chuỗi ký tự hợp lệ.',
+            'full_name.max' => 'Họ và tên không được vượt quá 255 ký tự.',
+            'full_name.regex' => 'Họ và tên không được chứa số hoặc ký tự đặc biệt.',
+
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Địa chỉ email không đúng định dạng.',
+            'email.unique' => 'Email này đã được sử dụng.',
+
+            'phone.required' => 'Vui lòng nhập số điện thoại.',
+            'phone.regex' => 'Số điện thoại phải bắt đầu bằng số 0 và có độ dài 10 hoặc 11 chữ số.',
         ]);
+
 
         $user->update([
             'full_name' => $validatedData['full_name'],
@@ -52,7 +69,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Updated personal information successfully!',
+            'message' => 'Cập nhật thông tin cá nhân thành công.',
             'data' => $user
         ]);
     }
@@ -60,20 +77,30 @@ class DashboardController extends Controller
     public function editPassword(Request $request)
     {
         $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|confirmed|min:6',
+            'current_password' => 'required|string',
+            'new_password' => [
+                'required',
+                'string',
+                'min:6',
+                'max:50',
+                'confirmed',
+                'regex:/^\S+$/',
+            ],
         ], [
-            'current_password.require' => 'Please enter current password.',
-            'new_password.required' => 'Please enter a new password.',
-            'new_password.min' => 'The new password must have at least 6 characters.',
-            'new_password.confirmed' => 'Confirm passwords do not match.',
+            'current_password.required' => 'Vui lòng nhập mật khẩu hiện tại.',
+            'new_password.required' => 'Vui lòng nhập mật khẩu mới.',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.',
+            'new_password.max' => 'Mật khẩu mới không được vượt quá 50 ký tự.',
+            'new_password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            'new_password.regex' => 'Mật khẩu mới không được chứa khoảng trắng.',
         ]);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
         // Kiểm tra mật khẩu hiện tại có khớp không
         if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json(['errors' => 'Current password is incorrect.'], 400);
+            return response()->json(['errors' => 'Mật khẩu hiện tại không đúng!'], 400);
         }
         // Cập nhật mật khẩu mới
         $user->password = Hash::make($request->new_password);
@@ -81,7 +108,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Password updated successfully.'
+            'message' => 'Thay đổi mật khẩu thành công.'
         ]);
     }
 
@@ -89,15 +116,31 @@ class DashboardController extends Controller
     {
         // Validate input
         $request->validate([
-            'full_name' => 'required|string|max:255',
-            'phone_number' => 'required|regex:/^0\d{9,10}$/',
+            'full_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
+            ],
+            'phone_number' => [
+                'required',
+                'regex:/^0\d{9,10}$/', // Số điện thoại bắt đầu bằng 0 và có 10 hoặc 11 chữ số
+            ],
             'address' => 'required|string|max:255',
         ], [
-            'full_name.required' => 'Please enter your full name.',
-            'phone_number.required' => 'Please enter your phone number.',
-            'phone_number.regex' => 'The phone number must start with 0 and have 10 or 11 digits.',
-            'address.required' => 'Please enter your address.'
+            'full_name.required' => 'Vui lòng nhập họ và tên.',
+            'full_name.string' => 'Họ và tên phải là một chuỗi ký tự hợp lệ.',
+            'full_name.max' => 'Họ và tên không được vượt quá 255 ký tự.',
+            'full_name.regex' => 'Họ và tên không được chứa số hoặc ký tự đặc biệt.',
+
+            'phone_number.required' => 'Vui lòng nhập số điện thoại.',
+            'phone_number.regex' => 'Số điện thoại phải bắt đầu bằng số 0 và có độ dài 10 hoặc 11 chữ số.',
+
+            'address.required' => 'Vui lòng nhập địa chỉ.',
+            'address.string' => 'Địa chỉ phải là một chuỗi ký tự hợp lệ.',
+            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
         ]);
+
         $hasDefaultAddress = User_shipping_address::where('user_id', auth()->id())
             ->where('is_active', 1)
             ->exists();
@@ -112,7 +155,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Shipping address added successfully.',
+            'message' => 'Đã thêm địa chỉ giao hàng thành công.',
             'data' => $address_shipping
         ]);
     }
@@ -121,14 +164,29 @@ class DashboardController extends Controller
     {
         $userId = auth()->user()->id;
         $request->validate([
-            'full_name' => 'required|string|max:255',
-            'phone_number' => 'required|regex:/^0\d{9,10}$/',
+            'full_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
+            ],
+            'phone_number' => [
+                'required',
+                'regex:/^0\d{9,10}$/', // Số điện thoại bắt đầu bằng 0 và có 10 hoặc 11 chữ số
+            ],
             'address' => 'required|string|max:255',
         ], [
-            'full_name.required' => 'Please enter your full name.',
-            'phone_number.required' => 'Please enter your phone number.',
-            'phone_number.regex' => 'The phone number must start with 0 and have 10 or 11 digits.',
-            'address.required' => 'Please enter your address.'
+            'full_name.required' => 'Vui lòng nhập họ và tên.',
+            'full_name.string' => 'Họ và tên phải là một chuỗi ký tự hợp lệ.',
+            'full_name.max' => 'Họ và tên không được vượt quá 255 ký tự.',
+            'full_name.regex' => 'Họ và tên không được chứa số hoặc ký tự đặc biệt.',
+
+            'phone_number.required' => 'Vui lòng nhập số điện thoại.',
+            'phone_number.regex' => 'Số điện thoại phải bắt đầu bằng số 0 và có độ dài 10 hoặc 11 chữ số.',
+
+            'address.required' => 'Vui lòng nhập địa chỉ.',
+            'address.string' => 'Địa chỉ phải là một chuỗi ký tự hợp lệ.',
+            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
         ]);
 
         $user = User::findOrFail($userId);
@@ -136,7 +194,7 @@ class DashboardController extends Controller
         $address->update($request->all());
         return response()->json([
             'success' => true,
-            'message' => 'Address updated successfully.',
+            'message' => 'Địa chỉ đã được cập nhật thành công.',
             'data' => $address
         ]);
     }
@@ -171,7 +229,7 @@ class DashboardController extends Controller
         $defaultAddress->is_active = 1;
         $defaultAddress->save();
 
-        return redirect()->back()->with('success', 'Địa chỉ mặc định đã được cập nhật thành công.');
+        return redirect()->back()->with('statusSuccess', 'Địa chỉ mặc định đã được cập nhật thành công.');
     }
     //===============================ORDER===============================
     public function orderTracking()
@@ -471,4 +529,6 @@ class DashboardController extends Controller
             return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
         }
     }
+
+    
 }
