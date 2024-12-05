@@ -10,7 +10,7 @@ use App\Models\Product_file;
 use Illuminate\Http\Request;
 use App\Models\Attribute_value;
 use App\Models\Product_variant;
-use App\Models\Product_category;
+use App\Models\Product_vote;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -55,26 +55,31 @@ class FilterProductController extends Controller
 
         // Lấy danh sách các danh mục cha
         $listCategory = Category::whereNull('parent_category_id')->where('categories.fixed', 1)->with('categoryChildrent')->get();
-
         // Lấy danh sách sản phẩm và danh sách thương hiệu
         $listProduct = Product::with(['categories', 'brand'])->get();
         $listBrand = Brand::all();
-
         // Lấy danh sách màu sắc (attributes) cho sản phẩm
         $listColor = Attribute_value::all();
-
-
         $productsQuery = Product::join('product_categories', 'products.id', '=', 'product_categories.product_id')
             ->join('categories', 'product_categories.category_id', '=', 'categories.id')
             ->where('categories.fixed', 0)
             ->where('products.is_active', 1) // Lọc sản phẩm đang hoạt động
-            ->with(['product_files', 'product_variants'])
-            ->select('products.*');
+            ->with(['product_files', 'product_variants.product_votes'])
+            ->select('products.*')
+            ->get();;
         if ($request->has('brand_id')) {
             $productsQuery->where('brand_id', $request->brand_id);
         }
+        
+        // Tính trung bình số sao
+        $productsQuery->map(function ($product) {
+            // Lấy dữ liệu đánh giá cho sản phẩm
+            $rating = $this->getProductReviewData($product);
+            $product->averageRating = $rating['average_rating']; // Gán giá trị average_rating cho sản phẩm
+        });
+        // dd($productsQuery);
+        $products = $productsQuery;
 
-        $products = $productsQuery->paginate(12);
         $minPriceProduct = $products->map(function ($product) {
             return priceProduct($product);
         })->min();
@@ -381,49 +386,6 @@ class FilterProductController extends Controller
             'maxPrice' => $maxPriceProduct,
         ]);
     }
-    public function getProductDetails($id)
-    {
-        // Lấy thông tin sản phẩm
-        $product = Product::with(['product_variants', 'product_files'])
-            ->leftJoin('product_files', function ($join) {
-                $join->on('product_files.product_id', '=', 'products.id')
-                    ->where('product_files.is_default', 1)
-                    ->where('product_files.file_type', 'image');
-            })
-            ->where('products.id', $id)
-            ->where('products.is_active', 1)
-            ->select('products.*', 'product_files.file_name as image')
-            ->first();
-
-        // Nếu không tìm thấy sản phẩm
-        if (!$product) {
-            return response()->json(['error' => 'Product not found'], 404);
-        }
-
-        // Xử lý các hình ảnh sản phẩm
-        $productImages = Product_file::where('product_id', $product->id)
-            ->where('file_type', 'image')
-            ->get();
-
-        $imageUrls = $productImages->map(function ($image) {
-            return asset('uploads/products/images/' . $image->file_name);
-        });
-
-        // Trả về dữ liệu sản phẩm cùng với danh sách hình ảnh
-        return response()->json([
-            'product' => [
-                'name' => $product->name,
-                'price' => $product->price,
-                'old_price' => $product->old_price,
-                'description' => $product->description,
-                'images' => $imageUrls, // Trả về danh sách ảnh
-                'sizes' => ['S', 'M', 'L', 'XL'], // Ví dụ về kích thước (nên lấy từ cơ sở dữ liệu)
-                'colors' => ['red', 'blue', 'green'], // Ví dụ về màu sắc (nên lấy từ cơ sở dữ liệu)
-            ],
-        ]);
-    }
-
-
 
     public function getProductsByCategory($id)
     {
@@ -442,8 +404,6 @@ class FilterProductController extends Controller
             'products' => $products,
         ]);
     }
-
-
     public function getDescPriceProducts()
     {
         $products = Product::with(['product_variants', 'product_files'])
@@ -456,11 +416,11 @@ class FilterProductController extends Controller
             ->select('products.*', 'product_files.file_name as image')
             ->get();
 
-        // Sắp xếp sản phẩm theo giá trị minPriceProduct (theo thứ tự giảm dần)
+        // Sắp xếp sản phẩm theo giá trị giảm dần của maxPriceProduct
         $products = $products->sortByDesc(function ($product) {
-            // Lấy giá trị minPrice từ biến thể sản phẩm
-            $minPriceProduct = $product->product_variants->min('sale_price') ?: $product->product_variants->min('regular_price');
-            return $minPriceProduct; // Trả về giá trị minPriceProduct để sắp xếp
+            // Lấy giá trị maxPrice từ biến thể sản phẩm (sale_price nếu có, nếu không lấy regular_price)
+            $maxPriceProduct = $product->product_variants->max('sale_price') ?: $product->product_variants->max('regular_price');
+            return $maxPriceProduct; // Trả về giá trị maxPriceProduct để sắp xếp
         });
 
         // Tính toán giá trị min và max
@@ -485,8 +445,46 @@ class FilterProductController extends Controller
         ]);
     }
 
+    public function getEscPriceProducts()
+    {
+        $products = Product::with(['product_variants', 'product_files'])
+            ->leftJoin('product_files', function ($join) {
+                $join->on('product_files.product_id', '=', 'products.id')
+                    ->where('product_files.is_default', 1)
+                    ->where('product_files.file_type', 'image');
+            })
+            ->where('products.is_active', 1)
+            ->select('products.*', 'product_files.file_name as image')
+            ->get();
 
+        // Sắp xếp sản phẩm theo giá trị minPriceProduct (theo thứ tự giảm dần)
+        $products = $products->sortByDesc(function ($product) {
+            // Lấy giá trị minPrice từ biến thể sản phẩm
+            $maxPriceProduct = $product->product_variants->max('sale_price') ?: $product->product_variants->max('regular_price');
+            return $maxPriceProduct; // Trả về giá trị minPriceProduct để sắp xếp
+        });
 
+        // Tính toán giá trị min và max
+        list($minPriceProduct, $maxPriceProduct) = $this->calculatePriceRange($products);
+
+        // Xử lý đường dẫn ảnh cho mỗi sản phẩm
+        $products = $products->map(function ($product) {
+            $product->productURL = route('product.detail', ['sku' => $product->SKU]);
+            // Kiểm tra xem sản phẩm có ảnh không, nếu có thì tạo URL
+            if ($product->image) {
+                $product->image_url = asset('uploads/products/images/' . $product->image);
+            } else {
+                $product->image_url = null; // Nếu không có ảnh thì để null
+            }
+            return $product;
+        });
+
+        return response()->json([
+            'products' => $products,
+            'minPrice' => $minPriceProduct,
+            'maxPrice' => $maxPriceProduct,
+        ]);
+    }
 
     public function getProductDetail($productId)
     {
@@ -501,7 +499,6 @@ class FilterProductController extends Controller
             'id' => $product->id,
             'name' => $product->name,
             'sku' => $product->SKU,
-            'price' => $product->getPriceRangeAttribute(),  // Giá sản phẩm (ví dụ: dải giá)
             'description' => $product->description,
             'imageUrl' => asset('uploads/products/images/' . $product->product_files->first()->file_name), // Ảnh sản phẩm chính
             'relatedImages' => $product->product_files->map(function ($file) {
@@ -556,11 +553,27 @@ class FilterProductController extends Controller
                 ];
             })->toArray(),
 
-
         ];
 
         // Trả về dữ liệu sản phẩm dưới dạng JSON
         return response()->json($productDetails);
+    }
+
+    private function getProductReviewData($product)
+    {
+        $variantIds = $product->product_variants->pluck('id')->toArray();
+
+        $reviews = Product_vote::whereIn('product_variant_id', $variantIds)
+            ->where('is_active', 1)
+            ->get();
+
+        $totalReviews = $reviews->count();
+        $averageRating = $totalReviews > 0 ? round($reviews->avg('star'), 1) : 5; // Mặc định 5 sao nếu chưa có đánh giá
+
+        return [
+            'average_rating' => $averageRating,
+            'total_reviews' => $totalReviews
+        ];
     }
     public function getColor() {}
     /**

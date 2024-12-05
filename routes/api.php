@@ -30,6 +30,7 @@ Route::get('products/all', [FilterProductController::class, 'getAllProducts']);
 Route::get('products/bestselingproduct', [FilterProductController::class, 'getBestSellingProducts']);
 Route::get('products/getNewProduct', [FilterProductController::class, 'getNewProduct']);
 Route::get('products/getDescPriceProducts', [FilterProductController::class, 'getDescPriceProducts']);
+Route::get('products/getEscPriceProducts', [FilterProductController::class, 'getEscPriceProducts']);
 //lọc theo danh mục
 
 //hiển thị sản phẩm sau khi lọc
