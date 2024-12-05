@@ -63,7 +63,7 @@
                     <div class="swiper-wrapper ratio_square-2">
                         @foreach ($categoryLimit as $item)
                             <div class="swiper-slide">
-                                <div class="fashion-box"><a href="#"> <img class="img-fluid"
+                                <div class="fashion-box"><a href="{{ route('product', ['category' => $item->id]) }}"> <img class="img-fluid"
                                             src="{{ asset('uploads/categories/images/' . $item->image) }}"
                                             alt=""></a>
                                 </div>
