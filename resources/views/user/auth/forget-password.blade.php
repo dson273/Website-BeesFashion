@@ -101,7 +101,6 @@
     $(document).ready(function() {
         $('#form-forgot').on('submit', function(event) {
             $('.container-spinner').removeClass('hidden');
-            console.log($('.container-spinner'));
 
             try {
                 event.preventDefault();
@@ -127,8 +126,11 @@
                         $('#notification').click();
                         // Reset form sau khi gửi thành công
                         $('#form-forgot')[0].reset();
+
+                        $('.container-spinner').addClass('hidden');
                     },
                     error: function(error) {
+                        $('.container-spinner').addClass('hidden');
                         if (error.responseJSON && error.responseJSON.errors) {
                             let errors = error.responseJSON.errors;
                             for (let key in errors) {
@@ -148,10 +150,6 @@
                 });
             } catch (error) {
                 console.error('Có lỗi xảy ra khi lấy đơn hàng:', error);
-            } finally {
-                setTimeout(function() {
-                    $('.container-spinner').addClass('hidden');
-                }, 3500);
             }
         });
     });
