@@ -69,7 +69,11 @@ Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'g
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
 
 
-Route::get('wishlist', [WishlistController::class, 'index']);
+Route::get('wishlist', [WishlistController::class, 'index'])->name('wishlist');
+Route::post('wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+Route::delete('/wishlist/delete', [WishlistController::class, 'deleteToWishlist'])->name('wishlist.delete');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //Chức năng đăng xuất

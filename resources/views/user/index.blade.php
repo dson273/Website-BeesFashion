@@ -188,13 +188,13 @@
                                                                     <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" href="javascript:void(0)"
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}" href="javascript:void(0)"
                                                                     tabindex="0">
                                                                     <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i>
+                                                                        data-bs-title="Add to Wishlistt"></i>
                                                                 </a>
-                                                                {{-- <a href="javascript:void(0)"
+                                                                <a href="javascript:void(0)"
                                                                     class="add-to-cart quick-view-btn"
                                                                     data-product-id="{{ $product->id }}"
                                                                     data-bs-toggle="modal" data-bs-target="#quick-view"
@@ -202,7 +202,7 @@
                                                                     <i class="iconsax" data-icon="eye" aria-hidden="true"
                                                                         data-bs-toggle="tooltip"
                                                                         data-bs-title="Quick View"></i>
-                                                                </a> --}}
+                                                                </a>
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
@@ -771,7 +771,7 @@
                 <div class="swiper logo-slider">
                     <div class="swiper-wrapper">
                         @foreach ($brands as $item)
-                            <div class="swiper-slide"><a href="#"> <img style="width: 125px; height:125px;"
+                            <div class="swiper-slide"><a href="{{ route('product', ['brand' => $item->id]) }}"> <img style="width: 125px; height:125px;"
                                         src="{{ asset('uploads/brands/images/' . $item->image) }}"
                                         alt="logo"></a></div>
                         @endforeach
