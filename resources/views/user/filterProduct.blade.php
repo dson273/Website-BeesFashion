@@ -142,7 +142,7 @@
                                                 <li style="list-style-type: none; display: flex; align-items: center;">
                                                     <input class="brand-checkbox custom-checkbox"
                                                         id="brand{{ $value->id }}" type="checkbox" name="brands[]"
-                                                        value="{{ $value->id }}">
+                                                        value="{{ $value->id }}"data-id="{{ $value->id }}">
                                                     <label for="brand{{ $value->id }}"
                                                         style="margin-left: 8px; display: flex; align-items: center; height: 100%;">
                                                         {{ $value->name }}

@@ -149,7 +149,7 @@ function renderProducts(products) {
                 <div class="product-box-3">
                     <div class="img-wrapper">
                         <div class="label-block">
-                            <a class="label-2">
+                            <a class="wishlistIcon label-2 " data-id="${product.id }">
                                 <i class="fa-regular fa-heart" title="Thêm vào yêu thích"></i>
                             </a>
                         </div>
@@ -211,6 +211,7 @@ $(document).ready(function () {
     // Gọi hàm loadAllProducts khi trang được tải    
     const searchValue = getQueryParam('search'); // Lấy giá trị 'name' từ URL
     const searchCate = getQueryParam('category'); // Lấy giá trị 'name' từ URL
+    const searchBrand = getQueryParam('brand'); // Lấy giá trị 'name' từ URL
 
     if (searchValue) {
         // Điền vào ô tìm kiếm nếu có giá trị 'name' trong URL
@@ -238,7 +239,23 @@ $(document).ready(function () {
             }
         });
         filterProducts();
-    } else {
+    } else if(searchBrand) {
+
+        const brandID = searchBrand.split(','); // Tách chuỗi categories thành mảng ID
+
+        var brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+        brandCheckboxes.forEach(function (checkbox) {
+            var brand_id = checkbox.getAttribute('data-id'); // Lấy 'data-id' của checkbox
+            console.log(brand_id);
+
+            if (brandID.includes(brand_id)) {
+                checkbox.checked = true;  // Đánh dấu checkbox là checke
+    
+            }
+        });
+        filterProducts();
+    }else{
+        
         loadAllProducts();
     }
 
@@ -343,6 +360,25 @@ $(document).ready(function () {
 
 });
 
+window.onload = function () {
+    const url = new URL(window.location.href);
+
+    if (url.searchParams.has('brand')) {
+        url.searchParams.delete('brand'); // Xóa tham số 'brand'
+        window.history.replaceState({}, document.title, url.toString()); // Cập nhật URL mà không tải lại trang
+    }
+
+    if (url.searchParams.has('category')) {
+        url.searchParams.delete('category'); // Xóa tham số 'category'
+        window.history.replaceState({}, document.title, url.toString()); // Cập nhật URL mà không tải lại trang
+    }
+    if (url.searchParams.has('search')) {
+        url.searchParams.delete('search'); // Xóa tham số 'category'
+        window.history.replaceState({}, document.title, url.toString()); // Cập nhật URL mà không tải lại trang
+    }
+};
+
+
 
 //chọn danh mục cha thì chọn cả danh mục con
 function toggleChildCategories(parentId) {
@@ -424,6 +460,50 @@ document.querySelectorAll('.copy-content').forEach(element => {
         }).catch(err => {
             notification('error', 'Lỗi khi sao chép: ', err);
         });
+    });
+});
+
+
+$(document).on('click', '.wishlistIcon', function () {
+    const $this = $(this);
+    const productId = $this.data('id'); // Lấy ID sản phẩm
+    const csrfToken = $('meta[name="csrf-token"]').attr('content'); // Lấy CSRF token từ thẻ meta
+
+    if (!productId) {
+        console.error('ID sản phẩm không hợp lệ.');
+        return;
+    }
+
+    $.ajax({
+        url: '/wishlist/add',
+        method: 'POST',
+        data: {
+            _token: csrfToken,
+            product_id: productId
+        },
+        success: function (response) {
+            if (response.status === 'success') {
+                // Cập nhật số lượng sản phẩm yêu thích
+                $('.cart_qty_cls').text(response.wishCount);
+
+                // Hiển thị thông báo thành công
+                notification('success', response.message, 'Thành công!');
+
+                // Cập nhật giao diện (ví dụ: đổi biểu tượng trái tim thành đã thích)
+                // $this.find('i').removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart').attr('title', 'Đã thêm vào yêu thích');
+            } else if (response.status === 'error') {
+                // Hiển thị cảnh báo nếu có lỗi
+                notification('warning', response.message, 'Thông báo!');
+            }
+        },
+        error: function (xhr) {
+            // Hiển thị thông báo lỗi nếu không thành công
+            Toastify({
+                text: "Không thể thêm sản phẩm vào yêu thích. Vui lòng thử lại.",
+                duration: 2500,
+                close: true,
+            }).showToast();
+        }
     });
 });
 
