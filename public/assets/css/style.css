@@ -18810,7 +18810,7 @@ body div canvas:first-child {
 }
 
 .fa-star {
-    color: gold;
+    color: rgba(var(--theme-default));
     /* Tùy chỉnh màu sao */
 }
 

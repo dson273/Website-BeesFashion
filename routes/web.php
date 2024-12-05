@@ -30,8 +30,11 @@ Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add')
 Route::post('/save-voucher', [HomeController::class, 'saveVoucher'])->name('saveVoucher');
 
 
-//Trang thanh toán
-// Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
+//Trang bài viết
+Route::get('blog', [HomeController::class, 'blog'])->name('blog');
+Route::get('blog-detail', [HomeController::class, 'blogDetail'])->name('blog-detail');
+Route::get('about-us', [HomeController::class, 'aboutUs'])->name('about-us');
+Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 
 Route::middleware('guest')->group(function () {
     //Đăng ký
@@ -66,7 +69,11 @@ Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'g
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
 
 
-Route::get('wishlist', [WishlistController::class, 'index']);
+Route::get('wishlist', [WishlistController::class, 'index'])->name('wishlist');
+Route::post('wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+Route::delete('/wishlist/delete', [WishlistController::class, 'deleteToWishlist'])->name('wishlist.delete');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //Chức năng đăng xuất

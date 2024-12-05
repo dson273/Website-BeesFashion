@@ -444,7 +444,7 @@
                                                                                     <div class="d-flex justify-content-between gap-3">
                                                                                         <h6>
                                                                                             <i class="iconsax" data-icon="user-1"></i>
-                                                                                            {{ $review->user->full_name }}
+                                                                                            {{ substr($review->user->full_name, 0, -4) . '****' }}
                                                                                         </h6>
                                                                                         <span>
                                                                                             <i class="iconsax" data-icon="clock"></i>

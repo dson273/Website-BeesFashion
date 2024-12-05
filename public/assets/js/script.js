@@ -152,16 +152,16 @@ mobileBack.addEventListener('click', function () {
            05.Tost js
    ============================*/
 
-document.querySelectorAll(".wishlist-icon").forEach(function (element) {
-    element.addEventListener("click", function () {
-        Toastify({
-            text: "Success! Item Successfully added in wishlist.!!",
-            duration: 2500,
-            close: true,
-        }).showToast();
-        i++;
-    });
-});
+// document.querySelectorAll(".wishlist-icon").forEach(function (element) {
+//     element.addEventListener("click", function () {
+//         Toastify({
+//             text: "Success! Item Successfully added in wishlist.!!",
+//             duration: 2500,
+//             close: true,
+//         }).showToast();
+//         i++;
+//     });
+// });
 
 
 /*====================
@@ -242,13 +242,13 @@ document.addEventListener('DOMContentLoaded', function () {
 /*====================
        Wishlist card
    =======================*/
-const wishlistProduct = document.querySelectorAll(".product-wishlist");
-wishlistProduct.forEach(el => {
-    const deleteButton = el.querySelector(".delete-button");
-    deleteButton.addEventListener("click", function () {
-        this.closest(".col").style.display = "none";
-    });
-});
+// const wishlistProduct = document.querySelectorAll(".product-wishlist");
+// wishlistProduct.forEach(el => {
+//     const deleteButton = el.querySelector(".delete-button");
+//     deleteButton.addEventListener("click", function () {
+//         this.closest(".col").style.display = "none";
+//     });
+// });
 
 
 

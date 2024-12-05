@@ -188,13 +188,13 @@
                                                                     <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" href="javascript:void(0)"
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}" href="javascript:void(0)"
                                                                     tabindex="0">
                                                                     <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i>
+                                                                        data-bs-title="Add to Wishlistt"></i>
                                                                 </a>
-                                                                {{-- <a href="javascript:void(0)"
+                                                                <a href="javascript:void(0)"
                                                                     class="add-to-cart quick-view-btn"
                                                                     data-product-id="{{ $product->id }}"
                                                                     data-bs-toggle="modal" data-bs-target="#quick-view"
@@ -202,7 +202,7 @@
                                                                     <i class="iconsax" data-icon="eye" aria-hidden="true"
                                                                         data-bs-toggle="tooltip"
                                                                         data-bs-title="Quick View"></i>
-                                                                </a> --}}
+                                                                </a>
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
@@ -674,21 +674,21 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="blog-main">
-                                <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
+                                <div class="blog-box ratio3_2"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
                                             src="{{ asset('assets/images/blog/layout-4/1.jpg') }}" alt=""></a>
                                 </div>
                                 <div class="blog-txt">
                                     <p>By: Admin / 26th aug 2020</p>
-                                    <a href="#">
+                                    <a href="{{route('blog-detail')}}">
                                         <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                     </a>
                                     <div class="link-hover-anim underline">
-                                        <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
+                                        <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
                                             Read
                                             More
 
                                         </a>
-                                        <a class="btn btn_underline link-strong link-strong-hovered" href="#">
+                                        <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
                                             Read More
 
                                         </a>
@@ -697,19 +697,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
+                            <div class="blog-box ratio_55"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/2.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="#">
+                                <a href="{{route('blog-detail')}}">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
                                         Read
                                         More
 
@@ -718,19 +718,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
+                            <div class="blog-box ratio3_2"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/3.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="#">
+                                <a href="{{route('blog-detail')}}">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
                                         Read
                                         More
 
@@ -739,19 +739,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
+                            <div class="blog-box ratio_55"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/4.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="#">
+                                <a href="{{route('blog-detail')}}">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
                                         Read
                                         More
 
@@ -771,7 +771,7 @@
                 <div class="swiper logo-slider">
                     <div class="swiper-wrapper">
                         @foreach ($brands as $item)
-                            <div class="swiper-slide"><a href="#"> <img style="width: 125px; height:125px;"
+                            <div class="swiper-slide"><a href="{{ route('product', ['brand' => $item->id]) }}"> <img style="width: 125px; height:125px;"
                                         src="{{ asset('uploads/brands/images/' . $item->image) }}"
                                         alt="logo"></a></div>
                         @endforeach

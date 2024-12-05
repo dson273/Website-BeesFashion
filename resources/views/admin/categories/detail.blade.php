@@ -17,18 +17,16 @@
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
-                <div class="mb-2 ml-3">
-                    <a href="{{ route('admin.categories.index') }}" class="btn btn-dark text-white text-decoration-none"><i
+                <div class="mb-4">
+                    <a href="{{ route('admin.categories.index') }}" class="btn btn-dark text-white text-decoration-none btn-sm"><i
                             class="fas fa-arrow-left"></i> Quay lại</a>
                 </div>
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex justify-content-between">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Chi Tiết Danh Mục</h6>
-                {{-- <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Thêm danh mục con</a> --}}
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"><i
-                    class="fas fa-plus"></i>
-                    Thêm danh mục con
+                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
+                    class="fas fa-plus mr-2"></i>Thêm danh mục con
                 </button>
             </div>
             <div class="card-body">
@@ -43,17 +41,17 @@
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
-                    
+
                         <tbody>
                             @foreach ($childCategories as $index => $cate)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>
-                                        <img src="{{ $cate->image ? asset('uploads/categories/images/' . $cate->image) : asset('assets/images/icons/noimage.png') }}" 
+                                        <img src="{{ $cate->image ? asset('uploads/categories/images/' . $cate->image) : asset('assets/images/icons/noimage.png') }}"
                                              width="50px" >
                                         {{ $cate->name }}
                                     </td>
-                                   
+
                                     <td>{{ $cate->description }}</td>
                                     <td>{{ $cate->is_active == 1 ? 'Hiển Thị' : 'Ẩn' }}</td>
                                     <td>
