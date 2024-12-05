@@ -809,7 +809,7 @@
                     <div class="swiper-wrapper">
                         @foreach ($brands as $item)
                             <div class="swiper-slide"><a href="#"> <img style="width: 125px; height:125px;"
-                                        src="{{ asset('storage/uploads/brands/images/' . $item->image) }}"
+                                        src="{{ asset('uploads/brands/images/' . $item->image) }}"
                                         alt="logo"></a></div>
                         @endforeach
 
