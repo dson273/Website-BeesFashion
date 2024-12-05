@@ -20,7 +20,7 @@
                 </div>
             </div>
         </section>
-        <section class="section-b-space product-thumbnail-page pt-0">
+        <section class="section-b-space product-thumbnail-page pt-0 mb-4">
             <div class="custom-container container">
                 <div class="row gy-4">
                     {{-- box-left --}}
@@ -492,69 +492,137 @@
                 </div>
             </div>
         </section>
-        <section class="section-b-space pt-0">
-            <div class="custom-container product-contain container">
-                <div class="text-start mb-4">
-                    <h3>Related Products</h3>
-                </div>
-                <div class="swiper special-offer-slide-2">
-                    <div class="swiper-wrapper ratio1_3">
-                        @foreach ($relatedProducts as $relatedProduct)
-                            <div class="swiper-slide">
-                                <div class="product-box-3">
-                                    <div class="img-wrapper">
-                                        <div class="label-block"><span class="lable-1">NEW</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax"
-                                                    data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
-                                        <div class="product-image">
-                                            <a class="pro-first" href="{{ route('product.detail', $relatedProduct->SKU) }}">
-                                                <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->active_image) }}" alt="product"></a>
-                                            <a class="pro-sec" href="{{ route('product.detail', $relatedProduct->SKU) }}">
-                                                <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->inactive_image) }}" alt="product"></a>
-                                        </div>
-                                        <div class="cart-info-icon">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" tabindex="0"><i class="iconsax" data-icon="basket-2" aria-hidden="true"
-                                                    data-bs-toggle="tooltip" data-bs-title="Add to cart">
-                                                </i></a>
-                                            {{-- <a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
+        @if (count($relatedProducts) > 0)
+            <section class="section-b-space pt-0 mb-4">
+                <div class="custom-container product-contain container">
+                    <div class="text-center mb-4">
+                        <h3>Sản Phẩm Liên Quan</h3>
+                    </div>
+                    <div class="swiper special-offer-slide-2">
+                        <div class="swiper-wrapper ratio1_3">
+                            @foreach ($relatedProducts as $relatedProduct)
+                                <div class="swiper-slide">
+                                    <div class="product-box-3">
+                                        <div class="img-wrapper">
+                                            <div class="label-block"><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart"
+                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
+                                            <div class="product-image">
+                                                <a class="pro-first" href="{{ route('product.detail', $relatedProduct->SKU) }}">
+                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->active_image) }}" alt="product"></a>
+                                                <a class="pro-sec" href="{{ route('product.detail', $relatedProduct->SKU) }}">
+                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->inactive_image) }}" alt="product"></a>
+                                            </div>
+                                            <div class="cart-info-icon">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" tabindex="0"><i class="iconsax" data-icon="basket-2" aria-hidden="true"
+                                                        data-bs-toggle="tooltip" data-bs-title="Add to cart">
+                                                    </i></a>
+                                                {{-- <a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
                                                 data-bs-title="Compare"></i></a> --}}
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true"
-                                                    data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                        data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="product-detail">
-                                        <ul class="rating">
-                                            @php
-                                                $rating = $relatedProduct->rating['average_rating'];
-                                                $fullStars = floor($rating);
-                                                $hasHalfStar = $rating - $fullStars >= 0.5;
-                                                $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
-                                            @endphp
+                                        <div class="product-detail">
+                                            <ul class="rating">
+                                                @php
+                                                    $rating = $relatedProduct->rating['average_rating'];
+                                                    $fullStars = floor($rating);
+                                                    $hasHalfStar = $rating - $fullStars >= 0.5;
+                                                    $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                                @endphp
 
-                                            @for ($i = 0; $i < $fullStars; $i++)
-                                                <li><i class="fa-solid fa-star"></i></li>
-                                            @endfor
+                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                    <li><i class="fa-solid fa-star"></i></li>
+                                                @endfor
 
-                                            @if ($hasHalfStar)
-                                                <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                            @endif
+                                                @if ($hasHalfStar)
+                                                    <li><i class="fa-solid fa-star-half-stroke"></i></li>
+                                                @endif
 
-                                            @for ($i = 0; $i < $emptyStars; $i++)
-                                                <li><i class="fa-regular fa-star"></i></li>
-                                            @endfor
+                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                    <li><i class="fa-regular fa-star"></i></li>
+                                                @endfor
 
-                                            <li>{{ number_format($rating, 1) }}</li>
-                                        </ul><a href="{{ route('product.detail', $relatedProduct->id) }}">
-                                            <h6>{{ $relatedProduct->name }}</h6>
-                                        </a>
-                                        <p style="color: rgb(201, 33, 39)">{{ $relatedProduct->priceRange }}</p>
+                                                <li>{{ number_format($rating, 1) }}</li>
+                                            </ul><a href="{{ route('product.detail', $relatedProduct->id) }}">
+                                                <h6>{{ $relatedProduct->name }}</h6>
+                                            </a>
+                                            <p style="color: rgb(201, 33, 39)">{{ $relatedProduct->priceRange }}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @endif
+
+        @if (count($bestProducts) > 0)
+            <section class="section-b-space pt-0 mb-4">
+                <div class="custom-container product-contain container">
+                    <div class="text-center mb-4">
+                        <h3>Sản Phẩm Bán Chạy</h3>
+                    </div>
+                    <div class="swiper special-offer-slide-2">
+                        <div class="swiper-wrapper ratio1_3">
+                            @foreach ($bestProducts as $bestProduct)
+                                <div class="swiper-slide">
+                                    <div class="product-box-3">
+                                        <div class="img-wrapper">
+                                            <div class="label-block"><span class="info-ticket seller">Best Seller</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i
+                                                        class="iconsax" data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
+                                            <div class="product-image">
+                                                <a class="pro-first" href="{{ route('product.detail', $bestProduct->SKU) }}">
+                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $bestProduct->active_image) }}" alt="product"></a>
+                                                <a class="pro-sec" href="{{ route('product.detail', $bestProduct->SKU) }}">
+                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $bestProduct->inactive_image) }}" alt="product"></a>
+                                            </div>
+                                            <div class="cart-info-icon">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addtocart" tabindex="0"><i class="iconsax" data-icon="basket-2" aria-hidden="true"
+                                                        data-bs-toggle="tooltip" data-bs-title="Add to cart">
+                                                    </i></a>
+                                                {{-- <a href="compare.html" tabindex="0"><i class="iconsax" data-icon="arrow-up-down" aria-hidden="true" data-bs-toggle="tooltip"
+                                                data-bs-title="Compare"></i></a> --}}
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" tabindex="0"><i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                        data-bs-toggle="tooltip" data-bs-title="Quick View"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <ul class="rating">
+                                                @php
+                                                    $rating = $bestProduct->rating['average_rating'];
+                                                    $fullStars = floor($rating);
+                                                    $hasHalfStar = $rating - $fullStars >= 0.5;
+                                                    $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                                @endphp
+
+                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                    <li><i class="fa-solid fa-star"></i></li>
+                                                @endfor
+
+                                                @if ($hasHalfStar)
+                                                    <li><i class="fa-solid fa-star-half-stroke"></i></li>
+                                                @endif
+
+                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                    <li><i class="fa-regular fa-star"></i></li>
+                                                @endfor
+
+                                                <li>{{ number_format($rating, 1) }}</li>
+                                            </ul><a href="{{ route('product.detail', $bestProduct->id) }}">
+                                                <h6>{{ $bestProduct->name }}</h6>
+                                            </a>
+                                            <p style="color: rgb(201, 33, 39)">{{ $bestProduct->priceRange }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
 
         <div class="reviews-modal modal theme-modal fade" id="question-modal" tabindex="-1" role="dialog" aria-modal="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
