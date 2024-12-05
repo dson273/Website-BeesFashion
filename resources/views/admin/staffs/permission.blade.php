@@ -8,7 +8,7 @@
         <h1 class="h2 mt-3 mb-4 text-center text-gray-800 fw-bold">Phân quyền cho nhân viên: {{ $user->full_name }}</h1>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data of all</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách chức năng phân quyền</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

@@ -20,12 +20,12 @@
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex justify-content-between">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Danh sách vouchers</h6>
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal">
                     <i
-                    class="fas fa-plus"></i> Thêm vouchers
+                    class="fas fa-plus mr-2"></i>Thêm vouchers
                 </button>
             </div>
 
@@ -84,7 +84,7 @@
                                         <a href="{{ route('admin.vouchers.show', $item->id) }}"
                                             style="margin-right: 10px;"> <img
                                                 src="{{ asset('assets/images/icons/eye.svg') }}" alt="img"></a>
-                                       
+
                                         <a href="{{ route('admin.vouchers.edit', $item->id) }}"
                                             style="margin-right: 10px;"><img
                                                 src="{{ asset('assets/images/icons/edit.svg') }}" alt="img"></a>

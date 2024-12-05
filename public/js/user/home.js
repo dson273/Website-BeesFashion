@@ -1,3 +1,6 @@
+
+
+//lưu CODE voucher
 document.querySelectorAll('.copy-content').forEach(element => {
     element.addEventListener('click', function () {
         const voucherCode = this.getAttribute('data-code'); // Lấy mã voucher
@@ -19,6 +22,9 @@ document.querySelectorAll('.copy-content').forEach(element => {
         });
     });
 });
+
+
+//Lấy dữ liệu khi người dùng tăng giảm số lượng đơn hàng
 $(document).ready(function () {
     // Khi nhấn nút giảm
     $('.reduce').on('click', function () {
@@ -49,6 +55,7 @@ $(document).ready(function () {
         }
     });
 });
+
 
 $(document).on('click', '.quick-view-btn', function (event) {
     event.preventDefault();
@@ -331,7 +338,7 @@ $(document).on('click', '#add-to-cart-btn', function (event) {
     addToCart(selectedVariantId, quantity);
 });
 
-
+//Lấy dữ liệu khi người dùng bấm thêm giỏ hàng
 function addToCart(variantId, quantity) {
     $.ajax({
         url: '/cart/add',
@@ -458,7 +465,7 @@ $('.wishlist-icon').click(function () {
     });
 });
 
-
+//Xóa sản phẩm khỏi trang yêu thích
 $(document).on('click', '.delete-button', function () {
     const $this = $(this); // Lấy nút được nhấn
     const productId = $this.data('id'); // Lấy ID sản phẩm từ thuộc tính `data-id`
@@ -490,4 +497,7 @@ $(document).on('click', '.delete-button', function () {
         },
     });
 });
+
+
+
 

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card shadow mb-4">
-        <h1 class="h2 mt-3 text-center text-gray-800 fw-bold">Tạo mới nhân viên</h1>
+        <h1 class="h2 mt-4 text-center text-gray-800 fw-bold">Thêm nhân viên</h1>
         <div class="card-body">
             <form action="{{ route('admin.staffs.store') }}" method="POST">
                 @csrf

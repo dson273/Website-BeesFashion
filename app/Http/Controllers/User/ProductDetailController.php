@@ -4,15 +4,16 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Attribute;
+use App\Models\Order_detail;
+use App\Models\Product_vote;
 use Illuminate\Http\Request;
 use App\Models\Attribute_value;
 use App\Models\Product_variant;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Order_detail;
-use App\Models\Product_vote;
 
 class ProductDetailController extends Controller
 {
@@ -93,7 +94,8 @@ class ProductDetailController extends Controller
 
         // Lấy danh sách sản phẩm liên quan qua danh mục
         $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
-            $query->whereIn('category_id', $product->categories->pluck('id'));
+            $query->whereIn('category_id', $product->categories->pluck('id'))
+                ->where('categories.fixed', 1);
         })->where('id', '!=', $product->id)
             ->take(8)
             ->get();
@@ -110,11 +112,32 @@ class ProductDetailController extends Controller
             $relatedProduct->rating = $rating;
             return $relatedProduct;
         });
+
+        //Sản phẩm bán chạy
+        $firstCategory = Category::where('fixed', 0)->first();
+        $bestProducts = Product::whereHas('categories', function ($query) use ($firstCategory) {
+            $query->where('categories.id', $firstCategory->id);
+        })
+            ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
+            ->where('id', '!=', $product->id)
+            ->take(8)
+            ->get()
+            ->map(function ($bestProduct) {
+                $bestProduct->priceRange = $bestProduct->getPriceRange();
+                $activeImage = $bestProduct->product_files->where('is_default', 1)->first();
+                $inactiveImage = $bestProduct->product_files->where('is_default', 0)->first();
+                $bestProduct->active_image = $activeImage ? $activeImage->file_name : null;
+                $bestProduct->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
+
+                $rating = $this->calculateProductRating($bestProduct);
+                $bestProduct->rating = $rating;
+                return $bestProduct;
+            });
         //Đánh giá sản phẩm
         $reviewData = $this->getProductReviewData($product);
         // dd($reviewData);
 
-        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts', 'reviewData'));
+        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts', 'reviewData', 'bestProducts'));
     }
 
     public function updateInformationProduct(Request $request)

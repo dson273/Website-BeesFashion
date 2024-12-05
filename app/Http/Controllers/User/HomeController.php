@@ -48,7 +48,6 @@ class HomeController extends Controller
                 $product->active_image = $activeImage ? $activeImage->file_name : null;
                 $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange =  $product->getPriceRange();
-                $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
                 return $product;
@@ -85,9 +84,9 @@ class HomeController extends Controller
                 $product->active_image = $activeImage ? $activeImage->file_name : null;
                 $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange = $product->getPriceRange();
-                $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
+             
                 return $product;
             });
 
@@ -251,7 +250,6 @@ class HomeController extends Controller
     }
 
 
-
     //Lưu voucher
     public function saveVoucher(Request $request)
     {
@@ -286,9 +284,25 @@ class HomeController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Voucher đã được lưu thành công.']);
     }
-    //Trang thanh toán
-    public function checkout()
+    //Trang bài viết
+    public function blog()
     {
-        return view('user.check-out');
+        return view('user.blog');
+    }
+
+    //Trang chi tiết bài viết
+    public function blogDetail()
+    {
+        return view('user.blog-detail');
+    }
+    //Về chúng tôi
+    public function aboutUs()
+    {
+        return view('user.about-us');
+    }
+    //Liên hệ
+    public function contact()
+    {
+        return view('user.contact');
     }
 }
