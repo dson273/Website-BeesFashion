@@ -286,9 +286,25 @@ class HomeController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Voucher đã được lưu thành công.']);
     }
-    //Trang thanh toán
-    public function checkout()
+    //Trang bài viết
+    public function blog()
     {
-        return view('user.check-out');
+        return view('user.blog');
+    }
+
+    //Trang chi tiết bài viết
+    public function blogDetail()
+    {
+        return view('user.blog-detail');
+    }
+    //Về chúng tôi
+    public function aboutUs()
+    {
+        return view('user.about-us');
+    }
+    //Liên hệ
+    public function contact()
+    {
+        return view('user.contact');
     }
 }

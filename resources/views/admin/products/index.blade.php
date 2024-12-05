@@ -22,22 +22,21 @@ Danh sách sản phẩm
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">List of products</h1>
-    <p class="mb-2">Below is the product list</p>
-    <div class="mb-2 d-flex justify-content-end">
-        <a href="{{route('admin.products.create')}}" class="btn btn-success text-white text-decoration-none"><i class="fas fa-plus"></i> Create</a>
-    </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Data of all products</h6>
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-row align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
             <a href="{{route('admin.products.index')}}">
                 <span class="ml-3 btn btn-outline-primary btn-sm" id="active">Active</span>
             </a>
             <a href="{{route('admin.products.index.inactive')}}">
                 <span class="ml-3 btn btn-outline-danger btn-sm" id="inactive">Inactive</span>
             </a>
+            </div>
+            <div class="mb-2 d-flex justify-content-end">
+                <a href="{{route('admin.products.create')}}" class="btn btn-success text-white text-decoration-none btn-sm"><i class="fas fa-plus mr-2"></i>Thêm mới</a>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">

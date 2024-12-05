@@ -10,12 +10,12 @@
                         <div class="col-sm-6">
                             <h4>Contact</h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Contact</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
                         </div>
                         <div class="col-xl-5 col-lg-6 order-lg-2 order-1 offset-xl-1">
                             <div class="contact-img"> <img class="img-fluid"
-                                    src="https://themes.pixelstrap.net/katie/assets/images/contact/1.svg" alt=""></div>
+                                    src="{{asset('assets/images/user/1.svg')}}" alt=""></div>
                         </div>
                     </div>
                 </div>

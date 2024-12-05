@@ -27,7 +27,10 @@
         <section class="section-b-space pt-0">
             <div class="custom-container container wishlist-box">
                 <div class="product-tab-content ratio1_3">
+                    @if (count($products) > 0)
                     <div class="row-cols-xl-4 row-cols-md-3 row-cols-2 grid-section view-option row gy-4 g-xl-4">
+                            
+                        
                         @foreach ($products as $product)
                             <div class="col">
                                 <div class="product-box-3 product-wishlist">
@@ -104,6 +107,18 @@
                                 </div>
                             </div>
                         @endforeach
+                        @else 
+                        <div class="text-center">
+                            <h5 class="text-center">Yêu thích của của bạn đang trống!</h5>
+                            <div>
+                                <img class="img-fluid" src="{{ asset('assets/images/user/empty-cart.jpg') }}"
+                                    width="190">
+                            </div>
+                            <div class="text-center mt-3">
+                                <a href="{{ route('/') }}" class="btn btn_black rounded sm">Tiếp tục mua sắm</a>
+                            </div>
+                        </div>
+                        @endif
                         {{-- <div class="col">
                             <div class="product-box-3 product-wishlist">
                                 <div class="img-wrapper">

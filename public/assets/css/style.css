@@ -18810,7 +18810,7 @@ body div canvas:first-child {
 }
 
 .fa-star {
-    color: gold;
+    color: rgba(var(--theme-default));
     /* Tùy chỉnh màu sao */
 }
 
@@ -19913,6 +19913,7 @@ svg {
     transition: opacity 0.4s ease;
     width: 100%
 }
+
 .product-box:hover .product-image .pro-first {
     opacity: 0;
     visibility: hidden;
@@ -19922,4 +19923,13 @@ svg {
     left: 0;
     opacity: 1;
     visibility: visible;
+}
+
+
+/* css slide */
+.box-slide {
+    height: 530px;
+    width: 100%;
+    align-items: center;
+    overflow: hidden;
 }

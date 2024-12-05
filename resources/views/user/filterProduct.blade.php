@@ -107,7 +107,8 @@
                                                     @foreach ($parentCategory->categoryChildrent as $childCategory)
                                                         <li
                                                             style="list-style-type: none; display: flex; align-items: center;">
-                                                            <div style="margin-left: 20px; flex-grow: 1;" id="category_checkbox">
+                                                            <div style="margin-left: 20px; flex-grow: 1;"
+                                                                id="category_checkbox">
                                                                 <!-- Lùi lại cho danh mục con -->
                                                                 <input class="category-checkbox custom-checkbox"
                                                                     id="category{{ $childCategory->id }}" type="checkbox"
@@ -141,7 +142,7 @@
                                                 <li style="list-style-type: none; display: flex; align-items: center;">
                                                     <input class="brand-checkbox custom-checkbox"
                                                         id="brand{{ $value->id }}" type="checkbox" name="brands[]"
-                                                        value="{{ $value->id }}">
+                                                        value="{{ $value->id }}"data-id="{{ $value->id }}">
                                                     <label for="brand{{ $value->id }}"
                                                         style="margin-left: 8px; display: flex; align-items: center; height: 100%;">
                                                         {{ $value->name }}
@@ -245,18 +246,19 @@
                                     </div>
                                 </div>
                                 <!-- Dropdown select cho sắp xếp theo giá -->
-                                <div class="category-dropdown m-3">
+                                {{-- <div class="category-dropdown m-3">
                                     <select class="form-select" id="priceSort" name="priceSort" style="width: 200px;">
                                         <option value="price_default">Giá</option>
                                         <option id="price_asc" value="price_asc">Giá : Thấp - Cao</option>
                                         <option id="price_desc" value="price_desc">Giá : Cao - Thấp</option>
                                     </select>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="product-tab-content ratio1_3">
-                            <div class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 align-items-center">
-                                 {{-- Sản phẩm sẽ được hiển thị ở đây --}}
+                            <div
+                                class="row-cols-lg-4 row-cols-md-3 row-cols-2 grid-section view-option row g-3 g-xl-4 align-items-center">
+                                {{-- Sản phẩm sẽ được hiển thị ở đây --}}
                             </div>
                         </div>
                     </div>
@@ -265,57 +267,61 @@
         </div>
     </section>
 
-     {{-- Modal add-to-cart  --}}
-    <div class="modal theme-modal fade" id="addtocart" tabindex="-1" role="dialog" aria-modal="true" data-product-id="" data-variant-id="">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" id="close_modal"></button>
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 col-xs-12">
-                                <div class="quick-view-img">
-                                    <div class="swiper modal-slide-1">
-                                        <div class="swiper-wrapper ratio_square-2">
-                                            <div class="swiper-slide">
-                                                <img class="img-fluid" id="product-image" src="" alt="Product Image">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper modal-slide-2">
-                                        <div class="swiper-wrapper ratio3_4">
-                                            <!-- Dữ liệu các ảnh khác sẽ được cập nhật qua JS -->
+    {{-- Modal add-to-cart  --}}
+    <div class="modal theme-modal fade" id="addtocart" tabindex="-1" role="dialog" aria-modal="true"
+        data-product-id="" data-variant-id="">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"
+                        id="close_modal"></button>
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-xs-12">
+                            <div class="quick-view-img">
+                                <div class="swiper modal-slide-1">
+                                    <div class="swiper-wrapper ratio_square-2">
+                                        <div class="swiper-slide">
+                                            <img class="img-fluid" id="product-image" src=""
+                                                alt="Product Image">
                                         </div>
                                     </div>
                                 </div>
+                                <div class="swiper modal-slide-2">
+                                    <div class="swiper-wrapper ratio3_4">
+                                        <!-- Dữ liệu các ảnh khác sẽ được cập nhật qua JS -->
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-6 rtl-text">
-                                <div class="product-right">
-                                    <h4 id="product-name"></h4>
-                                    <p id="product-sku"></p>
-                                    <h4 id="product-price" style="color: #ba372a"></h4>
-        
-                                    <!-- Hiển thị danh sách thuộc tính -->
-                                    <div class="blink-border attributes-container" id="attributes-container">
-                                        <!-- Các thuộc tính sẽ được cập nhật qua JS -->
+                        </div>
+                        <div class="col-lg-6 rtl-text">
+                            <div class="product-right">
+                                <h4 id="product-name"></h4>
+                                <p id="product-sku"></p>
+                                <h4 id="product-price" style="color: #ba372a"></h4>
+
+                                <!-- Hiển thị danh sách thuộc tính -->
+                                <div class="blink-border attributes-container" id="attributes-container">
+                                    <!-- Các thuộc tính sẽ được cập nhật qua JS -->
+                                </div>
+
+                                <div class="border-product">
+                                    <h6>Mô tả sản phẩm</h6>
+                                    <p id="product-description"></p>
+                                </div>
+                                <div class="product-description">
+                                    <h6 class="product-title">Quantity</h6>
+                                    <div class="quantity">
+                                        <button class="reduce" type="button"><i class="fa-solid fa-minus"></i></button>
+                                        <input type="number" id="quantity" value="1" min="1"
+                                            max="10">
+                                        <button class="increment" type="button"><i
+                                                class="fa-solid fa-plus"></i></button>
                                     </div>
-        
-                                    <div class="border-product">
-                                        <h6>Mô tả sản phẩm</h6>
-                                        <p id="product-description"></p>
-                                    </div>
-                                    <div class="product-description">
-                                        <h6 class="product-title">Quantity</h6>
-                                        <div class="quantity">
-                                            <button class="reduce" type="button"><i class="fa-solid fa-minus"></i></button>
-                                            <input type="number" id="quantity" value="1" min="1" max="10">
-                                            <button class="increment" type="button"><i class="fa-solid fa-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="product-buttons">
-                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
-                                        <a class="btn btn-solid" href="#">View detail</a>
-                                    </div>
+                                </div>
+
+                                <div class="product-buttons">
+                                    <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
+                                    <a class="btn btn-solid" href="#">View detail</a>
                                 </div>
                             </div>
                         </div>
@@ -323,7 +329,9 @@
                 </div>
             </div>
         </div>
-     {{-- End model add-to-cart  --}}
+    </div>
+    
+    {{-- End model add-to-cart  --}}
 @endsection
 
 @section('script-libs')

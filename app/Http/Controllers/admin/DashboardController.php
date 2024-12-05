@@ -17,7 +17,7 @@ class DashboardController extends Controller
     //View dashboard
     public function index()
     {
-      
+
         $totalProducts = Product::count();
         $totalView = Product::where('is_active', '1')->sum('view');
         $allOrders = Order::with(['status_orders' => function ($query) {

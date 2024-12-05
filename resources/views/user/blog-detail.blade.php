@@ -10,12 +10,12 @@
                         <div class="col-sm-6">
                             <h4>Blog Details</h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Blog Details</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                                                 src="../assets/images/other-img/blog-details.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"><span class="blog-date">May 9, 2018 Stylish </span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -96,7 +96,7 @@
                                             <ul class="theme-scrollbar">
                                                 <li>
                                                     <div class="comment-items">
-                                                        <div class="user-img"> <img src="../assets/images/user/1.jpg"
+                                                        <div class="user-img"> <img src="{{asset('assets/images/user/user-icon.jpg')}}"
                                                                 alt=""></div>
                                                         <div class="user-content">
                                                             <div class="user-info">
@@ -128,7 +128,7 @@
                                                 </li>
                                                 <li class="reply">
                                                     <div class="comment-items">
-                                                        <div class="user-img"> <img src="../assets/images/user/2.jpg"
+                                                        <div class="user-img"> <img src="{{asset('assets/images/user/user-icon.jpg')}}"
                                                                 alt=""></div>
                                                         <div class="user-content">
                                                             <div class="user-info">
@@ -160,7 +160,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="comment-items">
-                                                        <div class="user-img"> <img src="../assets/images/user/3.jpg"
+                                                        <div class="user-img"> <img src="{{asset('assets/images/user/user-icon.jpg')}}"
                                                                 alt=""></div>
                                                         <div class="user-content">
                                                             <div class="user-info">
@@ -253,7 +253,7 @@
                                         <ul class="top-post">
                                             <li> <img class="img-fluid" src="../assets/images/other-img/blog-1.jpg"
                                                     alt="">
-                                                <div> <a href="blog-details.html">
+                                                <div> <a href="{{route('blog-detail')}}">
                                                         <h6>Study 2020: Fake Engagement is Only Half the Problem</h6>
                                                     </a>
                                                     <p>September 28, 2021</p>
@@ -261,7 +261,7 @@
                                             </li>
                                             <li> <img class="img-fluid" src="../assets/images/other-img/blog-2.jpg"
                                                     alt="">
-                                                <div> <a href="blog-details.html">
+                                                <div> <a href="{{route('blog-detail')}}">
                                                         <h6>Top 10 Interior Design in 2020 New York Business</h6>
                                                     </a>
                                                     <p>September 28, 2021</p>
@@ -269,7 +269,7 @@
                                             </li>
                                             <li> <img class="img-fluid" src="../assets/images/other-img/blog-3.jpg"
                                                     alt="">
-                                                <div> <a href="blog-details.html">
+                                                <div> <a href="{{route('blog-detail')}}">
                                                         <h6>Ecommerce Brands Tend to Create Strong Communities</h6>
                                                     </a>
                                                     <p>September 28, 2021</p>
@@ -277,7 +277,7 @@
                                             </li>
                                             <li> <img class="img-fluid" src="../assets/images/other-img/blog-4.jpg"
                                                     alt="">
-                                                <div> <a href="blog-details.html">
+                                                <div> <a href="{{route('blog-detail')}}">
                                                         <h6>What Do I Need to Make It in the World of Business?</h6>
                                                     </a>
                                                     <p>September 28, 2021</p>

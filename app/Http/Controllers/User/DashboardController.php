@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Product_variant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User_shipping_address;
@@ -344,40 +345,87 @@ class DashboardController extends Controller
     }
     public function confirmDoneOrder()
     {
-        $order_id = request()->input('order_id');
-        if ($order_id) {
-            $get_order_by_id = Order::find($order_id)->first();
-            if ($get_order_by_id) {
-                $get_completed_status = Status::where('name', 'Completed')->first();
-                if ($get_completed_status) {
-                    $get_completed_status_order = Status_order::where('order_id', $order_id)->where('status_id', $get_completed_status->id)->first();
-                    if (!$get_completed_status_order) {
-                        Status_order::create([
-                            'order_id' => $order_id,
-                            'status_id' => $get_completed_status->id
-                        ]);
-                        $response = [
-                            'success' => true,
-                            'message' => 'Xác nhận hoàn thành đơn hàng thành công!',
-                        ];
-                    } else {
-                        $response = [
-                            'success' => false,
-                            'message' => 'Đơn hàng này đã trong trạng thái hoàn thành!',
-                        ];
-                    }
-                }
-            } else {
-                $response = [
+        try {
+            DB::beginTransaction();
+
+            $order_id = request()->input('order_id');
+
+            if (!$order_id) {
+                return redirect()->route('dashboard')->with('statusError', 'ID đơn hàng không hợp lệ!');
+            }
+
+            $order = Order::find($order_id);
+            if (!$order) {
+                return response()->json([
                     'success' => false,
                     'message' => 'Không tìm thấy đơn hàng!',
-                ];
+                ]);
             }
-            return response()->json($response);
-        } else {
-            return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
+
+            $completed_status = Status::where('name', 'Completed')->first();
+            if (!$completed_status) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy trạng thái Completed!',
+                ]);
+            }
+
+            $existing_status = Status_order::where('order_id', $order_id)
+                ->where('status_id', $completed_status->id)
+                ->first();
+
+            if ($existing_status) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Đơn hàng này đã trong trạng thái hoàn thành!',
+                ]);
+            }
+
+            $order_details = Order_detail::where('order_id', $order_id)->get();
+            if ($order_details->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy chi tiết đơn hàng!',
+                ]);
+            }
+
+            foreach ($order_details as $order_detail) {
+                $product_variant = Product_variant::find($order_detail->product_variant_id);
+
+                if (!$product_variant) {
+                    throw new \Exception('Không tìm thấy sản phẩm với ID: ' . $order_detail->product_variant_id);
+                }
+
+                if ($product_variant->stock < $order_detail->quantity) {
+                    throw new \Exception('Tồn kho không đủ cho sản phẩm với ID: ' . $order_detail->product_variant_id);
+                }
+
+                // Giảm số lượng tồn kho
+                $product_variant->stock -= $order_detail->quantity;
+                $product_variant->save();
+            }
+
+            // Tạo trạng thái hoàn thành
+            Status_order::create([
+                'order_id' => $order_id,
+                'status_id' => $completed_status->id,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Xác nhận hoàn thành đơn hàng thành công!',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi: ' . $e->getMessage(),
+            ]);
         }
     }
+
 
     public function getOrderDetail()
     {
@@ -529,6 +577,4 @@ class DashboardController extends Controller
             return redirect()->route('dashboard')->with('statusError', 'Có lỗi xảy ra!');
         }
     }
-
-    
 }

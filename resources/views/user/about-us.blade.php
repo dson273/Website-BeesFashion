@@ -10,12 +10,12 @@
                         <div class="col-sm-6">
                             <h4>About Us </h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">About Us </a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -24,8 +24,8 @@
             <div class="custom-container container">
                 <div class="row align-items-center gy-4">
                     <div class="col-lg-6 order-1 order-lg-1 ratio_55">
-                        <div class="about-img"> <img class="bg-img img-fluid" src="../assets/images/about/7.jpg" alt="">
-                            <div class="about-tag"> <a href="collection-left-sidebar.html">
+                        <div class="about-img"> <img class="bg-img img-fluid" src="{{asset('assets/images/about/7.jpg')}}" alt="">
+                            <div class="about-tag"> <a href="{{route('product')}}">
                                     <h5>Women</h5><i class="fa-solid fa-arrow-right"></i>
                                 </a></div>
                         </div>
@@ -96,8 +96,8 @@
                     </div>
                     <div class="col-lg-6 order-3 order-lg-4 ratio_55">
                         <div class="about-img about-img-1"> <img class="bg-img img-fluid"
-                                src="../assets/images/about/8.jpg" alt="">
-                            <div class="about-tag"> <a href="collection-left-sidebar.html">
+                                src="{{asset('assets/images/about/8.jpg')}}" alt="">
+                            <div class="about-tag"> <a href="{{route('product')}}">
                                     <h5>Men</h5><i class="fa-solid fa-arrow-right"></i>
                                 </a></div>
                         </div>
@@ -155,17 +155,17 @@
                                 vel
                                 sem a lectus vehicula ultricies. Etiam semper sollicitudin lectus indous scelerisque...
                             </p>
-                            <a href="product.html">Let's Check this out <i
+                            <a href="{{route('product')}}">Let's Check this out <i
                                     class="fa-solid fa-arrow-right-long"></i></a><img class="img-fluid"
-                                src="../assets/images/about/fashion-1.jpg" alt="">
+                                src="{{asset('assets/images/about/fashion-1.jpg')}}" alt="">
                         </div>
                     </div>
                     <div class="col-md-4 d-none d-md-block">
-                        <div class="product-img"><img class="img-fluid" src="../assets/images/about/1.png" alt=""></div>
+                        <div class="product-img"><img class="img-fluid" src="{{asset('assets/images/about/1.png')}}" alt=""></div>
                     </div>
                     <div class="col-md-4">
                         <div class="fashion-box-1 fashion-item"> <img class="img-fluid"
-                                src="../assets/images/about/fashion-2.jpg" alt=""><a href="product.html">Let's Check
+                                src="{{asset('assets/images/about/fashion-2.jpg')}}" alt=""><a href="{{route('product')}}">Let's Check
                                 this
                                 out <i class="fa-solid fa-arrow-right-long"></i></a>
                             <p>Quisquemos sodales suscipit tortor ditaemcos condimentum de cosmo lacus meleifend menean
@@ -192,7 +192,7 @@
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
                                     <div class="our-team-content">
-                                        <div class="team-img"><img class="img-fluid" src="../assets/images/about/1.jpg"
+                                        <div class="team-img"><img class="img-fluid" src="{{asset('assets/images/about/1.jpg')}}"
                                                 alt="">
                                             <ul class="social-group">
                                                 <li> <a href="https://www.facebook.com/" target="_blank"><i
@@ -213,7 +213,7 @@
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="our-team-content">
-                                        <div class="team-img"><img class="img-fluid" src="../assets/images/about/2.jpg"
+                                        <div class="team-img"><img class="img-fluid" src="{{asset('assets/images/about/2.jpg')}}"
                                                 alt="">
                                             <ul class="social-group">
                                                 <li> <a href="https://www.facebook.com/" target="_blank"><i
@@ -234,7 +234,7 @@
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="our-team-content">
-                                        <div class="team-img"><img class="img-fluid" src="../assets/images/about/3.jpg"
+                                        <div class="team-img"><img class="img-fluid" src="{{asset('assets/images/about/3.jpg')}}"
                                                 alt="">
                                             <ul class="social-group">
                                                 <li> <a href="https://www.facebook.com/" target="_blank"><i
@@ -255,7 +255,7 @@
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="our-team-content">
-                                        <div class="team-img"><img class="img-fluid" src="../assets/images/about/4.jpg"
+                                        <div class="team-img"><img class="img-fluid" src="{{asset('assets/images/about/4.jpg')}}"
                                                 alt="">
                                             <ul class="social-group">
                                                 <li> <a href="https://www.facebook.com/" target="_blank"><i
@@ -276,7 +276,7 @@
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="our-team-content">
-                                        <div class="team-img"><img class="img-fluid" src="../assets/images/about/5.jpg"
+                                        <div class="team-img"><img class="img-fluid" src="{{asset('assets/images/about/5.jpg')}}"
                                                 alt="">
                                             <ul class="social-group">
                                                 <li> <a href="https://www.facebook.com/" target="_blank"><i
@@ -297,7 +297,7 @@
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="our-team-content">
-                                        <div class="team-img"><img class="img-fluid" src="../assets/images/about/6.jpg"
+                                        <div class="team-img"><img class="img-fluid" src="{{asset('assets/images/about/6.jpg')}}"
                                                 alt="">
                                             <ul class="social-group">
                                                 <li> <a href="https://www.facebook.com/" target="_blank"><i
@@ -344,7 +344,7 @@
                                                 expectations.'</p>
                                         </div>
                                     </div>
-                                    <div class="customer-img"><img class="img-fluid" src="../assets/images/user/1.jpg"
+                                    <div class="customer-img"><img class="img-fluid" src="{{asset('assets/images/user/user-icon.jpg')}}"
                                             alt="">
                                         <div>
                                             <h5> Jimmy C. Bash</h5>
@@ -363,7 +363,7 @@
                                                 in the past</p>
                                         </div>
                                     </div>
-                                    <div class="customer-img"><img class="img-fluid" src="../assets/images/user/2.jpg"
+                                    <div class="customer-img"><img class="img-fluid" src="{{asset('assets/images/user/user-icon.jpg')}}"
                                             alt="">
                                         <div>
                                             <h5> Jimmy C. Bash</h5>
@@ -381,7 +381,7 @@
                                                 the excellent support provided by our team."</p>
                                         </div>
                                     </div>
-                                    <div class="customer-img"><img class="img-fluid" src="../assets/images/user/3.jpg"
+                                    <div class="customer-img"><img class="img-fluid" src="{{asset('assets/images/user/3.jpg')}}"
                                             alt="">
                                         <div>
                                             <h5> Jimmy C. Bash</h5>
@@ -400,7 +400,7 @@
                                                 past, but none compare to this one</p>
                                         </div>
                                     </div>
-                                    <div class="customer-img"><img class="img-fluid" src="../assets/images/user/8.jpg"
+                                    <div class="customer-img"><img class="img-fluid" src="{{asset('assets/images/user/8.jpg')}}"
                                             alt="">
                                         <div>
                                             <h5> Jimmy C. Bash</h5>
