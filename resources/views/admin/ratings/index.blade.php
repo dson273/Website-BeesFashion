@@ -10,13 +10,10 @@
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">Danh sách đánh giá sản phẩm</h1>
-        <p class="mb-2">Dưới đây là danh sách đánh giá sản phẩm của khách hàng</p>
         <!-- DataTales Example -->
         <div class="card shadow mb-4 ">
-            <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Data of all rating</h6>
-                <a href="{{ route('admin.staffs.create') }}" class="btn btn-success text-white text-decoration-none"><i class="fas fa-plus"></i> Create</a>
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm được đánh giá</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -48,9 +45,11 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $vote->user->full_name }}</td>
-                                    <td style="white-space: normal; word-wrap: break-word; max-width: 250px;">{{ $vote->product_variant->product->name }}</td>
-                                    <td>{{ $vote->product_variant->SKU }}</td>
-                                    <td>{{ $vote->star }}<i class="fa-solid fa-star fa-sm text-warning ml-1"></i> - {{ $vote->content }}</td>
+                                    <td style="white-space: normal; word-wrap: break-word; max-width: 200px;">{{ $vote->product_variant->product->name }}</td>
+                                    <td><img class="mr-2" src="{{ asset('uploads/products/images/' . $vote->product_variant->image) }}"
+                                        alt="Product Image" width="50" height="50">{{ $vote->product_variant->SKU }}</td>
+
+                                    <td style="white-space: normal; word-wrap: break-word; max-width: 200px;">{{ $vote->star }}<i class="fa-solid fa-star fa-sm text-warning ml-1"></i> - {{ $vote->content }}</td>
                                     <td>
                                         @if($vote->is_active)
                                             <span class="badge bg-success badge-success">Hiển thị</span>

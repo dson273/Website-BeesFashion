@@ -1416,7 +1416,7 @@ function getAttributeValueData(attributeId) {
             error: function (xhr) {
                 console.error(xhr.responseText);
                 notification('error', 'Không thể lấy được dữ liệu giá trị thuộc tính!', 'Error');
-                //reject(): Được gọi khi tác vụ bất đồng bộ gặp lỗi hoặc thất bại. Khi bạn gọi reject(), 
+                //reject(): Được gọi khi tác vụ bất đồng bộ gặp lỗi hoặc thất bại. Khi bạn gọi reject(),
                 //promise chuyển sang trạng thái rejected, và bất kỳ logic nào được đính kèm với .catch() sẽ được thực thi.
                 reject();
             }
@@ -3370,8 +3370,8 @@ $(document).on('click', '#publishBtn', async function () {
     if (checkData) {
         var checkNumberOfUploadedFiles = 1;
         checkNumberOfUploadedFiles += selectedImages.length + selectedVideos.length + variationDataHasBeenSaved.length;
-        if (checkNumberOfUploadedFiles >= 20) {
-            notification('warning', 'Số lượng file gửi lên quá giới hạn, mỗi lần chỉ được gửi tối đa 20 files', 'Quá nhiều files được gửi lên!', '5000');
+        if (checkNumberOfUploadedFiles >= 30) {
+            notification('warning', 'Số lượng file gửi lên quá giới hạn, mỗi lần chỉ được gửi tối đa 30 files', 'Quá nhiều files được gửi lên!', '5000');
         } else {
             productData.baseInformation.sku = productSku;
             productData.baseInformation.name = productName;

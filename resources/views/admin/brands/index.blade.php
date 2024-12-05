@@ -17,15 +17,12 @@
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
-        <!-- Page Heading -->
-
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Thương Hiệu Sản Phẩm</h6>
-                <a href="{{ route('admin.brands.create') }}" class="btn btn-success text-white text-decoration-none"><i
-                    class="fas fa-plus"></i> Thêm mới</a>
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách thương hiệu</h6>
+                <a href="{{ route('admin.brands.create') }}" class="btn btn-success btn-sm text-white text-decoration-none"><i
+                    class="fas fa-plus mr-2"></i>Thêm mới</a>
             </div>
 
             <div class="card-body">

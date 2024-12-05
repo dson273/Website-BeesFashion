@@ -5,13 +5,13 @@
 
 @section('content')
     <div class="card shadow mb-4">
-        <h1 class="h2 mt-3 text-center text-gray-800 fw-bold"> Chỉnh sửa nhân viên </h1>
+        <h1 class="h2 mt-4 text-center text-gray-800 fw-bold"> Chỉnh sửa nhân viên </h1>
         <div class="card-body">
             <form action="{{ route('admin.staffs.update', $staff->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
-                <div class="mb-3 mt-3">
+                <div class="mb-3">
                     <label class="form-label" for="username">Username</label>
                     <input type="text" value="{{ old('username', $staff->username) }}" disabled name="username" id="username" class="form-control @error('username') is-invalid @enderror">
                     @error('username')

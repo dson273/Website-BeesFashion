@@ -8,14 +8,14 @@
                 <div class="custom-container container">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <h4>Blog Right Sidebar</h4>
+                            <h4>Blog</h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Blog Right Sidebar</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                                                 src="../assets/images/blog/blog-page/1.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"> <span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -40,9 +40,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/1.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                                 src="../assets/images/blog/blog-page/2.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"><span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -62,9 +62,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/2.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                                 src="../assets/images/blog/blog-page/3.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"> <span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -84,9 +84,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/3.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@
                                                 src="../assets/images/blog/blog-page/4.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"> <span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -106,9 +106,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/8.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +120,7 @@
                                                 src="../assets/images/blog/blog-page/5.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"><span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -128,9 +128,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/9.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@
                                                 src="../assets/images/blog/blog-page/6.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"> <span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -150,9 +150,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/10.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +164,7 @@
                                                 src="../assets/images/blog/blog-page/7.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"> <span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -172,9 +172,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/8.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -186,7 +186,7 @@
                                                 src="../assets/images/blog/blog-page/8.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"><span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -194,9 +194,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/9.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +208,7 @@
                                                 src="../assets/images/blog/blog-page/9.jpg" alt=""></div>
                                     </div>
                                     <div class="blog-content"> <span class="blog-date">May 9, 2018 Stylish</span><a
-                                            href="blog-details.html">
+                                            href="{{route('blog-detail')}}">
                                             <h4>How Black Trans Women Are Redefining Beauty Standards</h4>
                                         </a>
                                         <p>Sed non mauris vitae erat consequat. Proin gravida nibh vel velit auctor
@@ -216,9 +216,9 @@
                                             Aenean sollicitudin, lom quis bibenm auctor</p>
                                         <div class="share-box">
                                             <div class="d-flex align-items-center gap-2"><img class="img-fluid"
-                                                    src="../assets/images/user/10.jpg" alt="">
+                                                    src="{{asset('assets/images/user/user-icon.jpg')}}" alt="">
                                                 <h6>by John wiki on</h6>
-                                            </div><a href="blog-details.html"> Read More..</a>
+                                            </div><a href="{{route('blog-detail')}}"> Read More..</a>
                                         </div>
                                     </div>
                                 </div>
@@ -277,7 +277,7 @@
                                         <ul class="top-post">
                                             <li> <img class="img-fluid" src="../assets/images/other-img/blog-1.jpg"
                                                     alt="">
-                                                <div> <a href="blog-details.html">
+                                                <div> <a href="{{route('blog-detail')}}">
                                                         <h6>Study 2020: Fake Engagement is Only Half the Problem</h6>
                                                     </a>
                                                     <p>September 28, 2021</p>
@@ -285,7 +285,7 @@
                                             </li>
                                             <li> <img class="img-fluid" src="../assets/images/other-img/blog-2.jpg"
                                                     alt="">
-                                                <div> <a href="blog-details.html">
+                                                <div> <a href="{{route('blog-detail')}}">
                                                         <h6>Top 10 Interior Design in 2020 New York Business</h6>
                                                     </a>
                                                     <p>September 28, 2021</p>
@@ -293,7 +293,7 @@
                                             </li>
                                             <li> <img class="img-fluid" src="../assets/images/other-img/blog-3.jpg"
                                                     alt="">
-                                                <div> <a href="blog-details.html">
+                                                <div> <a href="{{route('blog-detail')}}">
                                                         <h6>Ecommerce Brands Tend to Create Strong Communities</h6>
                                                     </a>
                                                     <p>September 28, 2021</p>
@@ -301,7 +301,7 @@
                                             </li>
                                             <li> <img class="img-fluid" src="../assets/images/other-img/blog-4.jpg"
                                                     alt="">
-                                                <div> <a href="blog-details.html">
+                                                <div> <a href="{{route('blog-detail')}}">
                                                         <h6>What Do I Need to Make It in the World of Business?</h6>
                                                     </a>
                                                     <p>September 28, 2021</p>
