@@ -1777,3 +1777,31 @@ $(document).on('click', '#btn_back_to_list_orders', function () {
     }
 })
 
+//Hiển thị ngày giờ đếm ngược
+document.addEventListener("DOMContentLoaded", function () {
+    const countdownElements = document.querySelectorAll(".expire");
+
+    countdownElements.forEach(el => {
+        const endDate = new Date(el.dataset.endDate).getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = endDate - now;
+
+            if (distance <= 0) {
+                el.querySelector(".countdown").textContent = "Đã hết hạn";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            el.querySelector(".countdown").textContent = `${days} ngày ${hours}:${minutes}:${seconds}`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    });
+});

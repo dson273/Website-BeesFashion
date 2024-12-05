@@ -18899,10 +18899,16 @@ body div canvas:first-child {
 }
 
 .block-voucher .voucher-item-action .action {
-    width: auto;
     font-weight: 600;
+    margin: 0;
 }
 
+.block-voucher .voucher-item-action{
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    gap: 10px;
+}
 .block-voucher .voucher-item-date .date {
     color: #74869b
 }
@@ -19907,6 +19913,7 @@ svg {
     transition: opacity 0.4s ease;
     width: 100%
 }
+
 .product-box:hover .product-image .pro-first {
     opacity: 0;
     visibility: hidden;
@@ -19916,4 +19923,13 @@ svg {
     left: 0;
     opacity: 1;
     visibility: visible;
+}
+
+
+/* css slide */
+.box-slide {
+    height: 530px;
+    width: 100%;
+    align-items: center;
+    overflow: hidden;
 }

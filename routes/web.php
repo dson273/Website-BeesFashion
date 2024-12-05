@@ -1,18 +1,19 @@
 <?php
 
-use App\Http\Controllers\User\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\PaymentController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\User\CheckOutController;
+use App\Http\Controllers\user\WishlistController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\user\FilterProductController;
 use App\Http\Controllers\User\ProductDetailController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\User\CheckOutController;
-use App\Http\Controllers\User\PaymentController;
-use App\Http\Controllers\user\WishlistController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
@@ -24,6 +25,10 @@ Route::post('cart', [ProductDetailController::class, 'addToCart'])->name('addToC
 //Thêm sản phẩm vào giỏ trang chủ
 Route::get('/get-product-details/{productId}', [HomeController::class, 'getProductDetails']);
 Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
+
+//Lưu voucher
+Route::post('/save-voucher', [HomeController::class, 'saveVoucher'])->name('saveVoucher');
+
 
 //Trang thanh toán
 // Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
@@ -61,7 +66,11 @@ Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'g
 // Route::get('api/products', [CollectionController::class, 'getProducts']);
 
 
-Route::get('wishlist', [WishlistController::class, 'index']);
+Route::get('wishlist', [WishlistController::class, 'index'])->name('wishlist');
+Route::post('wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+Route::delete('/wishlist/delete', [WishlistController::class, 'deleteToWishlist'])->name('wishlist.delete');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //Chức năng đăng xuất
@@ -81,6 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/vote-order-detail', [DashboardController::class, 'getVoteOrderDetail'])->name('dashboard.getVoteOrderDetail');
     Route::post('dashboard/submit-vote-order-detail', [DashboardController::class, 'submitVoteOrderDetail'])->name('dashboard.submitVoteOrderDetail');
     Route::post('dashboard/submit-edit-vote-order-detail', [DashboardController::class, 'submitEditVoteOrderDetail'])->name('dashboard.submitEditVoteOrderDetail');
+
 
     //Trang giỏ hàng
     Route::get('cart', [CartController::class, 'index'])->name('cart');

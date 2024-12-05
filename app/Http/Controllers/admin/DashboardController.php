@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Chart;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ class DashboardController extends Controller
     //View dashboard
     public function index()
     {
+      
         $totalProducts = Product::count();
         $totalView = Product::where('is_active', '1')->sum('view');
         $allOrders = Order::with(['status_orders' => function ($query) {

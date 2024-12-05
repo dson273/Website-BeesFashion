@@ -106,9 +106,9 @@
                             <div class="toggle-nav" id="toggle-nav"><i class="fa-solid fa-bars-staggered sidebar-bar"></i>
                             </div>
                             <ul class="justify-content-end">
-                                <li> <button href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"><i class="iconsax"
+                                <li> <button href="" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"><i class="iconsax"
                                             data-icon="search-normal-2"></i></button></li>
-                                <li> <a href="#"><i class="iconsax" data-icon="heart"></i><span class="cart_qty_cls">2</span></a></li>
+                                <li> <a href="{{ route('wishlist') }}"><i class="iconsax wishlist" data-icon="heart"></i><span class="cart_qty_cls">{{ $wishCount ?? 0 }}</span></a></li>
                                 @guest
                                     <li class="onhover-div">
                                         <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
