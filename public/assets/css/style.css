@@ -18839,117 +18839,6 @@ body div canvas:first-child {
 
 /* CSS Mới */
 
-.block-voucher {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: none
-}
-
-.block-voucher .block-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 11px
-}
-
-.block-voucher .block-title .title {
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 30px;
-    margin: 0
-}
-
-.block-voucher .block-title .viewall {
-    cursor: pointer;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    background-color: transparent;
-    border: none;
-    padding: 0
-}
-
-.block-voucher .block-title .viewall svg {
-    margin-left: 8px
-}
-
-.block-voucher .voucher-items-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    overflow: hidden;
-    padding: 5px 0;
-    margin: 0 -12px
-}
-
-.block-voucher .voucher-items-list .voucher-item {
-    width: 33.33333333%;
-    min-width: 33.33333333%;
-    margin: 0
-}
-
-.block-voucher .voucher-item {
-    padding: 5px 12px;
-    display: flex !important
-}
-
-.block-voucher .voucher-item-action .action {
-    font-weight: 600;
-    margin: 0;
-}
-
-.block-voucher .voucher-item-action{
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-start;
-    gap: 10px;
-}
-.block-voucher .voucher-item-date .date {
-    color: #74869b
-}
-
-.block-voucher .voucher-item.saved .voucher-item-action .action {
-    background-color: #fff;
-    color: #63b1bc
-}
-
-.block-voucher .voucher-item.highlight .voucher-item-title {
-    color: #da291c
-}
-
-.block-voucher .voucher-item.highlight .voucher-item-action .action {
-    background-color: #da291c;
-    color: #fff;
-    border-color: #da291c
-}
-
-.block-voucher .voucher-items-list-4item .voucher-item-info {
-    width: 25vw;
-    min-width: 25vw
-}
-
-.block-voucher .slick-track {
-    display: flex
-}
-
-.block-voucher .slick-track:after,
-.block-voucher .slick-track:before {
-    content: none
-}
-
-.block-voucher .slick-track .slick-slide {
-    display: flex;
-    height: auto
-}
-
-.block-voucher .slick-track .slick-slide>div {
-    display: flex
-}
 
 .voucher-item {
     margin-bottom: 20px;
@@ -18965,7 +18854,7 @@ body div canvas:first-child {
     border-radius: 4px;
     min-height: 116px;
     position: relative;
-    width: 100%
+    width: 98%
 }
 
 .voucher-item-info:after {
@@ -19088,10 +18977,12 @@ body div canvas:first-child {
     min-width: 110px;
     display: flex;
     align-items: center;
+    flex-direction: column; 
+    gap: 6px;
     justify-content: center;
     order: 4;
     background-color: #fff;
-    box-shadow: 0 0 5px rgba(40, 41, 61, .08), 0 .5px 6px rgba(96, 97, 112, .16);
+    box-shadow: 0 0 15px rgba(40, 41, 61, .08), 0 .5px 6px rgba(96, 97, 112, .16);
     position: relative;
     border-radius: 0 4px 4px 0;
     padding: 0 17px 0 2px
@@ -19287,11 +19178,13 @@ body div canvas:first-child {
     color: #63b1bc
 }
 
+
 @media screen and (max-width: 768px) {
     .block-voucher .voucher-items-list .voucher-item {
         width: 100% !important
     }
 }
+
 
 /* Login + logout */
 .onhover-div .login-register-box {
