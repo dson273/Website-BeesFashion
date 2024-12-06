@@ -165,6 +165,11 @@
     </script>
 
     @yield('script-libs')
+    <script>
+        let userId = {{auth()->id()}}
+    </script>
+
+    @vite('resources/js/banUserRealtime.js')
 </body>
 
 </html>
