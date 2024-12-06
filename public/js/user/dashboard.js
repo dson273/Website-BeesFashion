@@ -580,6 +580,16 @@ function load_orders(list_orders, status_order = 0) {
                     cancelOrder.setAttribute('data-id', order_item['id']);
                     cancelOrder.textContent = 'Cancel';
                     controlList.appendChild(cancelOrder);
+                } else if (order_item['latest_status_id'] == 3) {
+                    let confirmOrder = document.createElement('span');
+                    confirmOrder.classList.add('btn_confirm_done_order', 'no-select');
+                    confirmOrder.setAttribute('data-bs-toggle', 'modal');
+                    confirmOrder.setAttribute('data-bs-target', '#confirm-done-order-modal');
+                    confirmOrder.setAttribute('title', 'Confirm done');
+                    confirmOrder.setAttribute('tabindex', '0');
+                    confirmOrder.setAttribute('data-id', order_item['id']);
+                    confirmOrder.textContent = 'Confirm done';
+                    controlList.appendChild(confirmOrder);
                 }
             }
 
@@ -719,6 +729,13 @@ $(document).on('click', '.btn_confirm_done_order', function () {
         confirm_done_order_modal.setAttribute('data-id', order_id);
     }
 })
+$(document).on('click', '#btn_confirm_done_order_2', function () {
+    var order_id = $(this).data('id');
+    var confirm_done_order_modal = document.getElementById('confirm-done-order-modal');
+    if (order_id) {
+        confirm_done_order_modal.setAttribute('data-id', order_id);
+    }
+})
 //=================================Xử lý hoàn thành đơn hàng trong db====================================
 function confirm_done_order(order_id) {
     return new Promise((resolve, reject) => {
@@ -764,6 +781,8 @@ $(document).on('click', '#btn_confirm_done_order', async function () {
                 console.log(list_orders);
 
                 load_orders(list_orders, order_status_selected);
+                $('#order_details').removeClass('show active');
+                $('#order').addClass('show active');
             } else {
                 load_orders(list_orders, order_status_selected);
             }
@@ -809,7 +828,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
             var status_id_of_this_order = $(this).data('status_id');
             var data_order_detail_by_id = await getOrderDetail(order_id);
             data_order_detail_by_id = convertObjectToArray(data_order_detail_by_id);
-            console.log(data_order_detail_by_id);
+            console.log(status_id_of_this_order);
 
 
             $('#span_order_code').text(data_order_detail_by_id[0]['id']);
@@ -818,6 +837,8 @@ $(document).on('click', '.btn_view_order_detail', async function () {
             } else if (status_id_of_this_order == 2) {
                 $('#span_order_status').text("Awaiting confirmation".toUpperCase());
             } else if (status_id_of_this_order == 3) {
+                console.log(status_id_of_this_order);
+                $('#btn_confirm_done_order_2').data('id', order_id).removeClass('hidden');
                 $('#span_order_status').text("On Delivery".toUpperCase());
             } else if (status_id_of_this_order == 4) {
                 $('#span_order_status').text("Delivered".toUpperCase());
@@ -825,6 +846,10 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                 $('#span_order_status').text("Cancelled".toUpperCase());
             } else {
                 $('#span_order_status').text("Return".toUpperCase());
+            }
+
+            if (status_id_of_this_order != 3) {
+                $('#btn_confirm_done_order_2').addClass('hidden');
             }
             //--------Hiển thị vòng đời của đơn hàng---------
             var progress_container = document.getElementById("progress-container");
