@@ -1,8 +1,7 @@
 @extends('user.layouts.master')
 
 @section('script-libs')
-    <script src="{{ asset('js/user/home.js') }}">
-    </script>
+    <script src="{{ asset('js/user/home.js') }}"></script>
 @endsection
 
 @section('content')
@@ -71,8 +70,8 @@
                     <div class="swiper-wrapper ratio_square-2">
                         @foreach ($categoryLimit as $item)
                             <div class="swiper-slide">
-                                <div class="fashion-box"><a href="{{ route('product', ['category' => $item->id]) }}"> <img class="img-fluid"
-                                            src="{{ asset('uploads/categories/images/' . $item->image) }}"
+                                <div class="fashion-box"><a href="{{ route('product', ['category' => $item->id]) }}"> <img
+                                            class="img-fluid" src="{{ asset('uploads/categories/images/' . $item->image) }}"
                                             alt=""></a>
                                 </div>
                                 <h5>{{ $item->name }}</h5>
@@ -88,65 +87,63 @@
                 <div class="title">
                     <h3>ƯU ĐÃI BLACK FRIDAY ĐỘC QUYỀN ONLINE</h3>
                 </div>
-                <div class="detail-content MuiBox-root css-0">
-                    <div class="block-voucher">
-                        <div class="voucher-items-list">
-                            @foreach ($vouchers as $item)
-                                <div class="voucher-item">
-                                    <div class="voucher-item-info">
-                                        <div class="voucher-item-detail">
-                                            <div class="voucher-item-des">
-                                                <strong>
-                                                    <span style="font-size: 12pt;">
-                                                        <span style="color: #ba372a;">{{ $item->name }}
-                                                        </span>
-                                                        <br>
-                                                    </span>
-                                                </strong>
-                                            </div>
-                                            <div class="voucher-item-des"><span style="font-size: 10pt; color:black">Nhập mã
-                                                    <strong><span
-                                                            style="font-size: 12pt; color:black">{{ $item->code }}</span></strong><span
-                                                        style="color: #e03e2d;"><strong><br></strong></span></span></div>
-                                            <div class="voucher-item-des"><span style="font-size: 10pt; color:black">
-                                                    @if ($item->amount < 100)
-                                                        <!-- Dưới 100 -->
-                                                        Giảm {{ number_format($item->amount) . '%' }} cho đơn hàng từ
-                                                        {{ number_format($item->minimum_order_value / 1000) . 'K' }}
-                                                    @else
-                                                        <!-- Bằng hoặc trên 100 -->
-                                                        Giảm {{ number_format($item->amount / 1000) . 'K' }} cho đơn hàng từ
-                                                        {{ number_format($item->minimum_order_value / 1000) . 'K' }}
-                                                    @endif
+
+                <div class="swiper vouchers-slide">
+                    <div class="swiper-wrapper m-1 ratio_square">
+                        @foreach ($vouchers as $item)
+                            <div class="voucher-item swiper-slide">
+                                <div class="voucher-item-info">
+                                    <div class="voucher-item-detail">
+                                        <div class="voucher-item-des">
+                                            <strong>
+
+                                                <span style="color: #ba372a; font-size: 15pt;">{{ $item->name }}
                                                 </span>
-                                            </div>
-                                            <div class="voucher-item-date">
-                                                <span class="expire" style="font-size: 10pt; color:#ba372a"
-                                                    data-end-date="{{ \Carbon\Carbon::parse($item->end_date)->toIso8601String() }}">
-                                                    Hạn sử dụng: <span class="countdown"
-                                                        style="font-size: 10pt; color:#ba372a"></span>
-                                                </span>
-                                            </div>
+                                                <br>
+                                            </strong>
                                         </div>
-                                        <div class="voucher-item-action">
-                                            <div class="action"><span class="copy-content"
-                                                    style="cursor: pointer; font-size: 10pt; color:#ba372a"
-                                                    data-code="{{ $item->code }}" data-copied-text="Đã chép">Sao
-                                                    chép</span></div>
-                                            @if ($item->is_public != 1)
-                                                <div class="action">
-                                                    <span class="save-content"
-                                                        style="cursor: pointer; font-size: 10pt; color:#ba372a"
-                                                        data-id="{{ $item->id }}" data-save-text="Đã lưu">Lưu mã</span>
-                                                </div>
-                                            @endif
+                                        <div class="voucher-item-des"><span style="font-size: 10pt; color:black">Nhập mã
+                                                <strong><span
+                                                        style="font-size: 12pt; color:black">{{ $item->code }}</span></strong><span
+                                                    style="color: #e03e2d;"><strong><br></strong></span></span></div>
+                                        <div class="voucher-item-des"><span style="font-size: 10pt; color:black">
+                                                @if ($item->amount < 100)
+                                                    <!-- Dưới 100 -->
+                                                    Giảm {{ number_format($item->amount) . '%' }} cho đơn hàng từ
+                                                    {{ number_format($item->minimum_order_value / 1000) . 'K' }}
+                                                @else
+                                                    <!-- Bằng hoặc trên 100 -->
+                                                    Giảm {{ number_format($item->amount / 1000) . 'K' }} cho đơn hàng từ
+                                                    {{ number_format($item->minimum_order_value / 1000) . 'K' }}
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <div class="voucher-item-date">
+                                            <span class="expire" style="font-size: 10pt; color:#ba372a"
+                                                data-end-date="{{ \Carbon\Carbon::parse($item->end_date)->toIso8601String() }}">
+                                                Hạn sử dụng: <span class="countdown"
+                                                    style="font-size: 10pt; color:#ba372a"></span>
+                                            </span>
                                         </div>
                                     </div>
+                                    <div class="voucher-item-action">
+                                        <div class="action"><span class="copy-content"
+                                                style="cursor: pointer; font-size: 10pt; color:#ba372a"
+                                                data-code="{{ $item->code }}" data-copied-text="Đã chép">Sao
+                                                chép</span></div>
+                                        @if ($item->is_public != 1)
+                                            <div class="action">
+                                                <span class="save-content"
+                                                    style="cursor: pointer; font-size: 10pt; color:#ba372a"
+                                                    data-id="{{ $item->id }}" data-save-text="Đã lưu">Lưu mã</span>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
-                            @endforeach
-
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
+
                 </div>
             </div>
         </section>
@@ -536,7 +533,7 @@
                     <div class="col-xl-9">
                         <div class="row g-4">
                             <div class="col-md-5">
-                                <div class="best-seller-img ratio_square-3"><a href="{{route('product')}}"> <img
+                                <div class="best-seller-img ratio_square-3"><a href="{{ route('product') }}"> <img
                                             class="bg-img"
                                             src="{{ asset('assets/images/layout-4/main-category/1.png') }}"
                                             alt=""></a>
@@ -549,16 +546,16 @@
                                     <h4>About Online Fashion Purchases</h4>
                                     <div class="link-hover-anim underline">
                                         <a class="btn btn_underline link-strong link-strong-unhovered"
-                                            href="{{route('product')}}">
+                                            href="{{ route('product') }}">
                                             Shop Collection
                                         </a>
                                         <a class="btn btn_underline link-strong link-strong-hovered"
-                                            href="{{route('product')}}">
+                                            href="{{ route('product') }}">
                                             Shop Collection
                                         </a>
                                     </div>
                                 </div>
-                                <a href="{{route('product')}}"> <img class="bg-img"
+                                <a href="{{ route('product') }}"> <img class="bg-img"
                                         src="{{ asset('assets/images/layout-4/main-category/2.jpg') }}"
                                         alt=""></a>
                             </div>
@@ -567,7 +564,7 @@
                     <div class="col-3 d-none d-xl-block">
                         <div class="best-seller-box">
                             <div class="offer-banner">
-                                <a href="{{route('product')}}">
+                                <a href="{{ route('product') }}">
                                     <h2>Extra 15% OFF</h2>
                                     <span> </span>
                                     <p>Designer Brand Season off In-store & Online for a limited Time</p>
@@ -581,11 +578,11 @@
                                 <span> </span>
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered"
-                                        href="{{route('product')}}">
+                                        href="{{ route('product') }}">
                                         Shop Collection
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered"
-                                        href="{{route('product')}}">
+                                        href="{{ route('product') }}">
                                         Shop Collection
                                     </a>
                                 </div>
@@ -809,8 +806,8 @@
                     <div class="swiper-wrapper">
                         @foreach ($brands as $item)
                             <div class="swiper-slide"><a href="#"> <img style="width: 125px; height:125px;"
-                                        src="{{ asset('uploads/brands/images/' . $item->image) }}"
-                                        alt="logo"></a></div>
+                                        src="{{ asset('uploads/brands/images/' . $item->image) }}" alt="logo"></a>
+                            </div>
                         @endforeach
 
                     </div>

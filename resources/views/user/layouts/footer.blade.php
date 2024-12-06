@@ -264,7 +264,7 @@
 
                 <h4>You Might Like</h4>
                 <div class="row gy-4 ratio_square-2 preemptive-search">
-                    @foreach ($products as $product)
+                    @foreach ($search as $product)
                         <div class="col-xl-2 col-sm-4 col-6">
                             <div class="product-box-6">
                                 <div class="img-wrapper">
