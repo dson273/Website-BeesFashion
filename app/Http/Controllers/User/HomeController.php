@@ -48,7 +48,6 @@ class HomeController extends Controller
                 $product->active_image = $activeImage ? $activeImage->file_name : null;
                 $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange =  $product->getPriceRange();
-                $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
                 return $product;
@@ -85,9 +84,9 @@ class HomeController extends Controller
                 $product->active_image = $activeImage ? $activeImage->file_name : null;
                 $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange = $product->getPriceRange();
-                $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
+             
                 return $product;
             });
 
@@ -249,7 +248,6 @@ class HomeController extends Controller
             'total_reviews' => $totalReviews
         ];
     }
-
 
 
     //Lưu voucher

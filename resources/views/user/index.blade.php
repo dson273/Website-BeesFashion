@@ -1,7 +1,8 @@
 @extends('user.layouts.master')
 
 @section('script-libs')
-    <script src="{{ asset('js/user/home.js') }}"></script>
+    <script src="{{ asset('js/user/home.js') }}">
+    </script>
 @endsection
 
 @section('content')
@@ -11,59 +12,66 @@
         <section class="section-space">
             <div class="custom-container container ">
                 <!-- Carousel Wrapper -->
-                <div class="box-slide">
-                    <div id="bannerCarousel" class="carousel slide " data-bs-ride="carousel">
-                        <div class="carousel-inner ">
-                            <!-- Slide 1 -->
-                            @foreach ($sliders as $slider)
-                                @foreach ($slider->banner_images as $key => $banner_image)
-                                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                        <div class="row">
-                                            <a href="#">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('uploads/banners/images/id_' . $slider->id . '/' . $banner_image->file_name) }}"
-                                                    alt="Banner Image">
-                                            </a>
-                                        </div>
+                <div id="bannerCarousel" class="carousel slide " data-bs-ride="carousel">
+                    <div class="carousel-inner ">
+                        <!-- Slide 1 -->
+                        @foreach ($sliders as $slider)
+                            @foreach ($slider->banner_images as $key => $banner_image)
+                                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                    <div class="row">
+                                        <a href="#">
+                                            <img class="img-fluid"
+                                                src="{{ asset('uploads/banners/images/id_' . $slider->id . '/' . $banner_image->file_name) }}"
+                                                alt="Banner Image">
+                                        </a>
                                     </div>
-                                @endforeach
+                                </div>
                             @endforeach
-                        </div>
-                        <div class="carousel-indicators">
-                            @foreach ($sliders as $slider)
-                                @foreach ($slider->banner_images as $key => $banner_image)
-                                    <button type="button" data-bs-target="#bannerCarousel"
-                                        data-bs-slide-to="{{ $key }}"
-                                        class="{{ $key === 0 ? 'active' : '' }}"></button>
-                                @endforeach
-                            @endforeach
-                        </div>
-                        <!-- Carousel Controls -->
-                        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-
+                        @endforeach
                     </div>
+                    <!-- Slide 2 -->
+                    {{-- <div class="carousel-item  ">
+                            <div class="row ">
+                                <a href="#">
+                                    <img class="img-fluid" src="{{ asset('assets/images/banner/b-2.jpg') }}" alt="">
+                                </a>
+                            </div>
+                        </div> --}}
+                    <!-- Indicators/dots -->
+                    <div class="carousel-indicators">
+                        @foreach ($sliders as $slider)
+                            @foreach ($slider->banner_images as $key => $banner_image)
+                                <button type="button" data-bs-target="#bannerCarousel"
+                                    data-bs-slide-to="{{ $key }}"
+                                    class="{{ $key === 0 ? 'active' : '' }}"></button>
+                            @endforeach
+                        @endforeach
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+
                 </div>
             </div>
         </section>
         <!-- End Banner -->
 
         <!-- Category -->
-        <section class="section-t-space mb-3">
+        <section class="section-t-space">
             <div class="container-fluid fashion-images">
                 <div class="swiper fashion-images-slide">
                     <div class="swiper-wrapper ratio_square-2">
                         @foreach ($categoryLimit as $item)
                             <div class="swiper-slide">
-                                <div class="fashion-box"><a href="#"> <img class="img-fluid"
+                                <div class="fashion-box"><a href="{{ route('product', ['category' => $item->id]) }}"> <img class="img-fluid"
                                             src="{{ asset('uploads/categories/images/' . $item->image) }}"
                                             alt=""></a>
                                 </div>
@@ -101,19 +109,23 @@
                                                             style="font-size: 12pt; color:black">{{ $item->code }}</span></strong><span
                                                         style="color: #e03e2d;"><strong><br></strong></span></span></div>
                                             <div class="voucher-item-des"><span style="font-size: 10pt; color:black">
-                                                 @if ($item->amount < 100) <!-- Dưới 100 -->
-                                                Giảm {{ number_format($item->amount) . '%' }} cho đơn hàng từ
-                                                {{ number_format($item->minimum_order_value / 1000) . 'K' }}
-                                            @else <!-- Bằng hoặc trên 100 -->
-                                            Giảm {{ number_format($item->amount /1000) . 'K' }} cho đơn hàng từ {{ number_format($item->minimum_order_value / 1000) . 'K' }}
-                                            @endif</span>
+                                                    @if ($item->amount < 100)
+                                                        <!-- Dưới 100 -->
+                                                        Giảm {{ number_format($item->amount) . '%' }} cho đơn hàng từ
+                                                        {{ number_format($item->minimum_order_value / 1000) . 'K' }}
+                                                    @else
+                                                        <!-- Bằng hoặc trên 100 -->
+                                                        Giảm {{ number_format($item->amount / 1000) . 'K' }} cho đơn hàng từ
+                                                        {{ number_format($item->minimum_order_value / 1000) . 'K' }}
+                                                    @endif
+                                                </span>
                                             </div>
                                             <div class="voucher-item-date">
-                                                <span class="expire"
-                                                style="font-size: 10pt; color:#ba372a"
-                                                data-end-date="{{ \Carbon\Carbon::parse($item->end_date)->toIso8601String() }}">
-                                              Hạn sử dụng: <span class="countdown" style="font-size: 10pt; color:#ba372a"></span>
-                                          </span>
+                                                <span class="expire" style="font-size: 10pt; color:#ba372a"
+                                                    data-end-date="{{ \Carbon\Carbon::parse($item->end_date)->toIso8601String() }}">
+                                                    Hạn sử dụng: <span class="countdown"
+                                                        style="font-size: 10pt; color:#ba372a"></span>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="voucher-item-action">
@@ -121,13 +133,13 @@
                                                     style="cursor: pointer; font-size: 10pt; color:#ba372a"
                                                     data-code="{{ $item->code }}" data-copied-text="Đã chép">Sao
                                                     chép</span></div>
-                                                    @if ($item->is_public != 1)
-                                                    <div class="action">
-                                                        <span class="save-content"
-                                                            style="cursor: pointer; font-size: 10pt; color:#ba372a"
-                                                            data-id="{{ $item->id }}" data-save-text="Đã lưu">Lưu mã</span>
-                                                    </div>
-                                                @endif
+                                            @if ($item->is_public != 1)
+                                                <div class="action">
+                                                    <span class="save-content"
+                                                        style="cursor: pointer; font-size: 10pt; color:#ba372a"
+                                                        data-id="{{ $item->id }}" data-save-text="Đã lưu">Lưu mã</span>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -182,14 +194,20 @@
                                                         <div class="img-wrapper">
                                                             <div class="info-ticket ticket-news">NEW</div>
                                                             <div class="product-image">
-                                                                <a class="pro-first" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->active_image) }}" alt="product"></a>
-                                                                <a class="pro-sec" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
+                                                                <a class="pro-first"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                                        alt="product"></a>
+                                                                <a class="pro-sec"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                                        alt="product"></a>
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" data-id="{{ $product->id }}" href="javascript:void(0)"
-                                                                    tabindex="0">
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}"
+                                                                    href="javascript:void(0)" tabindex="0">
                                                                     <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
                                                                         data-bs-title="Add to Wishlistt"></i>
@@ -283,34 +301,41 @@
                                     <div class="tab-pane fade" id="features-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($products as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="col-xxl-3 col-md-4 col-6 position-relative">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
                                                             <div class="info-ticket seller">Best Seller</div>
                                                             <div class="product-image">
-                                                                <a class="pro-first" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->active_image) }}" alt="product"></a>
-                                                                <a class="pro-sec" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
+                                                                <a class="pro-first"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                                        alt="product"></a>
+                                                                <a class="pro-sec"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                                        alt="product"></a>
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" href="javascript:void(0)"
-                                                                    tabindex="0">
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}"
+                                                                    href="javascript:void(0)" tabindex="0">
                                                                     <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i>
+                                                                        data-bs-title="Add to Wishlistt"></i>
                                                                 </a>
-                                                                {{-- <a href="javascript:void(0)" class="quick-view-btn"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                tabindex="0">
-                                                                <i class="iconsax" data-icon="eye" aria-hidden="true"
-                                                                    data-bs-toggle="tooltip"
-                                                                    data-bs-title="Quick View"></i>
-                                                            </a> --}}
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
+                                                                    <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
-
                                                             <div class="add-button">
                                                                 <a href="javascript:void(0)"
                                                                     class="add-to-cart quick-view-btn"
@@ -320,12 +345,13 @@
                                                                     <i class="fa fa-shopping-cart"></i>
                                                                 </a>
                                                             </div>
+
                                                             <div class="color-box">
                                                                 @php
-                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                    $displayedColors = [];
                                                                 @endphp
                                                                 <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                    style="list-style-type: none; padding: 0; ">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
@@ -342,7 +368,7 @@
                                                                                 </li>
                                                                                 @php
                                                                                     $displayedColors[] =
-                                                                                        $attributeValue->value; // Thêm màu vào mảng
+                                                                                        $attributeValue->value;
                                                                                 @endphp
                                                                             @endif
                                                                         @endforeach
@@ -355,8 +381,8 @@
                                                                     $emptyStars =
                                                                         5 - $fullStars - ($hasHalfStar ? 1 : 0);
                                                                 @endphp
-                                                                    {{ number_format($rating, 1) }} <i
-                                                                        class="fa-solid fa-star"></i></span>
+                                                                    {{ number_format($rating, 1) }}
+                                                                    <i class="fa-solid fa-star"></i></span>
                                                             </div>
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
@@ -384,37 +410,43 @@
                                     <div class="tab-pane fade" id="latest-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($topProducts as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6">
+                                                <div class="col-xxl-3 col-md-4 col-6 position-relative">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
-
                                                             <div class="label-block"><img
                                                                     src="{{ asset('assets/images/product/3.png') }}"
                                                                     alt="lable"><span>on <br>Sale!</span></div>
                                                             <div class="product-image">
-                                                                <a class="pro-first" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->active_image) }}" alt="product"></a>
-                                                                <a class="pro-sec" href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
+                                                                <a class="pro-first"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                                        alt="product"></a>
+                                                                <a class="pro-sec"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                                        alt="product"></a>
                                                             </div>
                                                             <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" href="javascript:void(0)"
-                                                                    tabindex="0">
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}"
+                                                                    href="javascript:void(0)" tabindex="0">
                                                                     <i class="iconsax" data-icon="heart"
                                                                         aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlist"></i>
+                                                                        data-bs-title="Add to Wishlistt"></i>
                                                                 </a>
-                                                                {{-- <a href="javascript:void(0)" class="quick-view-btn"
-                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                tabindex="0">
-                                                                <i class="iconsax" data-icon="eye" aria-hidden="true"
-                                                                    data-bs-toggle="tooltip"
-                                                                    data-bs-title="Quick View"></i>
-                                                            </a> --}}
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
+                                                                    <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                         <div class="product-detail">
-
                                                             <div class="add-button">
                                                                 <a href="javascript:void(0)"
                                                                     class="add-to-cart quick-view-btn"
@@ -424,12 +456,13 @@
                                                                     <i class="fa fa-shopping-cart"></i>
                                                                 </a>
                                                             </div>
+
                                                             <div class="color-box">
                                                                 @php
-                                                                    $displayedColors = []; // Mảng lưu màu đã hiển thị
+                                                                    $displayedColors = [];
                                                                 @endphp
                                                                 <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0;">
+                                                                    style="list-style-type: none; padding: 0; ">
                                                                     @foreach ($product->product_variants as $variant)
                                                                         @foreach ($variant->variant_attribute_values as $variantAttributeValue)
                                                                             @php
@@ -446,7 +479,7 @@
                                                                                 </li>
                                                                                 @php
                                                                                     $displayedColors[] =
-                                                                                        $attributeValue->value; // Thêm màu vào mảng
+                                                                                        $attributeValue->value;
                                                                                 @endphp
                                                                             @endif
                                                                         @endforeach
@@ -459,8 +492,8 @@
                                                                     $emptyStars =
                                                                         5 - $fullStars - ($hasHalfStar ? 1 : 0);
                                                                 @endphp
-                                                                    {{ number_format($rating, 1) }} <i
-                                                                        class="fa-solid fa-star"></i></span>
+                                                                    {{ number_format($rating, 1) }}
+                                                                    <i class="fa-solid fa-star"></i></span>
 
                                                             </div>
 
@@ -503,7 +536,7 @@
                     <div class="col-xl-9">
                         <div class="row g-4">
                             <div class="col-md-5">
-                                <div class="best-seller-img ratio_square-3"><a href="product-select.html"> <img
+                                <div class="best-seller-img ratio_square-3"><a href="{{route('product')}}"> <img
                                             class="bg-img"
                                             src="{{ asset('assets/images/layout-4/main-category/1.png') }}"
                                             alt=""></a>
@@ -516,16 +549,16 @@
                                     <h4>About Online Fashion Purchases</h4>
                                     <div class="link-hover-anim underline">
                                         <a class="btn btn_underline link-strong link-strong-unhovered"
-                                            href="product-select.html">
+                                            href="{{route('product')}}">
                                             Shop Collection
                                         </a>
                                         <a class="btn btn_underline link-strong link-strong-hovered"
-                                            href="product-select.html">
+                                            href="{{route('product')}}">
                                             Shop Collection
                                         </a>
                                     </div>
                                 </div>
-                                <a href="product-select.html"> <img class="bg-img"
+                                <a href="{{route('product')}}"> <img class="bg-img"
                                         src="{{ asset('assets/images/layout-4/main-category/2.jpg') }}"
                                         alt=""></a>
                             </div>
@@ -534,7 +567,7 @@
                     <div class="col-3 d-none d-xl-block">
                         <div class="best-seller-box">
                             <div class="offer-banner">
-                                <a href="product-select.html">
+                                <a href="{{route('product')}}">
                                     <h2>Extra 15% OFF</h2>
                                     <span> </span>
                                     <p>Designer Brand Season off In-store & Online for a limited Time</p>
@@ -548,11 +581,11 @@
                                 <span> </span>
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered"
-                                        href="product-select.html">
+                                        href="{{route('product')}}">
                                         Shop Collection
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered"
-                                        href="product-select.html">
+                                        href="{{route('product')}}">
                                         Shop Collection
                                     </a>
                                 </div>
@@ -580,9 +613,13 @@
                                             alt="lable"><span>on <br>Sale!</span></div>
                                     <div class="product-image">
                                         <a class="pro-first" href="{{ route('product.detail', $product->SKU) }}">
-                                            <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->active_image) }}" alt="product"></a>
+                                            <img class="bg-img"
+                                                src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                alt="product"></a>
                                         <a class="pro-sec" href="{{ route('product.detail', $product->SKU) }}">
-                                            <img class="bg-img" src="{{ asset('uploads/products/images/' . $product->inactive_image) }}" alt="product"></a>
+                                            <img class="bg-img"
+                                                src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                alt="product"></a>
                                     </div>
                                     <div class="cart-info-icon">
                                         <a class="wishlist-icon" href="javascript:void(0)" tabindex="0">
@@ -667,28 +704,28 @@
                 <div class="title">
                     <h3>Latest Blog</h3>
                     <svg>
-                        <use href="{{asset('assets/images/user/icon-sprite.svg#zigzag')}}"></use>
+                        <use href="{{ asset('assets/images/user/icon-sprite.svg#zigzag') }}"></use>
                     </svg>
                 </div>
                 <div class="swiper blog-slide">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="blog-main">
-                                <div class="blog-box ratio3_2"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
+                                <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
                                             src="{{ asset('assets/images/blog/layout-4/1.jpg') }}" alt=""></a>
                                 </div>
                                 <div class="blog-txt">
                                     <p>By: Admin / 26th aug 2020</p>
-                                    <a href="{{route('blog-detail')}}">
+                                    <a href="#">
                                         <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                     </a>
                                     <div class="link-hover-anim underline">
-                                        <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
+                                        <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                             Read
                                             More
 
                                         </a>
-                                        <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
+                                        <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                             Read More
 
                                         </a>
@@ -697,19 +734,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
+                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/2.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="{{route('blog-detail')}}">
+                                <a href="#">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
 
@@ -718,19 +755,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio3_2"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
+                            <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/3.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="{{route('blog-detail')}}">
+                                <a href="#">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
 
@@ -739,19 +776,19 @@
                             </div>
                         </div>
                         <div class="swiper-slide blog-main">
-                            <div class="blog-box ratio_55"><a class="blog-img" href="{{route('blog-detail')}}"><img class="bg-img"
+                            <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/4.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
-                                <a href="{{route('blog-detail')}}">
+                                <a href="#">
                                     <h5>Many desktop publishing pack-ages abd page editor...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
-                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="{{route('blog-detail')}}">
+                                    <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
                                         Read More
 
                                     </a>
-                                    <a class="btn btn_underline link-strong link-strong-hovered" href="{{route('blog-detail')}}">
+                                    <a class="btn btn_underline link-strong link-strong-hovered" href="#">
                                         Read
                                         More
 
@@ -771,7 +808,7 @@
                 <div class="swiper logo-slider">
                     <div class="swiper-wrapper">
                         @foreach ($brands as $item)
-                            <div class="swiper-slide"><a href="{{ route('product', ['brand' => $item->id]) }}"> <img style="width: 125px; height:125px;"
+                            <div class="swiper-slide"><a href="#"> <img style="width: 125px; height:125px;"
                                         src="{{ asset('uploads/brands/images/' . $item->image) }}"
                                         alt="logo"></a></div>
                         @endforeach
@@ -835,7 +872,8 @@
 
                                     <div class="product-buttons">
                                         <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
-                                        <a class="btn btn-solid" href="#" id="btn_view_detail_of_quick_view_product">View detail</a>
+                                        <a class="btn btn-solid" href="#"
+                                            id="btn_view_detail_of_quick_view_product">View detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -899,7 +937,7 @@
         </div>
         <!-- End seach -->
     </div> --}}
-    {{-- //Moda thêm giỏ hàng thành công --}}
+        {{-- //Moda thêm giỏ hàng thành công --}}
         <div class="add-card-size" id="fancybox-add-to-cart">
             <div class="thank-you__icon"><svg width="160" height="160" viewBox="0 0 160 160" fill="none"
                     xmlns="http://www.w3.org/2000/svg">

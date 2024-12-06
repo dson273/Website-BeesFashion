@@ -45,7 +45,6 @@ class WishlistController extends Controller
                 $product->rating = $rating;
                 return $product;
         
-                return $product;
             });
         return view('user.wishlist', compact('products'));
     }

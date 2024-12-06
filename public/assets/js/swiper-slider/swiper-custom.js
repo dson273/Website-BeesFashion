@@ -240,6 +240,7 @@ var swiper = new Swiper(".fashion-images-slide", {
     },
   },
 });
+
 var swiper = new Swiper(".collection-images-slide", {
   spaceBetween: 20,
   slidesPerView: 8,

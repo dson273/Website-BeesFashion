@@ -4,15 +4,16 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Attribute;
+use App\Models\Order_detail;
+use App\Models\Product_vote;
 use Illuminate\Http\Request;
 use App\Models\Attribute_value;
 use App\Models\Product_variant;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Order_detail;
-use App\Models\Product_vote;
 
 class ProductDetailController extends Controller
 {
@@ -25,6 +26,30 @@ class ProductDetailController extends Controller
             'product_variants.product_votes.user',
             'product_variants.order_details.order.status_orders.status'
         ])->where('SKU', $sku)->first();
+
+        // $product_variant_stock = DB::table('orders')
+        //     ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+        //     ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+        //     ->join('product_variants', 'order_details.product_variant_id','=','product_variants.id')
+        //     ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
+        //     ->join('users', 'orders.user_id', '=', 'users.id')
+        //     ->where('statuses.name', 'Shipping')
+        //     ->orWhere('statuses.name', 'Shipping')
+        //     ->orWhere('statuses.name', 'Shipping')
+        //     ->select('order_details.product_variant_id', DB::raw('SUM(order_details.quantity) as total_stock'))
+        //     ->groupBy('order_details.product_variant_id')
+        //     ->get();
+
+        // $product_variants = Product_variant::where('product_id', $product->id)->get();
+        // $total_stock_ship = 0;
+        // $productVariantIds = [];
+        // foreach($product_variant_stock as $variant_stock){
+        //     $productVariantIds[] = $variant_stock->product_variant_id;
+        // }
+        // foreach($product_variants as $product_variant){
+
+        // }
+
 
         //View tăng lên 1
         if ($product) {
@@ -94,7 +119,7 @@ class ProductDetailController extends Controller
         // Lấy danh sách sản phẩm liên quan qua danh mục
         $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
             $query->whereIn('category_id', $product->categories->pluck('id'))
-            ->where('categories.fixed', 1);
+                ->where('categories.fixed', 1);
         })->where('id', '!=', $product->id)
             ->take(8)
             ->get();
@@ -111,11 +136,32 @@ class ProductDetailController extends Controller
             $relatedProduct->rating = $rating;
             return $relatedProduct;
         });
+
+        //Sản phẩm bán chạy
+        $firstCategory = Category::where('fixed', 0)->first();
+        $bestProducts = Product::whereHas('categories', function ($query) use ($firstCategory) {
+            $query->where('categories.id', $firstCategory->id);
+        })
+            ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
+            ->where('id', '!=', $product->id)
+            ->take(8)
+            ->get()
+            ->map(function ($bestProduct) {
+                $bestProduct->priceRange = $bestProduct->getPriceRange();
+                $activeImage = $bestProduct->product_files->where('is_default', 1)->first();
+                $inactiveImage = $bestProduct->product_files->where('is_default', 0)->first();
+                $bestProduct->active_image = $activeImage ? $activeImage->file_name : null;
+                $bestProduct->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
+
+                $rating = $this->calculateProductRating($bestProduct);
+                $bestProduct->rating = $rating;
+                return $bestProduct;
+            });
         //Đánh giá sản phẩm
         $reviewData = $this->getProductReviewData($product);
         // dd($reviewData);
 
-        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts', 'reviewData'));
+        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts', 'reviewData', 'bestProducts'));
     }
 
     public function updateInformationProduct(Request $request)
