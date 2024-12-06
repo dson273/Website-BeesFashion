@@ -536,7 +536,7 @@
                     <div class="col-xl-9">
                         <div class="row g-4">
                             <div class="col-md-5">
-                                <div class="best-seller-img ratio_square-3"><a href="product-select.html"> <img
+                                <div class="best-seller-img ratio_square-3"><a href="{{route('product')}}"> <img
                                             class="bg-img"
                                             src="{{ asset('assets/images/layout-4/main-category/1.png') }}"
                                             alt=""></a>
@@ -549,16 +549,16 @@
                                     <h4>About Online Fashion Purchases</h4>
                                     <div class="link-hover-anim underline">
                                         <a class="btn btn_underline link-strong link-strong-unhovered"
-                                            href="product-select.html">
+                                            href="{{route('product')}}">
                                             Shop Collection
                                         </a>
                                         <a class="btn btn_underline link-strong link-strong-hovered"
-                                            href="product-select.html">
+                                            href="{{route('product')}}">
                                             Shop Collection
                                         </a>
                                     </div>
                                 </div>
-                                <a href="product-select.html"> <img class="bg-img"
+                                <a href="{{route('product')}}"> <img class="bg-img"
                                         src="{{ asset('assets/images/layout-4/main-category/2.jpg') }}"
                                         alt=""></a>
                             </div>
@@ -567,7 +567,7 @@
                     <div class="col-3 d-none d-xl-block">
                         <div class="best-seller-box">
                             <div class="offer-banner">
-                                <a href="product-select.html">
+                                <a href="{{route('product')}}">
                                     <h2>Extra 15% OFF</h2>
                                     <span> </span>
                                     <p>Designer Brand Season off In-store & Online for a limited Time</p>
@@ -581,11 +581,11 @@
                                 <span> </span>
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered"
-                                        href="product-select.html">
+                                        href="{{route('product')}}">
                                         Shop Collection
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered"
-                                        href="product-select.html">
+                                        href="{{route('product')}}">
                                         Shop Collection
                                     </a>
                                 </div>
