@@ -163,6 +163,14 @@ class ProductController extends Controller
         try {
             $baseInformation = $request->input('baseInformation');
             $sku = $baseInformation['sku'] ?? null;
+            $check_exist = Product::where('SKU', $sku)->first();
+            if ($check_exist) {
+                $response = [
+                    'status' => 400,
+                    'message' => 'Mã sản phẩm đã tồn tại!',
+                ];
+                return response()->json($response);
+            }
             $name = $baseInformation['name'] ?? null;
             $description = $baseInformation['description'] ?? null;
             $status = $baseInformation['status'] ?? null;
@@ -1013,7 +1021,13 @@ class ProductController extends Controller
     {
         $category_name = request()->input('category_name');
         $parent_category_id = request()->input('parent_category_id');
-
+        $check_exist = Category::where('name', $category_name)->first();
+        if ($check_exist) {
+            $response = [
+                'status' => 400,
+                'message' => 'Danh mục đã tồn tại!',
+            ];
+        }
         try {
             if ($parent_category_id) {
                 Category::create([
@@ -1088,7 +1102,7 @@ class ProductController extends Controller
     public function createNewBrand()
     {
         $brand_name = request()->input('brand_name');
-        $response = '';
+        $response = [];
         if ($brand_name) {
             $check_brand_name = Brand::where('name', $brand_name)->first();
             if ($check_brand_name) {

@@ -35,7 +35,16 @@ class VoucherController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|regex:/^[a-zA-Z0-9]+$/|unique:vouchers,code', // Mã voucher phải viết liền (không khoảng trắng)
-            'amount' => 'required|numeric|min:0',
+            'amount' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->type === 'percent' && $value >= 100) {
+                        $fail('Giá trị giảm phải nhỏ hơn 100 nếu loại voucher là phần trăm.');
+                    }
+                },
+            ],
             'image' => 'required|image',
             'quantity' => 'required|integer|min:1',
             'start_date' => 'required|date|before_or_equal:end_date', // Ngày bắt đầu phải có và trước hoặc bằng ngày hết hạn
@@ -85,7 +94,7 @@ class VoucherController extends Controller
 
         if ($image = $request->file('image')) {
             $imageName = $image->hashName();
-            $image->move(public_path('uploads/vouchers/images'), $imageName); 
+            $image->move(public_path('uploads/vouchers/images'), $imageName);
             $params['image'] = $imageName;
         } else {
             $params['image'] = null;
