@@ -245,7 +245,7 @@
     </div> --}}
     <!-- End modal cart right -->
 
-   
+
     <!-- End modal add cart -->
 
     <!-- Modal Seach -->
@@ -257,166 +257,35 @@
             <div class="container">
                 <h3>Bạn đang muốn tìm kiếm gì!!</h3>
                 <div class="search-box">
-                    <input type="search" id="search-input-of-header" name="text" placeholder="Tìm kiếm sản phẩm...">
+                    <input type="search" id="search-input-of-header" name="text"
+                        placeholder="Tìm kiếm sản phẩm...">
                     <i class="iconsax" data-icon="search-normal-2" id="search-icon"></i>
                 </div>
 
                 <h4>You Might Like</h4>
                 <div class="row gy-4 ratio_square-2 preemptive-search">
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/1.jpg') }}"
-                                            alt="product"></a>
+                    @foreach ($products as $product)
+                        <div class="col-xl-2 col-sm-4 col-6">
+                            <div class="product-box-6">
+                                <div class="img-wrapper">
+                                    <div class="product-image"><a href="{{ route('product.detail', $product->SKU) }}">
+                                            <img class="bg-img"
+                                                src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                alt="product"></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$50.00 </p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4+</li>
-                                    </ul>
+                                <div class="product-detail">
+                                    <div>
+                                        <a href="{{ route('product.detail', $product->SKU) }}">
+                                            <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                        </a>
+                                        <p>{{ $product->priceRange }}</p>
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/2.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$95.00 <del>$140.00</del></p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>3+</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/3.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$80.00 <del>$140.00</del></p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/4.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$90.00 </p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>2+</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/5.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$180.00 <del>$140.00</del></p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4+</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/6.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <a href="product-detail.html">
-                                    <h6> Women's Stylish Top</h6>
-                                </a>
-                                <p>$120.00 </p>
-                                <ul class="rating">
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                    <li><i class="fa-regular fa-star"></i></li>
-                                    <li>4+</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -448,7 +317,7 @@
                     window.history.replaceState({}, '', current_url);
                 }
 
-                
+
                 // Chuyển hướng đến trang product và thêm query string 'name' với từ khóa tìm kiếm
                 window.location.href = '/product?search=' + encodeURIComponent(searchValue);
             }

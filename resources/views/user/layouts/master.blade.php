@@ -56,7 +56,7 @@
     <!-- End content -->
 
     <!-- Footer -->
-    @include('user.layouts.footer')
+    @include('user.layouts.footer',['products' => $products ?? []])
     <!-- End footer -->
 
     <!-- Bootstrap js-->
@@ -82,7 +82,13 @@
 
     <!-- RateYo -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
-
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="BeeFashion"
+      agent-id="5c0db8be-8f79-47c3-aecb-04d9ae604de3"
+      language-code="vi"
+    ></df-messenger>
     <!-- Notification function -->
     <script>
         function notification(type, data, title, timeOut = 5000) {

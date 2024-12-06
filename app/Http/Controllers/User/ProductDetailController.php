@@ -27,6 +27,30 @@ class ProductDetailController extends Controller
             'product_variants.order_details.order.status_orders.status'
         ])->where('SKU', $sku)->first();
 
+        // $product_variant_stock = DB::table('orders')
+        //     ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+        //     ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+        //     ->join('product_variants', 'order_details.product_variant_id','=','product_variants.id')
+        //     ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
+        //     ->join('users', 'orders.user_id', '=', 'users.id')
+        //     ->where('statuses.name', 'Shipping')
+        //     ->orWhere('statuses.name', 'Shipping')
+        //     ->orWhere('statuses.name', 'Shipping')
+        //     ->select('order_details.product_variant_id', DB::raw('SUM(order_details.quantity) as total_stock'))
+        //     ->groupBy('order_details.product_variant_id')
+        //     ->get();
+
+        // $product_variants = Product_variant::where('product_id', $product->id)->get();
+        // $total_stock_ship = 0;
+        // $productVariantIds = [];
+        // foreach($product_variant_stock as $variant_stock){
+        //     $productVariantIds[] = $variant_stock->product_variant_id;
+        // }
+        // foreach($product_variants as $product_variant){
+
+        // }
+
+
         //View tăng lên 1
         if ($product) {
             $product->increment('view');

@@ -101,16 +101,16 @@ Danh sách sản phẩm
                             <td>
                                 <div class="d-flex flex-column">
                                     <div class="d-flex flex-row justify-content-center">
-                                        <a href="{{route('admin.products.show',$product->id)}}" class="btn btn-secondary btn-sm d-flex align-items-center mr-1"><i class="fas fa-eye fa-sm mr-1"></i>Detail</a>
+                                        <a href="{{route('admin.products.show',$product->id)}}" class="btn btn-secondary btn-sm d-flex align-items-center mr-1"><i class="fas fa-eye fa-sm p-2"></i></a>
                                         @if($product->is_active==1)
-                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm mr-1"></i>Inactive</a>
+                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm p-2"></i></a>
                                         @else
-                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm mr-1"></i>Active</a>
+                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm p-2"></i></a>
                                         @endif
                                     </div>
                                     <div class="d-flex flex-row justify-content-center mt-2">
-                                        <a href="{{route('admin.products.edit',$product->id)}}" class="btn btn-warning btn-sm d-flex align-items-center mr-1"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Edit</a>
-                                        <a href="" class="btn btn-primary btn-sm d-flex align-items-center mr-1"><i class="fas fa-file-export fa-sm mr-1"></i>Export</a>
+                                        <a href="{{route('admin.products.edit',$product->id)}}" class="btn btn-warning btn-sm d-flex align-items-center mr-1"><i class="fas fa-pen-to-square fa-sm p-2"></i></a>
+                                        <!-- <a href="" class="btn btn-primary btn-sm d-flex align-items-center mr-1"><i class="fas fa-file-export fa-sm mr-1"></i>Export</a> -->
                                     </div>
                                 </div>
                             </td>
