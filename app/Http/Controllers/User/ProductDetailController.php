@@ -207,8 +207,9 @@ class ProductDetailController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Sản phẩm này đã ngưng bán. Vui lòng chọn mẫu khác.'
-            ], 400);
+            ]);
         }
+
         // Kiểm tra nếu biến thể đã có trong giỏ hàng
         $checkCart = Cart::with('product_variant')
             ->where('product_variant_id', $variant_id)
@@ -217,20 +218,55 @@ class ProductDetailController extends Controller
         if ($checkCart) {
             // Tính toán số lượng mới
             $newQuantity = $checkCart->quantity + $quantity;
-            // Đảm bảo không vượt quá tồn kho hoặc giới hạn 20 sản phẩm
+            // Kiểm tra số lượng sản phẩm còn lại trong kho
+            $availableStock = $checkCart->product_variant->stock - $checkCart->quantity;
+            // Đảm bảo không vượt quá tồn kho
             if ($newQuantity > $checkCart->product_variant->stock) {
-                $checkCart->quantity = $checkCart->product_variant->stock;
-            } elseif ($newQuantity > 20) {
-                $checkCart->quantity = 20; //Giới hạn chỉ thêm được 20 vào cart
+                if ($availableStock > 0) {
+                    $checkCart->quantity = $checkCart->quantity + $availableStock;
+                    $checkCart->save();
+                    // Trả về thông báo số lượng sản phẩm đã đạt đến giới hạn kho
+                    return response()->json([
+                        'status' => 'warning',
+                        'message' => "Đã thêm $availableStock sản phẩm vào giỏ hàng vì đã đạt giới hạn kho."
+                    ]);
+                } else {
+                    // Nếu kho đã hết, không thể thêm bất kỳ sản phẩm nào
+                    return response()->json([
+                        'status' => 'warning',
+                        'message' => 'Sản phẩm này đã đạt giới hạn của kho trong giỏ hàng.'
+                    ]);
+                }
             } else {
+                // Nếu số lượng không vượt quá tồn kho, cập nhật số lượng trong giỏ hàng
                 $checkCart->quantity = $newQuantity;
+                $checkCart->updated_at = now();  // Cập nhật thời gian
+                $checkCart->save();
             }
-            $checkCart->updated_at->now();
-            $checkCart->save();
         } else {
             if ($variant) {
+                // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm vào giỏ hàng
+                $quantityToAdd = min($variant->stock, $quantity);  // Giới hạn theo số lượng tồn kho
+
+                // Nếu kho không đủ để thêm toàn bộ số lượng, thông báo
+                if ($quantityToAdd < $quantity) {
+                    // Thêm số lượng tối đa có thể vào giỏ hàng
+                    Cart::create([
+                        'quantity' => $quantityToAdd,
+                        'product_variant_id' => $variant_id,
+                        'user_id' => Auth::user()->id,
+                        'created_at' => now()
+                    ]);
+
+                    // Trả về thông báo về số lượng đã thêm vào giỏ hàng
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => "Đã thêm $quantityToAdd sản phẩm vào giỏ hàng vì đã đạt giới hạn kho."
+                    ]);
+                }
+
                 Cart::create([
-                    'quantity' => $quantity <= min($variant->stock, 20) ? $quantity : min($variant->stock, 20),
+                    'quantity' => $quantityToAdd,  // Thêm vào giỏ hàng với số lượng tối đa có sẵn trong kho
                     'product_variant_id' => $variant_id,
                     'user_id' => Auth::user()->id,
                     'created_at' => now()
