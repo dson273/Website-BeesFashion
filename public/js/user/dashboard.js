@@ -137,8 +137,8 @@ $(document).ready(function () {
 
         updateProfileUI(response) {
             $('.profile-name h6').text(response.data.email);
-            $('.profile-information li:contains("Name") p').text(response.data.full_name || 'Not updated yet');
-            $('.profile-information li:contains("Phone") p').text(response.data.phone || 'Not updated yet');
+            $('.profile-information li:contains("Họ tên") p').text(response.data.full_name || 'Chưa cập nhật.');
+            $('.profile-information li:contains("Số điện thoại") p').text(response.data.phone || 'Chưa cập nhật');
             $('.profile-information li:contains("Email") p').text(response.data.email);
             $('.dashboard-user-name b').text(response.data.full_name ? response.data.full_name : response.data.username);
         }
@@ -234,8 +234,8 @@ $(document).ready(function () {
 
         updateAddressUI(addressBox, response) {
             addressBox.find('.address-title').text(response.data.full_name);
-            addressBox.find('.address-tag-office:contains("Address:")').next('p').text(response.data.address);
-            addressBox.find('.address-tag-office:contains("Phone:")').next('p').text(response.data.phone_number);
+            addressBox.find('.address-tag-office:contains("Địa chỉ:")').next('p').text(response.data.address);
+            addressBox.find('.address-tag-office:contains("Số điện thoại:")').next('p').text(response.data.phone_number);
         }
     }
 

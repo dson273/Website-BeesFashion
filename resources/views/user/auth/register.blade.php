@@ -8,7 +8,7 @@
                 <div class="custom-container container">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <h4>Sign Up</h4>
+                            <h4>Đăng ký</h4>
                         </div>
                         {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
@@ -30,8 +30,8 @@
                     <div class="col-xxl-4 col-lg-6 mx-auto">
                         <div class="log-in-box">
                             <div class="log-in-title">
-                                <h4>Welcome To BeesFashion</h4>
-                                <p>Create New Account</p>
+                                <h4>Chào mừng đến với BeesFashion</h4>
+                                <p>Tạo tài khoản mới</p>
                             </div>
                             {{-- Form register --}}
                             <div class="login-box">
@@ -42,7 +42,7 @@
                                             <input class="form-control @error('username') is-invalid @enderror"
                                                 id="floatingInputValue" type="text" name="username"
                                                 placeholder="User Name" value="{{ old('username') }}">
-                                            <label for="floatingInputValue">Enter User Name</label>
+                                            <label for="floatingInputValue">Nhập tài khoản.</label>
                                             {{-- Hiển thị thông báo lỗi --}}
                                             @error('username')
                                                 <span class="invalid-feedback" role="alert">
@@ -56,7 +56,7 @@
                                             <input class="form-control @error('email') is-invalid @enderror"
                                                 id="floatingInputValue1" type="email" name="email"
                                                 placeholder="name@example.com" value="{{ old('email') }}">
-                                            <label for="floatingInputValue1">Enter Your Email</label>
+                                            <label for="floatingInputValue1">Nhập email của bạn.</label>
                                             {{-- Hiển thị thông báo lỗi --}}
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
@@ -70,7 +70,7 @@
                                             <input class="form-control @error('password') is-invalid @enderror"
                                                 id="floatingInputValue2" type="password" name="password"
                                                 placeholder="Password">
-                                            <label for="floatingInputValue2">Enter Your Password</label>
+                                            <label for="floatingInputValue2">Nhập mật khẩu.</label>
                                             {{-- Hiển thị thông báo lỗi --}}
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -84,7 +84,7 @@
                                             <input class="form-control @error('password_confirmation') is-invalid @enderror"
                                                 id="floatingInputValue3" type="password" name="password_confirmation"
                                                 placeholder="Re-Password">
-                                            <label for="floatingInputValue3">Re-enter Your Password</label>
+                                            <label for="floatingInputValue3">Nhập lại mật khẩu.</label>
                                             {{-- Hiển thị thông báo lỗi --}}
                                             @error('password_confirmation')
                                                 <span class="invalid-feedback" role="alert">
@@ -98,14 +98,14 @@
                                             <div>
                                                 <input class="custom-checkbox me-2" id="category1" type="checkbox"
                                                     name="text">
-                                                <label for="category1">I agree with <span>Terms</span> and
-                                                    <span>Privacy</span></label>
+                                                <label for="category1">Tôi đồng ý với <span>Điều khoản</span> và
+                                                    <span>Quyền riêng tư</span></label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <button class="btn login btn_black sm" type="submit" data-bs-dismiss="modal"
-                                            aria-label="Close">Register</button>
+                                            aria-label="Close">Đăng Ký</button>
                                     </div>
                                 </form>
                             </div>
@@ -123,7 +123,7 @@
                             </div>
                             <div class="other-log-in"></div>
                             <div class="sign-up-box">
-                                <p>Already have an account?</p><a href="{{ route('login') }}">Log In </a>
+                                <p>Bạn đã có tài khoản?</p><a href="{{ route('login') }}">Đăng nhập</a>
                             </div>
                         </div>
                     </div>

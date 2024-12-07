@@ -29,7 +29,6 @@ Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add')
 //Lưu voucher
 Route::post('/save-voucher', [HomeController::class, 'saveVoucher'])->name('saveVoucher');
 
-
 //Trang bài viết
 Route::get('blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('blog-detail', [HomeController::class, 'blogDetail'])->name('blog-detail');
@@ -54,12 +53,6 @@ Route::middleware('guest')->group(function () {
 //     return view(view: 'user/collection');
 // });
 // Route::get('/',[HomeController::class,'index'])->name('home-shop');
-
-
-Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword'); //Trang quên mật khẩu
-
-Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
-
 
 //filterProduct
 Route::get('product', [FilterProductController::class, 'index'])->name('product');

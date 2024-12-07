@@ -8,7 +8,7 @@
                 <div class="custom-container container">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <h4>Login</h4>
+                            <h4>Đăng nhập</h4>
                         </div>
                         {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
@@ -30,8 +30,8 @@
                     <div class="col-xxl-4 col-lg-6 mx-auto">
                         <div class="log-in-box">
                             <div class="log-in-title">
-                                <h4>Welcome To BeesFashion</h4>
-                                <p>Register Your Account</p>
+                                <h4>Chào mừng đến với BeesFashion</h4>
+                                <p>Đăng nhập tài khoản của bạn</p>
                             </div>
                             {{-- Form login --}}
                             <div class="login-box">
@@ -40,9 +40,9 @@
                                     <div class="col-12">
                                         <div class="form-floating">
                                             <input class="form-control @error('login') is-invalid @enderror"
-                                                id="floatingInputValue" type="text" name="login" placeholder="Enter Your Email Or Username"
+                                                id="floatingInputValue" type="text" name="login" placeholder="Nhập Email hoặc Username của bạn."
                                                  value="{{ old('login') }}">
-                                            <label for="floatingInputValue">Enter Your Email Or Username</label>
+                                            <label for="floatingInputValue">Nhập Email hoặc Username của bạn.</label>
                                             {{-- Hiển thị thông báo lỗi --}}
                                             @error('login')
                                                 <span class="invalid-feedback" role="alert">
@@ -55,8 +55,8 @@
                                         <div class="form-floating">
                                             <input class="form-control @error('password') is-invalid @enderror"
                                                 id="floatingInputValue1" type="password" name="password"
-                                                placeholder="Password">
-                                            <label for="floatingInputValue1">Enter Your Password</label>
+                                                placeholder="Nhập mật khẩu của bạn.">
+                                            <label for="floatingInputValue1">Nhập mật khẩu của bạn.</label>
                                             {{-- Hiển thị thông báo lỗi --}}
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -70,14 +70,14 @@
                                             <div>
                                                 <input class="custom-checkbox me-2" id="category1" type="checkbox"
                                                     name="remember">
-                                                <label for="category1">Remember me</label>
+                                                <label for="category1">Ghi nhớ mật khẩu</label>
                                             </div>
-                                            <a href="{{route('fotgot-pasword')}}">Forgot Password?</a>
+                                            <a href="{{route('fotgot-pasword')}}">Quên mật khẩu?</a>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <button class="btn login btn_black sm" type="submit" data-bs-dismiss="modal"
-                                            aria-label="Close">Log In</button>
+                                            aria-label="Close">Đăng Nhập</button>
                                     </div>
                                 </form>
                             </div>
@@ -95,7 +95,7 @@
                             </div>
                             <div class="other-log-in"></div>
                             <div class="sign-up-box">
-                                <p>Don't have an account?</p><a href="{{ route('register') }}">Register</a>
+                                <p>Bạn chưa có tài khoản?</p><a href="{{ route('register') }}">Đăng Ký</a>
                             </div>
                         </div>
                     </div>

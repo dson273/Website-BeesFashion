@@ -64,8 +64,11 @@
         <!-- End Banner -->
 
         <!-- Category -->
-        <section class="section-t-space">
+        <section class="section-t-space mb-4">
             <div class="container-fluid fashion-images">
+                <div class="title">
+                    <h3 class="fw-semibold">MUA GÌ HÔM NAY?</h3>
+                </div>
                 <div class="swiper fashion-images-slide">
                     <div class="swiper-wrapper ratio_square-2">
                         @foreach ($categoryLimit as $item)
@@ -85,7 +88,7 @@
         <section class="section-t-space">
             <div class="custom-container container product-contain">
                 <div class="title">
-                    <h3>ƯU ĐÃI BLACK FRIDAY ĐỘC QUYỀN ONLINE</h3>
+                    <h3 class="fw-semibold">MÃ ƯU ĐÃI ĐỘC QUYỀN ONLINE</h3>
                 </div>
 
                 <div class="swiper vouchers-slide">
@@ -151,7 +154,7 @@
         <section class="section-t-space">
             <div class="custom-container container product-contain">
                 <div class="title">
-                    <h3>Fashikart specials</h3>
+                    <h3 class="fw-semibold">HOT BEESFASHION</h3>
 
                 </div>
                 <div class="row trending-products">
@@ -159,21 +162,21 @@
                         <div class="theme-tab-1">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#seller-products"
-                                        role="tab" aria-controls="seller-products" aria-selected="false">
-                                        <h6>Sản phẩm mới nhất</h6>
+                                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#features-products"
+                                        role="tab" aria-controls="features-products" aria-selected="true">
+                                        <h6 class="fw-semibold">BÁN CHẠY NHẤT</h6>
                                     </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-products"
-                                        role="tab" aria-controls="features-products" aria-selected="true">
-                                        <h6>Sản phẩm bán chạy</h6>
+                                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#seller-products"
+                                        role="tab" aria-controls="seller-products" aria-selected="false">
+                                        <h6 class="fw-semibold">HÀNG MỚI VỀ</h6>
                                     </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#latest-products"
                                         role="tab" aria-controls="latest-products" aria-selected="false">
-                                        <h6>Sản phẩm có lượt xem nhiều</h6>
+                                        <h6 class="fw-semibold">LƯỢT XEM NHIỀU</h6>
                                     </a>
                                 </li>
                             </ul>
@@ -181,8 +184,117 @@
                         <div class="row">
                             <div class="col-12 ratio_square">
                                 <div class="tab-content">
+                                    <!-- Sản phẩm bán chạy -->
+                                    <div class="tab-pane fade show active" id="features-products" role="tabpanel" tabindex="0">
+                                        <div class="row g-4">
+                                            @foreach ($products as $product)
+                                                <div class="col-xxl-3 col-md-4 col-6 position-relative">
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="info-ticket seller">Best Seller</div>
+                                                            <div class="product-image">
+                                                                <a class="pro-first"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                                        alt="product"></a>
+                                                                <a class="pro-sec"
+                                                                    href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <img class="bg-img"
+                                                                        src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
+                                                                        alt="product"></a>
+                                                            </div>
+                                                            <div class="cart-info-icon">
+                                                                <a class="wishlist-icon" data-id="{{ $product->id }}"
+                                                                    href="javascript:void(0)" tabindex="0">
+                                                                    <i class="iconsax" data-icon="heart"
+                                                                        aria-hidden="true" data-bs-toggle="tooltip"
+                                                                        data-bs-title="Add to Wishlistt"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
+                                                                    <i class="iconsax" data-icon="eye" aria-hidden="true"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-title="Quick View"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="add-button">
+                                                                <a href="javascript:void(0)"
+                                                                    class="add-to-cart quick-view-btn"
+                                                                    data-product-id="{{ $product->id }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                    tabindex="0">
+                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="color-box">
+                                                                @php
+                                                                    $displayedColors = [];
+                                                                @endphp
+                                                                <ul class="color-variant"
+                                                                    style="list-style-type: none; padding: 0; ">
+                                                                    @foreach ($product->product_variants as $variant)
+                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
+                                                                            @php
+                                                                                $attributeValue =
+                                                                                    $variantAttributeValue->attribute_value;
+                                                                            @endphp
+
+                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
+                                                                                <li class="color-item"
+                                                                                    data-color="{{ $attributeValue->id }}"
+                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #ccc;">
+                                                                                    <a href="javascript:void(0)"
+                                                                                        class="color-picker"></a>
+                                                                                </li>
+                                                                                @php
+                                                                                    $displayedColors[] =
+                                                                                        $attributeValue->value;
+                                                                                @endphp
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                                <span> @php
+                                                                    $rating = $product->rating['average_rating'];
+                                                                    $fullStars = floor($rating);
+                                                                    $hasHalfStar = $rating - $fullStars >= 0.5;
+                                                                    $emptyStars =
+                                                                        5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                                                                @endphp
+                                                                    {{ number_format($rating, 1) }}
+                                                                    <i class="fa-solid fa-star"></i></span>
+                                                            </div>
+                                                            @if ($product)
+                                                                <a href="{{ route('product.detail', $product->SKU) }}">
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
+                                                                    </h6>
+                                                                </a>
+                                                            @else
+                                                                <a href="#">
+                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
+                                                                    </h6>
+                                                                </a>
+                                                            @endif
+                                                            <p>
+                                                                {{ $product->priceRange }}
+                                                            </p>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                     <!-- Sản phẩm mới -->
-                                    <div class="tab-pane fade show active" id="seller-products" role="tabpanel"
+                                    <div class="tab-pane fade" id="seller-products" role="tabpanel"
                                         tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($newProducts as $product)
@@ -272,115 +384,6 @@
                                                             </div>
 
 
-                                                            @if ($product)
-                                                                <a href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
-                                                                    </h6>
-                                                                </a>
-                                                            @else
-                                                                <a href="#">
-                                                                    <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
-                                                                    </h6>
-                                                                </a>
-                                                            @endif
-                                                            <p>
-                                                                {{ $product->priceRange }}
-                                                            </p>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    <!-- Sản phẩm bán chạy -->
-                                    <div class="tab-pane fade" id="features-products" role="tabpanel" tabindex="0">
-                                        <div class="row g-4">
-                                            @foreach ($products as $product)
-                                                <div class="col-xxl-3 col-md-4 col-6 position-relative">
-                                                    <div class="product-box">
-                                                        <div class="img-wrapper">
-                                                            <div class="info-ticket seller">Best Seller</div>
-                                                            <div class="product-image">
-                                                                <a class="pro-first"
-                                                                    href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img"
-                                                                        src="{{ asset('uploads/products/images/' . $product->active_image) }}"
-                                                                        alt="product"></a>
-                                                                <a class="pro-sec"
-                                                                    href="{{ route('product.detail', $product->SKU) }}">
-                                                                    <img class="bg-img"
-                                                                        src="{{ asset('uploads/products/images/' . $product->inactive_image) }}"
-                                                                        alt="product"></a>
-                                                            </div>
-                                                            <div class="cart-info-icon">
-                                                                <a class="wishlist-icon" data-id="{{ $product->id }}"
-                                                                    href="javascript:void(0)" tabindex="0">
-                                                                    <i class="iconsax" data-icon="heart"
-                                                                        aria-hidden="true" data-bs-toggle="tooltip"
-                                                                        data-bs-title="Add to Wishlistt"></i>
-                                                                </a>
-                                                                <a href="javascript:void(0)"
-                                                                    class="add-to-cart quick-view-btn"
-                                                                    data-product-id="{{ $product->id }}"
-                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                    tabindex="0">
-                                                                    <i class="iconsax" data-icon="eye" aria-hidden="true"
-                                                                        data-bs-toggle="tooltip"
-                                                                        data-bs-title="Quick View"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-detail">
-                                                            <div class="add-button">
-                                                                <a href="javascript:void(0)"
-                                                                    class="add-to-cart quick-view-btn"
-                                                                    data-product-id="{{ $product->id }}"
-                                                                    data-bs-toggle="modal" data-bs-target="#quick-view"
-                                                                    tabindex="0">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </a>
-                                                            </div>
-
-                                                            <div class="color-box">
-                                                                @php
-                                                                    $displayedColors = [];
-                                                                @endphp
-                                                                <ul class="color-variant"
-                                                                    style="list-style-type: none; padding: 0; ">
-                                                                    @foreach ($product->product_variants as $variant)
-                                                                        @foreach ($variant->variant_attribute_values as $variantAttributeValue)
-                                                                            @php
-                                                                                $attributeValue =
-                                                                                    $variantAttributeValue->attribute_value;
-                                                                            @endphp
-
-                                                                            @if (!empty($attributeValue->value) && !in_array($attributeValue->value, $displayedColors))
-                                                                                <li class="color-item"
-                                                                                    data-color="{{ $attributeValue->id }}"
-                                                                                    style="background-color:{{ $attributeValue->value }}; border: 1px solid #ccc;">
-                                                                                    <a href="javascript:void(0)"
-                                                                                        class="color-picker"></a>
-                                                                                </li>
-                                                                                @php
-                                                                                    $displayedColors[] =
-                                                                                        $attributeValue->value;
-                                                                                @endphp
-                                                                            @endif
-                                                                        @endforeach
-                                                                    @endforeach
-                                                                </ul>
-                                                                <span> @php
-                                                                    $rating = $product->rating['average_rating'];
-                                                                    $fullStars = floor($rating);
-                                                                    $hasHalfStar = $rating - $fullStars >= 0.5;
-                                                                    $emptyStars =
-                                                                        5 - $fullStars - ($hasHalfStar ? 1 : 0);
-                                                                @endphp
-                                                                    {{ number_format($rating, 1) }}
-                                                                    <i class="fa-solid fa-star"></i></span>
-                                                            </div>
                                                             @if ($product)
                                                                 <a href="{{ route('product.detail', $product->SKU) }}">
                                                                     <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}
@@ -527,7 +530,7 @@
         <!-- End Fashikart specials -->
 
         <!-- Product advertising -->
-        <section class="section-t-space">
+        <section class="section-t-space mb-4">
             <div class="custom-container container best-seller">
                 <div class="row">
                     <div class="col-xl-9">
@@ -541,17 +544,17 @@
                             </div>
                             <div class="col-md-7 ratio_landscape">
                                 <div class="style-content">
-                                    <h6>Wear Your Style</h6>
-                                    <h2>Create New Version Of Yourself</h2>
-                                    <h4>About Online Fashion Purchases</h4>
+                                    <h6>PHONG CÁCH CỦA BẠN</h6>
+                                    <h2>Tạo phiên bản mới của bạn</h2>
+                                    <h4>Về mua hàng thời trang trực tuyến</h4>
                                     <div class="link-hover-anim underline">
                                         <a class="btn btn_underline link-strong link-strong-unhovered"
                                             href="{{ route('product') }}">
-                                            Shop Collection
+                                            BỘ SƯU TẬP
                                         </a>
                                         <a class="btn btn_underline link-strong link-strong-hovered"
                                             href="{{ route('product') }}">
-                                            Shop Collection
+                                            BỘ SƯU TẬP
                                         </a>
                                     </div>
                                 </div>
@@ -564,26 +567,26 @@
                     <div class="col-3 d-none d-xl-block">
                         <div class="best-seller-box">
                             <div class="offer-banner">
-                                <a href="{{ route('product') }}">
-                                    <h2>Extra 15% OFF</h2>
+                                <a href="#">
+                                    <h2>Extra 10% OFF</h2>
                                     <span> </span>
-                                    <p>Designer Brand Season off In-store & Online for a limited Time</p>
+                                    <p>Giảm giá của thương hiệu thiết kế trực tuyến trong thời gian có hạn</p>
                                     <div class="btn">
-                                        <h6>Use Code: <span>KHUTRD***</span></h6>
+                                        <h6>Sử dụng mã: <span>KHUTRD***</span></h6>
                                     </div>
                                 </a>
                             </div>
                             <div class="best-seller-content">
-                                <h3>Make You Look Comfortable and Luxurious</h3>
+                                <h3>Làm cho bạn trông thoải mái và sang trọng</h3>
                                 <span> </span>
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered"
                                         href="{{ route('product') }}">
-                                        Shop Collection
+                                        BỘ SƯU TẬP
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered"
                                         href="{{ route('product') }}">
-                                        Shop Collection
+                                        BỘ SƯU TẬP
                                     </a>
                                 </div>
                             </div>
@@ -595,10 +598,10 @@
         <!-- End Product advertising -->
 
         <!-- Trending Products -->
-        <section class="section-t-space">
+        <section class="section-t-space mb-4">
             <div class="custom-container container product-contain">
                 <div class="title">
-                    <h3>Trending Products</h3>
+                    <h3 class="fw-semibold">SẢN PHẨM THỊNH HÀNH</h3>
                 </div>
                 <div class="swiper fashikart-slide">
                     <div class="swiper-wrapper trending-products ratio_square">
@@ -699,7 +702,7 @@
         <section class="section-t-space">
             <div class="custom-container container">
                 <div class="title">
-                    <h3>Latest Blog</h3>
+                    <h3 class="fw-semibold">BÀI VIẾT MỚI</h3>
                     <svg>
                         <use href="{{ asset('assets/images/user/icon-sprite.svg#zigzag') }}"></use>
                     </svg>
@@ -712,19 +715,16 @@
                                             src="{{ asset('assets/images/blog/layout-4/1.jpg') }}" alt=""></a>
                                 </div>
                                 <div class="blog-txt">
-                                    <p>By: Admin / 26th aug 2020</p>
+                                    <p>Bởi: Admin / 26th aug 2020</p>
                                     <a href="#">
-                                        <h5>Many desktop publishing pack-ages abd page editor...</h5>
+                                        <h5>Nhiều gói xuất bản trên máy tính để bàn và trình chỉnh sửa trang...</h5>
                                     </a>
                                     <div class="link-hover-anim underline">
                                         <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
-                                            Read
-                                            More
-
+                                            Đọc Thêm
                                         </a>
                                         <a class="btn btn_underline link-strong link-strong-hovered" href="#">
-                                            Read More
-
+                                            Đọc Thêm
                                         </a>
                                     </div>
                                 </div>
@@ -734,19 +734,16 @@
                             <div class="blog-box ratio_55"><a class="blog-img" href="#"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/2.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
-                                <p>By: Admin / 26th aug 2020</p>
+                                <p>Bởi: Admin / 26th aug 2020</p>
                                 <a href="#">
-                                    <h5>Many desktop publishing pack-ages abd page editor...</h5>
+                                    <h5>Nhiều gói xuất bản trên máy tính để bàn và trình chỉnh sửa trang...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
-                                        Read More
-
+                                        Đọc Thêm
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
-                                        Read
-                                        More
-
+                                        Đọc Thêm
                                     </a>
                                 </div>
                             </div>
@@ -755,19 +752,16 @@
                             <div class="blog-box ratio3_2"><a class="blog-img" href="#"><img class="bg-img"
                                         src="{{ asset('assets/images/blog/layout-4/3.jpg') }}" alt=""></a></div>
                             <div class="blog-txt">
-                                <p>By: Admin / 26th aug 2020</p>
+                                <p>Bởi: Admin / 26th aug 2020</p>
                                 <a href="#">
-                                    <h5>Many desktop publishing pack-ages abd page editor...</h5>
+                                    <h5>Nhiều gói xuất bản trên máy tính để bàn và trình chỉnh sửa trang...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
-                                        Read More
-
+                                        Đọc Thêm
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
-                                        Read
-                                        More
-
+                                        Đọc Thêm
                                     </a>
                                 </div>
                             </div>
@@ -778,17 +772,14 @@
                             <div class="blog-txt">
                                 <p>By: Admin / 26th aug 2020</p>
                                 <a href="#">
-                                    <h5>Many desktop publishing pack-ages abd page editor...</h5>
+                                    <h5>Nhiều gói xuất bản trên máy tính để bàn và trình chỉnh sửa trang...</h5>
                                 </a>
                                 <div class="link-hover-anim underline">
                                     <a class="btn btn_underline link-strong link-strong-unhovered" href="#">
-                                        Read More
-
+                                        Đọc Thêm
                                     </a>
                                     <a class="btn btn_underline link-strong link-strong-hovered" href="#">
-                                        Read
-                                        More
-
+                                        Đọc Thêm
                                     </a>
                                 </div>
                             </div>
@@ -856,7 +847,7 @@
 
                                     </div>
                                     <div class="product-description">
-                                        <h6 class="product-title">Quantity</h6>
+                                        <h6 class="product-title">Số lượng</h6>
                                         <div class="quantity">
                                             <button class="reduce" type="button"><i
                                                     class="fa-solid fa-minus"></i></button>
@@ -868,9 +859,9 @@
                                     </div>
 
                                     <div class="product-buttons">
-                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
+                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Thêm vào giỏ hàng</a>
                                         <a class="btn btn-solid" href="#"
-                                            id="btn_view_detail_of_quick_view_product">View detail</a>
+                                            id="btn_view_detail_of_quick_view_product">Xem chi tiết</a>
                                     </div>
                                 </div>
                             </div>
