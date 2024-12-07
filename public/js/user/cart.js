@@ -26,6 +26,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Lắng nghe sự thay đổi số lượng của sản phẩm
     $(document).on('input', '.quantity-input', function () {
+        var input = $(this);
+        let currentVal = parseInt($(this).val());
+        var stock_of_variant = parseFloat(input.closest('.quantity').find('.quantity-input').attr('data-stock'));
+        console.log(stock_of_variant);
+        
+        if (isNaN(currentVal) || currentVal < 1) {
+            $(this).val(1);
+            notification('warning', 'Số lượng không hợp lệ!', 'Cảnh báo!');
+        } else if (currentVal > stock_of_variant) {
+            $(this).val(stock_of_variant);
+            notification('warning', `Không được vượt quá số lượng tối đa trong kho: ${stock_of_variant}`, 'Cảnh báo!');
+        } else if (currentVal > 20) {
+            $(this).val(20);
+            notification('warning', 'Mỗi lần chỉ được phép mua tối đa 20 sản phẩm!', 'Cảnh báo!');
+        }
         updateTotalPrice();
     });
 
@@ -185,6 +200,27 @@ async function updateQuantity(product_variant_id, cart_id, new_quantity, change_
         });
     })
 }
+
+// $('.quantity').on('input', function () {
+//     let currentVal = parseInt($(this).val());
+//     let maxStock = getStockVariantClicked;
+//     if (!variantSelected) {
+//         $('.blink-border').addClass('animation-blink-border');
+//         setTimeout(() => {
+//             $('.blink-border').removeClass('animation-blink-border');
+//         }, 950);
+//         notification('warning', 'Vui lòng chọn sản phẩm!', 'Cảnh báo!');
+//         $(this).val(1);
+//     } else {
+//         if (isNaN(currentVal) || currentVal < 1) {
+//             $(this).val(1);
+//             notification('warning', 'Số lượng không hợp lệ!', 'Cảnh báo!');
+//         } else if (currentVal > maxStock) {
+//             $(this).val(maxStock);
+//             notification('warning', `Không được vượt quá số lượng tối đa trong kho: ${maxStock}`, 'Cảnh báo!');
+//         } 
+//     }
+// });
 
 // ----------------v1----------------
 // $(document).ready(function () {
@@ -1587,63 +1623,165 @@ $(document).ready(function () {
     //     }
     // });
 
+    //------------------------v2----------------------------
+    // $(document).on('click', '.btn-variant, .attribute_item', function () {
+    //     const selectedValueId = $(this).data('value-id');
+    //     const selectedAttributeId = $(this).data('attribute-id');
+    
+    //     // Nếu người dùng nhấn vào giá trị đã được chọn thì không làm gì
+    //     if ($(this).hasClass('selected')) {
+    //         return;
+    //     }
+    
+    //     // Cập nhật trạng thái selected
+    //     $(this).closest('ul').find('.btn-variant, .attribute_item').removeClass('selected');
+    //     $(this).addClass('selected');
+    
+    //     // Cập nhật thuộc tính đã chọn
+    //     selectedAttributes[selectedAttributeId] = selectedValueId;
+    
+    //     // Cập nhật trạng thái disabled cho tất cả các thuộc tính
+    //     Object.keys(selectedAttributes).forEach(attrId => {
+    //         $('.btn-variant, .attribute_item').each(function () {
+    //             const currentValueId = $(this).data('value-id');
+    //             const currentAttributeId = $(this).data('attribute-id');
+    
+    //             // Nếu giá trị hiện tại là của thuộc tính đang chọn, không thay đổi trạng thái
+    //             if (currentAttributeId === selectedAttributeId) {
+    //                 return;
+    //             }
+    
+    //             // Kiểm tra xem giá trị hiện tại có hợp lệ không
+    //             const isAvailable = variants.some(variant => {
+    //                 if (variant.stock <= 0) return false;
+    
+    //                 // Kiểm tra nếu giá trị hiện tại nằm trong biến thể
+    //                 const hasCurrentValue = variant.attributes.some(attr =>
+    //                     attr.attribute_id === currentAttributeId && attr.value_id === currentValueId
+    //                 );
+    
+    //                 // Kiểm tra nếu tất cả các giá trị đã chọn (trừ giá trị hiện tại) khớp với biến thể
+    //                 const matchesSelected = Object.keys(selectedAttributes).every(attrIdCheck => {
+    //                     if (parseInt(attrIdCheck) === currentAttributeId) return true; // Bỏ qua giá trị hiện tại
+    //                     return variant.attributes.some(attr =>
+    //                         attr.attribute_id === parseInt(attrIdCheck) &&
+    //                         attr.value_id === selectedAttributes[attrIdCheck]
+    //                     );
+    //                 });
+    
+    //                 return hasCurrentValue && matchesSelected;
+    //             });
+    
+    //             // Cập nhật trạng thái disabled
+    //             if (!isAvailable) {
+    //                 $(this).addClass('disabled');
+    //                 // Nếu giá trị hiện tại đang được chọn, xóa trạng thái selected
+    //                 if ($(this).hasClass('selected')) {
+    //                     $(this).removeClass('selected');
+    //                     delete selectedAttributes[currentAttributeId];
+    //                 }
+    //             } else {
+    //                 $(this).removeClass('disabled');
+    //             }
+    //         });
+    //     });
+    
+    //     // Kiểm tra biến thể hiện tại với các giá trị đã chọn
+    //     const matchingVariants = variants.filter(variant => {
+    //         const matchesSelected = Object.keys(selectedAttributes).every(attrId => {
+    //             return variant.attributes.some(attr =>
+    //                 attr.attribute_id === parseInt(attrId) &&
+    //                 attr.value_id === selectedAttributes[attrId]
+    //             );
+    //         });
+    
+    //         return matchesSelected && variant.stock > 0;
+    //     });
+    
+    //     selectedVariantId = matchingVariants.length > 0 ? matchingVariants[0].product_variant_id : null;
+    
+    //     // Cập nhật trạng thái nút confirmButton
+    //     if (selectedVariantId) {
+    //         console.log("Biến thể đã chọn:", selectedVariantId);
+    //         // $('#confirmButton').removeClass('disabled').removeAttr('disabled');
+    //     } else {
+    //         console.log("Không tìm thấy biến thể phù hợp hoặc biến thể không còn hàng.");
+    //         // $('#confirmButton').addClass('disabled').attr('disabled', true);
+    //     }
+    // });
+    
 
     $(document).on('click', '.btn-variant, .attribute_item', function () {
         const selectedValueId = $(this).data('value-id');
         const selectedAttributeId = $(this).data('attribute-id');
-
+    
         // Nếu người dùng nhấn vào giá trị đã được chọn thì không làm gì
         if ($(this).hasClass('selected')) {
             return;
         }
-
+    
         // Cập nhật trạng thái selected
         $(this).closest('ul').find('.btn-variant, .attribute_item').removeClass('selected');
         $(this).addClass('selected');
-
-        // Cập nhật thuộc tính đã chọn
-        selectedAttributes[selectedAttributeId] = selectedValueId;
-
-        // Duyệt qua tất cả các giá trị của thuộc tính khác
+    
+        // Cập nhật thuộc tính đã chọn từ giao diện
+        updateSelectedAttributes();
+    
+        // Cập nhật trạng thái disabled cho các thuộc tính khác
+        updateDisabledState();
+    
+        // Kiểm tra biến thể hiện tại và cập nhật trạng thái nút xác nhận
+        updateSelectedVariant();
+    });
+    
+    // Hàm cập nhật selectedAttributes từ các phần tử đang được chọn trên giao diện
+    function updateSelectedAttributes() {
+        selectedAttributes = {};
+        $('.btn-variant.selected, .attribute_item.selected').each(function () {
+            const attrId = $(this).data('attribute-id');
+            const valueId = $(this).data('value-id');
+            selectedAttributes[attrId] = valueId;
+        });
+    }
+    
+    // Hàm cập nhật trạng thái disabled cho các giá trị không hợp lệ
+    function updateDisabledState() {
         $('.btn-variant, .attribute_item').each(function () {
             const currentValueId = $(this).data('value-id');
             const currentAttributeId = $(this).data('attribute-id');
-
-            // Không kiểm tra giá trị đã được chọn
-            if (selectedAttributes[currentAttributeId] === currentValueId) {
-                return;
-            }
-
-            // Kiểm tra xem giá trị hiện tại có tồn tại trong biến thể hợp lệ
+    
             const isAvailable = variants.some(variant => {
-                // Biến thể phải còn hàng
                 if (variant.stock <= 0) return false;
-
-                // Kiểm tra nếu giá trị hiện tại nằm trong biến thể
+    
                 const hasCurrentValue = variant.attributes.some(attr =>
                     attr.attribute_id === currentAttributeId && attr.value_id === currentValueId
                 );
-
-                // Kiểm tra nếu tất cả các giá trị đã chọn khớp với biến thể
-                const matchesSelected = Object.keys(selectedAttributes).every(attrId => {
+    
+                const matchesSelected = Object.keys(selectedAttributes).every(attrIdCheck => {
+                    if (parseInt(attrIdCheck) === currentAttributeId) return true;
                     return variant.attributes.some(attr =>
-                        attr.attribute_id === parseInt(attrId) &&
-                        attr.value_id === selectedAttributes[attrId]
+                        attr.attribute_id === parseInt(attrIdCheck) &&
+                        attr.value_id === selectedAttributes[attrIdCheck]
                     );
                 });
-
+    
                 return hasCurrentValue && matchesSelected;
             });
-
-            // Cập nhật trạng thái disabled
-            if (isAvailable) {
-                $(this).removeClass('disabled');
-            } else {
+    
+            if (!isAvailable) {
                 $(this).addClass('disabled');
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    delete selectedAttributes[currentAttributeId];
+                }
+            } else {
+                $(this).removeClass('disabled');
             }
         });
-
-        // Kiểm tra biến thể hiện tại
+    }
+    
+    // Hàm kiểm tra biến thể hiện tại và cập nhật trạng thái của confirmButton
+    function updateSelectedVariant() {
         const matchingVariants = variants.filter(variant => {
             const matchesSelected = Object.keys(selectedAttributes).every(attrId => {
                 return variant.attributes.some(attr =>
@@ -1651,85 +1789,19 @@ $(document).ready(function () {
                     attr.value_id === selectedAttributes[attrId]
                 );
             });
-
+    
             return matchesSelected && variant.stock > 0;
         });
-
+    
         selectedVariantId = matchingVariants.length > 0 ? matchingVariants[0].product_variant_id : null;
-
+    
         if (selectedVariantId) {
             console.log("Biến thể đã chọn:", selectedVariantId);
         } else {
             console.log("Không tìm thấy biến thể phù hợp hoặc biến thể không còn hàng.");
         }
-    });
-
-
-
-
-
-
-
-
-
-
-
-    function updateDisabledVariants() {
-        const selectedAttributes = {}; // Thuộc tính đã được chọn
-
-        // Thu thập tất cả các thuộc tính đã chọn
-        $('.btn-variant.selected, .attribute_item.selected').each(function () {
-            const attributeId = $(this).data('attribute-id');
-            const valueId = $(this).data('value-id');
-            selectedAttributes[attributeId] = valueId;
-        });
-
-        // Duyệt qua tất cả các giá trị thuộc tính
-        $('.btn-variant, .attribute_item').each(function () {
-            const currentValueId = $(this).data('value-id');
-            const currentAttributeId = $(this).data('attribute-id');
-            let isAvailable = false; // Mặc định là không khả dụng
-
-            // Duyệt qua tất cả các biến thể để kiểm tra xem biến thể có tồn tại với các thuộc tính đã chọn và còn hàng hay không
-            variants.forEach(function (variant) {
-                // Kiểm tra nếu biến thể có stock > 0 và có giá trị thuộc tính đang xét
-
-                // console.log( variant.stock);
-
-                if (variant.stock > 0) {
-                    // Kiểm tra xem biến thể có chứa giá trị thuộc tính này và khớp với các thuộc tính đã chọn không
-                    let isMatch = true;
-                    for (const attrId in selectedAttributes) {
-                        const selectedValueId = selectedAttributes[attrId];
-                        if (!variant.attributes.some(attr =>
-                            attr.attribute_id === parseInt(attrId) &&
-                            attr.value_id === selectedValueId
-                        )) {
-                            isMatch = false; // Nếu không khớp thì dừng
-                            break;
-                        }
-                    }
-
-                    // Nếu tất cả các thuộc tính đã chọn khớp và biến thể có tồn kho, giá trị này có sẵn
-                    if (isMatch && variant.attributes.some(attr =>
-                        attr.attribute_id === currentAttributeId &&
-                        attr.value_id === currentValueId
-                    )) {
-                        isAvailable = true; // Biến thể hợp lệ
-                    }
-                }
-            });
-
-            // Cập nhật trạng thái disabled
-            // if (isAvailable) {
-            //     $(this).removeClass('disabled'); // Có thể chọn
-            // } else {
-            //     $(this).addClass('disabled'); // Không thể chọn
-            // }
-        });
     }
-
-
+    
 
 
     // Khi nhấn nút "Xác nhận"
