@@ -703,12 +703,12 @@
                                                             <div class="voucher-item-detail">
                                                                 <div class="voucher-item-des">
                                                                     <strong>
-                                                                        <span style="font-size: 12pt;">
+                                                                       
                                                                             <span
-                                                                                style="color: #ba372a;">{{ $item->voucher->name }}
+                                                                                style="color: #ba372a; font-size: 15pt;">{{ $item->voucher->name }}
                                                                             </span>
                                                                             <br>
-                                                                        </span>
+                                                                        
                                                                     </strong>
                                                                 </div>
                                                                 <div class="voucher-item-des"><span
@@ -747,7 +747,7 @@
                                                             <div class="voucher-item-action">
                                                                 <div class="action"><a href="{{ route('product') }}">
                                                                         <span class="copy-content"
-                                                                            style="cursor: pointer; font-size: 10pt; color:#ba372a">Dùng
+                                                                            style="cursor: pointer; font-weight: bold; font-size: 10pt; color:#ba372a">Dùng
                                                                             ngay</span></a>
                                                                 </div>
                                                             </div>

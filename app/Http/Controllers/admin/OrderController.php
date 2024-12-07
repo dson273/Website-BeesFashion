@@ -36,9 +36,12 @@ class OrderController extends Controller
                 $query->where('status_id', 1); // Lọc đơn hàng có trạng thái "Processing"
             })
             ->whereDoesntHave('status_orders', function ($query) {
-                $query->where('status_id', [5, 2]); 
+                $query->whereIn('status_id', [5, 2]); // Loại bỏ nếu có trạng thái "Cancelled" hoặc "Pending"
             })
-            ->orderBy('created_at', 'desc') // Sắp xếp theo thời gian tạo đơn hàng
+            ->whereDoesntHave('status_orders', function ($query) {
+                $query->where('status_id', 1)->whereIn('status_id', [2, 5]); // Loại bỏ trạng thái lặp xung đột
+            })
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $processingCount = $processingOrders->count();
@@ -47,7 +50,7 @@ class OrderController extends Controller
             $query->where('status_id', 3);  // Trạng thái 'Shipping'
         })
             ->whereDoesntHave('status_orders', function ($query) {
-                $query->whereIn('status_id', [4, 6, 5]); 
+                $query->whereIn('status_id', [4, 6, 5]);
             })
             ->orderBy('created_at', 'desc')
             ->get();
@@ -146,7 +149,7 @@ class OrderController extends Controller
         $order = Order::with('order_details.product_variant')->findOrFail($id);
         if ($order) {
 
-        $existingCancelledStatus = $order->status_orders()->where('status_id', 5)->first();
+            $existingCancelledStatus = $order->status_orders()->where('status_id', 5)->first();
 
             // Thêm bản ghi trạng thái "Shipping" (status_id = 3)
             if (!$existingCancelledStatus) {
@@ -173,10 +176,10 @@ class OrderController extends Controller
             // Đảm bảo đơn hàng không còn trong tab Pending (tự động loại bỏ trạng thái Pending)
             // Bạn có thể thêm logic tại đây nếu cần (ví dụ: thông báo cho admin)
 
-            return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đã được hủy bởi khách hàng');
+            return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được hủy thành công');
         }
 
-        return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được hủy');
+        return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đã bị hủy');
     }
     /**
      * Display the specified resource.
