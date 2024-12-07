@@ -1,9 +1,9 @@
 <!-- Start header -->
 <header>
-    <div class="top_header">
+    {{-- <div class="top_header">
         <p>Free Coupe Code: Summer Sale On Selected items Use:<span>NEW 26</span><a href="{{ route('product') }}">SHOP
                 NOW</a></p>
-    </div>
+    </div> --}}
     <div class="box-header">
         <div class="custom-container container header-1">
             <div class="row">
@@ -50,13 +50,13 @@
                                 <li class="mobile-back" id="mobile-back">Back<i class="fa-solid fa-angle-right ps-2"
                                         aria-hidden="true"></i></li>
                                 <li>
-                                    <a class="nav-link" href="{{ route('/') }}">Home</a>
+                                    <a class="nav-link fw-semibold" href="{{ route('/') }}">Trang chủ</a>
                                 </li>
                                 {{-- <li>
                                     <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
                                     </li> --}}
                                 <li>
-                                    <a class="nav-link" href="{{ route('product') }}">Shop</a>
+                                    <a class="nav-link fw-semibold" href="{{ route('product') }}">Bộ sưu tập</a>
                                     <ul class="nav-submenu">
                                         @foreach ($categoryLimit as $parentCategory)
                                             <li class="has-submenu">
@@ -72,13 +72,13 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="{{ route('blog') }}">Blog</a>
+                                    <a class="nav-link fw-semibold" href="{{ route('blog') }}">Bài viết</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="{{ route('about-us') }}">About Us</a>
+                                    <a class="nav-link fw-semibold" href="{{ route('about-us') }}">Về chúng tôi</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="{{ route('contact') }}">Contact</a>
+                                    <a class="nav-link fw-semibold" href="{{ route('contact') }}">Liên hệ</a>
                                 </li>
 
                                 {{-- <li>
@@ -135,12 +135,12 @@
                                             <h2>CHÀO MỪNG QUÝ KHÁCH<br>ĐẾN VỚI BEESFASHION</h2>
                                             <p class="title-login">Đăng nhập tài khoản của Quý Khách</p>
                                             @if (Route::has('login'))
-                                                <a class="btn-login" href="{{ route('login') }}">LOGIN</a>
+                                                <a class="btn-login" href="{{ route('login') }}">ĐĂNG NHẬP</a>
                                             @endif
                                             <hr>
                                             <h5 class="title-register mt-3">ĐĂNG KÍ THÀNH VIÊN</h5>
                                             @if (Route::has('register'))
-                                                <a class="btn-register" href="{{ route('register') }}">REGISTER</a>
+                                                <a class="btn-register" href="{{ route('register') }}">ĐĂNG KÝ</a>
                                             @endif
                                         </div>
                                     </li>
@@ -158,12 +158,12 @@
                                             <div class="user-actions">
                                                 <div>
                                                     <a class="act-dash" href="{{ route('dashboard') }}"><i
-                                                            class="fa-solid fa-house-user"></i>Dashboard</a>
+                                                            class="fa-solid fa-house-user"></i>Tài khoản của tôi</a>
                                                 </div>
                                                 <div>
                                                     <a class="act-logout" href="#" data-bs-toggle="modal"
                                                         data-bs-target="#modal-logout" title="Logout" tabindex="0">
-                                                        <i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                                                        <i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
                                                 </div>
                                             </div>
                                         </div>

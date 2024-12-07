@@ -1,5 +1,5 @@
 import './bootstrap';
-console.log(`user_id: ${userId}`);
+// console.log(`user_id: ${userId}`);
 window.Echo.private(`user.${userId}`)
     .listen('UserBannedEvent', (e) => {
         console.log('Event received:', e);
