@@ -8,7 +8,7 @@
                 <div class="custom-container container">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <h4>Product Detail</h4>
+                            <h5>{{ $product->name }}</h5>
                         </div>
                         {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
@@ -93,31 +93,28 @@
                                             @endfor
                                         </li>
                                         <li>
-                                            <h5 class="number-star">({{ number_format($reviewData['stats']['average_rating'], 1) }}) Rating</h5>
+                                            <h5 class="number-star">({{ number_format($reviewData['stats']['average_rating'], 1) }})</h5>
                                         </li>
-                                        <li>
-                                            <h5 class="total-rating">
-                                                <span style="font-weight: 800">{{ $reviewData['stats']['total_reviews'] }}</span> đánh giá
-                                            </h5>
-                                        </li>
+                                        @if (!empty($reviewData['stats']['total_reviews']))
+                                            <li>
+                                                <h5 class="total-rating">
+                                                    <span style="font-weight: 800">{{ $reviewData['stats']['total_reviews'] }}</span> đánh giá
+                                                </h5>
+                                            </li>
+                                        @endif
                                         <li>
                                             <h5 class="total-rating">
                                                 <span style="font-weight: 800">{{ $reviewData['stats']['total_sold'] }}</span> đã bán
                                             </h5>
                                         </li>
                                     </ul>
-                                    <p>Dressing up. People just don't do it anymore. We have to change that. Give me time
-                                        and I'll give you a revolution.</p>
                                 </div>
                                 <div class="buy-box border-buttom mb-3">
                                     <ul>
-                                        <li> <span data-bs-toggle="modal" data-bs-target="#size-chart" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Size
-                                                Chart</span>
+                                        <li> <span data-bs-toggle="modal" data-bs-target="#size-chart" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Biểu đồ kích cỡ</span>
                                         </li>
-                                        <li> <span data-bs-toggle="modal" data-bs-target="#terms-conditions-modal" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="truck"></i>Delivery
-                                                & return</span></li>
-                                        <li> <span data-bs-toggle="modal" data-bs-target="#question-box" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="question-message"></i>Ask
-                                                a Question</span></li>
+                                        <li> <span data-bs-toggle="modal" data-bs-target="#terms-conditions-modal" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="truck"></i>Giao hàng & hoàn trả</span></li>
+                                        {{-- <li> <span data-bs-toggle="modal" data-bs-target="#question-box" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="question-message"></i>Đặt câu hỏi</span></li> --}}
                                     </ul>
                                 </div>
                                 <input type="number" class="total_attributes" value="{{ count($array_attributes) }}" hidden>
@@ -181,12 +178,12 @@
                                     </div>
                                     <!-- Nút "Chọn lại" -->
                                     <div class="reset-button">
-                                        <button class="reset_selected">Reset</button>
+                                        <button class="reset_selected">Chọn lại</button>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center w-100 add-cart-box mb-3 gap-2">
-                                    <a class="btn btn_black sm add-to-cart" href="#" title="add product">Add To Cart</a>
-                                    <a class="btn btn_outline sm" href="#" id="buy_now">Buy Now</a>
+                                    <a class="btn btn_black sm add-to-cart" href="#" title="add product">Thêm vào giỏ hàng</a>
+                                    <a class="btn btn_outline sm" href="#" id="buy_now">Mua ngay</a>
                                     <!-- Xử lý đặt hàng -->
                                     <form id="form_post_data_to_check_out" action="{{ route('checkout') }}" method="POST">
                                         @csrf
@@ -198,40 +195,40 @@
                                 </div>
                                 <div class="buy-box">
                                     <ul>
-                                        <li> <a href="#"> <i class="fa-regular fa-heart me-2"></i>Add To Wishlist</a></li>
-                                        <li> <a href="#"> <i class="fa-solid fa-arrows-rotate me-2"></i>Add To Compare</a></li>
+                                        <li> <a href="#"> <i class="fa-regular fa-heart me-2"></i>Thêm vào yêu thích</a></li>
+                                        <li> <a href="#"> <i class="fa-solid fa-arrows-rotate me-2"></i>So sánh</a></li>
                                         <li> <a href="#" data-bs-toggle="modal" data-bs-target="#social-box" title="Quick View" tabindex="0"><i
-                                                    class="fa-solid fa-share-nodes me-2"></i>Share</a></li>
+                                                    class="fa-solid fa-share-nodes me-2"></i>Chia sẻ</a></li>
                                     </ul>
                                 </div>
                                 <div class="sale-box">
                                     <div class="d-flex align-items-center gap-2"><img src="{{ asset('assets/images/gif/timer.gif') }}" alt="">
-                                        <p>Limited Time Left! Hurry, Sale Ending!</p>
+                                        <p>Thời gian còn lại có hạn! Nhanh tay mua ngay.</p>
                                     </div>
                                     <div class="countdown">
                                         <ul class="clockdiv1">
                                             <li>
                                                 <div class="timer">
                                                     <div class="days"></div>
-                                                </div><span class="title">Days</span>
+                                                </div><span class="title">Ngày</span>
                                             </li>
                                             <li>:</li>
                                             <li>
                                                 <div class="timer">
                                                     <div class="hours"></div>
-                                                </div><span class="title">Hours</span>
+                                                </div><span class="title">Giờ</span>
                                             </li>
                                             <li>:</li>
                                             <li>
                                                 <div class="timer">
                                                     <div class="minutes"></div>
-                                                </div><span class="title">Min</span>
+                                                </div><span class="title">Phút</span>
                                             </li>
                                             <li>:</li>
                                             <li>
                                                 <div class="timer">
                                                     <div class="seconds"></div>
-                                                </div><span class="title">Sec</span>
+                                                </div><span class="title">Giây</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -266,7 +263,7 @@
                                     </ul>
                                 </div> --}}
                                 <div class="share-option">
-                                    <h5>Secure Checkout </h5><img class="img-fluid" src="{{ asset('assets/images/other-img/secure_payments.png') }}" alt="">
+                                    <h5>Thanh toán an toàn </h5><img class="img-fluid" src="{{ asset('assets/images/other-img/secure_payments.png') }}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -278,7 +275,7 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                                            aria-controls="collapseOne"><span>Description</span></button>
+                                            aria-controls="collapseOne"><span>Mô tả sản phẩm</span></button>
                                     </h2>
                                     <div class="accordion-collapse collapse show" id="collapseOne" data-bs-parent="#accordionDescription">
                                         <div class="accordion-body">
@@ -290,7 +287,7 @@
                                 </div>
                                 <div class="accordion-item">
                                     <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                                            aria-expanded="false" aria-controls="collapseTwo"><span>Instructions for use and storage</span></button></h2>
+                                            aria-expanded="false" aria-controls="collapseTwo"><span>Hướng dẫn sử dụng và bảo quản</span></button></h2>
                                     <div class="accordion-collapse collapse" id="collapseTwo" data-bs-parent="#accordionDescription">
                                         <div class="accordion-body">
                                             <p>- KHÔNG giặt máy. KHÔNG sử dụng nước giặt chứa chất tẩy.</p>
@@ -310,7 +307,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="accordion-item">
+                                {{-- <div class="accordion-item">
                                     <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
                                             aria-expanded="false" aria-controls="collapseThree"><span>Q & A</span></button></h2>
                                     <div class="accordion-collapse collapse" id="collapseThree" data-bs-parent="#accordionDescription">
@@ -378,11 +375,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 {{-- Đánh giá --}}
                                 <div class="accordion-item">
                                     <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
-                                            aria-expanded="false" aria-controls="collapseThree"><span>Reviews</span></button></h2>
+                                            aria-expanded="false" aria-controls="collapseThree"><span>Đánh giá</span></button></h2>
                                     <div class="accordion-collapse collapse" id="collapseFour" data-bs-parent="#accordionDescription">
                                         <div class="accordion-body mb-4">
                                             @if ($reviewData['stats']['total_reviews'] > 0)
@@ -395,7 +392,7 @@
                                                                         <h5>{{ number_format($reviewData['stats']['average_rating'], 1) }}</h5>
                                                                     </div>
                                                                     <div>
-                                                                        <h6>Average Ratings</h6>
+                                                                        <h6>Đánh giá trung bình</h6>
                                                                         <ul class="rating mb p-0">
                                                                             @php
                                                                                 $fullStars = floor($reviewData['stats']['average_rating']);
@@ -417,7 +414,7 @@
                                                                 <ul class="rating-progess">
                                                                     @foreach ($reviewData['stats']['star_percentages'] as $star => $percentage)
                                                                         <li>
-                                                                            <p>{{ $star }} Star</p>
+                                                                            <p>{{ $star }} Sao</p>
                                                                             <div class="progress" role="progressbar" aria-label="Rating progress" aria-valuenow="{{ $percentage }}"
                                                                                 aria-valuemin="0" aria-valuemax="100">
                                                                                 <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: {{ $percentage }}%"></div>
@@ -431,7 +428,7 @@
                                                     </div>
                                                     <div class="col-lg-8">
                                                         <div class="comments-box">
-                                                            <h5>Comments Rating ({{ $reviewData['stats']['active_review_count'] }})</h5>
+                                                            <h5>Đánh giá người dùng ({{ $reviewData['stats']['active_review_count'] }})</h5>
                                                             <ul class="theme-scrollbar">
                                                                 @foreach ($reviewData['reviews'] as $review)
                                                                     <li class="w-100">
@@ -666,28 +663,15 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Delivery & return</h4><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h4>Giao hàng & trả hàng</h4><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
                         <ul class="returns-policy">
-                            <li> <b>Return Policy: </b>Most unopened items can be returned within 30 days of delivery
-                                for a
-                                full refund. We cover return shipping costs for our errors (e.g., incorrect or defective
-                                items). Refunds typically process within four weeks, although often faster. This
-                                includes
-                                return transit time (5-10 business days), processing upon receipt (3-5 business days),
-                                and
-                                your bank's refund processing (5-10 business days). To return an item, log in, access
-                                your
-                                order, and click "Return Item(s)." We'll email you once your return is processed.</li>
-                            <li>– Free shipping on orders over $100.</li>
-                            <li>– Returns accepted within 10 days of receipt or tracking number for unworn items. </li>
-                            <li>– Items must be in their original packaging and</li>
-                            <li>– Standard shipping charges apply otherwise. Please refer to our delivery Terms &
-                                Conditions
-                                for further details.</li>
-                            <li>– Returned products must be in original packaging, safety wrapped, undamaged, and
-                                unworn.
+                            <li> <b>Chính sách trả hàng: </b>Hầu hết các mặt hàng chưa mở có thể được trả lại trong vòng 30 ngày kể từ ngày giao hàng để được hoàn lại toàn bộ tiền. Chúng tôi chi trả chi phí vận chuyển trả lại cho các lỗi của chúng tôi (ví dụ: các mặt hàng không đúng hoặc bị lỗi). Việc hoàn tiền thường được xử lý trong vòng bốn tuần, mặc dù thường nhanh hơn. Điều này bao gồm thời gian vận chuyển trả lại (5-10 ngày làm việc), xử lý khi nhận được (3-5 ngày làm việc) và xử lý hoàn tiền của ngân hàng của bạn (5-10 ngày làm việc). Để trả lại một mặt hàng, hãy đăng nhập, truy cập đơn hàng của bạn và nhấp vào "Trả lại mặt hàng". Chúng tôi sẽ gửi email cho bạn sau khi việc trả lại của bạn được xử lý.</li>
+                            <li>– Miễn phí vận chuyển cho các đơn hàng trên 200.000đ.</li>
+                            <li>– Chấp nhận trả lại trong vòng 10 ngày kể từ ngày nhận đối với các mặt hàng chưa mặc. </li>
+                            <li>– Vui lòng tham khảo Điều khoản & Điều kiện giao hàng của chúng tôi để biết thêm chi tiết.</li>
+                            <li>– Các sản phẩm trả lại phải còn trong bao bì gốc, được bọc an toàn, không bị hư hỏng và chưa mặc.
                             </li>
                         </ul>
                     </div>

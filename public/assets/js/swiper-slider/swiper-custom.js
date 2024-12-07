@@ -241,6 +241,39 @@ var swiper = new Swiper(".fashion-images-slide", {
   },
 });
 
+
+var swiper = new Swiper(".vouchers-slide", {
+  spaceBetween: 10,
+  slidesPerView: 3,
+  loop: true,
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+  breakpoints: {
+
+    0: {
+      slidesPerView: 1,
+    },
+    490: {
+      slidesPerView: 1,
+    },
+    992: {
+      slidesPerView: 3,
+    },
+    1200: {
+      slidesPerView: 3,
+    },
+    1400: {
+      slidesPerView: 3,
+    },
+  },
+});
+
 var swiper = new Swiper(".collection-images-slide", {
   spaceBetween: 20,
   slidesPerView: 8,

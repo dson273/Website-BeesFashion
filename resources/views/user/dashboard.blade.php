@@ -8,7 +8,7 @@
             <div class="custom-container container">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4>Dashboard</h4>
+                        <h4>Bảng Điều Khiển</h4>
                     </div>
                     {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
@@ -38,7 +38,7 @@
                                     <h4>{{ Auth::user()->username }}</h4>
                                     <h6>{{ Auth::user()->email }}</h6>
                                     <span data-bs-toggle="modal" data-bs-target="#edit-profile" title="Edit Profile"
-                                        tabindex="0">Edit Profile</span>
+                                        tabindex="0">Sửa hồ sơ</span>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                                     data-bs-target="#dashboard" role="tab" aria-controls="dashboard"
                                     aria-selected="true">
                                     <i class="iconsax" data-icon="home-1"></i>
-                                    Dashboard
+                                    Tài Khoản Của Tôi
                                 </button>
                             </li>
                             <li>
@@ -57,14 +57,14 @@
                                     data-bs-target="#notifications" role="tab" aria-controls="notifications"
                                     aria-selected="false">
                                     <i class="iconsax" data-icon="lamp-2"></i>
-                                    Notifications
+                                    Thông Báo
                                 </button>
                             </li>
                             <li>
                                 <button class="nav-link" id="order-tab" data-bs-toggle="pill" data-bs-target="#order"
                                     role="tab" aria-controls="order" aria-selected="false" data-clicked="false">
                                     <i class="iconsax" data-icon="receipt-square"></i>
-                                    Order
+                                    Đơn Hàng
                                 </button>
                             </li>
                             <li>
@@ -72,7 +72,7 @@
                                     data-bs-target="#wishlist" role="tab" aria-controls="wishlist"
                                     aria-selected="false">
                                     <i class="iconsax" data-icon="heart"></i>
-                                    Wishlist
+                                    Yêu Thích
                                 </button>
                             </li>
                             <li>
@@ -90,9 +90,7 @@
                                             </g>
                                         </g>
                                     </svg>
-
-
-                                    Vouchers
+                                    Phiếu Giảm Giá
                                 </button>
                             </li>
                             <li>
@@ -100,7 +98,7 @@
                                     data-bs-target="#address" role="tab" aria-controls="address"
                                     aria-selected="false">
                                     <i class="iconsax" data-icon="cue-cards"></i>
-                                    Address
+                                    Địa Chỉ
                                 </button>
                             </li>
                             <li>
@@ -108,7 +106,7 @@
                                     data-bs-target="#privacy" role="tab" aria-controls="privacy"
                                     aria-selected="false">
                                     <i class="iconsax" data-icon="security-user"></i>
-                                    Privacy
+                                    Riêng Tư
                                 </button>
                             </li>
                         </ul>
@@ -123,20 +121,16 @@
                                     <div class="dashboard-items"> </div>
                                     <div class="sidebar-title">
                                         <div class="loader-line"></div>
-                                        <h4>My Dashboard</h4>
+                                        <h4>Tài khoản của tôi</h4>
                                     </div>
                                     <div class="dashboard-user-name">
-                                        <h6>Hello,
+                                        <h6>Xin chào,
                                             <b>{{ Auth::user()->full_name ? Auth::user()->full_name : Auth::user()->username }}</b>
                                         </h6>
-                                        <p>My dashboard provides a comprehensive overview of key metrics and data
-                                            relevant to your operations. It offers real-time insights into
-                                            performance,
-                                            including sales figures, website traffic, customer engagement, and more.
-                                            With customizable widgets and intuitive visualizations, it facilitates
-                                            quick
-                                            decision-making and allows you to track progress towards your goals
-                                            effectively.</p>
+                                        <p>Chào mừng bạn đến với BeesFashion, shop thời trang mang đến phong cách và sự tự tin cho bạn!
+                                            Bảng điều khiển của chúng tôi cung cấp thông tin chi tiết về các số liệu quan trọng,
+                                            giúp bạn dễ dàng quản lý tài khoản, theo dõi đơn hàng, và khám phá các ưu đãi hấp dẫn.
+                                            Chúc bạn có trải nghiệm mua sắm thật tuyệt vời cùng BeesFashion!</p>
                                     </div>
                                     <div class="total-box">
                                         <div class="row gy-4">
@@ -145,7 +139,7 @@
                                                     <div class="wallet-point"><img src="{{asset('assets/images/user/wallet.svg')}}" alt=""><img class="img-1"
                                                             src="{{asset('assets/images/user/wallet.svg')}}" alt=""></div>
                                                     <div class="totle-detail">
-                                                        <h6>Spent</h6>
+                                                        <h6>Chi Tiêu</h6>
                                                         <h4>{{number_format(Auth::user()->getTotalSpent(),0,',','.')}}đ</h4>
                                                     </div>
                                                 </div>
@@ -155,7 +149,7 @@
                                                     <div class="wallet-point"><img src="{{asset('assets/images/user/coin.svg')}}" alt=""><img class="img-1"
                                                             src="{{asset('assets/images/user/coin.svg')}}" alt=""></div>
                                                     <div class="totle-detail">
-                                                        <h6>Rank</h6>
+                                                        <h6>Hạng</h6>
                                                         <h4>{{Auth::user()->getMembershipRank()}}</h4>
                                                     </div>
                                                 </div>
@@ -165,7 +159,7 @@
                                                     <div class="wallet-point"><img src="{{asset('assets/images/user/order.svg')}}" alt=""><img class="img-1"
                                                             src="{{asset('assets/images/user/order.svg')}}" alt=""></div>
                                                     <div class="totle-detail">
-                                                        <h6>Total Orders</h6>
+                                                        <h6>Số Lượng Đơn Hàng</h6>
                                                         <h4>{{Auth::user()->getTotalOrders()}}</h4>
                                                     </div>
                                                 </div>
@@ -177,36 +171,36 @@
                                             <div class="col-xl-7">
                                                 <div class="sidebar-title">
                                                     <div class="loader-line"></div>
-                                                    <h5>Profile Information</h5>
+                                                    <h5>Thông Tin Hồ Sơ</h5>
                                                 </div>
                                                 <ul class="profile-information">
                                                     <li>
-                                                        <h6>Username:</h6>
+                                                        <h6>Tên đăng nhập:</h6>
                                                         <p>{{ Auth::user()->username }}
                                                         </p>
                                                     </li>
                                                     <li>
-                                                        <h6>Name:</h6>
+                                                        <h6>Họ tên:</h6>
                                                         <p>{{ Auth::user()->full_name ? Auth::user()->full_name : 'Not updated yet' }}
                                                         </p>
                                                     </li>
                                                     <li>
-                                                        <h6>Phone:</h6>
+                                                        <h6>Số điện thoại:</h6>
                                                         <p>{{ Auth::user()->phone ? Auth::user()->phone : 'Not updated yet' }}
                                                         </p>
                                                     </li>
                                                 </ul>
                                                 <div class="sidebar-title">
                                                     <div class="loader-line"></div>
-                                                    <h5>Login Details</h5>
+                                                    <h5>Chi Tiết Đăng Nhập</h5>
                                                 </div>
                                                 <ul class="profile-information mb-0">
                                                     <li>
-                                                        <h6>Email :</h6>
+                                                        <h6>Email:</h6>
                                                         <p>{{ Auth::user()->email }}</p>
                                                     </li>
                                                     <li>
-                                                        <h6>Password :</h6>
+                                                        <h6>Mật khẩu:</h6>
                                                         <p>●●●●●●<span data-bs-toggle="modal" data-bs-target="#edit-password" title="Edit Password" tabindex="0">Edit</span></p>
                                                     </li>
                                                 </ul>
@@ -228,7 +222,7 @@
                                 <div class="notification-tab">
                                     <div class="sidebar-title">
                                         <div class="loader-line"></div>
-                                        <h4>Notifications</h4>
+                                        <h4>Thông báo</h4>
                                     </div>
                                     <ul class="notification-body">
                                         <li>
@@ -266,7 +260,7 @@
                                 <div class="wishlist-box ratio1_3">
                                     <div class="sidebar-title">
                                         <div class="loader-line"></div>
-                                        <h4>Wishlist</h4>
+                                        <h4>Sản Phẩm Yêu Thích</h4>
                                     </div>
                                     <div class="row-cols-md-3 row-cols-2 grid-section view-option row gy-4 g-xl-4">
                                         <div class="col">
@@ -364,13 +358,13 @@
                                 <div class="order">
                                     <div class="sidebar-title">
                                         <div class="loader-line"></div>
-                                        <h4>My Orders History</h4>
+                                        <h4>Lịch Sử Đơn Hàng Của Tôi</h4>
                                     </div>
                                     <div class="dashboard-left-sidebar position-sticky top-0 z-3">
                                         <ul class="nav flex-row nav-pills order-dashboard-tab justify-content-between" role="tablist" aria-orientation="vertical">
                                             <li>
                                                 <button class="order_menu nav-link active" id="order_all_tab" data-id="0" data-bs-toggle="pill" role="tab" aria-controls="order-all" aria-selected="true" onclick="change_order_status(0)">
-                                                    All
+                                                    Tất cả
                                                 </button>
                                             </li>
                                             <li>
@@ -685,13 +679,13 @@
                         </div>
                         {{-- End modal --}}
 
-                        {{-- Save card --}}
+                        {{-- My vouchers --}}
                         <div class="tab-pane fade" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
                             <div class="dashboard-right-box">
                                 <div class="saved-card">
                                     <div class="sidebar-title">
                                         <div class="loader-line"></div>
-                                        <h4>My vouchers</h4>
+                                        <h4>Mã Giảm Giá Của Tôi</h4>
                                     </div>
                                     <div class="block-vouchers">
                                         <div class="voucher-items-lists">
@@ -703,12 +697,12 @@
                                                             <div class="voucher-item-detail">
                                                                 <div class="voucher-item-des">
                                                                     <strong>
-                                                                        <span style="font-size: 12pt;">
+
                                                                             <span
-                                                                                style="color: #ba372a;">{{ $item->voucher->name }}
+                                                                                style="color: #ba372a; font-size: 15pt;">{{ $item->voucher->name }}
                                                                             </span>
                                                                             <br>
-                                                                        </span>
+
                                                                     </strong>
                                                                 </div>
                                                                 <div class="voucher-item-des"><span
@@ -747,7 +741,7 @@
                                                             <div class="voucher-item-action">
                                                                 <div class="action"><a href="{{ route('product') }}">
                                                                         <span class="copy-content"
-                                                                            style="cursor: pointer; font-size: 10pt; color:#ba372a">Dùng
+                                                                            style="cursor: pointer; font-weight: bold; font-size: 10pt; color:#ba372a">Dùng
                                                                             ngay</span></a>
                                                                 </div>
                                                             </div>
@@ -769,7 +763,7 @@
                                 <div class="address-tab">
                                     <div class="sidebar-title">
                                         <div class="loader-line"></div>
-                                        <h4>My Address Details</h4>
+                                        <h4>Chi Tiết Địa Chỉ Của Tôi</h4>
                                     </div>
                                     <div class="row gy-3">
                                         @if (Auth::user()->user_shipping_addresses && Auth::user()->user_shipping_addresses->count() > 0)
@@ -794,12 +788,12 @@
                                                             </span>
                                                             <span class="address">
                                                                 <span class="address-home d-flex">
-                                                                    <span class="address-tag-office">Address:</span>
+                                                                    <span class="address-tag-office">Địa chỉ:</span>
                                                                     <p>{{ $shippingAddress->address }}</p>
                                                                 </span>
                                                             </span>
                                                             <span class="address"><span class="address-home d-flex">
-                                                                    <span class="address-tag-office">Phone:</span>
+                                                                    <span class="address-tag-office">Số điện thoại:</span>
                                                                     <p>{{ $shippingAddress->phone_number }}</p>
                                                                 </span>
                                                             </span>
@@ -809,18 +803,18 @@
                                                                 <a class="btn_edit_address" href="#" data-id="{{ $shippingAddress->id }}"
                                                                     data-full_name="{{ $shippingAddress->full_name }}" data-phone_number="{{ $shippingAddress->phone_number }}"
                                                                     data-address="{{ $shippingAddress->address }}" data-bs-toggle="modal" data-bs-target="#edit-address"
-                                                                    title="Edit Address" tabindex="0">Edit</a>
+                                                                    title="Edit Address" tabindex="0">Chỉnh sửa</a>
                                                             </div>
                                                             <div>
                                                                 <a class="btn_delete_address" href="#" title="Delete" tabindex="0"
-                                                                    onclick="event.preventDefault();document.getElementById('delete-address-form').action='{{ route('dashboard.deleteAddress', $shippingAddress->id) }}';$('#delete-address-modal').modal('show');">Delete</a>
+                                                                    onclick="event.preventDefault();document.getElementById('delete-address-form').action='{{ route('dashboard.deleteAddress', $shippingAddress->id) }}';$('#delete-address-modal').modal('show');">Xoá</a>
                                                             </div>
                                                             <div>
                                                                 @if (!$shippingAddress->is_active)
                                                                 <span class="">
                                                                     <form action="{{ route('dashboard.addresses.set.default', $shippingAddress->id) }}" method="POST" class="d-inline">
                                                                         @csrf
-                                                                        <button type="submit" class="custom-set-address">Set as default</button>
+                                                                        <button type="submit" class="custom-set-address">Đặt làm mặc định</button>
                                                                     </form>
                                                                 </span>
                                                                 @endif
@@ -846,8 +840,7 @@
                                         </div>
                                         @endif
                                     </div>
-                                    <button class="btn add-address" data-bs-toggle="modal" data-bs-target="#add-address" title="Quick View" tabindex="0">+ Add
-                                        Address</button>
+                                    <button class="btn add-address" data-bs-toggle="modal" data-bs-target="#add-address" title="Quick View" tabindex="0">+ Thêm mới</button>
                                 </div>
                             </div>
                         </div>
@@ -941,7 +934,7 @@
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Edit Profile</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
+                    <h4>Chỉnh sửa hồ sơ</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-0">
@@ -951,10 +944,10 @@
                         @method('PUT')
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Full Name</label>
+                                <label class="form-label">Họ tên</label>
                                 <input id="full_name" class="form-control @error('full_name') is-invalid @enderror"
                                     type="text" name="full_name" value="{{ Auth::user()->full_name }}"
-                                    placeholder="Enter your full name.">
+                                    placeholder="Nhập tên đầy đủ của bạn.">
                                 <div class="invalid-feedback">
                                     @error('full_name')
                                     {{ $message }}
@@ -964,10 +957,10 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Phone</label>
+                                <label class="form-label">Số điện thoại</label>
                                 <input id="phone" class="form-control @error('phone') is-invalid @enderror"
                                     type="number" name="phone" value="{{ Auth::user()->phone }}"
-                                    placeholder="Enter your phone.">
+                                    placeholder="Nhập số điện thoại của bạn.">
                                 <div class="invalid-feedback">
                                     @error('phone')
                                     {{ $message }}
@@ -977,10 +970,10 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Email address</label>
+                                <label class="form-label">Email</label>
                                 <input id="email" class="form-control @error('email') is-invalid @enderror"
                                     type="email" name="email" value="{{ Auth::user()->email }}"
-                                    placeholder="Enter your email.">
+                                    placeholder="Nhập email của bạn.">
                                 <div class="invalid-feedback">
                                     @error('email')
                                     {{ $message }}
@@ -988,7 +981,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-submit" type="submit">Submit</button>
+                        <button class="btn btn-submit" type="submit">Xác nhận</button>
                     </form>
                 </div>
             </div>
@@ -1002,7 +995,7 @@
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Edit Address</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
+                    <h4>Chỉnh sửa địa chỉ</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-0">
@@ -1011,9 +1004,9 @@
                         @method('PUT')
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Full Name</label>
+                                <label class="form-label">Họ tên</label>
                                 <input class="form-control @error('full_name') is-invalid @enderror" type="text"
-                                    name="full_name" placeholder="Enter your name." value="{{ old('full_name') }}">
+                                    name="full_name" placeholder="Nhập tên đầy đủ của bạn." value="{{ old('full_name') }}">
                                 @error('full_name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -1021,9 +1014,9 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Phone</label>
+                                <label class="form-label">Số điện thoại</label>
                                 <input class="form-control @error('phone_number') is-invalid @enderror" type="number"
-                                    name="phone_number" placeholder="Enter your Number."
+                                    name="phone_number" placeholder="Nhập số điện thoại của bạn."
                                     value="{{ old('phone_number') }}">
                                 @error('phone_number')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -1032,15 +1025,15 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Address</label>
+                                <label class="form-label">Địa chỉ</label>
                                 <textarea class="form-control @error('address') is-invalid @enderror" cols="30" rows="2"
-                                    placeholder="Write your Address..." name="address" value="{{ old('address') }}"></textarea>
+                                    placeholder="Nhập địa chỉ của bạn..." name="address" value="{{ old('address') }}"></textarea>
                                 @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-                        <button class="btn btn-submit" type="submit">Submit</button>
+                        <button class="btn btn-submit" type="submit">Xác nhận</button>
                     </form>
                 </div>
             </div>
@@ -1054,7 +1047,7 @@
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Add Address</h4>
+                    <h4>Thêm mới địa chỉ</h4>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-0">
@@ -1063,9 +1056,9 @@
                         @csrf
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Full Name</label>
+                                <label class="form-label">Họ tên</label>
                                 <input class="form-control @error('full_name') is-invalid @enderror" type="text"
-                                    name="full_name" placeholder="Enter your name." value="{{ old('full_name') }}">
+                                    name="full_name" placeholder="Nhập tên đầy đủ của bạn." value="{{ old('full_name') }}">
                                 @error('full_name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -1073,9 +1066,9 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Phone</label>
+                                <label class="form-label">Số điện thoại</label>
                                 <input class="form-control @error('phone_number') is-invalid @enderror" type="number"
-                                    name="phone_number" placeholder="Enter your Number."
+                                    name="phone_number" placeholder="Nhập số điện thoại của bạn."
                                     value="{{ old('phone_number') }}">
                                 @error('phone_number')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -1084,15 +1077,15 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label">Address</label>
+                                <label class="form-label">Địa chỉ</label>
                                 <textarea class="form-control @error('address') is-invalid @enderror" cols="30" rows="2"
-                                    placeholder="Write your Address..." name="address">{{ old('address') }}</textarea>
+                                    placeholder="Nhập địa chỉ của bạn..." name="address">{{ old('address') }}</textarea>
                                 @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-                        <button class="btn btn-submit" type="submit">Submit</button>
+                        <button class="btn btn-submit" type="submit">Xác nhận</button>
                     </form>
                 </div>
             </div>
@@ -1106,7 +1099,7 @@
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Edit Password</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
+                    <h4>Chỉnh sửa mật khẩu</h4><button class="btn-close" type="button" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-0">
@@ -1116,10 +1109,10 @@
                         <div class="row g-3">
                             <div class="col-12">
                                 <div class="from-group">
-                                    <label class="form-label">Current Password</label>
+                                    <label class="form-label">Mật khẩu hiện tại</label>
                                     <input class="form-control @error('current_password') is-invalid @enderror"
                                         type="password" name="current_password" id="current_password"
-                                        placeholder="Enter Current Password.">
+                                        placeholder="Nhập mật khẩu hiện tại của bạn.">
                                     @error('current_password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -1128,10 +1121,10 @@
                             </div>
                             <div class="col-12">
                                 <div class="from-group">
-                                    <label class="form-label">New password</label>
+                                    <label class="form-label">Mật khẩu mới</label>
                                     <input class="form-control @error('new_password') is-invalid @enderror"
                                         type="password" id="new_password" name="new_password"
-                                        placeholder="Enter New password.">
+                                        placeholder="Nhập mật khẩu mới.">
                                     @error('new_password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -1139,16 +1132,16 @@
                             </div>
                             <div class="col-12">
                                 <div class="from-group">
-                                    <label class="form-label">Confirm password</label>
+                                    <label class="form-label">Xác nhận mật khẩu</label>
                                     <input
                                         class="form-control @error('new_password_confirmation') is-invalid @enderror"
                                         type="password" name="new_password_confirmation"
-                                        id="new_password_confirmation" placeholder="Enter Confirm password">
+                                        id="new_password_confirmation" placeholder="Nhập xác nhận mật khẩu.">
                                     @error('new_password_confirmation')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div><button class="btn btn-submit" type="submit">Submit</button>
+                            </div><button class="btn btn-submit" type="submit">Xác nhận</button>
                         </div>
                     </form>
                 </div>
@@ -1164,15 +1157,15 @@
             <div class="modal-content">
                 <div class="modal-body"> <img class="img-fluid" src="../assets/images/gif/question.gif"
                         alt="">
-                    <h4>Are You Sure ?</h4>
-                    <p>The address will be permanently deleted. Are you sure you want to do this?</p>
+                    <h4>Bạn có chắc không?</h4>
+                    <p>Địa chỉ sẽ bị xóa vĩnh viễn. Bạn có chắc chắn muốn làm điều này không?</p>
                     <div class="submit-button">
-                        <button class="btn" type="submit" data-bs-dismiss="modal" aria-label="Close">No</button>
+                        <button class="btn" type="submit" data-bs-dismiss="modal" aria-label="Close">Không</button>
                         <form id="delete-address-form" action="" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button class="btn" type="submit" data-bs-dismiss="modal"
-                                aria-label="Close">Yes</button>
+                                aria-label="Close">Có</button>
                         </form>
                     </div>
                 </div>

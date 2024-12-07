@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Models\User_ban;
 use Illuminate\Http\Request;
+use App\Events\UserBannedEvent;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class CustomerController extends Controller
@@ -131,14 +133,15 @@ class CustomerController extends Controller
             ->where('is_active', 1)
             ->update(['is_active' => 0]);
 
-        User_ban::create([
+            $banRecord = User_ban::create([
             'user_id' => $customer->id,
             'reason' => $request->input('reason'),
             'status' => 0, // 0: inactive (bị khóa)
             'is_active' => 1, //Hiệu lực
         ]);
-
         $customer->update(['status' => 'banned']);
+
+        broadcast(new UserBannedEvent($customer->id, $request->input('reason')))->toOthers();
         return redirect()->route('admin.customers.index')->with('statusSuccess', 'Khóa khách hàng thành công.');
     }
 

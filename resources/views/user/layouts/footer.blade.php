@@ -124,10 +124,10 @@
             <div class="modal-content">
                 <div class="modal-body"> <img class="img-fluid" src="{{ asset('assets/images/gif/question.gif') }}"
                         alt="">
-                    <h4>Confirmation</h4>
-                    <p>Are you sure you want to log out?</p>
+                    <h4>Xác nhận</h4>
+                    <p>Bạn có chắc muốn đăng xuất không?</p>
                     <div class="submit-button"> <button class="btn" type="submit" data-bs-dismiss="modal"
-                            aria-label="Close">No</button><a class="btn" href="{{ route('logout') }}">Yes</a>
+                            aria-label="Close">Không</button><a class="btn" href="{{ route('logout') }}">Có</a>
                     </div>
                 </div>
             </div>
@@ -264,7 +264,7 @@
 
                 <h4>You Might Like</h4>
                 <div class="row gy-4 ratio_square-2 preemptive-search">
-                    @foreach ($products as $product)
+                    @foreach ($search as $product)
                         <div class="col-xl-2 col-sm-4 col-6">
                             <div class="product-box-6">
                                 <div class="img-wrapper">
@@ -280,7 +280,7 @@
                                             <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
                                         </a>
                                         <p>{{ $product->priceRange }}</p>
-                                        
+
                                     </div>
                                 </div>
                             </div>
