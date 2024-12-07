@@ -796,7 +796,7 @@
                 <div class="swiper logo-slider">
                     <div class="swiper-wrapper">
                         @foreach ($brands as $item)
-                            <div class="swiper-slide"><a href="#"> <img style="width: 125px; height:125px;"
+                            <div class="swiper-slide"><a href="{{ route('product', ['brand' => $item->id]) }}"> <img style="width: 125px; height:125px;"
                                         src="{{ asset('uploads/brands/images/' . $item->image) }}" alt="logo"></a>
                             </div>
                         @endforeach
