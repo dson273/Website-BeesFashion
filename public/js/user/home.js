@@ -365,7 +365,7 @@ function addToCart(variantId, quantity) {
             }
         },
         error: function (xhr, status, error) {
-            notification('warning', 'Vui lòng đăng nhập để thêm vào giỏ hàng.');
+            notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!');
         }
     });
 }
@@ -425,8 +425,9 @@ $(document).ready(function () {
                     notification('warning', response.message, 'Thông báo!');
                 }
             },
-            error: function () {
-                alert('Không thể lưu voucher. Vui lòng thử lại.');
+            error: function (xhr, status, error) {
+                notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!', 'Warning!', '2000');
+    
             }
         });
     });
@@ -455,12 +456,8 @@ $('.wishlist-icon').click(function () {
                 notification('warning', response.message, 'Thông báo!');
             }
         },
-        error: function (xhr) {
-            Toastify({
-                text: "Sản phẩm không tồn tại",
-                duration: 2500,
-                close: true,
-            }).showToast();
+        error: function (xhr, status, error) {
+            notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!', 'Warning!', '2000');
         }
     });
 });
