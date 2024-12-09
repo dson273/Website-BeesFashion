@@ -24,9 +24,9 @@
             <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Lịch sử nhập hàng</h6>
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    <i
-                        class="fas fa-plus"></i> Nhập hàng
+                <button type="button" class="btn btn-success text-white text-decoration-none btn-sm" data-toggle="modal"
+                    data-target="#exampleModal">
+                    <i class="fas fa-plus"></i> Nhập hàng
                 </button>
             </div>
 
@@ -39,25 +39,30 @@
                                 <th>Sản phẩm</th>
                                 <th>Đơn giá</th>
                                 <th>Số lượng</th>
+                                <th>Tồn kho</th>
                                 <th>Người nhập</th>
                                 <th>Thời gian nhập</th>
                             </tr>
                         </thead>
-                       
+
                         <tbody>
                             @foreach ($importHistories as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td><img src="{{ $item->product_variant->image ? asset('uploads/products/images/' .  $item->product_variant->image) : asset('assets/images/icons/noimage.png') }}" 
-                                        width="50px" >
-                                        {{ $item->product_variant->SKU }} / {{ $item->product_variant->product->name }}
+                                    <td><img src="{{ $item->product_variant->image ? asset('uploads/products/images/' . $item->product_variant->image) : asset('assets/images/icons/noimage.png') }}"
+                                            width="50px">
+                                        {{ $item->product_variant->name }} / {{ $item->product_variant->product->name }}
                                     </td>
                                     <td>{{ number_format($item->import_price, 0, ',', '.') }}</td>
                                     <td>{{ number_format($item->quantity, 0, ',', '.') }}</td>
-                                    <td>
-                                        {{ $item->user ? $item->user->username : 'Fail' }}
+                                    <td @if ($item->product_variant->stock < 20) class="text-danger font-weight-bold" @endif>
+                                        {{ number_format($item->product_variant->stock, 0, ',', '.') }}
                                     </td>
-                                    <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l, d F Y, H:i:s') }}</td>
+                                    <td>
+                                        {{ $item->user ? $item->user->username : 'Không có dữ liệu' }}
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l, d F Y, H:i:s') }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

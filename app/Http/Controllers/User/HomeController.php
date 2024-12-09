@@ -55,7 +55,7 @@ class HomeController extends Controller
         //Sản phẩm mới nhất
         $newProducts = Product::with(['product_files', 'product_variants.product_votes.user'])
             ->where('is_active', 1)
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->limit(8)
             ->get()
             ->map(function ($product) {
