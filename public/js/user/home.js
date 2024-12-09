@@ -358,7 +358,7 @@ function addToCart(variantId, quantity) {
                 $('#quantity').val(1);
                 setTimeout(function () {
                     successMessage.removeClass('show').addClass('hide');
-                }, 3000);
+                }, 2000);
                 $('#quick-view').modal('hide');
             } else {
                 alert(data.message);
@@ -486,6 +486,7 @@ $(document).on('click', '.delete-button', function () {
 
                 // Xóa toàn bộ box sản phẩm
                 $this.closest('.col').remove();
+                location.reload();
             } else if (response.status === 'error') {
                 // Hiển thị thông báo lỗi từ server
                 notification('warning', response.message, 'Thông báo!');
