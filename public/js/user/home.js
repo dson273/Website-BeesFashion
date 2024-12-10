@@ -358,14 +358,14 @@ function addToCart(variantId, quantity) {
                 $('#quantity').val(1);
                 setTimeout(function () {
                     successMessage.removeClass('show').addClass('hide');
-                }, 3000);
+                }, 2000);
                 $('#quick-view').modal('hide');
             } else {
                 alert(data.message);
             }
         },
         error: function (xhr, status, error) {
-            notification('warning', 'Vui lòng đăng nhập để thêm vào giỏ hàng.');
+            notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!');
         }
     });
 }
@@ -425,8 +425,9 @@ $(document).ready(function () {
                     notification('warning', response.message, 'Thông báo!');
                 }
             },
-            error: function () {
-                alert('Không thể lưu voucher. Vui lòng thử lại.');
+            error: function (xhr, status, error) {
+                notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!', 'Warning!', '2000');
+    
             }
         });
     });
@@ -455,12 +456,8 @@ $('.wishlist-icon').click(function () {
                 notification('warning', response.message, 'Thông báo!');
             }
         },
-        error: function (xhr) {
-            Toastify({
-                text: "Sản phẩm không tồn tại",
-                duration: 2500,
-                close: true,
-            }).showToast();
+        error: function (xhr, status, error) {
+            notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!', 'Warning!', '2000');
         }
     });
 });
@@ -486,6 +483,7 @@ $(document).on('click', '.delete-button', function () {
 
                 // Xóa toàn bộ box sản phẩm
                 $this.closest('.col').remove();
+                location.reload();
             } else if (response.status === 'error') {
                 // Hiển thị thông báo lỗi từ server
                 notification('warning', response.message, 'Thông báo!');

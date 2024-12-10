@@ -521,7 +521,7 @@
                                                 <a href="{{ route('admin.orders.active', $item->id) }}"
                                                     class="btn btn-success btn-sm"
                                                     onclick="return confirm('Xác nhận giao đơn hàng?')">
-                                                    <i class="fa fa-check"></i> Xác nhận
+                                                    <i class="fa fa-check"></i> Xác nhận đã giao hàng
                                                 </a>
 
                                             </td>

@@ -26,11 +26,8 @@ Danh sách danh mục
                     <a href="{{ route('admin.orders.index') }}"><i class="fa fa-angle-left"></i> Quản lý đơn hàng</a>
                     <div class="flex justify-between">
                         <div class="index__card-title--rzIx0 font-semibold">
-                            @foreach ($getInfo->order_details as $detail)
                             <div class="flex items-center"><span
-                                    class="mr-2">{{ $detail->product_variant->SKU }}</span></div>
-                            @endforeach
-
+                                    class="mr-2">#{{ $getInfo->id }}</span></div>
                         </div>
                         <div></div>
                     </div>
@@ -252,9 +249,9 @@ Danh sách danh mục
                                     <div class="font-regular text-base text-gray-2 flex">
                                         <div class="ml-4">
                                             @if ($getInfo->payment_method === 'cod')
-                                            Thanh toán khi nhận hàng
+                                            <strong>Thanh toán khi nhận hàng</strong>
                                             @else
-                                            Thanh toán online
+                                            <strong>Thanh toán online</strong>
                                             @endif
                                         </div>
                                     </div>

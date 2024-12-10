@@ -55,7 +55,7 @@ class HomeController extends Controller
         //Sản phẩm mới nhất
         $newProducts = Product::with(['product_files', 'product_variants.product_votes.user'])
             ->where('is_active', 1)
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->limit(8)
             ->get()
             ->map(function ($product) {
@@ -86,7 +86,7 @@ class HomeController extends Controller
                 $product->priceRange = $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
-             
+
                 return $product;
             });
 
@@ -255,13 +255,6 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $voucher = Voucher::find($request->id);
-
-        if (!$user) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Bạn cần đăng nhập để lưu voucher.'
-            ]);
-        }
 
         // Kiểm tra nếu voucher đã được lưu
         $exists = User_voucher::where('user_id', $user->id)

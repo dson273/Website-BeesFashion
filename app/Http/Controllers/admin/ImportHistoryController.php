@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Models\Product_variant;
 use Illuminate\Http\Request;
 use App\Models\Import_history;
+use App\Models\Product_variant;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class ImportHistoryController extends Controller
@@ -12,10 +13,10 @@ class ImportHistoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    
+
     public function index()
     {
-        $importHistories = Import_history::get();
+        $importHistories = Import_history::latest()->get();
         return view('admin.import_history.index', compact('importHistories'));
     }
 
@@ -23,36 +24,63 @@ class ImportHistoryController extends Controller
      * Show the form for creating a new resource.
      */
     public function updateQuantity(Request $request)
-{
-    $request->validate([
-        'quantity' => 'required|integer|min:1',
-    ], [ 
-        'quantity.required' => 'Số lượng là bắt buộc.',
-        'quantity.integer' => 'Số lượng phải là một số nguyên.',
-        'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1.',
-    ]);
+    {
+        // Validate input
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ], [
+            'quantity.required' => 'Số lượng là bắt buộc.',
+            'quantity.integer' => 'Số lượng phải là một số nguyên.',
+            'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1.',
+        ]);
 
-    $skuId = $request->SKU;
-    $quantityToAdd = $request->quantity;
-    $productVariant = Product_variant::find($skuId);
+        $skuId = $request->SKU;
+        $quantityToAdd = $request->quantity;
 
-    if ($productVariant) {
-        // Tìm ImportHistory hiện tại để cập nhật
-        $importHistory = Import_history::where('product_variant_id', $skuId)->latest()->first();
+        // Tìm sản phẩm variant
+        $productVariant = Product_variant::find($skuId);
 
-        if ($importHistory) {
+        if (!$productVariant) {
+            return redirect()->route('admin.import_history.index')
+                ->with('statusError', 'Sản phẩm không tồn tại.');
+        }
+
+        $lastImportHistory = Import_history::where('product_variant_id', $productVariant->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        // Nếu không có lịch sử nhập trước đó, sử dụng giá nhập từ yêu cầu
+        $importPrice = $lastImportHistory ? $lastImportHistory->import_price : $request->import_price;
+
+        // Sử dụng transaction để đảm bảo dữ liệu không bị lỗi
+        DB::beginTransaction();
+
+        try {
+            // Cập nhật tồn kho sản phẩm
             $productVariant->stock += $quantityToAdd;
             $productVariant->save();
 
-            $importHistory->quantity += $quantityToAdd;
-            $importHistory->save();
+            // Tạo một bản ghi mới trong Import_history để lưu lại thay đổi
+            Import_history::create([
+                'product_variant_id' => $productVariant->id,
+                'quantity' => $quantityToAdd,
+                'user_id' => auth()->id(), // Nếu bạn cần lưu thông tin người nhập
+                'import_price' => $importPrice, // Lưu giá nhập (sử dụng giá cũ nếu có)
+            ]);
+
+            // Commit transaction nếu không có lỗi
+            DB::commit();
 
             return redirect()->route('admin.import_history.index')
-                ->with('statusSuccess', 'Cập nhật số lượng thành công!');
+                ->with('statusSuccess', 'Nhập hàng thành công!');
+        } catch (\Exception $e) {
+            // Rollback transaction nếu có lỗi
+            DB::rollBack();
+            return redirect()->route('admin.import_history.index')
+                ->with('statusError', 'Có lỗi xảy ra khi cập nhật!');
         }
     }
 
-}
 
 
     public function create()
