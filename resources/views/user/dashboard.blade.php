@@ -814,7 +814,7 @@
                                                                 <span class="">
                                                                     <form action="{{ route('dashboard.addresses.set.default', $shippingAddress->id) }}" method="POST" class="d-inline">
                                                                         @csrf
-                                                                        <button type="submit" class="custom-set-address">Đặt làm mặc định</button>
+                                                                        <button type="submit" class="custom-set-address">Đặt mặc định</button>
                                                                     </form>
                                                                 </span>
                                                                 @endif

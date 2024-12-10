@@ -22,14 +22,14 @@
             <div class="custom-container container">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4>Bộ sản phẩm</h4>
+                        <h4>Bộ sưu tập</h4>
                     </div>
-                    <div class="col-sm-6">
+                    {{-- <div class="col-sm-6">
                         <ul class="breadcrumb float-end">
                             <li class="breadcrumb-item"> <a href="{{ route('/') }}">Home</a></li>
                             <li class="breadcrumb-item active"> <a href="{{ route('/') }}">Bộ sản phẩm</a></li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -330,7 +330,7 @@
             </div>
         </div>
     </div>
-    
+
     {{-- End model add-to-cart  --}}
 @endsection
 

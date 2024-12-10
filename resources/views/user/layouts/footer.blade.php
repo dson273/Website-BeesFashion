@@ -11,30 +11,30 @@
                             <ul>
                                 <li>
                                     <i class="iconsax" data-icon="location"></i>
-                                    <h6>1418 Riverwood Drive, Suite 3245 Cottonwood, CA 96052, United States</h6>
+                                    <h6>Tòa nhà FPT Polytechnic, 13 Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</h6>
                                 </li>
                                 <li>
                                     <i class="iconsax" data-icon="phone-calling"></i>
-                                    <h6>+ 185659635</h6>
+                                    <h6>+ 8497889999</h6>
                                 </li>
                                 <li>
                                     <i class="iconsax" data-icon="mail"></i>
-                                    <h6>contact@katie.com</h6>
+                                    <h6>contact@beesfashion.com</h6>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col offset-xl-1">
+                    <div class="col">
                         <div class="footer-content">
                             <div>
                                 <div class="footer-title d-md-block">
-                                    <h5>About Us</h5>
+                                    <h5>Về BeesFahion</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="{{ route('/') }}">Home</a></li>
-                                        <li> <a class="nav" href="#">Shop</a></li>
-                                        <li> <a class="nav" href="#">About Us</a></li>
-                                        <li> <a class="nav" href="#">Blog</a></li>
-                                        <li> <a class="nav" href="#">Contact</a></li>
+                                        <li> <a class="nav" href="{{ route('/') }}">Chúng tôi là ai</a></li>
+                                        <li> <a class="nav" href="#">Cam kết của chúng tôi</a></li>
+                                        <li> <a class="nav" href="#">Tin tuyển dụng</a></li>
+                                        <li> <a class="nav" href="#">Cửa hàng</a></li>
+                                        <li> <a class="nav" href="#">Liên hệ</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -44,13 +44,12 @@
                         <div class="footer-content">
                             <div>
                                 <div class="footer-title d-md-block">
-                                    <h5>New Categories</h5>
+                                    <h5>Hỗ trợ khách hàng</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="#">Latest Shoes</a></li>
-                                        <li> <a class="nav" href="#">Branded Jeans</a></li>
-                                        <li> <a class="nav" href="#">New Jackets</a></li>
-                                        <li> <a class="nav" href="#">Colorful Hoodies</a></li>
-                                        <li> <a class="nav" href="#">Best Perfume</a></li>
+                                        <li> <a class="nav" href="#">Hướng dẫn đặt hàng</a></li>
+                                        <li> <a class="nav" href="#">Phương thức thanh toán</a></li>
+                                        <li> <a class="nav" href="#">Chính sách thành viên</a></li>
+                                        <li> <a class="nav" href="#">Chính sách tích - tiêu điểm</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -60,13 +59,13 @@
                         <div class="footer-content">
                             <div>
                                 <div class="footer-title d-md-block">
-                                    <h5>Get Help</h5>
+                                    <h5>Chính sách</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="#">Your Orders</a></li>
-                                        <li> <a class="nav" href="#">Your Account</a></li>
-                                        <li> <a class="nav" href="#">Track Orders</a></li>
-                                        <li> <a class="nav" href="#">Your Wishlist</a></li>
-                                        <li> <a class="nav" href="#">Shopping FAQs</a></li>
+                                        <li> <a class="nav" href="#">Chính sách vận chuyển</a></li>
+                                        <li> <a class="nav" href="#">Chính sách kiểm hàng</a></li>
+                                        <li> <a class="nav" href="#">Chính sách đổi trả</a></li>
+                                        <li> <a class="nav" href="#">Điều kiện & Điều khoản</a></li>
+                                        <li> <a class="nav" href="#">Chính sách bảo mật</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -76,13 +75,12 @@
                         <div class="footer-content">
                             <div>
                                 <div class="footer-title d-md-block">
-                                    <h5>My Account</h5>
+                                    <h5>Liên hệ</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="#">My Account</a></li>
-                                        <li> <a class="nav" href="#">Login/Register</a></li>
-                                        <li> <a class="nav" href="#">Cart</a></li>
-                                        <li> <a class="nav" href="#">Order History</a></li>
-                                        <li> <a class="nav" href="#">Shopping FAQs</a></li>
+                                        <li> <a class="nav" href="#">Tư vấn mua online: 012 3456 7899</a></li>
+                                        <li> <a class="nav" href="#">Khiếu nại và bảo hành: 012 3456 7899</a></li>
+                                        <li> <a class="nav" href="#">Email: cskh@beesfashion.vn</a></li>
+                                        <li> <a class="nav" href="#">Giờ làm việc: 24/7</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -96,7 +94,7 @@
                 <div class="row">
                     <div class="col-xl-6 col-md-6 col-sm-12">
                         <div class="footer-end">
-                            <h6>2024 Copyright By Themeforest Powered By Pixelstrap </h6>
+                            <h6>Copyright © 2024 Beesfashion.vn All Rights Reserved. </h6>
                         </div>
                     </div>
                     <div class="col-xl-6 col-md-6 col-sm-12">
@@ -262,7 +260,7 @@
                     <i class="iconsax" data-icon="search-normal-2" id="search-icon"></i>
                 </div>
 
-                <h4>You Might Like</h4>
+                <h4>Có thể bạn sẽ thích</h4>
                 <div class="row gy-4 ratio_square-2 preemptive-search">
                     @foreach ($search as $product)
                         <div class="col-xl-2 col-sm-4 col-6">
