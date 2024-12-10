@@ -76,21 +76,21 @@ async function loadListAddresses() {
         addressDetail.classList.add("address-detail", "w-100", "h-100");
 
         const addressInfo = [
-            { tag: "span", class: "address-title no-select", content: "Default address" },
+            { tag: "span", class: "address-title no-select", content: "Nhà" },
             {
                 tag: "span",
                 class: "address-home" + (!dataListAddresses['updated'] ? " text-danger" : ""),
-                content: "<span class='address-tag no-select'>Full name:</span> " + dataListAddresses['full_name']
+                content: "<span class='address-tag no-select'>Họ tên:</span> " + dataListAddresses['full_name']
             },
             {
                 tag: "span",
                 class: "address-home" + (!dataListAddresses['updated'] ? " text-danger" : ""),
-                content: "<span class='address-tag no-select'>Address:</span> " + dataListAddresses['address']
+                content: "<span class='address-tag no-select'>Địa chỉ:</span> " + dataListAddresses['address']
             },
             {
                 tag: "span",
                 class: "address-home" + (!dataListAddresses['updated'] ? " text-danger" : ""),
-                content: "<span class='address-tag no-select'>Phone:</span> " + dataListAddresses['phone']
+                content: "<span class='address-tag no-select'>Số điện thoại:</span> " + dataListAddresses['phone']
             },
         ];
 
@@ -112,7 +112,7 @@ async function loadListAddresses() {
             const setDefaultButton = document.createElement("a");
             setDefaultButton.classList.add("btn", "btn-light", "btn-sm", "btn_set_default_address", "rounded-0");
             setDefaultButton.setAttribute("href", "javascript:void(0)");
-            setDefaultButton.textContent = "Set default";
+            setDefaultButton.textContent = "Đặt mặc định";
             buttons.appendChild(setDefaultButton);
         }
 
@@ -126,7 +126,7 @@ async function loadListAddresses() {
         editButton.setAttribute("data-full_name", dataListAddresses['full_name']);
         editButton.setAttribute("data-phone", dataListAddresses['phone']);
         editButton.setAttribute("data-address", dataListAddresses['address']);
-        editButton.textContent = "Edit";
+        editButton.textContent = "Chỉnh sửa";
 
         buttons.appendChild(editButton);
 
@@ -192,10 +192,10 @@ async function loadListAddresses() {
                 addressDetail.classList.add("address-detail", "w-100", "h-100");
 
                 const addressInfo = [
-                    { tag: "span", class: "address-title no-select", content: "Other address" },
-                    { tag: "span", class: "address-home no-select", content: "<span class='address-tag'>Full name:</span> " + addressOrtherItem['full_name'] },
-                    { tag: "span", class: "address-home no-select", content: "<span class='address-tag'>Address:</span> " + addressOrtherItem['address'] },
-                    { tag: "span", class: "address-home no-select", content: "<span class='address-tag'>Phone:</span> " + addressOrtherItem['phone_number'] },
+                    { tag: "span", class: "address-title no-select", content: "Khác" },
+                    { tag: "span", class: "address-home no-select", content: "<span class='address-tag'>Họ tên:</span> " + addressOrtherItem['full_name'] },
+                    { tag: "span", class: "address-home no-select", content: "<span class='address-tag'>Địa chỉ:</span> " + addressOrtherItem['address'] },
+                    { tag: "span", class: "address-home no-select", content: "<span class='address-tag'>Số điện thoại:</span> " + addressOrtherItem['phone_number'] },
                 ];
 
                 addressInfo.forEach(info => {
@@ -216,7 +216,7 @@ async function loadListAddresses() {
                     setDefaultButton.classList.add("btn", "btn-light", "btn-sm", "btn_set_default_address_other", "rounded-0");
                     setDefaultButton.setAttribute("href", "javascript:void(0)");
                     setDefaultButton.setAttribute("data-id", addressOrtherItem['id']);
-                    setDefaultButton.textContent = "Set default";
+                    setDefaultButton.textContent = "Đặt mặc định";
                     buttons.appendChild(setDefaultButton);
                 }
 
@@ -231,13 +231,13 @@ async function loadListAddresses() {
                 editButton.setAttribute("data-full_name", addressOrtherItem['full_name']);
                 editButton.setAttribute("data-phone_number", addressOrtherItem['phone_number']);
                 editButton.setAttribute("data-address", addressOrtherItem['address']);
-                editButton.textContent = "Edit";
+                editButton.textContent = "Chỉnh sửa";
 
                 const deleteButton = document.createElement("a");
                 deleteButton.classList.add("btn", "btn-danger", "btn-sm", "btn_delete_address_other", "rounded-0");
                 deleteButton.setAttribute("href", "javascript:void(0)");
                 deleteButton.setAttribute("data-id", addressOrtherItem['id']);
-                deleteButton.textContent = "Delete";
+                deleteButton.textContent = "Xoá";
 
 
                 buttons.appendChild(editButton);

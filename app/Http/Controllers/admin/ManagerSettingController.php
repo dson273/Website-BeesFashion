@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Manager_setting;
 use Illuminate\Http\Request;
+use App\Models\Manager_setting;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 
 class ManagerSettingController extends Controller
 {
@@ -33,8 +34,19 @@ class ManagerSettingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'manager_name' => 'required|string|max:255',
+            'manager_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('manager_settings', 'manager_name')->ignore($id ?? null)
+            ],
             'parent_manager_setting_id' => 'nullable|exists:manager_settings,id'
+        ], [
+            'manager_name.required' => 'Tên chức năng là bắt buộc.',
+            'manager_name.string' => 'Tên chức năng phải là chuỗi ký tự.',
+            'manager_name.max' => 'Tên chức năng không được vượt quá 255 ký tự.',
+            'manager_name.unique' => 'Tên chức năng đã tồn tại, vui lòng chọn tên khác.',
+            'parent_manager_setting_id.exists' => 'Chức năng cha không hợp lệ.'
         ]);
 
         Manager_setting::create($request->all());
@@ -65,17 +77,27 @@ class ManagerSettingController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'manager_name' => 'required|string|max:255',
+            'manager_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('manager_settings', 'manager_name')->ignore($id ?? null)
+            ],
             'parent_manager_setting_id' => [
                 'nullable',
                 'exists:manager_settings,id',
                 function ($attribute, $value, $fail) use ($id) {
                     if ($value == $id) {
-                        session()->flash('statusError', 'Chức năng không thể chọn chính nó làm chức năng cha.');
-                        $fail(''); // Ngăn tiếp tục xử lý
+                        $fail('Chức năng không thể chọn chính nó làm chức năng cha.');
                     }
                 },
             ],
+        ], [
+            'manager_name.required' => 'Tên chức năng là bắt buộc.',
+            'manager_name.string' => 'Tên chức năng phải là chuỗi ký tự.',
+            'manager_name.max' => 'Tên chức năng không được vượt quá 255 ký tự.',
+            'manager_name.unique' => 'Tên chức năng đã tồn tại, vui lòng chọn tên khác.',
+            'parent_manager_setting_id.exists' => 'Chức năng cha không hợp lệ.'
         ]);
 
         $managerSetting = Manager_setting::findOrFail($id);
