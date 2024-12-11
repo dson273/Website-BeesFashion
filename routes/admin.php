@@ -49,7 +49,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
     });
 
     //============================Route cho staff (admin có quyền truy cập)=======================================
-    Route::middleware(['role:staff|admin'])->group(function () {
+    Route::middleware(['role:staff|admin','checkBanned'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/statistics/revenue', [DashboardController::class, 'getRevenue']);
 

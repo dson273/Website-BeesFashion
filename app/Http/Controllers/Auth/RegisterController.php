@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Category;
+use App\Mail\VerifyEmail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -65,12 +67,16 @@ class RegisterController extends Controller
 
         //Tạo user mới
         $user = User::query()->create($data);
+        //Gửi email verify
+        $token = base64_encode($user->email);
+        Mail::to($user->email)->send(new VerifyEmail($token, $user->email));
         //Login với user vừa tạo
         Auth::login($user);
         // gen lại token cho user vừa đăng nhập
         $request->session()->regenerate();
 
         //quay lại trang phía trước
+        session()->flash('statusSuccess', 'Đăng ký thành công! Vui lòng check mail để xác thực tài khoản.');
         return redirect()->intended('/');
     }
 }

@@ -198,13 +198,13 @@
     <script>
         @if(session('statusSuccess'))
         var message = @json(session('statusSuccess'));
-        notification('success', message, 'Successfully');
+        notification('success', message, 'Thông báo!');
         @elseif(session('statusError'))
         var message = @json(session('statusError'));
-        notification('error', message, 'Error');
+        notification('error', message, 'Thông báo!');
         @elseif(session('statusWarning'))
         var message = @json(session('statusWarning'));
-        notification('warning', message, 'warning');
+        notification('warning', message, 'Cảnh báo!');
         @endif
     </script>
 </body>

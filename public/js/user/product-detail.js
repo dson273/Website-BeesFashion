@@ -240,10 +240,10 @@ $(document).ready(function () {
                         notification('success', response.message, 'Thành công!');
                         //Thông báo hết hàng
                     } else if (response.status === 'warning') {
-                        notification('warning', response.message, 'Thông báo!');
+                        notification('warning', response.message, 'Cảnh báo!');
                         //Thông báo chưa đăng nhập
                     } else if (response.status === 'unauthenticated') {
-                        notification('warning', response.message, 'Thông báo!');
+                        notification('warning', response.message, 'Cảnh báo!');
                     }
                 },
                 error: function (xhr) {
