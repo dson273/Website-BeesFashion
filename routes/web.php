@@ -15,12 +15,24 @@ use App\Http\Controllers\user\FilterProductController;
 use App\Http\Controllers\User\ProductDetailController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
-
+//---------------------------------------------ROUTE DÙNG CHUNG----------------------------------------------------------
 Route::get('/', [HomeController::class, 'index'])->name('/');
 //Trang chi tiết sản phẩm
 Route::get('productDetail/{sku}', [ProductDetailController::class, 'index'])->name('product.detail');
 Route::post('productDetail', [ProductDetailController::class, 'updateInformationProduct'])->name('userProductDetailFocused');
 Route::post('cart', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
+//Bộ sưu tập
+Route::get('product', [FilterProductController::class, 'index'])->name('product');
+Route::get('/getProductDetail/{productId}', [FilterProductController::class, 'getProductDetail']);
+Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'getMinMaxPriceProduct'])->name('getMinMaxPriceProduct');
+//Trang bài viết
+Route::get('blog', [HomeController::class, 'blog'])->name('blog');
+Route::get('blog-detail', [HomeController::class, 'blogDetail'])->name('blog-detail');
+Route::get('about-us', [HomeController::class, 'aboutUs'])->name('about-us');
+Route::get('contact', [HomeController::class, 'contact'])->name('contact');
+
+//VerifyEmail
+Route::get('verify/{token}', [LoginController::class, 'verify'])->name('verifyEmail');
 
 //Thêm sản phẩm vào giỏ trang chủ
 Route::get('/get-product-details/{productId}', [HomeController::class, 'getProductDetails']);
@@ -29,12 +41,11 @@ Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add')
 //Lưu voucher
 Route::post('/save-voucher', [HomeController::class, 'saveVoucher'])->name('saveVoucher');
 
-//Trang bài viết
-Route::get('blog', [HomeController::class, 'blog'])->name('blog');
-Route::get('blog-detail', [HomeController::class, 'blogDetail'])->name('blog-detail');
-Route::get('about-us', [HomeController::class, 'aboutUs'])->name('about-us');
-Route::get('contact', [HomeController::class, 'contact'])->name('contact');
-
+//Yêu thích sản phẩm
+Route::get('wishlist', [WishlistController::class, 'index'])->name('wishlist');
+Route::post('wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+Route::delete('/wishlist/delete', [WishlistController::class, 'deleteToWishlist'])->name('wishlist.delete');
+//---------------------------------------------ROUTE CHO KHÁCH----------------------------------------------------------
 Route::middleware('guest')->group(function () {
     //Đăng ký
     Route::get('register', [RegisterController::class, 'index'])->name('register'); //Trang đăng ký
@@ -46,29 +57,9 @@ Route::middleware('guest')->group(function () {
     Route::get('forgot-password', [ForgotPasswordController::class, 'ForgotForm'])->name('fotgot-pasword'); //Trang quên mật khẩu
     Route::post('forgot-processing', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-processing'); // Chức năng lấy lại mật khẩu
 });
-// Route::get('/', action: function () {
-//     return view(view: 'user/index');
-// });
-// Route::get('collection', action: function () {
-//     return view(view: 'user/collection');
-// });
-// Route::get('/',[HomeController::class,'index'])->name('home-shop');
 
-//filterProduct
-Route::get('product', [FilterProductController::class, 'index'])->name('product');
-Route::get('/getProductDetail/{productId}', [FilterProductController::class, 'getProductDetail']);
-Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'getMinMaxPriceProduct'])->name('getMinMaxPriceProduct');
-// web.php hoặc api.php
-// Route::get('api/products', [CollectionController::class, 'getProducts']);
-
-
-Route::get('wishlist', [WishlistController::class, 'index'])->name('wishlist');
-Route::post('wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
-Route::delete('/wishlist/delete', [WishlistController::class, 'deleteToWishlist'])->name('wishlist.delete');
-
-
-
-Route::middleware('auth')->group(function () {
+//--------------------------------------ROUTE ĐĂNG NHẬP MỚI DÙNG ĐƯỢC---------------------------------------------------
+Route::middleware(['auth', 'checkBanned'])->group(function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //Chức năng đăng xuất
     //Dashboard người dùng
     Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
@@ -87,13 +78,12 @@ Route::middleware('auth')->group(function () {
     Route::post('dashboard/submit-vote-order-detail', [DashboardController::class, 'submitVoteOrderDetail'])->name('dashboard.submitVoteOrderDetail');
     Route::post('dashboard/submit-edit-vote-order-detail', [DashboardController::class, 'submitEditVoteOrderDetail'])->name('dashboard.submitEditVoteOrderDetail');
 
-
     //Trang giỏ hàng
     Route::get('cart', [CartController::class, 'index'])->name('cart');
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove'); // Route xóa sản phẩm khỏi giỏ hàng
     Route::delete('cart/clear', [CartController::class, 'clearAll'])->name('cart.clearAll'); // Xóa tất cả sản phẩm trong giỏ hàng
     Route::get('cart/product/{product_id}/variants', [CartController::class, 'getProductVariants'])->name('getProductVariants');
-    Route::post('product/{product_id}/update-variant', [CartController::class, 'updateVariant']);//cập nhật biến thể trong giỏ hàng
+    Route::post('product/{product_id}/update-variant', [CartController::class, 'updateVariant']); //cập nhật biến thể trong giỏ hàng
     Route::get('product/{product_id}/variants', [CartController::class, 'getProductVariants']);
     Route::get('api/cart-items', [CartController::class, 'getCartItemsApi']);
 
@@ -123,9 +113,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get('order-success/{id}', [OrderController::class, 'show'])->name('order_success');
     Route::get('order-failed/{id}', [OrderController::class, 'show'])->name('order_failed');
-
-
-    //Thêm sản phẩm vào giỏ trang chủ
-    //     Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
-
 });

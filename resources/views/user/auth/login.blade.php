@@ -68,9 +68,9 @@
                                     <div class="col-12">
                                         <div class="forgot-box">
                                             <div>
-                                                <input class="custom-checkbox me-2" id="category1" type="checkbox"
+                                                <input class="custom-checkbox me-2" id="login1" type="checkbox"
                                                     name="remember">
-                                                <label for="category1">Ghi nhớ mật khẩu</label>
+                                                <label for="login1">Ghi nhớ mật khẩu</label>
                                             </div>
                                             <a href="{{route('fotgot-pasword')}}">Quên mật khẩu?</a>
                                         </div>
