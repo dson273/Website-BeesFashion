@@ -25,7 +25,7 @@
     <div class="sidebar-heading">
         Interface
     </div>
-
+    @if (Auth::user()->role === 'admin')
     <!-- Thống kê -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistics" aria-expanded="true" aria-controls="collapseStatistics">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </li>
-
+    @endif
     <!-- Quản lý danh mục -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -213,7 +213,7 @@
             </div>
         </li>
     @endif
-    
+
     {{-- Lịch sử nhập hàng --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistory" aria-expanded="true" aria-controls="collapseHistory">
