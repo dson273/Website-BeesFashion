@@ -36,6 +36,16 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::middleware(['role:admin'])->group(function () {
         //============================Chức năng chỉ admin quản lý===============================================
+
+        //Thống kê
+        Route::middleware(['checkPermission:Thống kê'])->group(function () {
+            Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct'); //Thống kê doanh thu sản phẩm
+            Route::get('/statistics/cart-statistics', [StatisticalController::class, 'statisticCart'])->name('statistics.cart-statistics'); //Thống kê sản phẩm trong giỏ hàng
+            Route::get('/statistics/product_views', [StatisticalController::class, 'product_views'])->name('statistics.product_views'); //Thống kê lượt xem
+            Route::get('/statistics/revenueBrand', [StatisticalController::class, 'revenueByBrand'])->name('statistics.revenueBrand'); //Thống kê doanh thu thương hiệu
+            Route::get('/statistics/revenueCustomer', [StatisticalController::class, 'revenueByCustomer'])->name('statistics.revenueCustomer'); //Thống kê doanh thu theo khách hàng
+        });
+
         //Quản lý nhân viên
         Route::resource('staffs', StaffController::class);
         Route::post('staffs/ban/{id}', [StaffController::class, 'ban'])->name('staffs.ban'); //Ban nhân viên
@@ -56,13 +66,13 @@ Route::prefix('admin')->as('admin.')->group(function () {
         //================================Chức năng staff có thể quản lý==================================================
 
         //==============================================Thống kê==========================================================
-        Route::middleware(['checkPermission:Thống kê'])->group(function () {
-            Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct'); //Thống kê doanh thu sản phẩm
-            Route::get('/statistics/cart-statistics', [StatisticalController::class, 'statisticCart'])->name('statistics.cart-statistics'); //Thống kê sản phẩm trong giỏ hàng
-            Route::get('/statistics/product_views', [StatisticalController::class, 'product_views'])->name('statistics.product_views'); //Thống kê lượt xem
-            Route::get('/statistics/revenueBrand', [StatisticalController::class, 'revenueByBrand'])->name('statistics.revenueBrand'); //Thống kê doanh thu thương hiệu
-            Route::get('/statistics/revenueCustomer', [StatisticalController::class, 'revenueByCustomer'])->name('statistics.revenueCustomer'); //Thống kê doanh thu theo khách hàng
-        });
+        // Route::middleware(['checkPermission:Thống kê'])->group(function () {
+        //     Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct'); //Thống kê doanh thu sản phẩm
+        //     Route::get('/statistics/cart-statistics', [StatisticalController::class, 'statisticCart'])->name('statistics.cart-statistics'); //Thống kê sản phẩm trong giỏ hàng
+        //     Route::get('/statistics/product_views', [StatisticalController::class, 'product_views'])->name('statistics.product_views'); //Thống kê lượt xem
+        //     Route::get('/statistics/revenueBrand', [StatisticalController::class, 'revenueByBrand'])->name('statistics.revenueBrand'); //Thống kê doanh thu thương hiệu
+        //     Route::get('/statistics/revenueCustomer', [StatisticalController::class, 'revenueByCustomer'])->name('statistics.revenueCustomer'); //Thống kê doanh thu theo khách hàng
+        // });
         //===========================================Quản lý sản phẩm=====================================================
         Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {
             //List product

@@ -48,21 +48,23 @@ $(document).ready(function () {
         const {
             sale_price,
             regular_price,
-            stock
+            real_stock
         } = response.data;
         const percentDiscount = (100 - (sale_price / regular_price * 100)).toFixed(1);
+
+        getStockVariantClicked = real_stock; // Lưu giá trị real_stock
 
         if (variantSelected) {
             if (sale_price > 0) {
                 $('#regular-price').text(regular_price);
                 $('#sale-price').text(sale_price);
-                $('#update-stock').text(stock);
+                $('#update-stock').text(real_stock);
                 $('#percent-discount').text(`-${percentDiscount}%`);
             } else {
                 $('#sale-price').text(regular_price);
                 $('#regular-price').text(regular_price);
                 $('#percent-discount').text(`Hot!`);
-                $('#update-stock').text(stock);
+                $('#update-stock').text(real_stock);
             }
             currency();
         }
