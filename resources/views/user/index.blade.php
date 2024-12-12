@@ -185,7 +185,8 @@
                             <div class="col-12 ratio_square">
                                 <div class="tab-content">
                                     <!-- Sản phẩm bán chạy -->
-                                    <div class="tab-pane fade show active" id="features-products" role="tabpanel" tabindex="0">
+                                    <div class="tab-pane fade show active" id="features-products" role="tabpanel"
+                                        tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($products as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6 position-relative">
@@ -294,8 +295,7 @@
                                         </div>
                                     </div>
                                     <!-- Sản phẩm mới -->
-                                    <div class="tab-pane fade" id="seller-products" role="tabpanel"
-                                        tabindex="0">
+                                    <div class="tab-pane fade" id="seller-products" role="tabpanel" tabindex="0">
                                         <div class="row g-4">
                                             @foreach ($newProducts as $product)
                                                 <div class="col-xxl-3 col-md-4 col-6 position-relative">
@@ -796,7 +796,8 @@
                 <div class="swiper logo-slider">
                     <div class="swiper-wrapper">
                         @foreach ($brands as $item)
-                            <div class="swiper-slide"><a href="{{ route('product', ['brand' => $item->id]) }}"> <img style="width: 125px; height:125px;"
+                            <div class="swiper-slide"><a href="{{ route('product', ['brand' => $item->id]) }}"> <img
+                                        style="width: 125px; height:125px;"
                                         src="{{ asset('uploads/brands/images/' . $item->image) }}" alt="logo"></a>
                             </div>
                         @endforeach
@@ -838,6 +839,9 @@
                                     <h4 id="product-name"></h4>
                                     <p id="product-sku"></p>
                                     <h4 id="product-price" style="color: #ba372a"></h4>
+                                    <div class="selected-variant d-flex">
+                                        <p id="total-stock" class="me-1" style="color: rgb(0, 181, 120)"></p> sản phẩm có sẵn
+                                    </div>
 
                                     <!-- Hiển thị danh sách thuộc tính -->
                                     <div class="blink-border attributes-container" id="attributes-container">
@@ -855,11 +859,13 @@
                                                 max="10">
                                             <button class="increment" type="button"><i
                                                     class="fa-solid fa-plus"></i></button>
+                                           
                                         </div>
                                     </div>
 
                                     <div class="product-buttons">
-                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Thêm vào giỏ hàng</a>
+                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Thêm vào giỏ
+                                            hàng</a>
                                         <a class="btn btn-solid" href="#"
                                             id="btn_view_detail_of_quick_view_product">Xem chi tiết</a>
                                     </div>

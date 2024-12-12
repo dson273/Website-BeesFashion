@@ -135,6 +135,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
         //===========================================Quản lý đơn hàng=====================================================
         Route::middleware(['checkPermission:Quản lý đơn hàng'])->group(function () {
             Route::resource('orders', OrderController::class);
+            Route::post('orders/bulk-action', [OrderController::class, 'bulkAction'])->name('orders.bulkAction');
             Route::get('orders/info/{id}', [OrderController::class, 'show'])->name('orders.info');
             Route::get('orders/print/{id}', [OrderController::class, 'printOrder'])->name('orders.print');
             Route::get('orders/success/{id}', [OrderController::class, 'onSuccess'])->name('orders.success');
