@@ -78,7 +78,30 @@
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Doanh thu theo thương hiệu</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+
+            <!-- Time Range Filter -->
+            <div class="d-flex align-items-center">
+                <form action="{{ route('admin.statistics.revenueBrand') }}" method="GET" class="mr-3">
+                    <select name="time_range" class="form-control" onchange="this.form.submit()">
+                        @foreach ($timeRanges as $key => $range)
+                            <option value="{{ $key }}" {{ request('time_range', 'this_month') === $key ? 'selected' : '' }}>
+                                {{ $range['label'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                    <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+                </a>
+            </div>
+        </div>
+
+        <!-- Hiển thị thông tin thời gian đang xem -->
+        <div class="alert alert-info mb-4">
+            <i class="fas fa-calendar-alt mr-2"></i>
+            Thống kê từ: {{ $currentRange['start']->format('d/m/Y H:i') }}
+            đến: {{ $currentRange['end']->format('d/m/Y H:i') }}
         </div>
         <div class="row">
             <div class="col-12">
@@ -275,7 +298,7 @@
                                 </div>
                             @endforeach
                         @else
-                            <h5 class="text-center">Chưa có đơn hàng cho các thương hiệu</h5>
+                            <h5 class="text-center">Chưa có doanh thu cho các thương hiệu</h5>
                         @endif
                     </div>
                 </div>

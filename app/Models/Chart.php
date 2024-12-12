@@ -225,14 +225,74 @@ class Chart extends Model
     }
 
     //Thống kê doanh thu theo thương hiệu
-    private function getBaseQuery()
+    //Phạm vi thời gian thống kê
+    private function getTimeRanges(): array
+    {
+        return [
+            'today' => [
+                'label' => 'Hôm nay',
+                'start' => Carbon::today(),
+                'end' => Carbon::now()
+            ],
+            'this_week' => [
+                'label' => 'Tuần này',
+                'start' => Carbon::now()->startOfWeek(),
+                'end' => Carbon::now()
+            ],
+            'last_week' => [
+                'label' => 'Tuần trước',
+                'start' => Carbon::now()->subWeek()->startOfWeek(),
+                'end' => Carbon::now()->subWeek()->endOfWeek()
+            ],
+            'this_month' => [
+                'label' => 'Tháng này',
+                'start' => Carbon::now()->startOfMonth(),
+                'end' => Carbon::now()
+            ],
+            'last_month' => [
+                'label' => 'Tháng trước',
+                'start' => Carbon::now()->subMonth()->startOfMonth(),
+                'end' => Carbon::now()->subMonth()->endOfMonth()
+            ],
+            'this_quarter' => [
+                'label' => 'Quý này',
+                'start' => Carbon::now()->startOfQuarter(),
+                'end' => Carbon::now()
+            ],
+            'last_quarter' => [
+                'label' => 'Quý trước',
+                'start' => Carbon::now()->subQuarter()->startOfQuarter(),
+                'end' => Carbon::now()->subQuarter()->endOfQuarter()
+            ],
+            'this_year' => [
+                'label' => 'Năm nay',
+                'start' => Carbon::now()->startOfYear(),
+                'end' => Carbon::now()
+            ],
+            'last_year' => [
+                'label' => 'Năm trước',
+                'start' => Carbon::now()->subYear()->startOfYear(),
+                'end' => Carbon::now()->subYear()->endOfYear()
+            ]
+        ];
+    }
+
+    //Thời gian cụ thể
+    private function getTimeRange(string $range): array
+    {
+        $ranges = $this->getTimeRanges();
+        return $ranges[$range] ?? $ranges['this_month'];
+    }
+
+    private function getBaseQuery($startDate, $endDate)
     {
         $importIntervals = DB::table('import_histories')
             ->selectRaw('
-            product_variant_id,
-            import_price,
-            created_at as start_time,
-            COALESCE(LEAD(created_at) OVER (PARTITION BY product_variant_id ORDER BY created_at), NOW()) as end_time');
+                product_variant_id,
+                import_price,
+                created_at as start_time,
+                COALESCE(LEAD(created_at) OVER (PARTITION BY product_variant_id ORDER BY created_at), NOW()) as end_time'
+            );
 
         return Brand::query()
             ->select([
@@ -259,6 +319,7 @@ class Chart extends Model
                     ->whereRaw('o.created_at BETWEEN import_intervals.start_time AND import_intervals.end_time');
             })
             ->where('s.name', '=', 'Completed')
+            ->whereBetween('o.created_at', [$startDate, $endDate])
             ->groupBy('brands.id', 'brands.name', 'p.id', 'p.name', 'pv.id', 'pv.name')
             ->orderBy('brands.name')
             ->orderBy('p.name')
@@ -308,16 +369,19 @@ class Chart extends Model
         ];
     }
 
-    public function getBrandStatistics(): array
+    public function getBrandStatistics(string $timeRange = 'this_month'): array
     {
-        $query = $this->getBaseQuery()->get();
+        $range = $this->getTimeRange($timeRange);
+        $stats = $this->getBaseQuery($range['start'], $range['end'])->get();
 
-        return $query->groupBy('brand_name')
-            ->map(function ($brandStats) {
-                return $this->formatBrandStats($brandStats);
-            })
-            ->values()
-            ->toArray();
+        return [
+            'time_range' => $range,
+            'time_ranges' => $this->getTimeRanges(),
+            'statistics' => $stats->groupBy('brand_name')
+                ->map(fn ($brandStats) => $this->formatBrandStats($brandStats))
+                ->values()
+                ->toArray()
+        ];
     }
 
     //Thống kê doanh thu theo khách hàng
