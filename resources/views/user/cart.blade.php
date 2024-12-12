@@ -243,7 +243,7 @@
                                                                     class="product-image text-start"></a>
                                                             <div class="cart-box-variant">
                                                                 <a href="{{ route('product.detail', $item_cart['sku']) }}">
-                                                                    <h5 class="text-wrap">{{ $item_cart['product_name'] }}
+                                                                    <h5 class="text-wrap text-start">{{ $item_cart['product_name'] }}
                                                                     </h5>
                                                                 </a>
 

@@ -4,15 +4,16 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Attribute;
+use App\Models\Order_detail;
+use App\Models\Product_vote;
 use Illuminate\Http\Request;
 use App\Models\Attribute_value;
 use App\Models\Product_variant;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Order_detail;
-use App\Models\Product_vote;
 
 class ProductDetailController extends Controller
 {
@@ -25,6 +26,30 @@ class ProductDetailController extends Controller
             'product_variants.product_votes.user',
             'product_variants.order_details.order.status_orders.status'
         ])->where('SKU', $sku)->first();
+
+        // $product_variant_stock = DB::table('orders')
+        //     ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+        //     ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+        //     ->join('product_variants', 'order_details.product_variant_id','=','product_variants.id')
+        //     ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
+        //     ->join('users', 'orders.user_id', '=', 'users.id')
+        //     ->where('statuses.name', 'Shipping')
+        //     ->orWhere('statuses.name', 'Shipping')
+        //     ->orWhere('statuses.name', 'Shipping')
+        //     ->select('order_details.product_variant_id', DB::raw('SUM(order_details.quantity) as total_stock'))
+        //     ->groupBy('order_details.product_variant_id')
+        //     ->get();
+
+        // $product_variants = Product_variant::where('product_id', $product->id)->get();
+        // $total_stock_ship = 0;
+        // $productVariantIds = [];
+        // foreach($product_variant_stock as $variant_stock){
+        //     $productVariantIds[] = $variant_stock->product_variant_id;
+        // }
+        // foreach($product_variants as $product_variant){
+
+        // }
+
 
         //View tăng lên 1
         if ($product) {
@@ -93,7 +118,8 @@ class ProductDetailController extends Controller
 
         // Lấy danh sách sản phẩm liên quan qua danh mục
         $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
-            $query->whereIn('category_id', $product->categories->pluck('id'));
+            $query->whereIn('category_id', $product->categories->pluck('id'))
+                ->where('categories.fixed', 1);
         })->where('id', '!=', $product->id)
             ->take(8)
             ->get();
@@ -110,11 +136,32 @@ class ProductDetailController extends Controller
             $relatedProduct->rating = $rating;
             return $relatedProduct;
         });
+
+        //Sản phẩm bán chạy
+        $firstCategory = Category::where('fixed', 0)->first();
+        $bestProducts = Product::whereHas('categories', function ($query) use ($firstCategory) {
+            $query->where('categories.id', $firstCategory->id);
+        })
+            ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
+            ->where('id', '!=', $product->id)
+            ->take(8)
+            ->get()
+            ->map(function ($bestProduct) {
+                $bestProduct->priceRange = $bestProduct->getPriceRange();
+                $activeImage = $bestProduct->product_files->where('is_default', 1)->first();
+                $inactiveImage = $bestProduct->product_files->where('is_default', 0)->first();
+                $bestProduct->active_image = $activeImage ? $activeImage->file_name : null;
+                $bestProduct->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
+
+                $rating = $this->calculateProductRating($bestProduct);
+                $bestProduct->rating = $rating;
+                return $bestProduct;
+            });
         //Đánh giá sản phẩm
         $reviewData = $this->getProductReviewData($product);
         // dd($reviewData);
 
-        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts', 'reviewData'));
+        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts', 'reviewData', 'bestProducts'));
     }
 
     public function updateInformationProduct(Request $request)
@@ -160,8 +207,9 @@ class ProductDetailController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Sản phẩm này đã ngưng bán. Vui lòng chọn mẫu khác.'
-            ], 400);
+            ]);
         }
+
         // Kiểm tra nếu biến thể đã có trong giỏ hàng
         $checkCart = Cart::with('product_variant')
             ->where('product_variant_id', $variant_id)
@@ -170,20 +218,55 @@ class ProductDetailController extends Controller
         if ($checkCart) {
             // Tính toán số lượng mới
             $newQuantity = $checkCart->quantity + $quantity;
-            // Đảm bảo không vượt quá tồn kho hoặc giới hạn 20 sản phẩm
+            // Kiểm tra số lượng sản phẩm còn lại trong kho
+            $availableStock = $checkCart->product_variant->stock - $checkCart->quantity;
+            // Đảm bảo không vượt quá tồn kho
             if ($newQuantity > $checkCart->product_variant->stock) {
-                $checkCart->quantity = $checkCart->product_variant->stock;
-            } elseif ($newQuantity > 20) {
-                $checkCart->quantity = 20; //Giới hạn chỉ thêm được 20 vào cart
+                if ($availableStock > 0) {
+                    $checkCart->quantity = $checkCart->quantity + $availableStock;
+                    $checkCart->save();
+                    // Trả về thông báo số lượng sản phẩm đã đạt đến giới hạn kho
+                    return response()->json([
+                        'status' => 'warning',
+                        'message' => "Đã thêm $availableStock sản phẩm vào giỏ hàng vì đã đạt giới hạn kho."
+                    ]);
+                } else {
+                    // Nếu kho đã hết, không thể thêm bất kỳ sản phẩm nào
+                    return response()->json([
+                        'status' => 'warning',
+                        'message' => 'Sản phẩm này đã đạt giới hạn của kho trong giỏ hàng.'
+                    ]);
+                }
             } else {
+                // Nếu số lượng không vượt quá tồn kho, cập nhật số lượng trong giỏ hàng
                 $checkCart->quantity = $newQuantity;
+                $checkCart->updated_at = now();  // Cập nhật thời gian
+                $checkCart->save();
             }
-            $checkCart->updated_at->now();
-            $checkCart->save();
         } else {
             if ($variant) {
+                // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm vào giỏ hàng
+                $quantityToAdd = min($variant->stock, $quantity);  // Giới hạn theo số lượng tồn kho
+
+                // Nếu kho không đủ để thêm toàn bộ số lượng, thông báo
+                if ($quantityToAdd < $quantity) {
+                    // Thêm số lượng tối đa có thể vào giỏ hàng
+                    Cart::create([
+                        'quantity' => $quantityToAdd,
+                        'product_variant_id' => $variant_id,
+                        'user_id' => Auth::user()->id,
+                        'created_at' => now()
+                    ]);
+
+                    // Trả về thông báo về số lượng đã thêm vào giỏ hàng
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => "Đã thêm $quantityToAdd sản phẩm vào giỏ hàng vì đã đạt giới hạn kho."
+                    ]);
+                }
+
                 Cart::create([
-                    'quantity' => $quantity <= min($variant->stock, 20) ? $quantity : min($variant->stock, 20),
+                    'quantity' => $quantityToAdd,  // Thêm vào giỏ hàng với số lượng tối đa có sẵn trong kho
                     'product_variant_id' => $variant_id,
                     'user_id' => Auth::user()->id,
                     'created_at' => now()

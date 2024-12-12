@@ -21,9 +21,9 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Banner</h6>
-                <a href="{{ route('admin.banner.create') }}" class="btn btn-primary text-white text-decoration-none"><i
-                        class="fas fa-plus"></i> Thêm mới</a>
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách banner</h6>
+                <a href="{{ route('admin.banner.create') }}" class="btn btn-success text-white text-decoration-none btn-sm"><i
+                        class="fas fa-plus mr-2"></i>Thêm mới</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

@@ -37,6 +37,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CartCountMiddleware::class,
+            \App\Http\Middleware\WishlistCount::class,
+            \App\Http\Middleware\HomeMiddleware::class,
         ],
 
         'api' => [
@@ -70,5 +72,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'checkPermission' => \App\Http\Middleware\CheckPermission::class,
+        'checkBanned' => \App\Http\Middleware\CheckUserBanned::class,
     ];
 }

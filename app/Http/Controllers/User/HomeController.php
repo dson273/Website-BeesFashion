@@ -48,7 +48,6 @@ class HomeController extends Controller
                 $product->active_image = $activeImage ? $activeImage->file_name : null;
                 $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange =  $product->getPriceRange();
-                $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
                 return $product;
@@ -56,7 +55,7 @@ class HomeController extends Controller
         //Sản phẩm mới nhất
         $newProducts = Product::with(['product_files', 'product_variants.product_votes.user'])
             ->where('is_active', 1)
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->limit(8)
             ->get()
             ->map(function ($product) {
@@ -85,9 +84,9 @@ class HomeController extends Controller
                 $product->active_image = $activeImage ? $activeImage->file_name : null;
                 $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
                 $product->priceRange = $product->getPriceRange();
-                $product->priceRange =  $product->getPriceRange();
                 $rating = $this->getProductReviewData($product);
                 $product->rating = $rating;
+
                 return $product;
             });
 
@@ -251,19 +250,11 @@ class HomeController extends Controller
     }
 
 
-
     //Lưu voucher
     public function saveVoucher(Request $request)
     {
         $user = Auth::user();
         $voucher = Voucher::find($request->id);
-
-        if (!$user) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Bạn cần đăng nhập để lưu voucher.'
-            ]);
-        }
 
         // Kiểm tra nếu voucher đã được lưu
         $exists = User_voucher::where('user_id', $user->id)
@@ -286,9 +277,25 @@ class HomeController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Voucher đã được lưu thành công.']);
     }
-    //Trang thanh toán
-    public function checkout()
+    //Trang bài viết
+    public function blog()
     {
-        return view('user.check-out');
+        return view('user.blog');
+    }
+
+    //Trang chi tiết bài viết
+    public function blogDetail()
+    {
+        return view('user.blog-detail');
+    }
+    //Về chúng tôi
+    public function aboutUs()
+    {
+        return view('user.about-us');
+    }
+    //Liên hệ
+    public function contact()
+    {
+        return view('user.contact');
     }
 }

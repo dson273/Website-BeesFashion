@@ -15,12 +15,12 @@
         <!--<h1 class="h3 mb-2 text-gray-800">Danh sách khách hàng</h1>
          <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
                                             For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                                                DataTables documentation</a>.</p> 
+                                                DataTables documentation</a>.</p>
         <p class="mb-2">Dưới đây là danh sách khách hàng</p>-->
         <!-- DataTales Example -->
         <div class="card shadow mb-2 ">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Quản lý khách hàng</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách khách hàng</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -73,7 +73,7 @@
 
                                     {{-- <td>
                                         <a class="btn btn-info btn-sm"
-                                            href="{{ route('admin.customers.show', $customer->id) }}">Show</a> 
+                                            href="{{ route('admin.customers.show', $customer->id) }}">Show</a>
                                         <a class="btn btn-warning btn-sm"
                                             href="{{ route('admin.customers.edit', $customer->id) }}">Edit</a>
                                         <form action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST"
@@ -146,7 +146,7 @@
             </form>
         </div>
     </div>
-    
+
     <script>
         function openBanModal(url) {
             $('#banForm').attr('action', url);

@@ -11,30 +11,30 @@
                             <ul>
                                 <li>
                                     <i class="iconsax" data-icon="location"></i>
-                                    <h6>1418 Riverwood Drive, Suite 3245 Cottonwood, CA 96052, United States</h6>
+                                    <h6>Tòa nhà FPT Polytechnic, 13 Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</h6>
                                 </li>
                                 <li>
                                     <i class="iconsax" data-icon="phone-calling"></i>
-                                    <h6>+ 185659635</h6>
+                                    <h6>+ 8497889999</h6>
                                 </li>
                                 <li>
                                     <i class="iconsax" data-icon="mail"></i>
-                                    <h6>contact@katie.com</h6>
+                                    <h6>contact@beesfashion.com</h6>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col offset-xl-1">
+                    <div class="col">
                         <div class="footer-content">
                             <div>
                                 <div class="footer-title d-md-block">
-                                    <h5>About Us</h5>
+                                    <h5>Về BeesFahion</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="{{ route('/') }}">Home</a></li>
-                                        <li> <a class="nav" href="#">Shop</a></li>
-                                        <li> <a class="nav" href="#">About Us</a></li>
-                                        <li> <a class="nav" href="#">Blog</a></li>
-                                        <li> <a class="nav" href="#">Contact</a></li>
+                                        <li> <a class="nav" href="{{ route('/') }}">Chúng tôi là ai</a></li>
+                                        <li> <a class="nav" href="#">Cam kết của chúng tôi</a></li>
+                                        <li> <a class="nav" href="#">Tin tuyển dụng</a></li>
+                                        <li> <a class="nav" href="#">Cửa hàng</a></li>
+                                        <li> <a class="nav" href="#">Liên hệ</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -44,13 +44,12 @@
                         <div class="footer-content">
                             <div>
                                 <div class="footer-title d-md-block">
-                                    <h5>New Categories</h5>
+                                    <h5>Hỗ trợ khách hàng</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="#">Latest Shoes</a></li>
-                                        <li> <a class="nav" href="#">Branded Jeans</a></li>
-                                        <li> <a class="nav" href="#">New Jackets</a></li>
-                                        <li> <a class="nav" href="#">Colorful Hoodies</a></li>
-                                        <li> <a class="nav" href="#">Best Perfume</a></li>
+                                        <li> <a class="nav" href="#">Hướng dẫn đặt hàng</a></li>
+                                        <li> <a class="nav" href="#">Phương thức thanh toán</a></li>
+                                        <li> <a class="nav" href="#">Chính sách thành viên</a></li>
+                                        <li> <a class="nav" href="#">Chính sách tích - tiêu điểm</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -60,13 +59,13 @@
                         <div class="footer-content">
                             <div>
                                 <div class="footer-title d-md-block">
-                                    <h5>Get Help</h5>
+                                    <h5>Chính sách</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="#">Your Orders</a></li>
-                                        <li> <a class="nav" href="#">Your Account</a></li>
-                                        <li> <a class="nav" href="#">Track Orders</a></li>
-                                        <li> <a class="nav" href="#">Your Wishlist</a></li>
-                                        <li> <a class="nav" href="#">Shopping FAQs</a></li>
+                                        <li> <a class="nav" href="#">Chính sách vận chuyển</a></li>
+                                        <li> <a class="nav" href="#">Chính sách kiểm hàng</a></li>
+                                        <li> <a class="nav" href="#">Chính sách đổi trả</a></li>
+                                        <li> <a class="nav" href="#">Điều kiện & Điều khoản</a></li>
+                                        <li> <a class="nav" href="#">Chính sách bảo mật</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -76,13 +75,12 @@
                         <div class="footer-content">
                             <div>
                                 <div class="footer-title d-md-block">
-                                    <h5>My Account</h5>
+                                    <h5>Liên hệ</h5>
                                     <ul class="footer-details accordion-hidden">
-                                        <li> <a class="nav" href="#">My Account</a></li>
-                                        <li> <a class="nav" href="#">Login/Register</a></li>
-                                        <li> <a class="nav" href="#">Cart</a></li>
-                                        <li> <a class="nav" href="#">Order History</a></li>
-                                        <li> <a class="nav" href="#">Shopping FAQs</a></li>
+                                        <li> <a class="nav" href="#">Tư vấn mua online: 012 3456 7899</a></li>
+                                        <li> <a class="nav" href="#">Khiếu nại và bảo hành: 012 3456 7899</a></li>
+                                        <li> <a class="nav" href="#">Email: cskh@beesfashion.vn</a></li>
+                                        <li> <a class="nav" href="#">Giờ làm việc: 24/7</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -96,7 +94,7 @@
                 <div class="row">
                     <div class="col-xl-6 col-md-6 col-sm-12">
                         <div class="footer-end">
-                            <h6>2024 Copyright By Themeforest Powered By Pixelstrap </h6>
+                            <h6>Copyright © 2024 Beesfashion.vn All Rights Reserved. </h6>
                         </div>
                     </div>
                     <div class="col-xl-6 col-md-6 col-sm-12">
@@ -124,10 +122,10 @@
             <div class="modal-content">
                 <div class="modal-body"> <img class="img-fluid" src="{{ asset('assets/images/gif/question.gif') }}"
                         alt="">
-                    <h4>Confirmation</h4>
-                    <p>Are you sure you want to log out?</p>
+                    <h4>Xác nhận</h4>
+                    <p>Bạn có chắc muốn đăng xuất không?</p>
                     <div class="submit-button"> <button class="btn" type="submit" data-bs-dismiss="modal"
-                            aria-label="Close">No</button><a class="btn" href="{{ route('logout') }}">Yes</a>
+                            aria-label="Close">Không</button><a class="btn" href="{{ route('logout') }}">Có</a>
                     </div>
                 </div>
             </div>
@@ -245,7 +243,7 @@
     </div> --}}
     <!-- End modal cart right -->
 
-   
+
     <!-- End modal add cart -->
 
     <!-- Modal Seach -->
@@ -257,166 +255,35 @@
             <div class="container">
                 <h3>Bạn đang muốn tìm kiếm gì!!</h3>
                 <div class="search-box">
-                    <input type="search" id="search-input-of-header" name="text" placeholder="Tìm kiếm sản phẩm...">
+                    <input type="search" id="search-input-of-header" name="text"
+                        placeholder="Tìm kiếm sản phẩm...">
                     <i class="iconsax" data-icon="search-normal-2" id="search-icon"></i>
                 </div>
 
-                <h4>You Might Like</h4>
+                <h4>Có thể bạn sẽ thích</h4>
                 <div class="row gy-4 ratio_square-2 preemptive-search">
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/1.jpg') }}"
-                                            alt="product"></a>
+                    @foreach ($search as $product)
+                        <div class="col-xl-2 col-sm-4 col-6">
+                            <div class="product-box-6">
+                                <div class="img-wrapper">
+                                    <div class="product-image"><a href="{{ route('product.detail', $product->SKU) }}">
+                                            <img class="bg-img"
+                                                src="{{ asset('uploads/products/images/' . $product->active_image) }}"
+                                                alt="product"></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$50.00 </p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4+</li>
-                                    </ul>
+                                <div class="product-detail">
+                                    <div>
+                                        <a href="{{ route('product.detail', $product->SKU) }}">
+                                            <h6>{{ \Illuminate\Support\Str::limit($product->name, 40) }}</h6>
+                                        </a>
+                                        <p>{{ $product->priceRange }}</p>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/2.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$95.00 <del>$140.00</del></p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>3+</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/3.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$80.00 <del>$140.00</del></p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/4.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$90.00 </p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>2+</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/5.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div>
-                                    <a href="product-detail.html">
-                                        <h6> Women's Stylish Top</h6>
-                                    </a>
-                                    <p>$180.00 <del>$140.00</del></p>
-                                    <ul class="rating">
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                        <li><i class="fa-regular fa-star"></i></li>
-                                        <li>4+</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-sm-4 col-6">
-                        <div class="product-box-6">
-                            <div class="img-wrapper">
-                                <div class="product-image"><a href="product-detail.html"> <img class="bg-img"
-                                            src="{{ asset('assets/images/product/product-2/blazers/6.jpg') }}"
-                                            alt="product"></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <a href="product-detail.html">
-                                    <h6> Women's Stylish Top</h6>
-                                </a>
-                                <p>$120.00 </p>
-                                <ul class="rating">
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star-half-stroke"></i></li>
-                                    <li><i class="fa-regular fa-star"></i></li>
-                                    <li>4+</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -448,7 +315,7 @@
                     window.history.replaceState({}, '', current_url);
                 }
 
-                
+
                 // Chuyển hướng đến trang product và thêm query string 'name' với từ khóa tìm kiếm
                 window.location.href = '/product?search=' + encodeURIComponent(searchValue);
             }

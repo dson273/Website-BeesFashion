@@ -34,58 +34,70 @@ class VoucherController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'code' => 'required|regex:/^[a-zA-Z0-9]+$/|unique:vouchers,code', // Mã voucher phải viết liền (không khoảng trắng)
-            'amount' => 'required|numeric|min:0',
+            'code' => 'required|regex:/^[a-zA-Z0-9]+$/|unique:vouchers,code',
+            'amount' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value >= $request->minimum_order_value) {
+                        $fail('Giá trị giảm phải nhỏ hơn giá tối thiểu đơn hàng.');
+                    }
+                    if ($request->type === 'percent' && $value >= 100) {
+                        $fail('Giá trị giảm phải nhỏ hơn 100 nếu loại voucher là phần trăm.');
+                    }
+                },
+            ],
+            'maximum_reduction' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value > $request->minimum_order_value) {
+                        $fail('Giá tiền giảm tối đa không được lớn hơn giá tối thiểu đơn hàng.');
+                    }
+                },
+            ],
             'image' => 'required|image',
             'quantity' => 'required|integer|min:1',
-            'start_date' => 'required|date|before_or_equal:end_date', // Ngày bắt đầu phải có và trước hoặc bằng ngày hết hạn
-            'end_date' => 'required|date|after_or_equal:start_date',   // Ngày hết hạn phải có và sau hoặc bằng ngày bắt đầu
+            'start_date' => 'required|date|before_or_equal:end_date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'minimum_order_value' => 'required|numeric|min:0',
-            'maximum_reduction' => 'required|numeric|min:0',
         ], [
             'name.required' => 'Tên voucher là bắt buộc.',
             'code.required' => 'Mã voucher là bắt buộc.',
-
             'code.regex' => 'Mã voucher phải viết liền, không chứa khoảng trắng.',
             'code.unique' => 'Mã voucher đã tồn tại.',
-
             'amount.required' => 'Giá trị giảm là bắt buộc.',
             'amount.numeric' => 'Giá trị giảm phải là một số.',
             'amount.min' => 'Giá trị giảm phải lớn hơn hoặc bằng 0.',
-
-            'image.required' => 'Không được để trống ảnh.',
-            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
-
-            'quantity.required' => 'Số lượng là bắt buộc.',
-            'quantity.integer' => 'Số lượng phải là một số nguyên.',
-            'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1.',
-
-            'minimum_order_value.required' => 'Giá trị tối thiểu đơn hàng là bắt buộc.',
-            'minimum_order_value.numeric' => 'Giá trị tối thiểu đơn hàng phải là một số.',
-            'minimum_order_value.min' => 'Giá trị tối thiểu đơn hàng phải lớn hơn hoặc bằng 0.',
-
             'maximum_reduction.required' => 'Giá tiền giảm tối đa là bắt buộc.',
             'maximum_reduction.numeric' => 'Giá tiền giảm tối đa phải là một số.',
             'maximum_reduction.min' => 'Giá tiền giảm tối đa phải lớn hơn hoặc bằng 0.',
-
+            'image.required' => 'Không được để trống ảnh.',
+            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
+            'quantity.required' => 'Số lượng là bắt buộc.',
+            'quantity.integer' => 'Số lượng phải là một số nguyên.',
+            'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1.',
+            'minimum_order_value.required' => 'Giá trị tối thiểu đơn hàng là bắt buộc.',
+            'minimum_order_value.numeric' => 'Giá trị tối thiểu đơn hàng phải là một số.',
+            'minimum_order_value.min' => 'Giá trị tối thiểu đơn hàng phải lớn hơn hoặc bằng 0.',
             'start_date.required' => 'Ngày bắt đầu là bắt buộc.',
             'start_date.date' => 'Ngày bắt đầu phải là một ngày hợp lệ.',
             'start_date.before_or_equal' => 'Ngày bắt đầu phải trước hoặc bằng ngày hết hạn.',
-
             'end_date.required' => 'Ngày hết hạn là bắt buộc.',
             'end_date.date' => 'Ngày hết hạn phải là một ngày hợp lệ.',
             'end_date.after_or_equal' => 'Ngày hết hạn phải sau hoặc bằng ngày bắt đầu.',
         ]);
-
-        if ($request->amount >= $request->minimum_order_value) {
-            return back()->with(['statusError' => 'Giá trị giảm phải nhỏ hơn giá tối thiểu đơn hàng.']);
+        if (Voucher::where('code', $request->code)->exists()) {
+            return back()->withInput()->withErrors(['code' => 'Mã voucher này đã tồn tại.']);
         }
 
         $params = $request->except('_token');
 
         if ($image = $request->file('image')) {
             $imageName = $image->hashName();
-            $image->move(public_path('uploads/vouchers/images'), $imageName); 
+            $image->move(public_path('uploads/vouchers/images'), $imageName);
             $params['image'] = $imageName;
         } else {
             $params['image'] = null;
@@ -174,49 +186,123 @@ class VoucherController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, string $id)
     {
-        if ($request->isMethod('PUT')) {
-            $params = $request->except('_token', '_method');
-            $vouchers = Voucher::findOrFail($id);
+        $voucher = Voucher::findOrFail($id);
 
-            if ($request->hasFile('image')) {
-                if ($vouchers->image && file_exists(public_path('uploads/vouchers/images/' . $vouchers->image))) {
-                    unlink(public_path('uploads/vouchers/images/' . $vouchers->image));
-                }
+        // Sử dụng validate giống hàm store
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => [
+                'required',
+                'regex:/^[a-zA-Z0-9]+$/',
+                // Kiểm tra duy nhất ngoại trừ ID hiện tại
+                'unique:vouchers,code,' . $voucher->id,
+            ],
+            'amount' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value >= $request->minimum_order_value) {
+                        $fail('Giá trị giảm phải nhỏ hơn giá tối thiểu đơn hàng.');
+                    }
+                    if ($request->type === 'percent' && $value >= 100) {
+                        $fail('Giá trị giảm phải nhỏ hơn 100 nếu loại voucher là phần trăm.');
+                    }
+                },
+            ],
+            'maximum_reduction' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value > $request->minimum_order_value) {
+                        $fail('Giá tiền giảm tối đa không được lớn hơn giá tối thiểu đơn hàng.');
+                    }
+                },
+            ],
+            'image' => 'nullable|image',
+            'quantity' => 'required|integer|min:1',
+            'start_date' => 'required|date|before_or_equal:end_date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'minimum_order_value' => 'required|numeric|min:0',
+        ], [
+            'name.required' => 'Tên voucher là bắt buộc.',
+            'code.required' => 'Mã voucher là bắt buộc.',
+            'code.regex' => 'Mã voucher phải viết liền, không chứa khoảng trắng.',
+            'code.unique' => 'Mã voucher đã tồn tại.',
+            'amount.required' => 'Giá trị giảm là bắt buộc.',
+            'amount.numeric' => 'Giá trị giảm phải là một số.',
+            'amount.min' => 'Giá trị giảm phải lớn hơn hoặc bằng 0.',
+            'maximum_reduction.required' => 'Giá tiền giảm tối đa là bắt buộc.',
+            'maximum_reduction.numeric' => 'Giá tiền giảm tối đa phải là một số.',
+            'maximum_reduction.min' => 'Giá tiền giảm tối đa phải lớn hơn hoặc bằng 0.',
+            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
+            'quantity.required' => 'Số lượng là bắt buộc.',
+            'quantity.integer' => 'Số lượng phải là một số nguyên.',
+            'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1.',
+            'minimum_order_value.required' => 'Giá trị tối thiểu đơn hàng là bắt buộc.',
+            'minimum_order_value.numeric' => 'Giá trị tối thiểu đơn hàng phải là một số.',
+            'minimum_order_value.min' => 'Giá trị tối thiểu đơn hàng phải lớn hơn hoặc bằng 0.',
+            'start_date.required' => 'Ngày bắt đầu là bắt buộc.',
+            'start_date.date' => 'Ngày bắt đầu phải là một ngày hợp lệ.',
+            'start_date.before_or_equal' => 'Ngày bắt đầu phải trước hoặc bằng ngày hết hạn.',
+            'end_date.required' => 'Ngày hết hạn là bắt buộc.',
+            'end_date.date' => 'Ngày hết hạn phải là một ngày hợp lệ.',
+            'end_date.after_or_equal' => 'Ngày hết hạn phải sau hoặc bằng ngày bắt đầu.',
+        ]);
 
-                $image = $request->file('image');
-                $imageName = $image->hashName();
-                $image->move(public_path('uploads/vouchers/images'), $imageName);
+        // Cập nhật dữ liệu
+        $params = $request->except('_token', '_method');
 
-                $params['image'] = $imageName;
-            } else {
-                $params['image'] = $vouchers->image;
+        if ($request->hasFile('image')) {
+            // Xóa ảnh cũ nếu tồn tại
+            if ($voucher->image && file_exists(public_path('uploads/vouchers/images/' . $voucher->image))) {
+                unlink(public_path('uploads/vouchers/images/' . $voucher->image));
             }
-            $params['is_active'] = $request->has('is_active') ? 1 : 0;
-            $params['is_public'] = $request->has('is_public') ? 1 : 0;
 
-            $vouchers->update($params);
+            $image = $request->file('image');
+            $imageName = $image->hashName();
+            $image->move(public_path('uploads/vouchers/images'), $imageName);
 
-            return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Cập nhật voucher thành công');
+            $params['image'] = $imageName;
+        } else {
+            $params['image'] = $voucher->image;
         }
+
+        $params['is_active'] = $request->has('is_active') ? 1 : 0;
+        $params['is_public'] = $request->has('is_public') ? 1 : 0;
+
+        $voucher->update($params);
+
+        return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Cập nhật voucher thành công');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $vouchers = Voucher::findOrFail($id);
+        $voucher = Voucher::findOrFail($id);
 
-        if ($vouchers->image && file_exists(public_path('uploads/vouchers/images/' . $vouchers->image))) {
-            unlink(public_path('uploads/vouchers/images/' . $vouchers->image));
+        // Kiểm tra xem voucher có sản phẩm nào liên kết hay không
+        if ($voucher->products()->exists()) {
+            return redirect()->route('admin.vouchers.index')->with('statusError', 'Không thể xóa voucher này vì đang chứa sản phẩm áp dụng.');
         }
 
-        $vouchers->delete();
+        // Xóa ảnh liên quan nếu có
+        if ($voucher->image && file_exists(public_path('uploads/vouchers/images/' . $voucher->image))) {
+            unlink(public_path('uploads/vouchers/images/' . $voucher->image));
+        }
 
-        return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Xóa vouchers thành công!');
+        $voucher->delete();
+
+        return redirect()->route('admin.vouchers.index')->with('statusSuccess', 'Xóa voucher thành công!');
     }
+
 
 
     public function onActive($id)

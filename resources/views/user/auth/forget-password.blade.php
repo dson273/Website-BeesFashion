@@ -8,7 +8,7 @@
             <div class="custom-container container">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4>Forgot Password</h4>
+                        <h4>Quên mật khẩu</h4>
                     </div>
                     {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
@@ -30,8 +30,8 @@
                 <div class="col-xxl-4 col-lg-6 mx-auto">
                     <div class="log-in-box">
                         <div class="log-in-title">
-                            <h4>Welcome To BeesFashion</h4>
-                            <p>Forgot your password</p>
+                            <h4>Chào mừng đến với BeesFashion</h4>
+                            <p>Quên mật khẩu</p>
                         </div>
                         <div class="login-box">
                             <form id="form-forgot" action="{{ route('forgot-processing') }}" class="row g-3"
@@ -41,8 +41,7 @@
                                     <div class="form-floating">
                                         <input class="form-control @error('email') is-invalid @enderror" id="email"
                                             name="email" type="email" placeholder="name@example.com"
-                                            value="{{ old('email') }}"><label for="floatingInputValue">Enter Your
-                                            Email</label>
+                                            value="{{ old('email') }}"><label for="floatingInputValue">Nhập email của bạn.</label>
                                         {{-- Hiển thị thông báo lỗi --}}
                                         <span class="invalid-feedback">
                                             @error('email')
@@ -52,13 +51,13 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <input class="btn login btn_black sm" type="submit" value="Send">
+                                    <input class="btn login btn_black sm" type="submit" value="Gửi">
                                 </div>
                             </form>
                         </div>
                         <div class="other-log-in"></div>
                         <div class="sign-up-box">
-                            <a class="text-decoration-underline" href="{{ route('login') }}">Back To Login</a>
+                            <a class="text-decoration-underline" href="{{ route('login') }}">Quay lại Đăng nhập</a>
                         </div>
                     </div>
                 </div>
@@ -76,10 +75,10 @@
             <div class="modal-content">
                 <div class="modal-body"> <img class="img-fluid" src="{{ asset('assets/images/gif/success-notification.gif') }}"
                         alt="">
-                    <h4>Notification</h4>
-                    <p>New password has been sent to your email.</p>
+                    <h4>Thông báo!</h4>
+                    <p>Mật khẩu mới đã được gửi tới email của bạn.</p>
                     <div class="submit-button"> <button class="btn" type="submit" data-bs-dismiss="modal"
-                            aria-label="Close">Ok</button><a class="btn" href="{{ route('login') }}">Login</a></div>
+                            aria-label="Close">Ok</button><a class="btn" href="{{ route('login') }}">Đăng Nhập</a></div>
                 </div>
             </div>
         </div>
@@ -149,7 +148,7 @@
                     }
                 });
             } catch (error) {
-                console.error('Có lỗi xảy ra khi lấy đơn hàng:', error);
+                console.error('Có lỗi xảy ra khi gửi email:', error);
             }
         });
     });

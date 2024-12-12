@@ -1,3 +1,6 @@
+
+
+//lưu CODE voucher
 document.querySelectorAll('.copy-content').forEach(element => {
     element.addEventListener('click', function () {
         const voucherCode = this.getAttribute('data-code'); // Lấy mã voucher
@@ -19,6 +22,9 @@ document.querySelectorAll('.copy-content').forEach(element => {
         });
     });
 });
+
+
+//Lấy dữ liệu khi người dùng tăng giảm số lượng đơn hàng
 $(document).ready(function () {
     // Khi nhấn nút giảm
     $('.reduce').on('click', function () {
@@ -49,6 +55,7 @@ $(document).ready(function () {
         }
     });
 });
+
 
 $(document).on('click', '.quick-view-btn', function (event) {
     event.preventDefault();
@@ -303,7 +310,7 @@ $(document).on('click', '#add-to-cart-btn', function (event) {
     // Kiểm tra xem đã chọn đầy đủ thuộc tính chưa
     if (!selectedVariantId) {
         const unselectedAttributes = [];
-        
+
         // Kiểm tra các thuộc tính chưa được chọn
         $('.attribute_section').each(function () {
             if ($(this).find('.attribute_item.active').length === 0) {
@@ -331,7 +338,7 @@ $(document).on('click', '#add-to-cart-btn', function (event) {
     addToCart(selectedVariantId, quantity);
 });
 
-
+//Lấy dữ liệu khi người dùng bấm thêm giỏ hàng
 function addToCart(variantId, quantity) {
     $.ajax({
         url: '/cart/add',
@@ -351,14 +358,14 @@ function addToCart(variantId, quantity) {
                 $('#quantity').val(1);
                 setTimeout(function () {
                     successMessage.removeClass('show').addClass('hide');
-                }, 3000);
+                }, 2000);
                 $('#quick-view').modal('hide');
             } else {
                 alert(data.message);
             }
         },
         error: function (xhr, status, error) {
-            notification('warning', 'Vui lòng đăng nhập để thêm vào giỏ hàng.');
+            notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!');
         }
     });
 }
@@ -413,15 +420,82 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.status == 'success') {
                     notification('success', response.message, 'Thành công!');
-                    $this.text(saveText); 
+                    $this.text(saveText);
                 } else if (response.status === 'error') {
                     notification('warning', response.message, 'Thông báo!');
                 }
             },
-            error: function () {
-                alert('Không thể lưu voucher. Vui lòng thử lại.');
+            error: function (xhr, status, error) {
+                notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!', 'Warning!', '2000');
+    
             }
         });
     });
 });
+
+//Thêm sản phẩm yêu thích
+$('.wishlist-icon').click(function () {
+    const $this = $(this);
+    const productId = $(this).data('id');
+
+    $.ajax({
+        url: '/wishlist/add',
+        method: 'POST',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            product_id: productId
+        },
+        success: function (response) {
+
+            if (response.status == 'success') {
+
+                $('.cart_qty_cls').text(response.wishCount);
+                notification('success', response.message, 'Thành công!');
+
+            } else if (response.status === 'error') {
+                notification('warning', response.message, 'Thông báo!');
+            }
+        },
+        error: function (xhr, status, error) {
+            notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!', 'Warning!', '2000');
+        }
+    });
+});
+
+//Xóa sản phẩm khỏi trang yêu thích
+$(document).on('click', '.delete-button', function () {
+    const $this = $(this); // Lấy nút được nhấn
+    const productId = $this.data('id'); // Lấy ID sản phẩm từ thuộc tính `data-id`
+
+    $.ajax({
+        url: '/wishlist/delete',
+        method: 'POST', // Laravel yêu cầu POST, nhưng bạn sẽ spoof DELETE
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token
+            _method: 'DELETE', // Spoof method DELETE
+            product_id: productId, // Dữ liệu cần thiết
+        },
+        success: function (response) {
+
+            if (response.status === 'success') {
+                // Hiển thị thông báo thành công
+                notification('success', response.message, 'Thành công!');
+
+                // Xóa toàn bộ box sản phẩm
+                $this.closest('.col').remove();
+                location.reload();
+            } else if (response.status === 'error') {
+                // Hiển thị thông báo lỗi từ server
+                notification('warning', response.message, 'Thông báo!');
+            }
+        },
+        error: function (xhr, status, error) {
+            notification('warning', ' Không có sản phẩm này trong yêu thích!', 'Warning!', '2000');
+
+        },
+    });
+});
+
+
+
 

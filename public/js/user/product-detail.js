@@ -186,10 +186,7 @@ $(document).ready(function () {
                     $('.blink-border-text').removeClass('animation-blink-border');
                 }, 950);
                 notification('warning', 'Đã đạt đến số lượng tối đa trong kho!', 'Cảnh báo!');
-            } else if ($('.quantity').val() >= 20) {
-                notification('warning', 'Mỗi lần chỉ được phép mua tối đa 20 sản phẩm!',
-                    'Cảnh báo!');
-            } else {
+            }else {
                 $('.quantity').val(function (i, val) {
                     return parseInt(val) + 1;
                 });
@@ -214,9 +211,6 @@ $(document).ready(function () {
             } else if (currentVal > maxStock) {
                 $(this).val(maxStock);
                 notification('warning', `Không được vượt quá số lượng tối đa trong kho: ${maxStock}`, 'Cảnh báo!');
-            } else if (currentVal > 20) {
-                $(this).val(20);
-                notification('warning', 'Mỗi lần chỉ được phép mua tối đa 20 sản phẩm!', 'Cảnh báo!');
             }
         }
     });
@@ -245,15 +239,16 @@ $(document).ready(function () {
                         $('.shoping-prize .cart-count').text(response.cartCount);
                         notification('success', response.message, 'Thành công!');
                         //Thông báo hết hàng
-                    } else if (response.status === 'error') {
-                        notification('warning', response.message, 'Thông báo!');
+                    } else if (response.status === 'warning') {
+                        notification('warning', response.message, 'Cảnh báo!');
                         //Thông báo chưa đăng nhập
                     } else if (response.status === 'unauthenticated') {
-                        notification('warning', response.message, 'Thông báo!');
+                        notification('warning', response.message, 'Cảnh báo!');
                     }
                 },
-                error: function () {
-                    notification('error', 'Có lỗi xảy ra. Vui lòng thử lại.', 'Lỗi!');
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    reject();
                 }
             });
         }

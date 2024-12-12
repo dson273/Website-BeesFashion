@@ -13,14 +13,14 @@
                 <div class="custom-container container">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <h4>Check Out</h4>
+                            <h4>Đặt hàng</h4>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
                                 <li class="breadcrumb-item"> <a href="index.html">Home </a></li>
                                 <li class="breadcrumb-item active"> <a href="#">Check Out</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -32,10 +32,8 @@
                         <div class="left-sidebar-checkout sticky">
                             <div class="address-option">
                                 <div class="address-title">
-                                    <h4>Billing Address</h4><a href="#" data-bs-toggle="modal"
-                                        data-bs-target="#create-address-modal" title="Add new address" tabindex="0">+ Add
-                                        New
-                                        Address</a>
+                                    <h4>Địa chỉ giao hàng</h4><a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#create-address-modal" title="Add new address" tabindex="0">+ Thêm địa chỉ</a>
                                 </div>
 
                                 <div class="row" id="listAddresses">
@@ -43,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="payment-options">
-                                <h4 class="mb-3">Payment methods</h4>
+                                <h4 class="mb-3">Phương thức thanh toán</h4>
                                 <input type="hidden" id="status_cart" value="{{ $check_out_data['is_cart'] }}">
                                 <div class="row gy-3">
                                     <div class="col-sm-6">
@@ -89,7 +87,7 @@
                     </div>
                     <div class="col-xxl-3 col-lg-4">
                         <div class="right-sidebar-checkout">
-                            <h4>Checkout</h4>
+                            <h4>Đơn hàng</h4>
                             <div class="cart-listing">
                                 <ul>
                                     @if (!empty($check_out_data) && isset($check_out_data['product_variant_data']))
@@ -107,7 +105,7 @@
                                                     <img src="{{ asset('uploads/products/images/' . $item['image']) }}"
                                                         width="60px" height="64px" alt="">
                                                     <div class="ms-2">
-                                                        <h6>{{ Str::limit($item['name'], 15, '...') }}</h6>
+                                                        <h6>{{ Str::limit($item['name'], 20, '...') }}</h6>
                                                         <span>{{ Str::limit($item['variant_values'], 20, '...') }}</span>
                                                     </div>
                                                 </div>
@@ -128,9 +126,9 @@
                                 </ul>
                                 <div class="summary-total">
                                     <ul>
-                                        <span class="mb-2 d-block">Basic Charges</span>
+                                        <span class="mb-2 d-block">Phí cơ bản</span>
                                         <li class="li_sub_total">
-                                            <p>Subtotal</p>
+                                            <p>Tổng cộng</p>
                                             <div class="d-flex flex-column align-items-end">
                                                 <span
                                                     id="sub_total">{{ number_format($check_out_data['sub_total'], 0, '.', '.') }}đ</span>
@@ -141,13 +139,13 @@
                                                 value="{{ $check_out_data['sub_total'] }}">
                                         </li>
                                         <li>
-                                            <p>Shipping</p>
+                                            <p>Phí vận chuyển</p>
                                             <span>{{ number_format($check_out_data['shipping_fee'], 0, '.', '.') }}đ</span>
                                             <input type="hidden" id="shipping_price"
                                                 value="{{ $check_out_data['shipping_fee'] }}">
                                         </li>
                                         <li>
-                                            <p>Tax <span class="color-of-theme" style="font-size:10px;">(0,5% tổng giá trị
+                                            <p>Thuế <span class="color-of-theme" style="font-size:10px;">(0,5% tổng giá trị
                                                     đơn hàng)</span></p>
                                             <span>{{ number_format($check_out_data['tax'], 0, '.', '.') }}đ</span>
                                             <input id="base_tax" type="hidden" value="{{ $check_out_data['tax'] }}">
@@ -155,11 +153,11 @@
 
                                         <span
                                             class="mt-2 mb-2 d-block {{ $check_out_data['free_ship'] != 'true' ? 'hidden' : '' }}"
-                                            id="titleAppliedDiscounts">Applied Discounts</span>
+                                            id="titleAppliedDiscounts">Giảm giá áp dụng</span>
 
                                         <li id="liShippingVoucher"
                                             class="{{ $check_out_data['free_ship'] != 'true' ? 'hidden' : '' }}">
-                                            <p>Shipping voucher</p>
+                                            <p>Giảm giá vận chuyển</p>
                                             <input type="hidden" id="free_ship_status"
                                                 value="{{ $check_out_data['free_ship'] }}">
                                             <span class="color-of-theme">
@@ -169,7 +167,7 @@
                                             </span>
                                         </li>
                                         <li id="liVoucher" class="hidden">
-                                            <p>Voucher</p>
+                                            <p>Giảm giá</p>
                                             <span class="color-of-theme">
                                                 -
                                                 <span class="color-of-theme"
@@ -180,7 +178,7 @@
                                     </ul>
                                     <div class="coupon-code">
                                         <div class="position-relative divInputVoucher">
-                                            <input type="text" placeholder="Enter Coupon Code" id="inputApplyVoucher">
+                                            <input type="text" placeholder="Nhập mã giảm giá" id="inputApplyVoucher">
                                             <div class="position-absolute w-100 h-100 bg-dark-subtle top-0 d-flex flex-row justify-content-between align-items-center hidden"
                                                 id="showVoucher">
                                                 <label class="ms-3 m-0" id="voucherCode">giam100k</label>
@@ -222,7 +220,7 @@
                                     @endif
                                 </div>
                                 <div class="total">
-                                    <h6>Total:</h6>
+                                    <h6>Tổng cộng:</h6>
                                     <input type="hidden" id="inputPaymentTotal" value="{{ $check_out_data['total'] }}">
                                     <div class="total m-0 mb-3 d-flex flex-column align-items-end">
                                         <h6 class="" id="paymentTotal">
@@ -233,7 +231,7 @@
                                 </div>
                                 <div class="order-button">
                                     <a class="btn btn_black sm w-100 rounded" href="javascript:void(0)"
-                                        id="place_order">Place Order</a>
+                                        id="place_order">Đặt Hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -247,7 +245,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Add Address</h4>
+                        <h4>Thêm địa chỉ</h4>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
@@ -256,7 +254,7 @@
                             @csrf
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Full Name</label>
+                                    <label class="form-label">Họ tên</label>
                                     <input class="form-control @error('full_name') is-invalid @enderror" type="text"
                                         name="full_name" placeholder="Enter your name." value="{{ old('full_name') }}">
                                     @error('full_name')
@@ -266,7 +264,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Phone</label>
+                                    <label class="form-label">Số điện thoại</label>
                                     <input class="form-control @error('phone_number') is-invalid @enderror" type="number"
                                         name="phone_number" placeholder="Enter your Number."
                                         value="{{ old('phone_number') }}">
@@ -277,7 +275,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Address</label>
+                                    <label class="form-label">Địa chỉ</label>
                                     <textarea class="form-control @error('address') is-invalid @enderror" cols="30" rows="2"
                                         placeholder="Write your Address..." name="address">{{ old('address') }}</textarea>
                                     @error('address')
@@ -285,7 +283,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <button class="btn btn-success" type="submit">Add</button>
+                            <button class="btn btn-success" type="submit">Thêm</button>
                         </form>
                     </div>
                 </div>
@@ -297,7 +295,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Edit Address</h4>
+                        <h4>Chỉnh sửa địa chỉ</h4>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
@@ -306,7 +304,7 @@
                             @method('PUT')
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Full Name</label>
+                                    <label class="form-label">Họ tên</label>
                                     <input class="form-control @error('full_name') is-invalid @enderror" type="text"
                                         name="full_name" placeholder="Enter your name." value="{{ old('full_name') }}">
                                     @error('full_name')
@@ -316,7 +314,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Phone</label>
+                                    <label class="form-label">Số điện thoại</label>
                                     <input class="form-control @error('phone_number') is-invalid @enderror" type="number"
                                         name="phone_number" placeholder="Enter your Number."
                                         value="{{ old('phone_number') }}">
@@ -327,7 +325,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Address</label>
+                                    <label class="form-label">Địa chỉ</label>
                                     <textarea class="form-control @error('address') is-invalid @enderror" cols="30" rows="2"
                                         placeholder="Write your Address..." name="address" value="{{ old('address') }}"></textarea>
                                     @error('address')
@@ -335,7 +333,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <button class="btn btn-success" type="submit">Update</button>
+                            <button class="btn btn-success" type="submit">Cập nhật</button>
                         </form>
                     </div>
                 </div>
@@ -347,7 +345,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Edit Address</h4>
+                        <h4>Chỉnh sửa địa chỉ</h4>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
@@ -356,7 +354,7 @@
                             @method('PUT')
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Full Name</label>
+                                    <label class="form-label">Họ tên</label>
                                     <input class="form-control @error('full_name') is-invalid @enderror" type="text"
                                         name="full_name" placeholder="Enter your name." value="{{ old('full_name') }}">
                                     @error('full_name')
@@ -366,7 +364,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Phone</label>
+                                    <label class="form-label">Số điện thoại</label>
                                     <input class="form-control @error('phone') is-invalid @enderror" type="number"
                                         name="phone" placeholder="Enter your Number." value="{{ old('phone') }}">
                                     @error('phone')
@@ -376,7 +374,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label">Address</label>
+                                    <label class="form-label">Địa chỉ</label>
                                     <textarea class="form-control @error('address') is-invalid @enderror" cols="30" rows="2"
                                         placeholder="Write your Address..." name="address" value="{{ old('address') }}"></textarea>
                                     @error('address')
@@ -384,7 +382,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <button class="btn btn-success" type="submit">Update</button>
+                            <button class="btn btn-success" type="submit">Cập nhật</button>
                         </form>
                     </div>
                 </div>
@@ -398,15 +396,15 @@
                 <div class="modal-content">
                     <div class="modal-body"> <img class="img-fluid" src="../assets/images/gif/question.gif"
                             alt="">
-                        <h4>Are You Sure ?</h4>
-                        <p>The address will be permanently deleted. Are you sure you want to do this?</p>
+                        <h4>Bạn có chắc không?</h4>
+                        <p>Địa chỉ sẽ bị xóa vĩnh viễn. Bạn có chắc chắn muốn làm điều này không?</p>
                         <div class="submit-button">
-                            <button class="btn" type="submit" data-bs-dismiss="modal" aria-label="Close">No</button>
+                            <button class="btn" type="submit" data-bs-dismiss="modal" aria-label="Close">Không</button>
                             <form id="delete-address-form" action="" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn" type="submit" data-bs-dismiss="modal"
-                                    aria-label="Close">Yes</button>
+                                    aria-label="Close">Có</button>
                             </form>
                         </div>
                     </div>

@@ -22,22 +22,21 @@ Danh sách sản phẩm
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">List of products</h1>
-    <p class="mb-2">Below is the product list</p>
-    <div class="mb-2 d-flex justify-content-end">
-        <a href="{{route('admin.products.create')}}" class="btn btn-success text-white text-decoration-none"><i class="fas fa-plus"></i> Create</a>
-    </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Data of all products</h6>
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-row align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
             <a href="{{route('admin.products.index')}}">
                 <span class="ml-3 btn btn-outline-primary btn-sm" id="active">Active</span>
             </a>
             <a href="{{route('admin.products.index.inactive')}}">
                 <span class="ml-3 btn btn-outline-danger btn-sm" id="inactive">Inactive</span>
             </a>
+            </div>
+            <div class="mb-2 d-flex justify-content-end">
+                <a href="{{route('admin.products.create')}}" class="btn btn-success text-white text-decoration-none btn-sm"><i class="fas fa-plus mr-2"></i>Thêm mới</a>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -102,16 +101,16 @@ Danh sách sản phẩm
                             <td>
                                 <div class="d-flex flex-column">
                                     <div class="d-flex flex-row justify-content-center">
-                                        <a href="{{route('admin.products.show',$product->id)}}" class="btn btn-secondary btn-sm d-flex align-items-center mr-1"><i class="fas fa-eye fa-sm mr-1"></i>Detail</a>
+                                        <a href="{{route('admin.products.show',$product->id)}}" class="btn btn-secondary btn-sm d-flex align-items-center mr-1"><i class="fas fa-eye fa-sm p-2"></i></a>
                                         @if($product->is_active==1)
-                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm mr-1"></i>Inactive</a>
+                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm p-2"></i></a>
                                         @else
-                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm mr-1"></i>Active</a>
+                                        <a href="{{route('admin.products.index.changestatus',$product->id)}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm p-2"></i></a>
                                         @endif
                                     </div>
                                     <div class="d-flex flex-row justify-content-center mt-2">
-                                        <a href="{{route('admin.products.edit',$product->id)}}" class="btn btn-warning btn-sm d-flex align-items-center mr-1"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Edit</a>
-                                        <a href="" class="btn btn-primary btn-sm d-flex align-items-center mr-1"><i class="fas fa-file-export fa-sm mr-1"></i>Export</a>
+                                        <a href="{{route('admin.products.edit',$product->id)}}" class="btn btn-warning btn-sm d-flex align-items-center mr-1"><i class="fas fa-pen-to-square fa-sm p-2"></i></a>
+                                        <!-- <a href="" class="btn btn-primary btn-sm d-flex align-items-center mr-1"><i class="fas fa-file-export fa-sm mr-1"></i>Export</a> -->
                                     </div>
                                 </div>
                             </td>

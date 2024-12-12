@@ -22,7 +22,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Data of all products</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách đơn hàng</h6>
 
             </div>
             <div class="card-header py-3 d-flex flex-row align-items-center">
@@ -521,7 +521,7 @@
                                                 <a href="{{ route('admin.orders.active', $item->id) }}"
                                                     class="btn btn-success btn-sm"
                                                     onclick="return confirm('Xác nhận giao đơn hàng?')">
-                                                    <i class="fa fa-check"></i> Xác nhận
+                                                    <i class="fa fa-check"></i> Xác nhận đã giao hàng
                                                 </a>
 
                                             </td>

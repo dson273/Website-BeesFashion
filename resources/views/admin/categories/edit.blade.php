@@ -29,50 +29,63 @@
             </div>
 
             <div class="card-body">
-                <div class="card-body">
-                    <form action="{{ route('admin.categories.update', $Cate->id) }}" method="POST"
-                        enctype="multipart/form-data">
-
-                        @csrf
-                        @method('PUT')
-                        <div class="mt-3 mb-3">
-                            <label for="" class="form-label">Tên danh mục</label>
-                            <input type="text" name="name" class="form-control" value="{{ $Cate->name }}">
-
-                        </div>
-                        <div class="mt-3 mb-3">
-                            <label for="" class="form-label">Ảnh</label>
-                            <input type="file" name="image" class="form-control">
-                            <img src="{{ asset('uploads/categories/images/' . $Cate->image) }}" width="150px"
-                                alt="">
-
-                        </div>
-                        <div class="mt-3 mb-3">
-                            <label for="" class="form-label">Mô tả</label>
-                            <textarea name="description" id="" cols="40" rows="4" class="form-control">{{ $Cate->description }}</textarea>
-
-                        </div>
-
-                        <div class="mt-3 mb-3">
-                            <label for="" class="form-label">Thuộc danh mục</label>
-                            <select name="parent_category_id" class="form-control" {{ $Cate->parent_category_id == '' }}>
-                                <option value="">Danh mục cha</option>
-                                {!! $htmlOption !!}
-                            </select>
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label for="is_active" class="form-label">Kích Hoạt</label>
-                            <input type="checkbox" name="is_active" value="1" {{ $Cate->is_active ? 'checked' : '' }}>
-
-                        </div>
-                        <div class="mt-3">
-                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                        </div>
-                    </form>
-                </div>
+                <form action="{{ route('admin.categories.update', $Cate->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+            
+                    <!-- Tên danh mục -->
+                    <div class="mt-3 mb-3">
+                        <label for="name" class="form-label">Tên danh mục</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $Cate->name) }}">
+                        @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+            
+                    <!-- Ảnh -->
+                    <div class="mt-3 mb-3">
+                        <label for="image" class="form-label">Ảnh</label>
+                        <input type="file" name="image" id="image" class="form-control">
+                        @if($Cate->image)
+                        <img src="{{ asset('uploads/categories/images/' . $Cate->image) }}" width="150px" alt="Ảnh danh mục">
+                        @endif
+                        @error('image')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+            
+                    <!-- Mô tả -->
+                    <div class="mt-3 mb-3">
+                        <label for="description" class="form-label">Mô tả</label>
+                        <textarea name="description" id="description" cols="40" rows="4" class="form-control">{{ old('description', $Cate->description) }}</textarea>
+                        @error('description')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+            
+                    <!-- Thuộc danh mục -->
+                    <div class="mt-3 mb-3">
+                        <label for="parent_category_id" class="form-label">Thuộc danh mục</label>
+                        <select name="parent_category_id" id="parent_category_id" class="form-control">
+                            <option value="" {{ old('parent_category_id', $Cate->parent_category_id) == '' ? 'selected' : '' }}>Danh mục cha</option>
+                            {!! $htmlOption !!}
+                        </select>
+                    </div>
+            
+                    <!-- Trạng thái -->
+                    <div class="mb-3">
+                        <label for="is_active" class="form-label">Kích Hoạt</label>
+                        <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $Cate->is_active) ? 'checked' : '' }}>
+                       
+                    </div>
+            
+                    <!-- Nút hành động -->
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
+                </form>
             </div>
+            
         </div>
     </div>
     <!-- /.container-fluid -->
