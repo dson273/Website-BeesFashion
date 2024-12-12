@@ -15,6 +15,7 @@ use App\Models\Product_vote;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Product_variant;
 use App\Models\User_voucher;
 use Illuminate\Support\Facades\Auth;
 
@@ -197,7 +198,7 @@ class HomeController extends Controller
         // Xác định các dữ liệu cần thiết từ request
         $variant_id = $request->input('variant_id');
         $quantity = $request->input('quantity', 1); // Mặc định số lượng là 1 nếu không có
-
+    
         // Kiểm tra nếu không có variant_id
         if (!$variant_id) {
             return response()->json([
@@ -205,12 +206,32 @@ class HomeController extends Controller
                 'message' => 'Dữ liệu không hợp lệ.',
             ], 400); // Trả về mã lỗi 400
         }
-
-        // Kiểm tra giỏ hàng của người dùng hiện tại
-        $cartItem = Cart::where('product_variant_id', $variant_id)  // Sửa ở đây, không cần `$variant_id->id`
+    
+        // Kiểm tra thông tin biến thể sản phẩm
+        $variant = Product_variant::find($variant_id);
+        if (!$variant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sản phẩm không tồn tại.',
+            ], 404); // Trả về mã lỗi 404
+        }
+    
+        // Kiểm tra tồn kho
+        $cartItem = Cart::where('product_variant_id', $variant_id)
             ->where('user_id', auth()->id())
             ->first();
-
+    
+        $currentQuantityInCart = $cartItem ? $cartItem->quantity : 0;
+        $totalRequestedQuantity = $currentQuantityInCart + $quantity;
+    
+        if ($totalRequestedQuantity > $variant->stock) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đơn hàng đã đạt giới hạn số lượng.',
+            ], 400); // Trả về mã lỗi 400
+        }
+    
+        // Xử lý thêm vào giỏ hàng
         if ($cartItem) {
             // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng
             $cartItem->quantity += $quantity;
@@ -223,14 +244,17 @@ class HomeController extends Controller
                 'quantity' => $quantity,
             ]);
         }
+    
+        // Lấy tổng số sản phẩm trong giỏ hàng
         $cartCount = Cart::where('user_id', Auth::id())->count();
-
+    
         return response()->json([
             'success' => true,
             'message' => 'Sản phẩm đã được thêm vào giỏ hàng.',
             'cartCount' => $cartCount
         ]);
     }
+    
 
     private function getProductReviewData($product)
     {
