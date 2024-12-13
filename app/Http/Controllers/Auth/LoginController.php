@@ -85,18 +85,6 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('statusSuccess', 'Đăng xuất thành công!');
-    }
-
-    public function verify($token)
-    {
-        $user = User::query()
-            ->where('email_verified_at', null)
-            ->where('email', base64_decode($token))->first();
-        if ($user) {
-            $user->update(['email_verified_at' => Carbon::now()]);
-            // Auth::login($user);
-            return redirect()->intended('/');
-        }
+        return redirect()->route('login')->with('statusSuccess', 'Đăng xuất thành công!');
     }
 }
