@@ -385,9 +385,6 @@ class Chart extends Model
     }
 
     //Thống kê doanh thu theo khách hàng
-    private const VIP_THRESHOLD = 10000000;
-    private const REGULAR_THRESHOLD = 5000000;
-
     public function getRevenueStatistics(string $type = 'monthly')
     {
         $dateRange = $this->getDateRange($type);
@@ -500,14 +497,16 @@ class Chart extends Model
 
     private function getCustomerTier(int $totalSpending): array
     {
-        if ($totalSpending >= self::VIP_THRESHOLD) {
-            return ['name' => 'VIP', 'class' => 'badge bg-danger text-light'];
+        if ($totalSpending == 0) {
+            return ['name' => 'Chưa có', 'class' => 'badge bg-light text-dark'];
+        } elseif ($totalSpending < 2000000) {
+            return ['name' => 'Đồng', 'class' => 'badge bg-primary text-light'];
+        } elseif ($totalSpending < 5000000) {
+            return ['name' => 'Bạc', 'class' => 'badge bg-secondary text-light'];
+        } elseif ($totalSpending < 10000000) {
+            return ['name' => 'Vàng', 'class' => 'badge bg-warning text-light'];
+        } else {
+            return ['name' => 'Kim cương', 'class' => 'badge bg-danger text-light'];
         }
-
-        if ($totalSpending >= self::REGULAR_THRESHOLD) {
-            return ['name' => 'Thường', 'class' => 'badge bg-primary text-light'];
-        }
-
-        return ['name' => 'Mới', 'class' => 'badge bg-secondary text-light'];
     }
 }

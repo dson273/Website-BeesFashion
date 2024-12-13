@@ -143,7 +143,7 @@
                                                                     <div class="h5 mb-0 font-weight-bold">{{ number_format($brandStat['total_revenue']) }} đ</div>
                                                                 </div>
                                                                 <div class="fa-2x text-success">
-                                                                    <i class="fas fa-dollar-sign"></i>
+                                                                    <i class="fa-solid fa-money-bill-wheat"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -219,7 +219,7 @@
                                                                                         <div class="h5 mb-0 font-weight-bold">{{ number_format($product['total_revenue']) }} đ</div>
                                                                                     </div>
                                                                                     <div class="fa-2x text-success">
-                                                                                        <i class="fas fa-dollar-sign"></i>
+                                                                                        <i class="fa-solid fa-money-bill-wheat"></i>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

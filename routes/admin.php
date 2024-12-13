@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\ImportHistoryController;
 use App\Http\Controllers\admin\AttributeValueController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ManagerSettingController;
 use App\Http\Controllers\Admin\RatingController;
 
@@ -59,11 +60,16 @@ Route::prefix('admin')->as('admin.')->group(function () {
     });
 
     //============================Route cho staff (admin có quyền truy cập)=======================================
-    Route::middleware(['role:staff|admin','checkBanned'])->group(function () {
+    Route::middleware(['role:staff|admin', 'checkBanned'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/statistics/revenue', [DashboardController::class, 'getRevenue']);
 
         //================================Chức năng staff có thể quản lý==================================================
+
+        //==============================================Liên hệ===========================================================
+        Route::middleware(['checkPermission:Liên hệ'])->group(function () {
+            Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');
+        });
 
         //==============================================Thống kê==========================================================
         // Route::middleware(['checkPermission:Thống kê'])->group(function () {
@@ -171,7 +177,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::middleware(['checkPermission:Quản lý đánh giá'])->group(function () {
             Route::resource('ratings', RatingController::class);
             Route::put('ratings/{id}/toggle-visibility', [RatingController::class, 'toggleVisibility'])->name('ratings.toggleVisibility');
-
         });
     });
 });

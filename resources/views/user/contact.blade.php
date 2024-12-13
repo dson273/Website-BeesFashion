@@ -8,7 +8,7 @@
                 <div class="custom-container container">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
-                            <h4>Contact</h4>
+                            <h4>Liên hệ</h4>
                         </div>
                         {{-- <div class="col-sm-6">
                             <ul class="breadcrumb float-end">
@@ -26,24 +26,15 @@
                     <div class="row gy-3">
                         <div class="col-12">
                             <div class="title-1 address-content">
-                                <p class="pb-0">Let's Get In Touch<span></span></p>
+                                <p class="pb-0">Thông Tin Liên Hệ<span></span></p>
                             </div>
                         </div>
                         <div class="col-xl-3 col-sm-6">
                             <div class="address-items">
-                                <div class="icon-box"> <i class="iconsax" data-icon="location"></i></div>
+                                <div class="icon-box"><i class="iconsax" data-icon="phone-calling"></i></div>
                                 <div class="contact-box">
-                                    <h6>Contact Number</h6>
-                                    <p>+91 123 - 456 - 7890</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-sm-6">
-                            <div class="address-items">
-                                <div class="icon-box"> <i class="iconsax" data-icon="phone-calling"></i></div>
-                                <div class="contact-box">
-                                    <h6>Email Address</h6>
-                                    <p>katie098@gmail.com</p>
+                                    <h6>Số Điện Thoại</h6>
+                                    <p>+84 123 - 456 - 7890</p>
                                 </div>
                             </div>
                         </div>
@@ -51,8 +42,17 @@
                             <div class="address-items">
                                 <div class="icon-box"> <i class="iconsax" data-icon="mail"></i></div>
                                 <div class="contact-box">
-                                    <h6>Other Address</h6>
-                                    <p>ABC Complex, New York USA 123456</p>
+                                    <h6>Địa Chỉ Email</h6>
+                                    <p>contact@beesfashion.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="address-items">
+                                <div class="icon-box"><i class="iconsax" data-icon="location"></i></div>
+                                <div class="contact-box">
+                                    <h6>Địa Chỉ Khác</h6>
+                                    <p>FPT Polytechnic Hà Nội</p>
                                 </div>
                             </div>
                         </div>
@@ -60,8 +60,8 @@
                             <div class="address-items">
                                 <div class="icon-box"> <i class="iconsax" data-icon="map-1"></i></div>
                                 <div class="contact-box">
-                                    <h6>Bournemouth Office</h6>
-                                    <p>Visitación de la Encina 22</p>
+                                    <h6>Văn Phòng</h6>
+                                    <p>FPT Polytechnic</p>
                                 </div>
                             </div>
                         </div>
@@ -75,36 +75,70 @@
                     <div class="row align-items-center gy-4">
                         <div class="col-lg-6 order-lg-1 order-2">
                             <div class="contact-box">
-                                <h4>Contact Us </h4>
-                                <p>If you've got fantastic products or want to collaborate, reach out to us. </p>
-                                <div class="contact-form">
+                                <h4>Liên hệ với chúng tôi</h4>
+                                <p>Nếu bạn có những sản phẩm tuyệt vời hoặc muốn hợp tác, hãy liên hệ với chúng tôi.</p>
+                                <form class="contact-form" action="{{ route('contact.store') }}" method="POST">
+                                    @csrf
                                     <div class="row gy-4">
-                                        <div class="col-12"> <label class="form-label" for="inputEmail4">Full Name
-                                            </label><input class="form-control" id="inputEmail4" type="text" name="text"
-                                                placeholder="Enter Full Name"></div>
-                                        <div class="col-6"><label class="form-label" for="inputEmail5">Email
-                                                Address</label><input class="form-control" id="inputEmail5" type="email"
-                                                name="email" placeholder="Enter Email Address"></div>
-                                        <div class="col-6"><label class="form-label" for="inputEmail6">Phone
-                                                Number</label><input class="form-control" id="inputEmail6" type="number"
-                                                name="number" placeholder="Enter Phone Number"></div>
-                                        <div class="col-12"> <label class="form-label"
-                                                for="inputEmail7">Subject</label><input class="form-control"
-                                                id="inputEmail7" type="text" name="text" placeholder="Enter Subject">
+                                        <div class="col-12">
+                                            <label class="form-label" for="inputEmail4">Họ và tên</label>
+                                            <input class="form-control @error('full_name') is-invalid @enderror" id="inputEmail4" type="text" name="full_name" placeholder="Nhập họ và tên"
+                                                value="{{ old('full_name') }}">
+                                            @error('full_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
-                                        <div class="col-12"> <label class="form-label">Message</label><textarea
-                                                class="form-control" id="message" rows="6"
-                                                placeholder="Enter Your Message"></textarea></div>
-                                        <div class="col-12"> <button class="btn btn_black rounded sm" type="submit">
-                                                Send
-                                                Message </button></div>
+                                        <div class="col-6">
+                                            <label class="form-label" for="inputEmail5">Email</label>
+                                            <input class="form-control @error('email') is-invalid @enderror" id="inputEmail5" type="email" name="email" placeholder="Nhập địa chỉ email"
+                                                value="{{ old('email') }}">
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" for="inputEmail6">Số điện thoại</label>
+                                            <input class="form-control @error('phone') is-invalid @enderror" id="inputEmail6" type="text" name="phone" placeholder="Nhập số điện thoại"
+                                                value="{{ old('phone') }}">
+                                            @error('phone')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label" for="inputEmail7">Tiêu đề</label>
+                                            <input class="form-control @error('subject') is-invalid @enderror" id="inputEmail7" type="text" name="subject" placeholder="Nhập tiêu đề"
+                                                value="{{ old('subject') }}">
+                                            @error('subject')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Nội dung</label>
+                                            <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" rows="6" placeholder="Nhập nội dung">{{ old('message') }}</textarea>
+                                            @error('message')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn_black rounded sm" type="submit">Gửi tin nhắn</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
+
                             </div>
                         </div>
                         <div class="col-xl-5 col-lg-6 order-lg-2 order-1 offset-xl-1">
-                            <div class="contact-img"> <img class="img-fluid"
-                                    src="{{asset('assets/images/user/1.svg')}}" alt=""></div>
+                            <div class="contact-img"> <img class="img-fluid" src="{{ asset('assets/images/user/1.svg') }}" alt=""></div>
                         </div>
                     </div>
                 </div>

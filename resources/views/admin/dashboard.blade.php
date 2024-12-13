@@ -174,7 +174,7 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="total_revenue"></div>
                             </div>
                             <div class="fa-2x text-primary">
-                                <i class="fa-solid fa-dollar-sign"></i>
+                                <i class="fa-solid fa-money-bill-wheat"></i>
                             </div>
                         </div>
                     </div>
