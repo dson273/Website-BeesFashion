@@ -6,7 +6,6 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\PaymentController;
-use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\CheckOutController;
 use App\Http\Controllers\user\WishlistController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\user\FilterProductController;
 use App\Http\Controllers\User\ProductDetailController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\User\ContactController;
 
 //---------------------------------------------ROUTE DÙNG CHUNG----------------------------------------------------------
 Route::get('/', [HomeController::class, 'index'])->name('/');
@@ -29,11 +29,9 @@ Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'g
 Route::get('blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('blog-detail', [HomeController::class, 'blogDetail'])->name('blog-detail');
 Route::get('about-us', [HomeController::class, 'aboutUs'])->name('about-us');
-Route::get('contact', [HomeController::class, 'contact'])->name('contact');
-
-//VerifyEmail
-Route::get('verify/{token}', [LoginController::class, 'verify'])->name('verifyEmail');
-
+//Trang liên hệ
+Route::get('contact', [ContactController::class, 'index'])->name('contact');
+Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
 //Thêm sản phẩm vào giỏ trang chủ
 Route::get('/get-product-details/{productId}', [HomeController::class, 'getProductDetails']);
 Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('cart.add');
@@ -45,11 +43,14 @@ Route::post('/save-voucher', [HomeController::class, 'saveVoucher'])->name('save
 Route::get('wishlist', [WishlistController::class, 'index'])->name('wishlist');
 Route::post('wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
 Route::delete('/wishlist/delete', [WishlistController::class, 'deleteToWishlist'])->name('wishlist.delete');
+
 //---------------------------------------------ROUTE CHO KHÁCH----------------------------------------------------------
 Route::middleware('guest')->group(function () {
     //Đăng ký
     Route::get('register', [RegisterController::class, 'index'])->name('register'); //Trang đăng ký
     Route::post('register', [RegisterController::class, 'register'])->name('register'); //Chức năng đăng ký
+    //Xác thực tài khoản
+    Route::get('verify/{token}', [RegisterController::class, 'verify'])->name('verifyEmail');
     //Đăng nhập
     Route::get('login', [LoginController::class, 'index'])->name('login'); //Trang đăng nhập
     Route::post('login', [LoginController::class, 'login'])->name('login'); //Chức năng đăng nhập
