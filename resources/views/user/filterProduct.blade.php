@@ -275,57 +275,57 @@
                 <div class="modal-body">
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"
                         id="close_modal"></button>
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 col-xs-12">
-                            <div class="quick-view-img">
-                                <div class="swiper modal-slide-1">
-                                    <div class="swiper-wrapper ratio_square-2">
-                                        <div class="swiper-slide">
-                                            <img class="img-fluid" id="product-image" src=""
-                                                alt="Product Image">
+                        <div class="row">
+                            <div class="col-lg-5 col-xs-12">
+                                <div class="quick-view-img">
+                                    <div class="swiper modal-slide-1">
+                                        <div class="swiper-wrapper ratio_square-2">
+                                            <div class="swiper-slide">
+                                                <img class="img-fluid" id="product-image" src=""
+                                                    alt="Product Image">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper modal-slide-2">
+                                        <div class="swiper-wrapper ratio3_4">
+                                            <!-- Dữ liệu các ảnh khác sẽ được cập nhật qua JS -->
                                         </div>
                                     </div>
                                 </div>
-                                <div class="swiper modal-slide-2">
-                                    <div class="swiper-wrapper ratio3_4">
-                                        <!-- Dữ liệu các ảnh khác sẽ được cập nhật qua JS -->
+                            </div>
+                            <div class="col-lg-7 rtl-text">
+                                <div class="product-right">
+                                    <h4 id="product-name"></h4>
+                                    <p id="product-sku"></p>
+                                    <h4 id="product-price" style="color: #ba372a"></h4>
+
+                                    <!-- Hiển thị danh sách thuộc tính -->
+                                    <div class="blink-border attributes-container" id="attributes-container">
+                                        <!-- Các thuộc tính sẽ được cập nhật qua JS -->
+                                    </div>
+                                    <div class="border-product">
+
+                                    </div>
+                                    <div class="product-description">
+                                        <h6 class="product-title">Số lượng</h6>
+                                        <div class="quantity">
+                                            <button class="reduce" type="button"><i
+                                                    class="fa-solid fa-minus"></i></button>
+                                            <input type="number" id="quantity" value="1" min="1"
+                                                max="10">
+                                            <button class="increment" type="button"><i
+                                                    class="fa-solid fa-plus"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="product-buttons">
+                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Thêm vào giỏ hàng</a>
+                                        <a class="btn btn-solid" href="#"
+                                            id="btn_view_detail_of_quick_view_product">Xem chi tiết</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 rtl-text">
-                            <div class="product-right">
-                                <h4 id="product-name"></h4>
-                                <p id="product-sku"></p>
-                                <h4 id="product-price" style="color: #ba372a"></h4>
-
-                                <!-- Hiển thị danh sách thuộc tính -->
-                                <div class="blink-border attributes-container" id="attributes-container">
-                                    <!-- Các thuộc tính sẽ được cập nhật qua JS -->
-                                </div>
-
-                                <div class="border-product">
-                                    <h6>Mô tả sản phẩm</h6>
-                                    <p id="product-description"></p>
-                                </div>
-                                <div class="product-description">
-                                    <h6 class="product-title">Quantity</h6>
-                                    <div class="quantity">
-                                        <button class="reduce" type="button"><i class="fa-solid fa-minus"></i></button>
-                                        <input type="number" id="quantity" value="1" min="1"
-                                            max="10">
-                                        <button class="increment" type="button"><i
-                                                class="fa-solid fa-plus"></i></button>
-                                    </div>
-                                </div>
-
-                                <div class="product-buttons">
-                                    <a class="btn btn-solid" href="#" id="add-to-cart-btn">Add to cart</a>
-                                    <a class="btn btn-solid" href="#">View detail</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

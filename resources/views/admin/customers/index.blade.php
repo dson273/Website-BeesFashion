@@ -85,9 +85,9 @@
                                         </form>
                                     </td> --}}
                                     <td>
-                                        <a class="btn btn-warning btn-sm mt-1"
+                                        {{-- <a class="btn btn-warning btn-sm mt-1"
                                             href="{{ route('admin.customers.edit', $customer->id) }}" title="Sửa"><i
-                                                class="fas fa-pen-to-square fa-sm mr-1"></i>Sửa</a>
+                                                class="fas fa-pen-to-square fa-sm mr-1"></i>Sửa</a> --}}
                                         <a class="btn btn-info btn-sm mt-1"
                                             href="{{ route('admin.customers.history', $customer->id) }}"
                                             title="Lịch sử ban/unban"><i class="fas fa-history fa-sm mr-1"></i>Lịch sử</a>
