@@ -7,9 +7,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 px-0">
-                    <div class="order-box-1"><img src="../assets/images/gif/failed.png" width="100px" alt="">
-                        <h4>Order Failed</h4>
-                        <p>Payment Is Failed Processsed</p>
+                    <div class="order-box-1"><img src="{{asset('assets/images/gif/failed.png')}}" width="100px" alt="">
+                        <h4>Đặt hàng không thành công</h4>
+                        <p>Thanh toán không thành công</p>
                     </div>
                 </div>
             </div>
@@ -20,27 +20,27 @@
             <div class="row gy-4">
                 <div class="col-xl-8">
                     <div class="order-items sticky">
-                        <h4>Order Information </h4>
-                        <p>Order invoice has been send to your registered email account. double check your order
-                            details
+                        <h4>Thông tin đặt hàng </h4>
+                        <p>
+                            Hóa đơn đặt hàng đã được gửi đến tài khoản email đã đăng ký của bạn. kiểm tra kỹ chi tiết đơn hàng của bạn
                         </p>
                         <div class="order-table">
                             <div class="table-responsive theme-scrollbar">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Product </th>
-                                            <th>Price </th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                            <th>Applied voucher</th>
+                                            <th>Sản phẩm </th>
+                                            <th>Giá </th>
+                                            <th>Số lượng</th>
+                                            <th>Tổng cộng</th>
+                                            <th>Giảm giá áp dụng</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @if (!empty($get_order))
                                         @foreach ($get_order->order_details as $order_detail)
                                         <tr>
-                                            <td>
+                                            <td style="white-space: normal; word-wrap: break-word; max-width: 310px;">
                                                 <div class="cart-box">
                                                     <a href="{{route('product.detail',$order_detail->product_variant->product->id)}}">
                                                         @if ($order_detail->product_variant->image)
@@ -51,7 +51,7 @@
                                                     </a>
                                                     <div class="d-flex flex-column">
                                                         <a href="{{route('product.detail',$order_detail->product_variant->product->id)}}">
-                                                            <h5>{{Str::limit($order_detail->product_variant->product->name,15,'...')}}</h5>
+                                                            <h5 class="text-truncate mb-1" style="max-width: 100%; white-space: normal;">{{Str::limit($order_detail->product_variant->product->name,30,'...')}}</h5>
                                                         </a>
                                                         <span>{{$order_detail->value_variants}}</span>
                                                     </div>
@@ -84,7 +84,7 @@
                                             <td></td>
                                             <td></td>
                                             <td class="total fw-bold">
-                                                Total :
+                                                Tổng cộng :
                                             </td>
                                             <td class="total fw-bold">
                                                 <div class="d-flex flex-column align-items-end">
@@ -105,61 +105,59 @@
                     <div class="summery-box">
                         <div class="sidebar-title">
                             <div class="loader-line"></div>
-                            <h4>Order Details </h4>
+                            <h4>Chi tiết đặt hàng </h4>
                         </div>
                         <div class="summery-content">
                             <ul>
                                 <li>
-                                    <p class="fw-semibold">Product total ({{count($get_order->order_details)}})</p>
+                                    <p class="fw-semibold">Tổng sản phẩm ({{count($get_order->order_details)}})</p>
                                     <h6>{{number_format($get_order->total_cost+$get_order->voucher,0,'.',',')}} đ</h6>
                                 </li>
                                 <li>
-                                    <p>Shipping to </p><span>vietnam</span>
+                                    <p>Vận chuyển đến </p><span>Vietnam</span>
                                 </li>
                                 <li>
-                                    <p>Payment method </p><span>{{$get_order->payment_method}}</span>
+                                    <p>Phương thức thanh toán </p><span>{{$get_order->payment_method}}</span>
                                 </li>
                             </ul>
                             <ul>
                                 <li>
-                                    <p>Shipping Costs</p><span>{{number_format($get_order->shipping_price,0,'.',',')}} đ</span>
+                                    <p>Phí vận chuyển</p><span>{{number_format($get_order->shipping_price,0,'.',',')}} đ</span>
                                 </li>
                                 <li>
-                                    <p>Tax <span>(0,5% of total order value)</span> </p><span>{{number_format($get_order->tax,0,'.',',')}} đ</span>
+                                    <p>Thuế <span>(0,5% tổng giá trị đơn hàng)</span> </p><span>{{number_format($get_order->tax,0,'.',',')}} đ</span>
                                 </li>
                                 <li>
-                                    <p>Shipping voucher </p><span class="text-danger">-{{number_format($get_order->shipping_voucher,0,'.',',')}} đ</span>
+                                    <p>Giảm giá vận chuyển</p><span class="text-danger">-{{number_format($get_order->shipping_voucher,0,'.',',')}} đ</span>
                                 </li>
                                 <li>
-                                    <p>Voucher </p><span class="text-danger">-{{number_format($get_order->voucher,0,'.',',')}} đ</span>
+                                    <p>Giảm giá</p><span class="text-danger">-{{number_format($get_order->voucher,0,'.',',')}} đ</span>
                                 </li>
                             </ul>
                             <div class="d-flex align-items-center justify-content-between">
-                                <h6>Total (VND)</h6>
+                                <h6>Tổng cộng (VND)</h6>
                                 <h5>{{number_format($get_order->total_payment,0,'.',',')}} đ</h5>
                             </div>
-                            <div class="note-box">
-                                <p>I'm hoping the store can work with me to get it delivered as soon as possible
-                                    because
-                                    I really need it to gift to my friend for her party next week.Many thanks for
-                                    it.
+                            {{-- <div class="note-box">
+                                <p>Mình rất mong cửa hàng có thể làm việc với mình để giao hàng trong thời gian sớm nhất
+                                    bởi vì tôi thực sự cần nó để tặng cho bạn tôi trong bữa tiệc vào tuần tới. Cảm ơn rất nhiều!
                                 </p>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="summery-footer">
                         <div class="sidebar-title">
                             <div class="loader-line"></div>
-                            <h4>Shipping Address</h4>
+                            <h4>Địa chỉ giao hàng</h4>
                         </div>
                         <ul>
                             <li>
-                                <h6>{{$get_order->full_name}}</h6>
-                                <h6>{{$get_order->phone_number}}</h6>
-                                <h6>{{$get_order->address}}</h6>
+                                <h6>Họ tên: {{$get_order->full_name}}</h6>
+                                <h6>Số điện thoại: {{$get_order->phone_number}}</h6>
+                                <h6>Địa chỉ:{{$get_order->address}}</h6>
                             </li>
                             <li>
-                                <h6>Expected Date Of Delivery: <span>Track Order</span></h6>
+                                <h6>Ngày dự kiến giao hàng: <span>Theo dõi đơn hàng</span></h6>
                             </li>
                             <li>
                                 <h5>{{$get_order->created_at->format('M d, Y')}}</h5>

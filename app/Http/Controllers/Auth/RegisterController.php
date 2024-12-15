@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Category;
+use App\Mail\VerifyEmail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -63,14 +65,53 @@ class RegisterController extends Controller
             'password.regex' => 'Mật khẩu không được chứa khoảng trắng!',
         ]);
 
-        //Tạo user mới
-        $user = User::query()->create($data);
-        //Login với user vừa tạo
-        Auth::login($user);
-        // gen lại token cho user vừa đăng nhập
-        $request->session()->regenerate();
+        // Lưu thông tin vào session tạm thời
+        $request->session()->put('registration_data', $data);
+        // Tạo token xác thực
+        $token = base64_encode(json_encode([
+            'email' => $data['email'],
+            'timestamp' => now()->timestamp,
+        ]));
+        // Gửi email xác thực
+        Mail::to($data['email'])->send(new VerifyEmail($token, $data['email']));
 
-        //quay lại trang phía trước
-        return redirect()->intended('/');
+        // Thông báo và yêu cầu xác thực email
+        session()->flash('statusSuccess', 'Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.');
+        return redirect()->route('login');
+    }
+
+    public function verify($token)
+    {
+        // Giải mã token
+        $decodedToken = json_decode(base64_decode($token), true);
+        // Kiểm tra token hợp lệ
+        if (!$decodedToken || !isset($decodedToken['email'], $decodedToken['timestamp'])) {
+            return redirect()->route('register')->with('statusError', 'Liên kết xác thực không hợp lệ. Vui lòng đăng ký lại.');
+        }
+        // Kiểm tra thời gian xác thực
+        if (now()->timestamp - $decodedToken['timestamp'] > 86400) {
+            return redirect()->route('register')->with('statusError', 'Liên kết xác thực của bạn đã hết hạn sau 24 giờ. Vui lòng đăng ký lại.');
+        }
+        // Lấy thông tin từ session
+        $registrationData = session('registration_data');
+        // Kiểm tra thông tin trong session
+        if (!$registrationData || $registrationData['email'] !== $decodedToken['email']) {
+            return redirect()->route('register')->with('statusError', 'Thông tin xác thực không khớp. Vui lòng đăng ký lại.');
+        }
+        // Lưu thông tin vào database
+        $user = User::create([
+            'username' => $registrationData['username'],
+            'email' => $registrationData['email'],
+            'password' => $registrationData['password'],
+            'email_verified_at' => now(),
+        ]);
+        // Xóa thông tin trong session
+        session()->forget('registration_data');
+        // Tự động đăng nhập sau xác thực
+        Auth::login($user);
+        // Gen lại token cho session
+        session()->regenerate();
+
+        return redirect('/')->with('statusSuccess', 'Xác thực email thành công! Chào mừng bạn đến với BeesFashion.');
     }
 }

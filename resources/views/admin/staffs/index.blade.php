@@ -22,25 +22,25 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Full name</th>
+                                <th>Họ tên</th>
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>Địa chỉ</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tfoot class="sticky-bottom">
                             <tr>
                                 <th>#</th>
-                                <th>Full name</th>
+                                <th>Họ tên</th>
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>Địa chỉ</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -55,20 +55,20 @@
                                     <td>{!! $staff->status === 'active' ? '<span class="badge text-light bg-success">Hoạt động</span>' : '<span class="badge bg-danger text-light">Ngưng hoạt động</span>' !!}</td>
 
                                     <td>
-                                        <a class="btn btn-warning btn-sm" href="{{ route('admin.staffs.edit', $staff->id) }}" title="Sửa"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Edit</a>
-                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.staffs.permission', $staff->id) }}" title="Phân quyền"><i class="fas fa-key fa-sm mr-1"></i>Mission</a>
+                                        <a class="btn btn-warning btn-sm" href="{{ route('admin.staffs.edit', $staff->id) }}" title="Sửa"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Sửa</a>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.staffs.permission', $staff->id) }}" title="Phân quyền"><i class="fas fa-key fa-sm mr-1"></i>Phân quyền</a>
                                         <a class="btn btn-info btn-sm" href="{{ route('admin.staffs.history', $staff->id) }}" title="Lịch sử ban/unban"><i
-                                                class="fas fa-history fa-sm mr-1"></i>History</a>
+                                                class="fas fa-history fa-sm mr-1"></i>Lịch sử</a>
                                         <div class="d-flex mt-1">
                                             @if ($staff->status === 'active')
                                                 <!-- Nút Ban với mở modal -->
-                                                <button class="btn btn-danger btn-sm mr-1" type="button" onclick="openBanModal('{{ route('admin.staffs.ban', $staff->id) }}')" title="Ban"><i
-                                                        class="fa-solid fa-ban fa-sm mr-1"></i>Ban</button>
+                                                <button class="btn btn-danger btn-sm mr-1" type="button" onclick="openBanModal('{{ route('admin.staffs.ban', $staff->id) }}')" title="Khoá"><i
+                                                        class="fa-solid fa-ban fa-sm mr-1"></i>Khoá</button>
                                             @elseif ($staff->status === 'banned')
                                                 <!-- Nút Unban -->
                                                 <form action="{{ route('admin.staffs.unban', $staff->id) }}" method="POST">
                                                     @csrf
-                                                    <button class="btn btn-success btn-sm mr-1" type="submit" title="Unban"><i class="fas fa-user-check fa-sm mr-1"></i>Unban</button>
+                                                    <button class="btn btn-success btn-sm mr-1" type="submit" title="Mở khoá"><i class="fas fa-user-check fa-sm mr-1"></i>Mở khoá</button>
                                                 </form>
                                             @endif
                                             {{-- <form action="{{ route('admin.staffs.destroy', $staff->id) }}" method="POST"
@@ -96,7 +96,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="banModalLabel">Ban Staff</h5>
+                    <h5 class="modal-title" id="banModalLabel">Khoá nhân viên</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-danger">Ban</button>
+                        <button type="submit" class="btn btn-danger">Khoá</button>
                     </div>
                 </form>
             </div>

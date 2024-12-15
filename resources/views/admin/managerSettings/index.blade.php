@@ -23,8 +23,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Manager Name</th>
-                                <th>Actions</th>
+                                <th>Tên chức năng</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
 
@@ -36,13 +36,13 @@
                                     <td><strong>{{ $parentSetting->manager_name }}</strong></td>
                                     <td>
                                         <a href="{{ route('admin.managerSettings.edit', $parentSetting->id) }}"
-                                            class="btn btn-warning btn-sm" title="Sửa"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Edit</a>
+                                            class="btn btn-warning btn-sm" title="Sửa"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Sửa</a>
                                         <form action="{{ route('admin.managerSettings.destroy', $parentSetting->id) }}"
                                             method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có chắc chắn muốn xóa chức năng này?')"><i class="fa-solid fa-trash fa-sm mr-1"></i>Delete</button>
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa chức năng này?')"><i class="fa-solid fa-trash fa-sm mr-1"></i>Xoá</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -54,13 +54,13 @@
                                         <td style="padding-left: 30px;">- {{ $childSetting->manager_name }}</td>
                                         <td>
                                             <a href="{{ route('admin.managerSettings.edit', $childSetting->id) }}"
-                                                class="btn btn-warning btn-sm" title="Sửa"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Edit</a>
+                                                class="btn btn-warning btn-sm" title="Sửa"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Sửa</a>
                                             <form action="{{ route('admin.managerSettings.destroy', $childSetting->id) }}"
                                                 method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa chức năng này?')"><i class="fa-solid fa-trash fa-sm mr-1"></i>Delete</button>
+                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa chức năng này?')"><i class="fa-solid fa-trash fa-sm mr-1"></i>Xoá</button>
                                             </form>
                                         </td>
                                     </tr>

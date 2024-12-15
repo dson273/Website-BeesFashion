@@ -25,7 +25,7 @@
     <div class="sidebar-heading">
         Interface
     </div>
-
+    @if (Auth::user()->role === 'admin')
     <!-- Thống kê -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistics" aria-expanded="true" aria-controls="collapseStatistics">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </li>
-
+    @endif
     <!-- Quản lý danh mục -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -114,6 +114,20 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Danh sách chức năng</h6>
                 <a class="collapse-item" href="{{ route('admin.ratings.index') }}">Danh sách</a>
+            </div>
+        </div>
+    </li>
+
+    {{-- Liên hệ --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContacts" aria-expanded="true" aria-controls="collapseContacts">
+            <i class="fa-solid fa-phone text-light fa-5xl"></i>
+            <span>Liên hệ</span>
+        </a>
+        <div id="collapseContacts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{ route('admin.contacts.index') }}">Danh sách</a>
             </div>
         </div>
     </li>
@@ -213,7 +227,7 @@
             </div>
         </li>
     @endif
-    
+
     {{-- Lịch sử nhập hàng --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistory" aria-expanded="true" aria-controls="collapseHistory">

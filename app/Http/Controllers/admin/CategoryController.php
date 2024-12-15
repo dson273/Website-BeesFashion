@@ -138,49 +138,71 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if ($request->isMethod('PUT')) {
-            $params = $request->except('_token', '_method');
-            $Cate = Category::findOrFail($id);
+        $Cate = Category::findOrFail($id);
 
-            // Kiểm tra xem danh mục hiện tại có phải là danh mục cha không
-            if ($Cate->parent_category_id === null) {
-                // Lấy danh mục con hiện tại của danh mục cha (nếu có)
-                $childCategories = Category::where('parent_category_id', $Cate->id)->pluck('id')->toArray();
-
-                // Nếu danh mục cha đang được sửa chọn chính nó là con
-                if (in_array($request->parent_category_id, $childCategories)) {
-                    return redirect()->back()->with('statusError', 'Bạn không thể chọn danh mục con của danh mục cha này.');
+        // Validate dữ liệu đầu vào
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'description' => 'required|string',
+            'parent_category_id' => [
+                'nullable',
+                'exists:categories,id',
+                function ($attribute, $value, $fail) use ($id) {
+                    // Kiểm tra không cho phép chọn danh mục chính là cha của nó
+                    if ($value == $id) {
+                        $fail('Danh mục không thể là cha của chính nó.');
+                    }
                 }
+            ],
+        ], [
+            'name.required' => 'Tên danh mục chưa được nhập.',
+            'name.string' => 'Tên danh mục phải là một chuỗi ký tự.',
+            'name.max' => 'Tên danh mục không được quá 255 ký tự.',
+
+            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
+            'image.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif, svg.',
+
+            'description.required' => 'Mô tả danh mục chưa được nhập.',
+            'description.string' => 'Mô tả phải là một chuỗi ký tự.',
+
+            'parent_category_id.exists' => 'Danh mục cha không hợp lệ.',
+        ]);
+
+        // Kiểm tra mối quan hệ danh mục cha/con
+        if ($Cate->parent_category_id === null) {
+            $childCategories = Category::where('parent_category_id', $Cate->id)->pluck('id')->toArray();
+            if (in_array($request->parent_category_id, $childCategories)) {
+                return redirect()->back()->with('statusError', 'Bạn không thể chọn danh mục cha làm con của nó.');
             }
-
-            // Xử lý ảnh nếu có
-            if ($request->hasFile('image')) {
-                // Xóa ảnh cũ nếu có và ảnh mới được tải lên
-                if ($Cate->image && file_exists(public_path('uploads/categories/images/' . $Cate->image))) {
-                    unlink(public_path('uploads/categories/images/' . $Cate->image));
-                }
-
-                // Tạo tên ảnh duy nhất và lưu ảnh mới
-                $image = $request->file('image');
-                $imageName = $image->hashName();
-                $image->move(public_path('uploads/categories/images'), $imageName);
-
-                // Lưu tên ảnh mới
-                $params['image'] = $imageName;
-            } else {
-                // Nếu không có ảnh mới, giữ ảnh cũ
-                $params['image'] = $Cate->image;
-            }
-
-            // Cập nhật trạng thái hoạt động
-            $params['is_active'] = $request->has('is_active') ? 1 : 0;
-
-            // Cập nhật thông tin danh mục
-            $Cate->update($params);
-
-            return redirect()->route('admin.categories.index')->with('statusSuccess', 'Cập nhật danh mục thành công');
         }
+
+        // Xử lý ảnh nếu có
+        $params = $request->except('_token', '_method');
+        if ($request->hasFile('image')) {
+            // Xóa ảnh cũ nếu có và ảnh mới được tải lên
+            if ($Cate->image && file_exists(public_path('uploads/categories/images/' . $Cate->image))) {
+                unlink(public_path('uploads/categories/images/' . $Cate->image));
+            }
+
+            // Lưu ảnh mới
+            $image = $request->file('image');
+            $imageName = $image->hashName();
+            $image->move(public_path('uploads/categories/images'), $imageName);
+            $params['image'] = $imageName;
+        } else {
+            $params['image'] = $Cate->image;
+        }
+
+        // Cập nhật trạng thái hoạt động
+        $params['is_active'] = $request->has('is_active') ? 1 : 0;
+
+        // Cập nhật thông tin danh mục
+        $Cate->update($params);
+
+        return redirect()->route('admin.categories.index')->with('statusSuccess', 'Cập nhật danh mục thành công');
     }
+
 
 
     /**

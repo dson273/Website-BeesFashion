@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Support\Carbon;
+use App\Models\User;
+use App\Models\User_ban;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User_ban;
 
 class LoginController extends Controller
 {
@@ -43,7 +45,9 @@ class LoginController extends Controller
             'password.regex' => 'Mật khẩu không được chứa khoảng trắng!',
         ]);
 
-        if (Auth::attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']])) {
+        $remember = $request->has('remember');
+
+        if (Auth::attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']], $remember)) {
             // Đăng nhập thành công
             $request->session()->regenerate();
 
@@ -63,9 +67,11 @@ class LoginController extends Controller
             // Kiểm tra vai trò của người dùng
             if (Auth::user()->role === 'admin' || Auth::user()->role === 'staff') {
                 // Điều hướng đến trang quản trị nếu là admin hoặc staff
+                session()->flash('statusSuccess', 'Đăng nhập thành công! Chào mừng bạn đến với trang quản trị.');
                 return redirect()->intended('/admin');
             } else {
                 // Điều hướng đến trang người dùng nếu là member
+                session()->flash('statusSuccess', 'Đăng nhập thành công! Chào mừng bạn trở lại.');
                 return redirect()->intended('/');
             }
         }
@@ -74,10 +80,11 @@ class LoginController extends Controller
             'login' => 'Thông tin đăng nhập không chính xác!',
         ])->onlyInput('login');
     }
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        \request()->session()->invalidate();
-        return redirect('/');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login')->with('statusSuccess', 'Đăng xuất thành công!');
     }
 }

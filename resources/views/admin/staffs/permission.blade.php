@@ -16,9 +16,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Function name</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>Tên chức năng</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
 

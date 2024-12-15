@@ -27,7 +27,7 @@
             <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i
+                <button type="button" class="btn btn-success text-white text-decoration-none btn-sm data-toggle="modal" data-target="#exampleModal"><i
                     class="fas fa-plus"></i>
                     Thêm sản phẩm
                 </button>
@@ -70,7 +70,8 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="{{ route('admin.categories.remove', ['categoryId' => $currentCategory->id, 'productId' => $item->id]) }}" method="POST">
+                                        <form action="{{ route('admin.categories.remove', ['categoryId' => $currentCategory->id, 'productId' => $item->id]) }}" method="POST" 
+                                            onsubmit="return confirm('Bạn có đồng ý xóa hay không?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" style="all: unset; cursor: pointer;">

@@ -122,28 +122,25 @@ class OrderController extends Controller
 
         // return $pdf->stream('order_' . $id . '.pdf');
     }
-
+    //TAB 
     public function onActive(Request $request, string $id)
     {
         $order = Order::with('order_details.product_variant')->findOrFail($id);
         if ($order) {
-            // Kiểm tra xem trạng thái Shipping (3) đã có chưa
-            $shippingStatus = $order->status_orders()->where('status_id', 3)->first();
+            $shippingStatus = $order->status_orders()->where('status_id', 4)->first();
 
-            // Nếu trạng thái Shipping (3) tồn tại, tạo trạng thái Completed (4)
-            if ($shippingStatus) {
-                // Tạo bản ghi trạng thái Completed (4)
+            if (!$shippingStatus) {
                 $order->status_orders()->create(['status_id' => 4]);
 
                 return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được giao thành công');
             }
 
-            return redirect()->route('admin.orders.index')->with('statusError', 'Không tìm thấy trạng thái vận chuyển cho đơn hàng này.');
+            return redirect()->route('admin.orders.index')->with('statusWarning', 'Đơn hàng này đang trong trạng thái hoàn thành.');
         }
-        return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đang xảy ra lỗi');
+
     }
 
-    // TAB Cần gửi
+    // TAB Chờ xác nhận
     public function onSuccess(Request $request, string $id)
     {
         $order = Order::with('order_details.product_variant')->findOrFail($id);
@@ -161,26 +158,31 @@ class OrderController extends Controller
 
         return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đã bị hủy');
     }
+    // TAB Chờ xác nhận
     public function cancelOrder(Request $request, string $id)
     {
         $order = Order::with('order_details.product_variant')->findOrFail($id);
+    
         if ($order) {
             // Kiểm tra xem đơn hàng đã có trạng thái Cancelled (status_id = 5) chưa
             $existingCancelledStatus = $order->status_orders()->where('status_id', 5)->first();
-
-            // Nếu chưa có trạng thái Cancelled, tạo bản ghi mới
-            if (!$existingCancelledStatus) {
-                $order->status_orders()->create(['status_id' => 5]);
+    
+            // Nếu đã có trạng thái Cancelled, hiển thị thông báo "Đơn hàng này đang trong trạng thái hủy"
+            if ($existingCancelledStatus) {
+                return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng này đang trong trạng thái hủy');
             }
-
-            // Đảm bảo đơn hàng không còn trong tab Pending (tự động loại bỏ trạng thái Pending)
-            // Bạn có thể thêm logic tại đây nếu cần (ví dụ: thông báo cho admin)
-
+    
+            // Nếu chưa có trạng thái Cancelled, tạo bản ghi mới
+            $order->status_orders()->create(['status_id' => 5]);
+    
+            // Hiển thị thông báo "Đơn hàng đã được hủy thành công"
             return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được hủy thành công');
         }
-
-        return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng đã bị hủy');
+    
+        // Nếu không tìm thấy đơn hàng
+        return redirect()->route('admin.orders.index')->with('statusError', 'Không tìm thấy đơn hàng');
     }
+    
     /**
      * Display the specified resource.
      */
@@ -199,6 +201,27 @@ class OrderController extends Controller
         return view('admin.orders.info', compact('getInfo', 'latestStatus', 'statusOrders'));
     }
 
+
+    public function bulkAction(Request $request)
+    {
+        $action = $request->input('action');
+        $orderIds = explode(',', $request->input('order_ids'));
+    
+        if ($action == 'success') {
+            foreach ($orderIds as $orderId) {
+                $order = Order::find($orderId);
+                if ($order) {
+                    // Xử lý xác nhận đơn hàng
+                    $order->status_orders()->create(['status_id' => 3]);
+                }
+            }
+            return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được xác nhận.');
+        }
+    
+        return redirect()->route('admin.orders.index')->with('statusError', 'Hành động không hợp lệ.');
+    }
+    
+    
 
     /**
      * Update the specified resource in storage.

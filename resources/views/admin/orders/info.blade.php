@@ -26,11 +26,8 @@ Danh sách danh mục
                     <a href="{{ route('admin.orders.index') }}"><i class="fa fa-angle-left"></i> Quản lý đơn hàng</a>
                     <div class="flex justify-between">
                         <div class="index__card-title--rzIx0 font-semibold">
-                            @foreach ($getInfo->order_details as $detail)
                             <div class="flex items-center"><span
-                                    class="mr-2">{{ $detail->product_variant->SKU }}</span></div>
-                            @endforeach
-
+                                    class="mr-2">#{{ $getInfo->id }}</span></div>
                         </div>
                         <div></div>
                     </div>
@@ -172,62 +169,86 @@ Danh sách danh mục
                                 </div>
                             </div>
                             <div class="list-history">
+                                <!-- Luôn hiển thị trạng thái đầu tiên -->
+                              
+                            
+                                <!-- Hiển thị các trạng thái còn lại -->
                                 @foreach ($statusOrders->reverse() as $status)
+                                    <div class="listitem">
+                                        <div class="theme-arco-timeline-item-dot-wrapper">
+                                            <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical" style="border-left-style: dashed;"></div>
+                                            <div class="theme-arco-timeline-item-dot-content">
+                                                <div class="theme-arco-timeline-item-dot-custom
+                                                @if ($status->status_id == 1) active @endif
+                                                    @if ($status->status_id == 2) active @endif
+                                                    @if ($status->status_id == 3) active @endif
+                                                    @if ($status->status_id == 4) active @endif
+                                                    @if ($status->status_id == 5) active @endif
+                                                    @if ($status->status_id == 6) active @endif
+                                                ">
+                                                    <div class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-finished theme-arco-timeline-item-dotType-hollow-finished"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="theme-arco-timeline-item-dot-wrapper">
+                                            <div class="theme-arco-timeline-item-dot-content">
+                                                @if ($status->status_id == 2)
+                                                    <div class="sc-jeGSBP">Đơn hàng đang chờ xác nhận</div>
+                                                    <div class="text-sm font-regular text-gray-3">
+                                                        {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                    </div>
+                                                @elseif($status->status_id == 3)
+                                                    <div class="sc-jeGSBP">Đơn hàng đã đang được vận chuyển</div>
+                                                    <div class="text-sm font-regular text-gray-3">
+                                                        {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                    </div>
+                                                @elseif($status->status_id == 4)
+                                                    <div class="sc-jeGSBP">Đơn đặt hàng đã hoàn thành</div>
+                                                    <div class="text-sm font-regular text-gray-3">
+                                                        {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                    </div>
+                                                    @elseif($status->status_id == 1)
+                                                    <div class="sc-jeGSBP">Đơn hàng đang chờ xử lý</div>
+                                                    <div class="text-sm font-regular text-gray-3">
+                                                        {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                    </div>
+                                                @elseif($status->status_id == 5)
+                                                    <div class="sc-jeGSBP">Đơn hàng đã bị hủy bởi khách hàng</div>
+                                                    <div class="text-sm font-regular text-gray-3">
+                                                        {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                    </div>
+                                                @elseif($status->status_id == 6)
+                                                    <div class="sc-jeGSBP">Đơn hàng giao không thành công</div>
+                                                    <div class="text-sm font-regular text-gray-3">
+                                                        {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
                                 <div class="listitem">
                                     <div class="theme-arco-timeline-item-dot-wrapper">
                                         <div class="theme-arco-timeline-item-dot-line theme-arco-timeline-item-dot-line-is-vertical" style="border-left-style: dashed;"></div>
                                         <div class="theme-arco-timeline-item-dot-content">
-                                            <div class="theme-arco-timeline-item-dot-custom
-                                                        @if ($status->status_id == 1 ) active @endif
-                                                        @if ($status->status_id == 2 ) active @endif
-                                                        @if ($status->status_id == 3 ) active @endif
-                                                        @if ($status->status_id == 4 ) active @endif
-                                                        @if ($status->status_id == 5) active @endif
-                                                        @if ($status->status_id == 6) active @endif
-                                                    ">
+                                            <div class="theme-arco-timeline-item-dot-custom active">
                                                 <div class="theme-arco-timeline-item-parent-dot theme-arco-timeline-item-status-finished theme-arco-timeline-item-dotType-hollow-finished"></div>
                                             </div>
                                         </div>
                                     </div>
-
+                            
                                     <div class="theme-arco-timeline-item-dot-wrapper">
                                         <div class="theme-arco-timeline-item-dot-content">
-                                            @if ($status->status_id == 2)
-                                            <div class="sc-jeGSBP">Đơn hàng đang chờ xác nhận</div>
-                                            <div class="text-sm font-regular text-gray-3">
-                                                {{ $status->created_at->format('d/m/Y H:i:s') }}
-                                            </div>
-                                            @elseif($status->status_id == 3)
-                                            <div class="sc-jeGSBP">Đơn hàng đã đang được vận chuyển</div>
-                                            <div class="text-sm font-regular text-gray-3">
-                                                {{ $status->created_at->format('d/m/Y H:i:s') }}
-                                            </div>
-                                            @elseif($status->status_id == 4)
-                                            <div class="sc-jeGSBP">Đơn đặt hàng đã hoàn thành</div>
-                                            <div class="text-sm font-regular text-gray-3">
-                                                {{ $status->created_at->format('d/m/Y H:i:s') }}
-                                            </div>
-                                            @elseif($status->status_id == 1)
                                             <div class="sc-jeGSBP">Đơn hàng do khách hàng tạo</div>
                                             <div class="text-sm font-regular text-gray-3">
-                                                {{ $status->created_at->format('d/m/Y H:i:s') }}
+                                                {{ $statusOrders->first()->created_at->format('d/m/Y H:i:s') }}
                                             </div>
-                                            @elseif($status->status_id == 5)
-                                            <div class="sc-jeGSBP">Đơn hàng đã bị hủy bởi khách hàng</div>
-                                            <div class="text-sm font-regular text-gray-3">
-                                                {{ $status->created_at->format('d/m/Y H:i:s') }}
-                                            </div>
-                                            @elseif($status->status_id == 6)
-                                            <div class="sc-jeGSBP">Đơn hàng giao không thành công</div>
-                                            <div class="text-sm font-regular text-gray-3">
-                                                {{ $status->created_at->format('d/m/Y H:i:s') }}
-                                            </div>
-                                            @endif
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
                             </div>
+                            
 
 
                         </div>
@@ -252,9 +273,9 @@ Danh sách danh mục
                                     <div class="font-regular text-base text-gray-2 flex">
                                         <div class="ml-4">
                                             @if ($getInfo->payment_method === 'cod')
-                                            Thanh toán khi nhận hàng
+                                            <strong>Thanh toán khi nhận hàng</strong>
                                             @else
-                                            Thanh toán online
+                                            <strong>Thanh toán online</strong>
                                             @endif
                                         </div>
                                     </div>

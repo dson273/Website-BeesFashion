@@ -18,7 +18,7 @@
                             <select class="form-control form-control-sm" name="SKU" id="SKU">
                                 @foreach ($importHistories as $item)
                                     <option value="{{ $item->product_variant_id }}">
-                                        {{ $item->product_variant->SKU }} / {{ $item->product_variant->product->name }}
+                                        {{ $item->product_variant->name }} / {{ $item->product_variant->product->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -27,10 +27,12 @@
                         <div class="col-md-6">
                             <label for="quantity" class="form-label">Số lượng</label>
                             <input type="number" class="form-control form-control-sm" name="quantity" value="{{ old('quantity') }}">
-                                @error('quantity')
-                                <div class="text-danger">{{ $message }}</div>
+                            @error('quantity')
+                            <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+
+                      
                     </div>
                 </div>
                 <div class="modal-footer">

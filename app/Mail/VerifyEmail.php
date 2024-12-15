@@ -9,18 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ForgotPassword extends Mailable
+class VerifyEmail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $token;
+    public $email;
     /**
      * Create a new message instance.
      */
-    protected $newPassword;
-    protected $email;
-    public function __construct($newPassword, $email)
+    public function __construct($token, $email)
     {
-        $this->newPassword = $newPassword;
+        $this->token = $token;
         $this->email = $email;
     }
 
@@ -30,7 +29,7 @@ class ForgotPassword extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Cấp lại mật khẩu',
+            subject: 'Xác thực tài khoản',
         );
     }
 
@@ -40,10 +39,10 @@ class ForgotPassword extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'user.mail.content_forgot_password',
+            view: 'user.mail.verify',
             with: [
-                'newPassword' => $this->newPassword ,
-                'email' => $this->email ,
+                'token' => $this->token,
+                'email' => $this->email
             ]
         );
     }
