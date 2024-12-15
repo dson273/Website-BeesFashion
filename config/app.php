@@ -171,6 +171,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ])->toArray(),
 
@@ -187,5 +188,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,  // Đảm bảo alias là Pdf::class
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ])->toArray(),
 ];
