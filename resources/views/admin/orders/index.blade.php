@@ -145,12 +145,9 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
@@ -315,12 +312,9 @@
                                                         data-order-id="{{ $item->id }}">
                                                 </td>
                                                 <td>
-                                                    @foreach ($item->order_details as $detail)
-                                                        <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                            <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                        </a><br>
-                                                    @endforeach
-                                                    <br>
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>#{{ $item->id }}</strong>
+                                                    </a><br>
                                                     @if ($item->order_details->isNotEmpty())
                                                         {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                     @endif
@@ -481,12 +475,9 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
@@ -636,12 +627,9 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
@@ -783,12 +771,9 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
@@ -930,12 +915,9 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
@@ -1076,12 +1058,9 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
@@ -1208,62 +1187,61 @@
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-    // Lấy checkbox "Chọn tất cả"
-    const selectAllCheckbox = document.getElementById('select-all-checkbox');
-    const orderCheckboxes = document.querySelectorAll('.order-checkbox');
-    const successActionButton = document.getElementById('success-action');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy checkbox "Chọn tất cả"
+        const selectAllCheckbox = document.getElementById('select-all-checkbox');
+        const orderCheckboxes = document.querySelectorAll('.order-checkbox');
+        const successActionButton = document.getElementById('success-action');
 
-    // Xử lý chọn/bỏ chọn tất cả
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('change', function (e) {
-            const isChecked = e.target.checked;
-            orderCheckboxes.forEach(function (checkbox) {
-                checkbox.checked = isChecked; // Đồng bộ trạng thái của tất cả checkbox
+        // Xử lý chọn/bỏ chọn tất cả
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function(e) {
+                const isChecked = e.target.checked;
+                orderCheckboxes.forEach(function(checkbox) {
+                    checkbox.checked = isChecked; // Đồng bộ trạng thái của tất cả checkbox
+                });
+            });
+        }
+
+        // Xử lý khi trạng thái của từng checkbox thay đổi
+        orderCheckboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                // Kiểm tra tất cả checkbox con
+                const allChecked = Array.from(orderCheckboxes).every(cb => cb.checked);
+                const noneChecked = Array.from(orderCheckboxes).every(cb => !cb.checked);
+
+                // Cập nhật trạng thái của checkbox "Chọn tất cả"
+                if (allChecked) {
+                    selectAllCheckbox.checked = true;
+                    selectAllCheckbox.indeterminate = false;
+                } else if (noneChecked) {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                } else {
+                    selectAllCheckbox.indeterminate = true;
+                }
             });
         });
-    }
 
-    // Xử lý khi trạng thái của từng checkbox thay đổi
-    orderCheckboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            // Kiểm tra tất cả checkbox con
-            const allChecked = Array.from(orderCheckboxes).every(cb => cb.checked);
-            const noneChecked = Array.from(orderCheckboxes).every(cb => !cb.checked);
+        // Xử lý nút "Xác nhận tất cả"
+        if (successActionButton) {
+            successActionButton.addEventListener('click', function() {
+                const selectedOrders = [];
+                document.querySelectorAll('.order-checkbox:checked').forEach(function(checkbox) {
+                    selectedOrders.push(checkbox.getAttribute('data-order-id'));
+                });
 
-            // Cập nhật trạng thái của checkbox "Chọn tất cả"
-            if (allChecked) {
-                selectAllCheckbox.checked = true;
-                selectAllCheckbox.indeterminate = false;
-            } else if (noneChecked) {
-                selectAllCheckbox.checked = false;
-                selectAllCheckbox.indeterminate = false;
-            } else {
-                selectAllCheckbox.indeterminate = true;
-            }
-        });
+                if (selectedOrders.length === 0) {
+                    notification('error', 'Bạn chưa chọn đơn hàng nào!', 'Error!', '2000');
+                    return;
+                }
+
+                if (confirm('Xác nhận các đơn hàng đã chọn?')) {
+                    document.getElementById('order-ids').value = selectedOrders.join(',');
+                    document.getElementById('bulk-action').value = 'success';
+                    document.getElementById('bulk-action-form').submit();
+                }
+            });
+        }
     });
-
-    // Xử lý nút "Xác nhận tất cả"
-    if (successActionButton) {
-        successActionButton.addEventListener('click', function () {
-            const selectedOrders = [];
-            document.querySelectorAll('.order-checkbox:checked').forEach(function (checkbox) {
-                selectedOrders.push(checkbox.getAttribute('data-order-id'));
-            });
-
-            if (selectedOrders.length === 0) {
-                notification('error', 'Bạn chưa chọn đơn hàng nào!', 'Error!', '2000');
-                return;
-            }
-
-            if (confirm('Xác nhận các đơn hàng đã chọn?')) {
-                document.getElementById('order-ids').value = selectedOrders.join(',');
-                document.getElementById('bulk-action').value = 'success';
-                document.getElementById('bulk-action-form').submit();
-            }
-        });
-    }
-});
-
 </script>

@@ -133,7 +133,7 @@ Danh sách danh mục
                                         <div class="info-image">
 
                                             <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                alt="Product Image" width="50" height="50"><br>
+                                                alt="Product Image" width="60" height="60" style="border-radius:8px"><br>
 
                                         </div>
                                         <div class="info-des">
