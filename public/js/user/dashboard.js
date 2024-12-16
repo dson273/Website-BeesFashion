@@ -718,10 +718,13 @@ $(document).on('click', '#btn_confirm_cancel_order', async function () {
                     list_orders = Object.values(list_orders);
                 }
                 console.log(list_orders);
-
                 load_orders(list_orders, order_status_selected);
+                $('#order_details').removeClass('show active');
+                $('#order').addClass('show active');
             } else {
                 load_orders(list_orders, order_status_selected);
+                $('#order_details').removeClass('show active');
+                $('#order').addClass('show active');
             }
 
         } catch (error) {
@@ -839,13 +842,21 @@ $(document).on('click', '.btn_view_order_detail', async function () {
             var data_order_detail_by_id = await getOrderDetail(order_id);
             data_order_detail_by_id = convertObjectToArray(data_order_detail_by_id);
             console.log(status_id_of_this_order);
+            console.log(data_order_detail_by_id);
 
 
             $('#span_order_code').text(data_order_detail_by_id[0]['id']);
+            $('#btn_continue_payment_order_2').addClass('hidden');
+            $('#btn_confirm_done_order_2').addClass('hidden');
+            $('#btn_cancel_order_2').addClass('hidden');
+
             if (status_id_of_this_order == 1) {
                 $('#span_order_status').text("Chờ thanh toán");
+                $('#btn_continue_payment_order_2').data('id', order_id).data('amount', data_order_detail_by_id[0]['total_payment']).data('payment-method', data_order_detail_by_id[0]['payment_method']).removeClass('hidden');
+                $('#btn_cancel_order_2').data('id', order_id).removeClass('hidden');
             } else if (status_id_of_this_order == 2) {
                 $('#span_order_status').text("Chờ xác nhận".toUpperCase());
+                $('#btn_cancel_order_2').data('id', order_id).removeClass('hidden');
             } else if (status_id_of_this_order == 3) {
                 console.log(status_id_of_this_order);
                 $('#btn_confirm_done_order_2').data('id', order_id).removeClass('hidden');
@@ -858,9 +869,6 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                 $('#span_order_status').text("Trả hàng".toUpperCase());
             }
 
-            if (status_id_of_this_order != 3) {
-                $('#btn_confirm_done_order_2').addClass('hidden');
-            }
             //--------Hiển thị vòng đời của đơn hàng---------
             var progress_container = document.getElementById("progress-container");
             progress_container.innerHTML = "";
@@ -1140,6 +1148,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
             } else {
                 let notHaveProductRow = document.createElement('tr');
 
+
                 // Tạo phần tử <td> và thiết lập thuộc tính colspan, class
                 let notHaveProductCell = document.createElement('td');
                 notHaveProductCell.setAttribute('colspan', '6');
@@ -1383,21 +1392,22 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
 //===========================================Xử lý tải dòng hiển thị tổng sp phụ===========================================
 function loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product) {
     let toSumUpRow = document.createElement('tr');
-
+    toSumUpRow.style.height = "50px";
     // Tạo các phần tử <td> rỗng
     for (let i = 0; i < 5; i++) {
         let cell = document.createElement('td');
+        cell.classList.add("bg-light");
         toSumUpRow.appendChild(cell);
     }
 
     // Tạo phần tử <td> với class "total fw-bold" cho tổng
     let totalCell = document.createElement('td');
-    totalCell.classList.add('total', 'fw-bold');
+    totalCell.classList.add('total', 'fw-bold', 'bg-light');
     totalCell.textContent = 'Total :';
 
     // Tạo phần tử <td> cho giá trị tổng với flex container
     let valueCell = document.createElement('td');
-    valueCell.classList.add('total', 'fw-bold');
+    valueCell.classList.add('total', 'fw-bold', 'bg-light');
 
     // Tạo phần tử d-flex chứa các giá trị
     let flexContainer = document.createElement('div');
@@ -1455,11 +1465,6 @@ function getVoteOrder(order_detail_id) {
             }
         })
     })
-}
-if ($.fn.rateYo) {
-    console.log("RateYo library is loaded and ready to use.");
-} else {
-    console.log("RateYo library is NOT loaded.");
 }
 //=====================================XỬ LÝ ĐÁNH GIÁ ĐƠN HÀNG==========================================
 var order_detail_id_of_order_detail_voting = null;
@@ -1673,7 +1678,7 @@ $(document).on('click', '.btn_view_rated', function () {
         $('.container-spinner').addClass('hidden');
     }
 })
-//)===========================================Xử lý khi modal review ẩn)===========================================
+//)===========================================Xử lý khi modal review ẩn===========================================
 $('#review-vote-order-detail-modal').on('hidden.bs.modal', function (e) {
     $('#btn_edit_vote_order_detail').removeClass('hidden');
     $('#div_btn_confirm_edit_done_and_btn_cancel_edit').addClass('hidden');
