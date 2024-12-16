@@ -51,6 +51,9 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [RegisterController::class, 'register'])->name('register'); //Chức năng đăng ký
     //Xác thực tài khoản
     Route::get('verify/{token}', [RegisterController::class, 'verify'])->name('verifyEmail');
+    //Đăng nhập google
+    Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('google');
+    Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
     //Đăng nhập
     Route::get('login', [LoginController::class, 'index'])->name('login'); //Trang đăng nhập
     Route::post('login', [LoginController::class, 'login'])->name('login'); //Chức năng đăng nhập

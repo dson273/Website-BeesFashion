@@ -107,8 +107,8 @@
                             </div>
                             <div class="log-in-button">
                                 <ul>
-                                    <li> <a href="https://www.google.com/" target="_blank"> <i class="fa-brands fa-google me-2"> </i>Google</a></li>
-                                    <li> <a href="https://www.facebook.com/" target="_blank"><i class="fa-brands fa-facebook-f me-2"></i>Facebook </a></li>
+                                    <li> <a href="{{route('google')}}"> <i class="fa-brands fa-google me-2"> </i>Google</a></li>
+                                    <li> <a href="#"><i class="fa-brands fa-facebook-f me-2"></i>Facebook </a></li>
                                 </ul>
                             </div>
                             <div class="other-log-in"></div>

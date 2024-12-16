@@ -35,7 +35,7 @@
                                             src="{{ asset('assets/images/user/user-icon.jpg') }}" alt=""></div>
                                     {{-- Profile --}}
                                     <div class="profile-name">
-                                        <h4>{{ Auth::user()->username }}</h4>
+                                        <h4>{{ Auth::user()->full_name ?? Auth::user()->username}}</h4>
                                         <h6>{{ Auth::user()->email }}</h6>
                                         <span data-bs-toggle="modal" data-bs-target="#edit-profile" title="Edit Profile"
                                             tabindex="0">Sửa hồ sơ</span>
@@ -194,17 +194,17 @@
                                                     <ul class="profile-information">
                                                         <li>
                                                             <h6>Tên đăng nhập:</h6>
-                                                            <p>{{ Auth::user()->username }}
+                                                            <p>{{ Auth::user()->username ?? 'Chưa cập nhật' }}
                                                             </p>
                                                         </li>
                                                         <li>
                                                             <h6>Họ tên:</h6>
-                                                            <p>{{ Auth::user()->full_name ? Auth::user()->full_name : 'Not updated yet' }}
+                                                            <p>{{ Auth::user()->full_name ? Auth::user()->full_name : 'Chưa cập nhật' }}
                                                             </p>
                                                         </li>
                                                         <li>
                                                             <h6>Số điện thoại:</h6>
-                                                            <p>{{ Auth::user()->phone ? Auth::user()->phone : 'Not updated yet' }}
+                                                            <p>{{ Auth::user()->phone ? Auth::user()->phone : 'Chưa cập nhật' }}
                                                             </p>
                                                         </li>
                                                     </ul>
@@ -1067,7 +1067,7 @@
                                     <label class="form-label">Email</label>
                                     <input id="email" class="form-control @error('email') is-invalid @enderror"
                                         type="email" name="email" value="{{ Auth::user()->email }}"
-                                        placeholder="Nhập email của bạn.">
+                                        placeholder="Nhập email của bạn." @if(Auth::user()->google_id) disabled @endif>
                                     <div class="invalid-feedback">
                                         @error('email')
                                             {{ $message }}
