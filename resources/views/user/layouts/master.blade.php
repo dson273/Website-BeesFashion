@@ -36,6 +36,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <!-- RateYo -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
     @yield('css-libs')
 </head>
 
@@ -81,9 +82,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.js.map"></script>
 
     <!-- RateYo -->
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-    <df-messenger
+    {{-- <df-messenger
       intent="WELCOME"
       chat-title="BeeFashion"
       agent-id="5c0db8be-8f79-47c3-aecb-04d9ae604de3"
@@ -152,21 +153,21 @@
 
     <!-- Short notification commands -->
     <script>
-        @if (session('statusSuccess'))
-            var message = @json(session('statusSuccess'));
-            notification('success', message, 'Thông báo!');
-        @elseif (session('statusError'))
-            var message = @json(session('statusError'));
-            notification('error', message, 'Thông báo!');
-        @elseif (session('statusWarning'))
-            var message = @json(session('statusWarning'));
-            notification('warning', message, 'Cảnh báo!');
+        @if(session('statusSuccess'))
+        var message = @json(session('statusSuccess'));
+        notification('success', message, 'Thông báo!');
+        @elseif(session('statusError'))
+        var message = @json(session('statusError'));
+        notification('error', message, 'Thông báo!');
+        @elseif(session('statusWarning'))
+        var message = @json(session('statusWarning'));
+        notification('warning', message, 'Cảnh báo!');
         @endif
     </script>
 
     @yield('script-libs')
     <script>
-        let userId = {{auth()->id()}}
+          let userId = {{auth()->id()}};
     </script>
 
     @vite('resources/js/banUserRealtime.js')
