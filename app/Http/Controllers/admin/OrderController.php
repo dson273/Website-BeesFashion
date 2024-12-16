@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Barryvdh\DomPDF\Facade\PDF;
+use Log;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\PDF;
 use App\Http\Controllers\Controller;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 
@@ -98,30 +99,28 @@ class OrderController extends Controller
 
     public function printOrder($id)
     {
-        // Tìm đơn hàng và load các quan hệ liên quan
-        $order = Order::with('order_details.product_variant')->findOrFail($id);
-
-
-        if ($order) {
-            // Khởi tạo generator và tạo mã vạch cho từng SKU
+        try {
+            // Tìm đơn hàng và load các quan hệ liên quan
+            $order = Order::with('order_details.product_variant.product')->findOrFail($id);
+    
+            // Khởi tạo generator và tạo mã vạch cho SKU
             $generator = new BarcodeGeneratorHTML();
-            $barcodes = [];
-
-            foreach ($order->order_details as $detail) {
-                $SKU = $detail->product_variant->SKU;
-                $barcodes[$SKU] = $generator->getBarcode($SKU, $generator::TYPE_CODE_128);
-            }
-
+            $barcode = $generator->getBarcode($order->id, $generator::TYPE_CODE_128);
+    
             // Tạo file PDF từ view và truyền dữ liệu
-            $pdf = PDF::loadView('admin.orders.print', compact('order', 'barcodes'));
-
+            $pdf = PDF::loadView('admin.orders.print', [
+                'order' => $order,
+                'barcode' => $barcode, // Truyền mã vạch trực tiếp
+            ]);
+    
             // Xuất file PDF dưới dạng stream
-
             return $pdf->stream('order_' . $id . '.pdf');
+        } catch (\Exception $e) {
+            // Log lỗi để theo dõi và trả về phản hồi
+            return response()->json(['error' => 'Không thể tạo hóa đơn. Vui lòng thử lại.'], 500);
         }
-
-        // return $pdf->stream('order_' . $id . '.pdf');
     }
+    
     //TAB 
     public function onActive(Request $request, string $id)
     {
