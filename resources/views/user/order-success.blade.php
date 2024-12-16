@@ -158,7 +158,7 @@
                                 <h6>Địa chỉ: {{$get_order->address}}</h6>
                             </li>
                             <li>
-                                <h6>Ngày dự kiến giao hàng: <span>Theo dõi đơn hàng</span></h6>
+                                <h6>Ngày dự kiến giao hàng: <a href="{{env('APP_URL')}}/dashboard?tab=order"><span>Theo dõi đơn hàng</span></a></h6>
                             </li>
                             <li>
                                 <h5>{{$get_order->created_at->format('M d, Y')}}</h5>

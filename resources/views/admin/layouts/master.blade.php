@@ -27,7 +27,7 @@
 
     <!-- RateYo -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
     @yield('style-libs')
 </head>
 
@@ -128,6 +128,7 @@
                 };
             });
         };
+        const csrf = "{{ csrf_token() }}";
         //Route variable SHOW
         const routeImportingGoods = "{{route('admin.importingGoods')}}";
         //Route variable CREATE and EDIT
@@ -146,7 +147,6 @@
 
         const routeGetAllAttributeValuesById = "{{ route('admin.getAllAttributeValuesById') }}";
         const routeAddNewAttributeValueById = "{{ route('admin.addNewAttributeValueById') }}";
-        const csrf = "{{ csrf_token() }}";
 
         //Route variable CREATE
         const routeStoreProduct = "{{route('admin.products.store')}}";

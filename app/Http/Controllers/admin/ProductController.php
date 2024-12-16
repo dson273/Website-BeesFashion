@@ -29,6 +29,22 @@ class ProductController extends Controller
     {
         return redirect()->route($routeName, $parameter)->with($messageType, $messageContent);
     }
+    function convertToSlug($str)
+    {
+        // Loại bỏ dấu và chuyển thành chữ thường
+        $str = iconv('UTF-8', 'ASCII//TRANSLIT', $str);  // Loại bỏ dấu
+
+        // Thay thế các ký tự không phải chữ và số thành dấu "-"
+        $str = preg_replace('/[^a-zA-Z0-9]+/', '-', $str);
+
+        // Chuyển chuỗi thành chữ thường
+        $str = strtolower($str);
+
+        // Loại bỏ dấu "-" thừa ở đầu và cuối chuỗi
+        $str = trim($str, '-');
+
+        return $str;
+    }
     public function index()
     {
         $listProducts = Product::with(['product_variants.order_details.order.status_orders', 'product_files'])
@@ -256,7 +272,7 @@ class ProductController extends Controller
                 foreach ($variations as $index => $item) {
                     $skuVariation = $request->input("variations.$index.sku");
                     $nameVariation = $request->input("variations.$index.name");
-                    $skuVariation = $skuVariation != '' ? $skuVariation : $newProduct->SKU . '-' . $nameVariation;
+                    $skuVariation = $skuVariation != '' ? $skuVariation : $newProduct->SKU . '-' . $this->convertToSlug($nameVariation);
                     $importPriceVariation = $request->input("variations.$index.import_price");
                     $regularPriceVariation = $request->input("variations.$index.regular_price");
                     $salePriceVariation = $request->input("variations.$index.sale_price");
@@ -269,6 +285,8 @@ class ProductController extends Controller
                         $imageVariation = $request->file("variations.$index.image_data");
                         $imageNameHashed = $imageVariation->hashName();
                         $imageVariation->move(public_path('uploads/products/images/'), $imageNameHashed);
+                    } else {
+                        $imageNameHashed = $mainImageNameHashed;
                     }
 
                     // Tạo mới Product_variant
@@ -360,13 +378,13 @@ class ProductController extends Controller
             }
             $response = [
                 'status' => 200,
-                'message' => 'Create product successfully!',
+                'message' => 'Tạo mới sản phẩm thành công!',
             ];
         } catch (Exception $e) {
             // Xử lý khi có lỗi
             $response = [
                 'status' => 400,
-                'message' => 'Something went wrong!',
+                'message' => 'Có lỗi xảy ra!',
                 'error' => $e->getMessage()
             ];
         }
@@ -659,7 +677,7 @@ class ProductController extends Controller
             //Tạo phản hổi để gửi về ajax
             $response = [
                 'status' => 200,
-                'message' => 'Get data successfully!',
+                'message' => 'Lấy dữ liệu sản phẩm cũ thành công!',
                 'data' => $data
             ];
         } else {
@@ -676,6 +694,7 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         try {
+            $mainImageOld = null;
             $product_id = $id;
             $old_product = Product::find($product_id);
             if ($old_product) {
@@ -721,6 +740,14 @@ class ProductController extends Controller
                                     'product_id' => $product_id
                                 ]);
                             }
+                        }
+                    } else {
+                        $old_main_image = Product_file::where('product_id', $product_id)
+                            ->where('is_default', 1)
+                            ->where('file_type', 'image')
+                            ->first();
+                        if ($old_main_image) {
+                            $mainImageOld = $old_main_image->file_name;
                         }
                     }
                     // 3. Xử lý các hình ảnh khác (images)
@@ -877,7 +904,7 @@ class ProductController extends Controller
                         } else {
                             $nameVariation = $request->input("variations.$index.name");
                             $skuVariation = $request->input("variations.$index.sku");
-                            $skuVariation = $skuVariation != '' ? $skuVariation : $old_product->SKU . '-' . $nameVariation . $index;
+                            $skuVariation = $skuVariation != '' ? $skuVariation : $old_product->SKU . '-' . $this->convertToSlug($nameVariation) . $index;
 
                             // Kiểm tra và lưu ảnh biến thể nếu tồn tại
                             $imageNameHashed = null;
@@ -885,6 +912,36 @@ class ProductController extends Controller
                                 $imageVariation = $request->file("variations.$index.image_data");
                                 $imageNameHashed = $imageVariation->hashName();
                                 $imageVariation->move(public_path('uploads/products/images/'), $imageNameHashed);
+                            } else {
+                                if ($request->hasFile('mainImage')) {
+                                    $mainImage = $request->file('mainImage');
+                                    // Tạo tên mới cho bản sao ảnh chính
+                                    $mainImageExtension = $mainImage->getClientOriginalExtension(); // Lấy phần mở rộng của file
+                                    $mainImageNameHashed = pathinfo($mainImage->hashName(), PATHINFO_FILENAME) . "_variant_$index." . $mainImageExtension;
+
+                                    // Đường dẫn tạm của ảnh chính
+                                    $mainImagePath = $mainImage->getRealPath();
+
+                                    // Sao chép ảnh chính cho biến thể
+                                    $destinationPath = public_path('uploads/products/images/');
+                                    $imageNameHashed = $mainImageNameHashed;
+                                    copy($mainImagePath, $destinationPath . $mainImageNameHashed);
+                                } else {
+                                    if ($mainImageOld &&  file_exists(public_path('uploads/products/images/' . $mainImageOld))) {
+                                        $oldImageExtension = pathinfo($mainImageOld, PATHINFO_EXTENSION); // Lấy phần mở rộng
+                                        $newImageName = pathinfo($mainImageOld, PATHINFO_FILENAME) . "_variant_$index." . $oldImageExtension;
+
+                                        // Sao chép ảnh cũ cho biến thể
+                                        $sourcePath = public_path('uploads/products/images/' . $mainImageOld);
+                                        $destinationPath = public_path('uploads/products/images/' . $newImageName);
+                                        copy($sourcePath, $destinationPath);
+
+                                        // Lưu tên mới cho biến thể
+                                        $imageNameHashed = $newImageName;
+                                    } else {
+                                        $imageNameHashed = 'default_image.jpg';
+                                    }
+                                }
                             }
 
                             // Tạo mới Product_variant
@@ -977,7 +1034,7 @@ class ProductController extends Controller
                 }
                 $response = [
                     'status' => 200,
-                    'message' => 'Update product successfully!',
+                    'message' => 'Cập nhật sản phẩm thành công!',
                     'data' => "Đã cập nhật xong!"
                 ];
             } else {
@@ -990,7 +1047,7 @@ class ProductController extends Controller
             // Xử lý khi có lỗi
             $response = [
                 'status' => 400,
-                'message' => 'Something went wrong!',
+                'message' => 'Có lỗi xảy ra!',
                 'error' => $e->getMessage()
             ];
         }
@@ -1012,7 +1069,7 @@ class ProductController extends Controller
         $categories_tree = $this->buildCategoryTree($all_categories);
         $response = [
             'status' => 200,
-            'message' => 'Get data successfully!',
+            'message' => 'Lấy dữ liệu thành công!',
             'data' => $categories_tree
         ];
         return response()->json($response);
@@ -1042,13 +1099,13 @@ class ProductController extends Controller
 
             $response = [
                 'status' => 200,
-                'message' => 'Add new category successfully!',
+                'message' => 'Thêm mới danh mục thành công!',
             ];
         } catch (Exception $e) {
             // Xử lý khi có lỗi
             $response = [
                 'status' => 400,
-                'message' => 'Something went wrong!',
+                'message' => 'Có lỗi xảy ra!',
                 'error' => $e->getMessage()
             ];
         }
@@ -1064,12 +1121,12 @@ class ProductController extends Controller
             if ($result) {
                 $response = [
                     'status' => 200,
-                    'message' => 'This category is not exists!',
+                    'message' => 'Danh mục này hợp lệ vì không tồn tại!',
                 ];
             } else {
                 $response = [
                     'status' => 400,
-                    'message' => 'Something went wrong!',
+                    'message' => 'Có lỗi xảy ra!',
                 ];
             }
             return response()->json($response);
@@ -1088,13 +1145,13 @@ class ProductController extends Controller
             }
             $response = [
                 'status' => 200,
-                'message' => 'Get data successfully!',
+                'message' => 'Lấy dữ liệu thành công!',
                 'data' => $form
             ];
         } else {
             $response = [
                 'status' => 400,
-                'message' => 'Unable get data!'
+                'message' => 'Không thể lấy dữ liệu!'
             ];
         }
         return response()->json($response);
@@ -1108,7 +1165,7 @@ class ProductController extends Controller
             if ($check_brand_name) {
                 $response = [
                     'status' => 409,
-                    'message' => 'Brand name is already existing!'
+                    'message' => 'Tên thương hiệu đã tồn tại!'
                 ];
                 return response()->json($response);
             }
@@ -1118,12 +1175,12 @@ class ProductController extends Controller
             if ($newBrand) {
                 $response = [
                     'status' => 200,
-                    'message' => 'Create new brand successfully!',
+                    'message' => 'Tạo mới thương hiệu thành công!',
                 ];
             } else {
                 $response = [
                     'status' => 400,
-                    'message' => 'Unable create new brand!'
+                    'message' => 'Không thể tạo mới thương hiệu!'
                 ];
             }
         }
@@ -1137,12 +1194,12 @@ class ProductController extends Controller
             if ($result) {
                 $response = [
                     'status' => 200,
-                    'message' => 'This brand is not exists!',
+                    'message' => 'Thương hiệu này hợp lệ vì không tồn tại!',
                 ];
             } else {
                 $response = [
                     'status' => 400,
-                    'message' => 'Something went wrong!',
+                    'message' => 'Có lỗi xảy ra!',
                 ];
             }
             return response()->json($response);
@@ -1160,13 +1217,13 @@ class ProductController extends Controller
         if ($checkSku) {
             $response = [
                 'status' => 400,
-                'message' => 'Sku is already exists',
+                'message' => 'Mã sản phẩm đã tồn tại!',
                 'data' => $checkSku
             ];
         } else {
             $response = [
                 'status' => 200,
-                'message' => 'Sku is valid!',
+                'message' => 'Mã sản phẩm hợp lệ!',
                 'data' => $checkSku
             ];
         }
@@ -1179,12 +1236,12 @@ class ProductController extends Controller
         if ($checkSku) {
             $response = [
                 'status' => 400,
-                'message' => 'Sku is already exists',
+                'message' => 'Mã biến thể đã tồn tại!',
             ];
         } else {
             $response = [
                 'status' => 200,
-                'message' => 'Sku is valid!',
+                'message' => 'Mã biến thể hợp lệ!',
             ];
         }
         return response()->json($response);
@@ -1218,7 +1275,7 @@ class ProductController extends Controller
         }
         $response = [
             'status' => 'Successfully',
-            'message' => 'Get data successfully!',
+            'message' => 'Lấy dữ liệu thành công!',
             'data' => $attributesJson
         ];
         return response()->json($response);
@@ -1232,11 +1289,12 @@ class ProductController extends Controller
             $array = [];
             $array['id'] = $item->id;
             $array['name'] = $item->name;
+            $array['value'] = $item->value ?: '';
             $attributeValuesJson[] = $array;
         }
         $response = [
             'status' => 'Successfully',
-            'message' => 'Get data successfully!',
+            'message' => 'Lấy dữ liệu thành công!',
             'data' => $attributeValuesJson
         ];
         return response()->json($response);
@@ -1249,7 +1307,7 @@ class ProductController extends Controller
         if ($checkAttributeValue) {
             $response = [
                 'status' => 400,
-                'message' => 'The attribute value already exists!',
+                'message' => 'Giá trị thuộc tính đã tồn tại!',
             ];
             return response()->json($response);
         }
@@ -1262,7 +1320,7 @@ class ProductController extends Controller
         $array['name'] = $newAttributeValueModel->name;
         $response = [
             'status' => 200,
-            'message' => 'Add new attribute value successfully!',
+            'message' => 'Thêm mới giá trị thuộc tính thành công!',
             'data' => $array
         ];
         return response()->json($response);
