@@ -25,25 +25,41 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Lắng nghe sự thay đổi số lượng của sản phẩm
-    $(document).on('input', '.quantity-input', function () {
+    $(document).on('input', '.quantity-input', async function () {
         var input = $(this);
         let currentVal = parseInt(input.val());
         var stock_of_variant = parseInt(input.attr('data-stock'));
         var price = parseFloat(input.attr('data-price'));
+        var product_variant_id = parseFloat(input.closest('tr').attr('data-variant-id'));
+        var cart_id = parseFloat(input.closest('tr').attr('data-cart-id'));
+    
+        // Kiểm tra nếu số lượng không hợp lệ
         if (isNaN(currentVal) || currentVal < 1) {
             input.val(1);
             notification('warning', 'Số lượng không hợp lệ!', 'Cảnh báo!');
-        }
-        else if (currentVal > stock_of_variant) {
-            input.val(stock_of_variant);
+            currentVal = 1;
+        } else if (currentVal > stock_of_variant) {
             notification('warning', `Không được vượt quá số lượng tối đa trong kho: ${stock_of_variant}`, 'Cảnh báo!');
+            input.val(stock_of_variant);
+            currentVal = stock_of_variant;
         }
-        let finalQuantity = parseInt(input.val());
-        let totalPrice = finalQuantity * price;
-        input.closest('tr').find('.total-price').attr('data-price', totalPrice);
-        input.closest('tr').find('.total-price').text(formatCurrency(totalPrice));
-        updateTotalPrice();
+    
+        // Gọi hàm cập nhật số lượng vào database
+        try {
+            let result = await updateQuantity(product_variant_id, cart_id, currentVal, "input");
+            if (result) {
+                let totalPrice = currentVal * price;
+                input.closest('tr').find('.total-price').attr('data-price', totalPrice);
+                input.closest('tr').find('.total-price').text(formatCurrency(totalPrice));
+                updateTotalPrice();
+                updateCartItemCount(); // Cập nhật số lượng sản phẩm được chọn
+            }
+        } catch (error) {
+            console.error('Lỗi khi cập nhật số lượng:', error);
+            notification('error', 'Có lỗi khi cập nhật số lượng!', 'Lỗi!');
+        }
     });
+    
 
 
     $('#selectAllCheckbox').change(function () {
