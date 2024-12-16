@@ -1,5 +1,3 @@
-
-
 //lưu CODE voucher
 document.querySelectorAll('.copy-content').forEach(element => {
     element.addEventListener('click', function () {
@@ -18,42 +16,78 @@ document.querySelectorAll('.copy-content').forEach(element => {
             }, 3000);
 
         }).catch(err => {
-            notification('error', 'Lỗi khi sao chép: ', err);
+            notification('error', 'Lỗi khi sao chép: ', 'Error!', '2000');
         });
     });
 });
 
 
-//Lấy dữ liệu khi người dùng tăng giảm số lượng đơn hàng
 $(document).ready(function () {
-    // Khi nhấn nút giảm
-    $('.reduce').on('click', function () {
-        var quantity = parseInt($('#quantity').val()); // Lấy giá trị hiện tại của input
-        if (quantity > 1) {
-            $('#quantity').val(quantity - 1); // Giảm số lượng
+    // Khi người dùng thay đổi giá trị trong input số lượng
+    $(document).on('input', '#quantity', function () {
+        const quantityInput = $(this);
+
+        // Kiểm tra xem tất cả các thuộc tính đã được chọn hay chưa
+        if (!isAttributesSelected()) {
+            // Nếu chưa chọn đủ thuộc tính, không cho phép thay đổi số lượng
+            notification('warning', 'Vui lòng chọn đầy đủ các thuộc tính trước khi thay đổi số lượng.', 'Warning!', '2000');
+            // Khôi phục lại giá trị trước khi thay đổi
+            quantityInput.val(1);  // Hoặc giá trị mặc định
+            return;
+        }
+
+        const currentQuantity = parseInt(quantityInput.val()) || 1; // Đảm bảo giá trị hợp lệ (nếu không phải số thì mặc định là 1)
+        const maxQuantity = parseInt($('#total-stock').text()) || 0; // Số lượng tối đa có sẵn
+
+        // Nếu số lượng vượt quá số lượng có sẵn, điều chỉnh về số lượng tối đa
+        if (currentQuantity > maxQuantity) {
+            quantityInput.val(maxQuantity);
+            notification('warning', `Số lượng tối đa có sẵn là: ${maxQuantity}`, 'Warning!', '2000');
+        }
+
+        // Nếu số lượng nhỏ hơn 1, điều chỉnh về giá trị tối thiểu (1)
+        if (currentQuantity < 1) {
+            quantityInput.val(1);
         }
     });
 
-    // Khi nhấn nút tăng
-    $('.increment').on('click', function () {
-        var quantity = parseInt($('#quantity').val()); // Lấy giá trị hiện tại của input
-        if (quantity < 10) { // Kiểm tra xem số lượng đã bằng 10 chưa
-            $('#quantity').val(quantity + 1); // Tăng số lượng
+    // Xử lý khi nhấn nút giảm số lượng
+    $(document).on('click', '.reduce', function () {
+        const quantityInput = $('#quantity');
+        let currentQuantity = parseInt(quantityInput.val()) || 1;
+
+        if (currentQuantity > 1) {
+            quantityInput.val(currentQuantity - 1).trigger('input');
+        }
+    });
+
+    // Xử lý khi nhấn nút tăng số lượng
+    $(document).on('click', '.increment', function () {
+        const quantityInput = $('#quantity');
+        let currentQuantity = parseInt(quantityInput.val()) || 1;
+        const maxQuantity = parseInt($('#total-stock').text()) || 0;
+
+        if (currentQuantity < maxQuantity) {
+            quantityInput.val(currentQuantity + 1).trigger('input');
         } else {
-            notification('error', 'Số lượng không thể vượt quá 10!'); // Hiển thị thông báo nếu vượt quá 10
+            notification('warning', `Số lượng tối đa có sẵn là: ${maxQuantity}`, 'Warning!', '2000');
         }
     });
 
-    // Khi người dùng nhập trực tiếp vào input
-    $('#quantity').on('input', function () {
-        var quantity = parseInt($(this).val()); // Lấy giá trị từ input
-        if (quantity < 1) {
-            $(this).val(1); // Nếu nhập vào giá trị nhỏ hơn 1, đặt lại là 1
-        } else if (quantity > 10) {
-            $(this).val(10); // Nếu nhập vào giá trị lớn hơn 10, đặt lại là 10
-            notification('error', 'Số lượng không thể vượt quá 10!');
-        }
-    });
+    // Kiểm tra xem tất cả các thuộc tính đã được chọn chưa
+    function isAttributesSelected() {
+        let isSelected = true;
+
+        // Kiểm tra tất cả các nhóm thuộc tính
+        $('.attribute_group').each(function () {
+            const activeItems = $(this).find('.attribute_item.active').length;
+            if (activeItems === 0) {
+                isSelected = false;  // Nếu có nhóm thuộc tính chưa được chọn, trả về false
+            }
+        });
+
+        return isSelected; // Trả về true nếu tất cả các thuộc tính đã được chọn
+    }
 });
 
 
@@ -67,6 +101,7 @@ $(document).on('click', '.quick-view-btn', function (event) {
 $(document).on('click', '#close_modal', function () {
     var attributes_container = document.getElementById('attributes-container');
     attributes_container.innerHTML = "";
+    $('#quantity').val(1);
 })
 
 // Hàm mở modal Quick View
@@ -185,7 +220,7 @@ function displayProductDetailsInModal(product) {
     Object.values(product.array_attributes).forEach((attribute) => {
         let html = `
             <div class="attribute-section">
-                <p>${attribute.name}:</p>
+                <p>${attribute.name}</p>
                 <div class="attribute_group ${attribute.type}" data-id="${attribute.id}">
                     <ul class="${attribute.type}-variant">`;
 
@@ -220,6 +255,10 @@ function initializeAttributeSelection(product) {
     const variants = product.array_variants;
     let selectedAttributes = [];
 
+    // Hiển thị tổng stock ban đầu
+    const totalStock = variants.reduce((sum, variant) => sum + variant.stock, 0);
+    $('#quick-view #total-stock').text(totalStock);
+
     $(document).off('click', '.attribute_item').on('click', '.attribute_item', function (e) {
         e.preventDefault();
         if ($(this).hasClass('disabled')) return;
@@ -236,25 +275,33 @@ function initializeAttributeSelection(product) {
             selectedAttributes.push(attributeValueId);
         }
 
-        // Tìm biến thể phù hợp dựa trên các thuộc tính đã chọn
-        const matchingVariant = variants.find((variant) => {
+        // Tính tổng stock của các biến thể phù hợp với thuộc tính đã chọn
+        const partialMatchingVariants = variants.filter((variant) =>
+            selectedAttributes.every((id) => variant.attribute_values.includes(id))
+        );
+        const stockSum = partialMatchingVariants.reduce((sum, variant) => sum + variant.stock, 0);
+
+        // Hiển thị tổng stock tương ứng
+        $('#quick-view #total-stock').text(stockSum);
+
+        // Tìm biến thể khớp hoàn toàn với các thuộc tính đã chọn
+        const exactMatchingVariant = variants.find((variant) => {
             const sortedSelected = [...selectedAttributes].sort();
             const sortedVariantAttributes = [...variant.attribute_values].sort();
 
             return JSON.stringify(sortedSelected) === JSON.stringify(sortedVariantAttributes) && variant.stock > 0;
         });
 
-        // Lưu variant_id nếu tìm thấy biến thể phù hợp
-        if (matchingVariant) {
-            selectedVariantId = matchingVariant.variant_id;
-            const priceToShow = matchingVariant.sale_price || matchingVariant.regular_price;
+        if (exactMatchingVariant) {
+            // Nếu tìm thấy biến thể khớp hoàn toàn
+            selectedVariantId = exactMatchingVariant.variant_id;
+            const priceToShow = exactMatchingVariant.sale_price || exactMatchingVariant.regular_price;
             $('#quick-view #product-price').text(new Intl.NumberFormat('vi-VN', {
                 style: 'currency',
                 currency: 'VND',
             }).format(priceToShow));
         } else {
-            selectedVariantId = null;  // Reset nếu không tìm thấy biến thể
-            // Nếu chưa chọn đủ thuộc tính, hiển thị giá mặc định
+            // Nếu không khớp hoàn toàn, hiển thị giá mặc định
             const variantsWithSalePrice = product.array_variants.filter(variant => variant.sale_price !== null);
             const variantsWithoutSalePrice = product.array_variants.filter(variant => variant.sale_price === null);
             let minPrice, maxPrice;
@@ -275,10 +322,12 @@ function initializeAttributeSelection(product) {
                     : new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(minPrice) + ' - ' + new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(maxPrice)
             );
         }
+
         // Cập nhật trạng thái các thuộc tính khả dụng
         updateAttributeStates(selectedAttributes, variants);
     });
 }
+
 
 // Cập nhật trạng thái thuộc tính
 function updateAttributeStates(selectedAttributes, variants) {
@@ -308,35 +357,38 @@ $(document).on('click', '#add-to-cart-btn', function (event) {
     event.preventDefault();
 
     // Kiểm tra xem đã chọn đầy đủ thuộc tính chưa
-    if (!selectedVariantId) {
-        const unselectedAttributes = [];
+    const unselectedAttributes = [];
 
-        // Kiểm tra các thuộc tính chưa được chọn
-        $('.attribute_section').each(function () {
-            if ($(this).find('.attribute_item.active').length === 0) {
-                unselectedAttributes.push($(this).find('p').text());
-            }
-        });
+    // Kiểm tra các thuộc tính chưa được chọn
+    $('.attribute_group').each(function () {
+        const activeItems = $(this).find('.attribute_item.active').length;
 
-        // Hiển thị thông báo lỗi với danh sách thuộc tính chưa được chọn
-        if (unselectedAttributes.length > 0) {
-            notification('warning', `Vui lòng chọn các thuộc tính sau: ${unselectedAttributes.join(', ')}`);
-        } else {
-            notification('warning', 'Vui lòng chọn đầy đủ thuộc tính sản phẩm!');
+        // Lấy tên thuộc tính từ phần tử <p> chứa tên thuộc tính
+        const attributeName = $(this).closest('.attribute-section').find('p').text().trim();
+
+        if (activeItems === 0) {
+            unselectedAttributes.push(attributeName); // Lấy tên thuộc tính nếu chưa chọn
         }
-        return;
+    });
+
+    // Nếu có thuộc tính chưa chọn, hiển thị thông báo lỗi
+    if (unselectedAttributes.length > 0) {
+        notification('warning', `Vui lòng chọn các thuộc tính sau: ${unselectedAttributes.join(', ')}`, 'Warning!', '2000');
+        return; // Ngừng tiếp tục nếu chưa chọn đầy đủ
     }
 
     var quantity = $('#quantity').val(); // Lấy giá trị từ input số lượng
 
     // Kiểm tra giá trị số lượng hợp lệ
     if (!quantity || quantity <= 0 || isNaN(quantity)) {
-        notification('warning', 'Số lượng không hợp lệ!');
+        notification('warning', 'Số lượng không hợp lệ!', 'Warning!', '2000');
         return;
     }
 
+    // Thực hiện hành động thêm vào giỏ hàng
     addToCart(selectedVariantId, quantity);
 });
+
 
 //Lấy dữ liệu khi người dùng bấm thêm giỏ hàng
 function addToCart(variantId, quantity) {
@@ -352,20 +404,34 @@ function addToCart(variantId, quantity) {
         },
         success: function (response) {
             if (response.success) {
+                // Cập nhật số lượng trong giỏ hàng
                 $('.shoping-prize .cart-count').text(response.cartCount);
                 var successMessage = $('#fancybox-add-to-cart');
                 successMessage.removeClass('hide').addClass('show');
+                
                 $('#quantity').val(1);
+                
                 setTimeout(function () {
                     successMessage.removeClass('show').addClass('hide');
                 }, 2000);
+
+                // Đóng modal quick-view
                 $('#quick-view').modal('hide');
             } else {
-                alert(data.message);
+                // Hiển thị thông báo lỗi từ server
+                notification('warning', response.message || 'Đã xảy ra lỗi. Vui lòng thử lại.', 'Thông báo', 2000);
             }
         },
-        error: function (xhr, status, error) {
-            notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!');
+        error: function (xhr) {
+            // Xử lý lỗi HTTP hoặc không xác định
+            if (xhr.status === 401) {
+                notification('warning', 'Vui lòng đăng nhập để sử dụng chức năng này.', 'Cảnh báo!', 2000);
+            } else if (xhr.status === 400) {
+                const response = JSON.parse(xhr.responseText);
+                notification('warning', response.message || 'Dữ liệu không hợp lệ.', 'Thông báo', 2000);
+            } else {
+                notification('error', 'Đã xảy ra lỗi không xác định. Vui lòng thử lại.', 'Lỗi!', 2000);
+            }
         }
     });
 }
@@ -427,7 +493,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 notification('warning', 'Vui vòng đăng nhập để sử dụng chức năng này!', 'Warning!', '2000');
-    
+
             }
         });
     });

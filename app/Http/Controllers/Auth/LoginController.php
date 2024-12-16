@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Support\Carbon;
 use App\Models\User;
 use App\Models\User_ban;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -15,6 +17,56 @@ class LoginController extends Controller
     {
         return view('user.auth.login');
     }
+    // Chuyển hướng đến Google
+    public function redirectToGoogle()
+    {
+        // dd(Socialite::driver('google')->redirect());
+
+        return Socialite::driver('google')->redirect();
+    }
+    // Xử lý callback từ Google
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            // Tìm người dùng qua email
+            $user = User::where('email', $googleUser->getEmail())->first();
+            if ($user) {
+                // Kiểm tra trạng thái tài khoản
+                if ($user->status === 'banned') {
+                    // Tìm lý do và thời gian ban
+                    $bannedUser = User_ban::where('user_id', $user->id)
+                        ->where('is_active', 1) // Kiểm tra trạng thái ban
+                        ->first();
+                    $reason = $bannedUser ? 'Lý do: ' . $bannedUser->reason : 'Không có lý do cụ thể.';
+                    return redirect()->route('login')->with('statusError', 'Tài khoản của bạn đã bị khóa! ' . $reason);
+                }
+            }
+            // Nếu tài khoản không tồn tại, tạo mới
+            $user = User::createOrFirst(
+                ['email' => $googleUser->getEmail()],
+                [
+                    'full_name' => $googleUser->getName(),
+                    'google_id' => $googleUser->getId(),
+                    'email_verified_at' => now(),
+                    'password' => bcrypt('123456'),
+                ]
+            );
+
+            // Nếu tài khoản đã tồn tại nhưng chưa có google_id, cập nhật thêm
+            if (!$user->google_id) {
+                $user->update(['google_id' => $googleUser->getId()]);
+            }
+
+            Auth::login($user, true);
+
+            return redirect('/')->with('statusSuccess', 'Đăng nhập thành công! Chào mừng bạn đến với BeesFashion.');
+        } catch (\Exception $e) {
+            // Log::error('Google login error: ' . $e->getMessage());
+            return redirect()->route('login')->with('statusError', 'Có lỗi xảy ra khi đăng nhập qua Google. Vui lòng thử lại sau.');
+        }
+    }
+
     public function login(Request $request)
     {
         // Kiểm tra xem người dùng nhập username hay email
@@ -71,7 +123,7 @@ class LoginController extends Controller
                 return redirect()->intended('/admin');
             } else {
                 // Điều hướng đến trang người dùng nếu là member
-                session()->flash('statusSuccess', 'Đăng nhập thành công! Chào mừng bạn trở lại.');
+                session()->flash('statusSuccess', 'Đăng nhập thành công! Chào mừng bạn đến với BeesFashion.');
                 return redirect()->intended('/');
             }
         }
@@ -85,18 +137,6 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('statusSuccess', 'Đăng xuất thành công!');
-    }
-
-    public function verify($token)
-    {
-        $user = User::query()
-            ->where('email_verified_at', null)
-            ->where('email', base64_decode($token))->first();
-        if ($user) {
-            $user->update(['email_verified_at' => Carbon::now()]);
-            // Auth::login($user);
-            return redirect()->intended('/');
-        }
+        return redirect()->route('login')->with('statusSuccess', 'Đăng xuất thành công!');
     }
 }

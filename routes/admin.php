@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\admin\AttributeTypeController;
 use App\Http\Controllers\admin\ImportHistoryController;
 use App\Http\Controllers\admin\AttributeValueController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ManagerSettingController;
 use App\Http\Controllers\Admin\RatingController;
 
@@ -36,6 +37,16 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::middleware(['role:admin'])->group(function () {
         //============================Chức năng chỉ admin quản lý===============================================
+
+        //Thống kê
+        Route::middleware(['checkPermission:Thống kê'])->group(function () {
+            Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct'); //Thống kê doanh thu sản phẩm
+            Route::get('/statistics/cart-statistics', [StatisticalController::class, 'statisticCart'])->name('statistics.cart-statistics'); //Thống kê sản phẩm trong giỏ hàng
+            Route::get('/statistics/product_views', [StatisticalController::class, 'product_views'])->name('statistics.product_views'); //Thống kê lượt xem
+            Route::get('/statistics/revenueBrand', [StatisticalController::class, 'revenueByBrand'])->name('statistics.revenueBrand'); //Thống kê doanh thu thương hiệu
+            Route::get('/statistics/revenueCustomer', [StatisticalController::class, 'revenueByCustomer'])->name('statistics.revenueCustomer'); //Thống kê doanh thu theo khách hàng
+        });
+
         //Quản lý nhân viên
         Route::resource('staffs', StaffController::class);
         Route::post('staffs/ban/{id}', [StaffController::class, 'ban'])->name('staffs.ban'); //Ban nhân viên
@@ -49,20 +60,25 @@ Route::prefix('admin')->as('admin.')->group(function () {
     });
 
     //============================Route cho staff (admin có quyền truy cập)=======================================
-    Route::middleware(['role:staff|admin','checkBanned'])->group(function () {
+    Route::middleware(['role:staff|admin', 'checkBanned'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/statistics/revenue', [DashboardController::class, 'getRevenue']);
 
         //================================Chức năng staff có thể quản lý==================================================
 
-        //==============================================Thống kê==========================================================
-        Route::middleware(['checkPermission:Thống kê'])->group(function () {
-            Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct'); //Thống kê doanh thu sản phẩm
-            Route::get('/statistics/cart-statistics', [StatisticalController::class, 'statisticCart'])->name('statistics.cart-statistics'); //Thống kê sản phẩm trong giỏ hàng
-            Route::get('/statistics/product_views', [StatisticalController::class, 'product_views'])->name('statistics.product_views'); //Thống kê lượt xem
-            Route::get('/statistics/revenueBrand', [StatisticalController::class, 'revenueByBrand'])->name('statistics.revenueBrand'); //Thống kê doanh thu thương hiệu
-            Route::get('/statistics/revenueCustomer', [StatisticalController::class, 'revenueByCustomer'])->name('statistics.revenueCustomer'); //Thống kê doanh thu theo khách hàng
+        //==============================================Liên hệ===========================================================
+        Route::middleware(['checkPermission:Liên hệ'])->group(function () {
+            Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');
         });
+
+        //==============================================Thống kê==========================================================
+        // Route::middleware(['checkPermission:Thống kê'])->group(function () {
+        //     Route::get('/statistics/revenueProduct', [StatisticalController::class, 'revenueByProduct'])->name('statistics.revenueProduct'); //Thống kê doanh thu sản phẩm
+        //     Route::get('/statistics/cart-statistics', [StatisticalController::class, 'statisticCart'])->name('statistics.cart-statistics'); //Thống kê sản phẩm trong giỏ hàng
+        //     Route::get('/statistics/product_views', [StatisticalController::class, 'product_views'])->name('statistics.product_views'); //Thống kê lượt xem
+        //     Route::get('/statistics/revenueBrand', [StatisticalController::class, 'revenueByBrand'])->name('statistics.revenueBrand'); //Thống kê doanh thu thương hiệu
+        //     Route::get('/statistics/revenueCustomer', [StatisticalController::class, 'revenueByCustomer'])->name('statistics.revenueCustomer'); //Thống kê doanh thu theo khách hàng
+        // });
         //===========================================Quản lý sản phẩm=====================================================
         Route::middleware(['checkPermission:Quản lý sản phẩm'])->group(function () {
             //List product
@@ -135,6 +151,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
         //===========================================Quản lý đơn hàng=====================================================
         Route::middleware(['checkPermission:Quản lý đơn hàng'])->group(function () {
             Route::resource('orders', OrderController::class);
+            Route::post('orders/bulk-action', [OrderController::class, 'bulkAction'])->name('orders.bulkAction');
             Route::get('orders/info/{id}', [OrderController::class, 'show'])->name('orders.info');
             Route::get('orders/print/{id}', [OrderController::class, 'printOrder'])->name('orders.print');
             Route::get('orders/success/{id}', [OrderController::class, 'onSuccess'])->name('orders.success');
@@ -160,7 +177,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::middleware(['checkPermission:Quản lý đánh giá'])->group(function () {
             Route::resource('ratings', RatingController::class);
             Route::put('ratings/{id}/toggle-visibility', [RatingController::class, 'toggleVisibility'])->name('ratings.toggleVisibility');
-
         });
     });
 });

@@ -27,53 +27,65 @@ class ProductDetailController extends Controller
             'product_variants.order_details.order.status_orders.status'
         ])->where('SKU', $sku)->first();
 
-        // $product_variant_stock = DB::table('orders')
-        //     ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-        //     ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-        //     ->join('product_variants', 'order_details.product_variant_id','=','product_variants.id')
-        //     ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
-        //     ->join('users', 'orders.user_id', '=', 'users.id')
-        //     ->where('statuses.name', 'Shipping')
-        //     ->orWhere('statuses.name', 'Shipping')
-        //     ->orWhere('statuses.name', 'Shipping')
-        //     ->select('order_details.product_variant_id', DB::raw('SUM(order_details.quantity) as total_stock'))
-        //     ->groupBy('order_details.product_variant_id')
-        //     ->get();
-
-        // $product_variants = Product_variant::where('product_id', $product->id)->get();
-        // $total_stock_ship = 0;
-        // $productVariantIds = [];
-        // foreach($product_variant_stock as $variant_stock){
-        //     $productVariantIds[] = $variant_stock->product_variant_id;
-        // }
-        // foreach($product_variants as $product_variant){
-
-        // }
-
-
-        //View tăng lên 1
         if ($product) {
+            // Tăng lượt xem
             $product->increment('view');
-            // Gán giá và phần trăm giảm giá
+
+            // Tính toán giá và % giảm
             $product->priceRange = $product->getPriceRange();
             $product->regularPrice = $product->getRegularPrice();
             $product->discountPercent = $product->getDiscountPercent();
+
+            // Xử lý variants và attributes
+            $array_variants = $this->getFormattedVariants($product);
+            $array_attributes = $this->getFormattedAttributes($product);
+
+            // Tính tổng stock thực tế
+            $total_stock = $this->calculateTotalRealStock($product->product_variants);
+
+            // Lấy sản phẩm liên quan
+            $relatedProducts = $this->getRelatedProducts($product);
+
+            // Lấy sản phẩm bán chạy
+            $bestProducts = $this->getBestProducts($product);
+
+            // Lấy đánh giá sản phẩm
+            $reviewData = $this->getProductReviewData($product);
+
+            return view('user.product-detail', compact(
+                'product',
+                'array_variants',
+                'array_attributes',
+                'total_stock',
+                'relatedProducts',
+                'bestProducts',
+                'reviewData'
+            ));
         }
 
-        // Mảng chứa các biến thể với các attribute_value_id liên quan
-        $array_variants = $product->product_variants->map(function ($variant) {
+        return redirect()->route('home')->with('error', 'Sản phẩm không tồn tại');
+    }
+
+    private function getFormattedVariants($product)
+    {
+        return $product->product_variants->map(function ($variant) {
+            // Tính toán real stock cho variant
+            $realStock = $this->calculateRealStock($variant->id, $variant->stock);
+
             return [
                 'variant_id' => $variant->id,
                 'regular_price' => $variant->regular_price,
                 'sale_price' => $variant->sale_price,
-                'stock' => $variant->stock,
+                'stock' => $realStock,
                 'is_active' => $variant->is_active,
                 'attribute_values' => $variant->variant_attribute_values->pluck('attribute_value_id')->toArray()
             ];
         })->toArray();
-        // dd($array_variants);
+    }
 
-        // Lấy tất cả các attribute_value_id và attribute_id duy nhất
+    private function getFormattedAttributes($product)
+    {
+        // Lấy tất cả attribute_value_ids và attribute_ids duy nhất
         $attribute_value_ids = $product->product_variants
             ->pluck('variant_attribute_values.*.attribute_value_id')
             ->flatten()
@@ -87,81 +99,110 @@ class ProductDetailController extends Controller
             ->toArray();
 
         // Xây dựng mảng thuộc tính đã lọc
-        $array_attributes = Attribute::with([
+        return Attribute::with([
             'attribute_values' => function ($query) use ($attribute_value_ids) {
                 $query->whereIn('id', $attribute_value_ids);
             },
-            'attribute_type' // Lấy thông tin loại thuộc tính
-        ])->whereIn('id', $attribute_ids)->get()->mapWithKeys(function ($attribute) {
+            'attribute_type'
+        ])->whereIn('id', $attribute_ids)
+        ->get()
+        ->mapWithKeys(function ($attribute) {
             return [
                 $attribute->id => [
                     'id' => $attribute->id,
                     'name' => $attribute->name,
-                    'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null, // Lấy tên loại thuộc tính
-                    'attribute_values' => $attribute->attribute_values->sortBy(function ($value) {
-                        // Sắp xếp theo thứ tự "S", "M", "L", "XL", nếu giá trị khác số
-                        $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
-                        return $sizes[$value->name] ?? $value->name; // Sắp xếp theo thứ tự định trước hoặc theo tên
-                    })->values()->map(function ($value) {
-                        return [
-                            'id' => $value->id,
-                            'name' => $value->name,
-                            'value' => $value->value
-                        ];
-                    })->toArray()
+                    'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null,
+                    'attribute_values' => $attribute->attribute_values
+                        ->sortBy(function ($value) {
+                            $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
+                            return $sizes[$value->name] ?? $value->name;
+                        })
+                        ->values()
+                        ->map(function ($value) {
+                            return [
+                                'id' => $value->id,
+                                'name' => $value->name,
+                                'value' => $value->value
+                            ];
+                        })->toArray()
                 ]
             ];
         })->toArray();
+    }
 
-        // Tính tổng số lượng hàng tồn kho của sản phẩm
-        $total_stock = Product_variant::where('product_id', $product->id)->sum('stock');
+    private function calculateRealStock($variantId, $originalStock)
+    {
+        // Trừ số lượng cho các đơn hàng đang xử lý
+        $reduceQuantity = DB::table('orders')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+            ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
+            ->where('order_details.product_variant_id', $variantId)
+            ->whereIn('statuses.name', ['Processing', 'Pending', 'Shipping', 'Completed'])
+            ->sum('order_details.quantity');
 
-        // Lấy danh sách sản phẩm liên quan qua danh mục
-        $relatedProducts = Product::whereHas('categories', function ($query) use ($product) {
+        // Cộng lại số lượng cho đơn hàng hoàn/trả
+        $addQuantity = DB::table('orders')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+            ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
+            ->where('order_details.product_variant_id', $variantId)
+            ->whereIn('statuses.name', ['Cancelled', 'Returned'])
+            ->sum('order_details.quantity');
+
+        return $originalStock - $reduceQuantity + $addQuantity;
+    }
+
+    private function calculateTotalRealStock($productVariants)
+    {
+        return $productVariants->sum(function ($variant) {
+            return $this->calculateRealStock($variant->id, $variant->stock);
+        });
+    }
+
+    private function getRelatedProducts($product)
+    {
+        return Product::whereHas('categories', function ($query) use ($product) {
             $query->whereIn('category_id', $product->categories->pluck('id'))
                 ->where('categories.fixed', 1);
-        })->where('id', '!=', $product->id)
-            ->take(8)
-            ->get();
-
-        $relatedProducts = $relatedProducts->map(function ($relatedProduct) {
-
-            $relatedProduct->priceRange = $relatedProduct->getPriceRange();
-            $activeImage = $relatedProduct->product_files->where('is_default', 1)->first();
-            $inactiveImage = $relatedProduct->product_files->where('is_default', 0)->first();
-            $relatedProduct->active_image = $activeImage ? $activeImage->file_name : null;
-            $relatedProduct->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
-
-            $rating = $this->calculateProductRating($relatedProduct);
-            $relatedProduct->rating = $rating;
-            return $relatedProduct;
+        })
+        ->where('id', '!=', $product->id)
+        ->take(8)
+        ->get()
+        ->map(function ($relatedProduct) {
+            return $this->formatProductForDisplay($relatedProduct);
         });
+    }
 
-        //Sản phẩm bán chạy
+    private function getBestProducts($product)
+    {
         $firstCategory = Category::where('fixed', 0)->first();
-        $bestProducts = Product::whereHas('categories', function ($query) use ($firstCategory) {
+
+        return Product::whereHas('categories', function ($query) use ($firstCategory) {
             $query->where('categories.id', $firstCategory->id);
         })
-            ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
-            ->where('id', '!=', $product->id)
-            ->take(8)
-            ->get()
-            ->map(function ($bestProduct) {
-                $bestProduct->priceRange = $bestProduct->getPriceRange();
-                $activeImage = $bestProduct->product_files->where('is_default', 1)->first();
-                $inactiveImage = $bestProduct->product_files->where('is_default', 0)->first();
-                $bestProduct->active_image = $activeImage ? $activeImage->file_name : null;
-                $bestProduct->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
+        ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
+        ->where('id', '!=', $product->id)
+        ->take(8)
+        ->get()
+        ->map(function ($bestProduct) {
+            return $this->formatProductForDisplay($bestProduct);
+        });
+    }
 
-                $rating = $this->calculateProductRating($bestProduct);
-                $bestProduct->rating = $rating;
-                return $bestProduct;
-            });
-        //Đánh giá sản phẩm
-        $reviewData = $this->getProductReviewData($product);
-        // dd($reviewData);
+    private function formatProductForDisplay($product)
+    {
+        $product->priceRange = $product->getPriceRange();
 
-        return view('user.product-detail', compact('product', 'array_attributes', 'array_variants', 'total_stock', 'relatedProducts', 'reviewData', 'bestProducts'));
+        $activeImage = $product->product_files->where('is_default', 1)->first();
+        $inactiveImage = $product->product_files->where('is_default', 0)->first();
+
+        $product->active_image = $activeImage ? $activeImage->file_name : null;
+        $product->inactive_image = $inactiveImage ? $inactiveImage->file_name : null;
+
+        $product->rating = $this->calculateProductRating($product);
+
+        return $product;
     }
 
     public function updateInformationProduct(Request $request)
@@ -169,8 +210,9 @@ class ProductDetailController extends Controller
         $array_attribute_value_ids = $request->input('attribute_value_ids');
         $product_id = $request->input('product_id');
 
-        // Tìm product_variant phù hợp với attribute_value_ids
-        $productFocusQuery = DB::table('product_variants as pv')
+        // Tìm variant phù hợp
+        $variant = DB::table('product_variants as pv')
+            ->select('pv.*')
             ->where('pv.product_id', $product_id)
             ->whereIn('pv.id', function ($query) use ($array_attribute_value_ids) {
                 $query->select('product_variant_id')
@@ -180,12 +222,23 @@ class ProductDetailController extends Controller
                     ->havingRaw('COUNT(attribute_value_id) = ?', [count($array_attribute_value_ids)]);
             })->first();
 
-        if ($productFocusQuery) {
+        if ($variant) {
+            // Tính toán real stock
+            $realStock = $this->calculateRealStock($variant->id, $variant->stock);
+
             return response()->json([
                 'status' => 'success',
-                'data' => $productFocusQuery
+                'data' => array_merge(
+                    (array)$variant,
+                    ['real_stock' => $realStock]
+                )
             ]);
         }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Không tìm thấy biến thể phù hợp'
+        ]);
     }
     public function addToCart()
     {

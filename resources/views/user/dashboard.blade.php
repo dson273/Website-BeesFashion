@@ -19,26 +19,28 @@
             </div>
         </div>
         </div>
-    </section>
-    <section class="section-b-space pt-0">
-        <div class="custom-container container user-dashboard-section">
-            <div class="row">
-                <div class="col-xl-3 col-lg-4">
-                    <div class="left-dashboard-show"><button class="btn btn_black sm rounded bg-primary">Show
-                            Menu</button></div>
-                    <div class="dashboard-left-sidebar sticky">
-                        <div class="profile-box">
-                            <div class="profile-bg-img"></div>
-                            <div class="dashboard-left-sidebar-close"><i class="fa-solid fa-xmark"></i></div>
-                            <div class="profile-contain">
-                                <div class="profile-image"> <img class="img-fluid"
-                                        src="{{ asset('assets/images/user/user-icon.jpg') }}" alt=""></div>
-                                {{-- Profile --}}
-                                <div class="profile-name">
-                                    <h4>{{ Auth::user()->username }}</h4>
-                                    <h6>{{ Auth::user()->email }}</h6>
-                                    <span data-bs-toggle="modal" data-bs-target="#edit-profile" title="Edit Profile"
-                                        tabindex="0">Sửa hồ sơ</span>
+
+        </section>
+        <section class="section-b-space pt-0">
+            <div class="custom-container container user-dashboard-section">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="left-dashboard-show"><button class="btn btn_black sm rounded bg-primary">Show
+                                Menu</button></div>
+                        <div class="dashboard-left-sidebar sticky">
+                            <div class="profile-box">
+                                <div class="profile-bg-img"></div>
+                                <div class="dashboard-left-sidebar-close"><i class="fa-solid fa-xmark"></i></div>
+                                <div class="profile-contain">
+                                    <div class="profile-image"> <img class="img-fluid"
+                                            src="{{ asset('assets/images/user/user-icon.jpg') }}" alt=""></div>
+                                    {{-- Profile --}}
+                                    <div class="profile-name">
+                                        <h4>{{ Auth::user()->full_name ?? Auth::user()->username}}</h4>
+                                        <h6>{{ Auth::user()->email }}</h6>
+                                        <span data-bs-toggle="modal" data-bs-target="#edit-profile" title="Edit Profile"
+                                            tabindex="0">Sửa hồ sơ</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -183,13 +185,46 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="profile-about">
-                                        <div class="row">
-                                            <div class="col-xl-7">
-                                                <div class="sidebar-title">
-                                                    <div class="loader-line"></div>
-                                                    <h5>Thông Tin Hồ Sơ</h5>
+                                        <div class="profile-about">
+                                            <div class="row">
+                                                <div class="col-xl-7">
+                                                    <div class="sidebar-title">
+                                                        <div class="loader-line"></div>
+                                                        <h5>Thông Tin Hồ Sơ</h5>
+                                                    </div>
+                                                    <ul class="profile-information">
+                                                        <li>
+                                                            <h6>Tên đăng nhập:</h6>
+                                                            <p>{{ Auth::user()->username ?? 'Chưa cập nhật' }}
+                                                            </p>
+                                                        </li>
+                                                        <li>
+                                                            <h6>Họ tên:</h6>
+                                                            <p>{{ Auth::user()->full_name ? Auth::user()->full_name : 'Chưa cập nhật' }}
+                                                            </p>
+                                                        </li>
+                                                        <li>
+                                                            <h6>Số điện thoại:</h6>
+                                                            <p>{{ Auth::user()->phone ? Auth::user()->phone : 'Chưa cập nhật' }}
+                                                            </p>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="sidebar-title">
+                                                        <div class="loader-line"></div>
+                                                        <h5>Chi Tiết Đăng Nhập</h5>
+                                                    </div>
+                                                    <ul class="profile-information mb-0">
+                                                        <li>
+                                                            <h6>Email:</h6>
+                                                            <p>{{ Auth::user()->email }}</p>
+                                                        </li>
+                                                        <li>
+                                                            <h6>Mật khẩu:</h6>
+                                                            <p>●●●●●●<span data-bs-toggle="modal"
+                                                                    data-bs-target="#edit-password" title="Edit Password"
+                                                                    tabindex="0">Edit</span></p>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                                 <ul class="profile-information">
                                                     <li>
@@ -1007,17 +1042,18 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input id="email" class="form-control @error('email') is-invalid @enderror"
-                                    type="email" name="email" value="{{ Auth::user()->email }}"
-                                    placeholder="Nhập email của bạn.">
-                                <div class="invalid-feedback">
-                                    @error('email')
-                                    {{ $message }}
-                                    @enderror
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input id="email" class="form-control @error('email') is-invalid @enderror"
+                                        type="email" name="email" value="{{ Auth::user()->email }}"
+                                        placeholder="Nhập email của bạn." @if(Auth::user()->google_id) disabled @endif>
+                                    <div class="invalid-feedback">
+                                        @error('email')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>

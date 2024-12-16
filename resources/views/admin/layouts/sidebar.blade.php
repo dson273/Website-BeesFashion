@@ -118,6 +118,20 @@
         </div>
     </li>
 
+    {{-- Liên hệ --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContacts" aria-expanded="true" aria-controls="collapseContacts">
+            <i class="fa-solid fa-phone text-light fa-5xl"></i>
+            <span>Liên hệ</span>
+        </a>
+        <div id="collapseContacts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh sách chức năng</h6>
+                <a class="collapse-item" href="{{ route('admin.contacts.index') }}">Danh sách</a>
+            </div>
+        </div>
+    </li>
+
     {{-- Quản lý thuộc tính --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">

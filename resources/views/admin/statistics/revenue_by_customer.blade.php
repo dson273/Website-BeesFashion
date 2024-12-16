@@ -30,7 +30,7 @@
                 </form>
             </div>
         </div>
-        
+
         <!-- Chi tiết khách hàng -->
         <div class="card mb-4">
             <div class="card-header">
@@ -47,9 +47,9 @@
                                 <th>#</th>
                                 <th>Khách hàng</th>
                                 <th>Email</th>
-                                <th>Phân loại</th>
+                                <th>Hạng</th>
                                 <th>Số đơn hàng</th>
-                                <th>Tổng chi tiêu</th>
+                                <th>Chi tiêu</th>
                                 <th>Giá trị đơn TB</th>
                                 <th>Đơn đầu tiên</th>
                                 <th>Đơn gần nhất</th>

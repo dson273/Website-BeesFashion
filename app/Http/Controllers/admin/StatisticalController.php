@@ -57,9 +57,14 @@ class StatisticalController extends Controller
     // Thống kê doanh thu theo thương hiệu
     public function revenueByBrand()
     {
-        $statisticBrand = $this->chart->getBrandStatistics();
-        // dd($statisticBrand);
-        return view('admin.statistics.revenue_by_brands', compact('statisticBrand'));
+        $timeRange = request('time_range', 'this_month');
+        $data = $this->chart->getBrandStatistics($timeRange);
+
+        return view('admin.statistics.revenue_by_brands', [
+            'statisticBrand' => $data['statistics'],
+            'currentRange' => $data['time_range'],
+            'timeRanges' => $data['time_ranges']
+        ]);
     }
 
     // Thống kê doanh thu theo khách hàng

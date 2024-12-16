@@ -50,7 +50,7 @@
                                 <div class="h5 mb-0 font-weight-bold total-revenue">{{ number_format($statistics['totals']['total_revenue']) }} đ</div>
                             </div>
                             <div class="fa-2x text-primary">
-                                <i class="fas fa-dollar-sign"></i>
+                                <i class="fa-solid fa-money-bill-wheat"></i>
                             </div>
                         </div>
                     </div>
