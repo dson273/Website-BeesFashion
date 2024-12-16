@@ -27,12 +27,12 @@ Danh sách sản phẩm
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <div class="d-flex flex-row align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
-            <a href="{{route('admin.products.index')}}">
-                <span class="ml-3 btn btn-outline-primary btn-sm" id="active">Active</span>
-            </a>
-            <a href="{{route('admin.products.index.inactive')}}">
-                <span class="ml-3 btn btn-outline-danger btn-sm" id="inactive">Inactive</span>
-            </a>
+                <a href="{{route('admin.products.index')}}">
+                    <span class="ml-3 btn btn-outline-primary btn-sm" id="active">Đang hoạt động</span>
+                </a>
+                <a href="{{route('admin.products.index.inactive')}}">
+                    <span class="ml-3 btn btn-outline-danger btn-sm" id="inactive">Ngừng hoạt động</span>
+                </a>
             </div>
             <div class="mb-2 d-flex justify-content-end">
                 <a href="{{route('admin.products.create')}}" class="btn btn-success text-white text-decoration-none btn-sm"><i class="fas fa-plus mr-2"></i>Thêm mới</a>
@@ -40,21 +40,21 @@ Danh sách sản phẩm
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th class="fs-12">#</th>
-                            <th class="fs-12">Product ID</th>
-                            <th class="fs-12">SKU</th>
-                            <th class="fs-12">Image</th>
-                            <th class="fs-12">Name</th>
-                            <th class="fs-12">Views</th>
-                            <th class="fs-12">Total variations</th>
-                            <th class="fs-12">Purchases</th>
-                            <th class="fs-12">Status</th>
-                            <th class="fs-12">Created at</th>
-                            <th class="fs-12">Updated at</th>
-                            <th class="fs-12">Control</th>
+                <table class="table table-bordered table-striped rounded" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="position-sticky top-0">
+                        <tr class="bg-primary">
+                            <th class="fs-12 text-white">#</th>
+                            <th class="fs-12 text-white">ID</th>
+                            <th class="fs-12 text-white">Mã</th>
+                            <th class="fs-12 text-white">Ảnh</th>
+                            <th class="fs-12 text-white">Tên</th>
+                            <th class="fs-12 text-white">Lượt xem</th>
+                            <th class="fs-12 text-white">Tổng số biến thể</th>
+                            <th class="fs-12 text-white">Lượt mua</th>
+                            <th class="fs-12 text-white">Trạng thái</th>
+                            <th class="fs-12 text-white">Ngày tạo</th>
+                            <th class="fs-12 text-white">Ngày cập nhật</th>
+                            <th class="fs-12 text-white">Thao tác</th>
                         </tr>
                     </thead>
                     <tfoot class="sticky-bottom">
@@ -84,7 +84,7 @@ Danh sách sản phẩm
                                 <img src="{{asset('uploads/products/images/'.$product->mainImage)}}" alt="" width="100" height="100">
                             </td>
                             <td>
-                                <a class="cspt" href="{{route('admin.products.show',$product->id)}}">{{$product->name}}</a>
+                                <a class="cspt" href="{{route('admin.products.show',$product->id)}}">{{Str::limit($product->name,30,'...')}}</a>
                             </td>
                             <td>{{$product->view}}</td>
                             <td>{{$product->product_variants_count}}</td>

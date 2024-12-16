@@ -6224,6 +6224,7 @@ footer .footer-1 .social-icon>li:hover a i {
     direction: ltr
 }
 
+/* Slide sản phẩm thịnh hàng */
 .swiper.fashikart-slide .swiper-button-prev {
     background-color: rgba(var(--light-white), 1);
     border-radius: 50%;
@@ -6235,6 +6236,7 @@ footer .footer-1 .social-icon>li:hover a i {
     visibility: hidden;
     width: 40px
 }
+
 
 .swiper.fashikart-slide .swiper-button-prev:after {
     color: rgba(var(--dark-color), 1);
@@ -6267,6 +6269,56 @@ footer .footer-1 .social-icon>li:hover a i {
 }
 
 .swiper.fashikart-slide:hover .swiper-button-next {
+    opacity: 1;
+    right: 2%;
+    visibility: visible
+}
+
+/* Slide address checkout */
+.swiper.address-checkout-slide .swiper-button-prev {
+    background-color: rgba(var(--light-white), 1);
+    border-radius: 50%;
+    box-shadow: 0 0 12px 2px rgba(var(--black), .1);
+    height: 40px;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: all .4s ease-in-out;
+    visibility: hidden;
+    width: 40px
+}
+
+
+.swiper.address-checkout-slide .swiper-button-prev:after {
+    color: rgba(var(--dark-color), 1);
+    font-size: 16px;
+    font-weight: 600
+}
+
+.swiper.address-checkout-slide .swiper-button-next {
+    background-color: rgba(var(--light-white), 1);
+    border-radius: 50%;
+    box-shadow: 0 0 12px 2px rgba(var(--black), .1);
+    height: 40px;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: all .4s ease-in-out;
+    visibility: hidden;
+    width: 40px
+}
+
+.swiper.address-checkout-slide .swiper-button-next:after {
+    color: rgba(var(--dark-color), 1);
+    font-size: 16px;
+    font-weight: 600
+}
+
+.swiper.address-checkout-slide:hover .swiper-button-prev {
+    left: 2%;
+    opacity: 1;
+    visibility: visible
+}
+
+.swiper.address-checkout-slide:hover .swiper-button-next {
     opacity: 1;
     right: 2%;
     visibility: visible
@@ -18977,7 +19029,7 @@ body div canvas:first-child {
     min-width: 110px;
     display: flex;
     align-items: center;
-    flex-direction: column; 
+    flex-direction: column;
     gap: 6px;
     justify-content: center;
     order: 4;
@@ -19825,4 +19877,21 @@ svg {
     width: 100%;
     align-items: center;
     overflow: hidden;
+}
+
+/* Cuộn chuột */
+.scroll-container {
+    position: relative;
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.list-product-scrollbar {
+    max-height: 500px;
+    /* Chiều cao tối đa */
+    overflow-y: auto;
+    /* Cuộn dọc */
+    overflow-x: hidden;
+    /* Ẩn cuộn ngang */
+    scrollbar-width: thin;
 }

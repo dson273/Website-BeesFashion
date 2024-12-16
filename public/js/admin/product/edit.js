@@ -1,41 +1,79 @@
 $('.container-spinner').removeClass('hidden');
 //---------------------------------------------------Show and hidden form---------------------------------------------------
-function switchShowHidden(form, dataForm, chevron) {
-    var status = $(form).data(dataForm);
+function switchShowHidden(form, dataForm, chevron, statusFixed = "") {
+    if (statusFixed == "") {
+        var status = $(form).data(dataForm);
 
-    if (status === "show") {
-        $(form).data(dataForm, 'hidden');
-        $(form).addClass('hidden');
-        if (chevron) {
-            $(chevron).removeClass('fa-chevron-up');
-            $(chevron).addClass('fa-chevron-down');
+        if (status) {
+            if (status === "show") {
+                $(form).data(dataForm, 'hidden');
+                $(form).addClass('hidden');
+                if (chevron) {
+                    $(chevron).removeClass('fa-chevron-up');
+                    $(chevron).addClass('fa-chevron-down');
+                }
+            } else {
+                $(form).data(dataForm, 'show');
+                $(form).removeClass('hidden');
+                if (chevron) {
+                    $(chevron).addClass('fa-chevron-up');
+                    $(chevron).removeClass('fa-chevron-down');
+                }
+            }
+        } else {
+            console.log(form);
+
+            if (form.hasClass('hidden')) {
+                $(form).removeClass('hidden');
+            } else {
+                $(form).addClass('hidden');
+            }
         }
+
     } else {
-        $(form).data(dataForm, 'show');
-        $(form).removeClass('hidden');
-        if (chevron) {
-            $(chevron).addClass('fa-chevron-up');
-            $(chevron).removeClass('fa-chevron-down');
+        console.log(form);
+
+        if (statusFixed === "show" && form.hasClass('hidden')) {
+            $(form).removeClass('hidden');
+        } else if (statusFixed === "hidden" && !form.hasClass('hidden')) {
+            $(form).addClass('hidden');
         }
     }
+
+}
+
+function convertToSlug(str) {
+    // Loại bỏ dấu và chuyển thành chữ thường
+    str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    // Thay thế các ký tự không phải là chữ và số thành dấu "-"
+    str = str.replace(/[^a-zA-Z0-9]+/g, '-');
+
+    // Chuyển chuỗi thành chữ thường
+    str = str.toLowerCase();
+
+    // Loại bỏ dấu "-" thừa ở đầu và cuối chuỗi
+    str = str.replace(/^-+|-+$/g, '');
+
+    return str;
 }
 //BASE PRODUCT
-switchShowHidden('#baseProduct', 'baseProduct', '#chevronBaseProduct');
-switchShowHidden('#customVariants', 'customVariants', '#chevronCustomVariants');
-switchShowHidden('#contentCategoryContainer', 'productCategory', '#chevronProductCategory');
-switchShowHidden('#contentBrandContainer', 'productBrand', '#chevronProductBrand');
+// switchShowHidden('#baseProduct', 'baseProduct', '#chevronBaseProduct');
+// switchShowHidden('#customVariants', 'customVariants', '#chevronCustomVariants');
+// switchShowHidden('#contentCategoryContainer', 'productCategory', '#chevronProductCategory');
+// switchShowHidden('#contentBrandContainer', 'productBrand', '#chevronProductBrand');
 $(document).on('click', '#baseProductSwitch', function () {
-    switchShowHidden('#baseProduct', 'baseProduct', '#chevronBaseProduct');
+    switchShowHidden('#baseProduct', 'baseproduct', '#chevronBaseProduct');
 });
 //Open/close VARIATIONS
 $(document).on('click', '#baseCustomVariantsSwitch', function () {
-    switchShowHidden('#customVariants', 'customVariants', '#chevronCustomVariants');
+    switchShowHidden('#customVariants', 'customvariants', '#chevronCustomVariants');
 });
 $(document).on('click', '.productCategoryTitle', function () {
-    switchShowHidden('#contentCategoryContainer', 'productCategory', '#chevronProductCategory');
+    switchShowHidden('#contentCategoryContainer', 'productcategory', '#chevronProductCategory');
 });
 $(document).on('click', '.productBrandTitle', function () {
-    switchShowHidden('#contentBrandContainer', 'productBrand', '#chevronProductBrand');
+    switchShowHidden('#contentBrandContainer', 'productbrand', '#chevronProductBrand');
 });
 
 //||||||||||||||||||||||||||||||||||||||||||||||||OLD PRODUCT||||||||||||||||||||||||||||||||||||||||||||||||
@@ -55,14 +93,14 @@ function getOldProductData() {
             success: function (response) {
                 if (response.status == 200) {
                     oldDataProduct = response.data;
-                    return resolve(notification('success', response.message, 'Successfully!', '1000'));
+                    return resolve(notification('success', response.message, 'Thành công!', '1000'));
                 } else {
-                    return resolve(notification('error', response.message, 'Error!', '1000'));
+                    return resolve(notification('error', response.message, 'Lỗi!', '1000'));
                 }
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
-                reject(notification('error', 'Unable to get catalog data!', 'Error'));
+                reject(notification('error', 'Không thể lấy được dữ liệu danh mục sản phẩm!', 'Lỗi!'));
             }
         })
     })
@@ -71,7 +109,7 @@ function getOldProductData() {
 var slimSelectAddExisting = new SlimSelect({
     select: '#selectAddExisting',
     settings: {
-        placeholderText: 'Add existing',
+        placeholderText: 'Thêm thuộc tính đã có',
         keepOrder: true
     },
 });
@@ -236,12 +274,12 @@ async function upLoadOldDataProduct() {
 
                         productAttributes.forEach(function (item) {
                             var select = document.createElement('select');
-                            select.className = 'form-control mr-2';
+                            select.className = 'form-control mr-2 selectAttributeValues';
                             select.id = item['id'];
                             select.disabled = true;
 
                             var optionDefault = document.createElement('option');
-                            optionDefault.textContent = 'Select ' + item['name'];
+                            optionDefault.textContent = 'Chọn ' + item['name'];
                             optionDefault.value = '';
                             select.appendChild(optionDefault);
 
@@ -273,14 +311,14 @@ async function upLoadOldDataProduct() {
                         var spanRemoveButton = document.createElement('span');
                         spanRemoveButton.className = 'text-secondary no-select mr-2';
                         spanRemoveButton.style.fontSize = '14px';
-                        spanRemoveButton.textContent = 'Remove';
+                        spanRemoveButton.textContent = 'Xóa';
 
                         divActionButton.appendChild(spanRemoveButton);
 
                         var spanEditButton = document.createElement('span');
                         spanEditButton.className = 'text-primary cspt no-select mr-2';
                         spanEditButton.style.fontSize = '14px';
-                        spanEditButton.textContent = 'Edit';
+                        spanEditButton.textContent = 'Sửa';
 
                         divActionButton.appendChild(spanEditButton);
 
@@ -318,7 +356,7 @@ async function upLoadOldDataProduct() {
 
                         var divClickToUploadText = document.createElement('div');
                         divClickToUploadText.className = 'mt-2';
-                        divClickToUploadText.textContent = 'Click to upload';
+                        divClickToUploadText.textContent = 'Bấm để tải lên!';
                         labelImage.appendChild(divIconUpload);
                         labelImage.appendChild(divClickToUploadText);
 
@@ -371,7 +409,7 @@ async function upLoadOldDataProduct() {
                         var inputSku = document.createElement('input');
                         inputSku.type = 'text';
                         inputSku.className = 'form-control skuInput';
-                        inputSku.placeholder = "Enter variation's SKU...";
+                        inputSku.placeholder = "Nhập mã biến thể...";
                         inputSku.disabled = true;
                         inputSku.value = variationItem['sku'];
 
@@ -395,7 +433,7 @@ async function upLoadOldDataProduct() {
                         var inputImportPrice = document.createElement('input');
                         inputImportPrice.type = 'number';
                         inputImportPrice.className = 'form-control importPriceInput';
-                        inputImportPrice.placeholder = "Enter variation's import price...";
+                        inputImportPrice.placeholder = "Nhập giá nhập cho biến thể...";
                         inputImportPrice.value = variationItem['import_price'];
 
                         divImportPrice.appendChild(labelImportPrice);
@@ -415,7 +453,7 @@ async function upLoadOldDataProduct() {
                         var inputRegularPrice = document.createElement('input');
                         inputRegularPrice.type = 'number';
                         inputRegularPrice.className = 'form-control regularPriceInput';
-                        inputRegularPrice.placeholder = "Enter variation's regular price...";
+                        inputRegularPrice.placeholder = "Nhập giá thông thường cho biến thể...";
                         inputRegularPrice.value = variationItem['regular_price'];
 
                         divRegularPrice.appendChild(labelRegularPrice);
@@ -431,7 +469,7 @@ async function upLoadOldDataProduct() {
                         var inputSalePrice = document.createElement('input');
                         inputSalePrice.type = 'number';
                         inputSalePrice.className = 'form-control salePriceInput';
-                        inputSalePrice.placeholder = "Enter variation's sale price...";
+                        inputSalePrice.placeholder = "Nhập giá đã giảm cho biến thể...";
                         inputSalePrice.value = variationItem['sale_price'];
 
                         divSalePrice.appendChild(labelSalePrice);
@@ -451,7 +489,7 @@ async function upLoadOldDataProduct() {
                         var inputStock = document.createElement('input');
                         inputStock.type = 'number';
                         inputStock.className = 'form-control stockInput';
-                        inputStock.placeholder = "Enter variation's stock price...";
+                        inputStock.placeholder = "Nhập số lượng cho biến thể...";
                         inputStock.value = variationItem['stock'];
 
                         divStock.appendChild(labelStock);
@@ -539,7 +577,7 @@ async function upLoadOldDataProduct() {
                 }, 1000);
 
             } else {
-                notification('error', 'Vẫn chưa lấy được dữ liệu sản phẩm cũ, vui lòng tải lại trang web!', 'Error!', '2000');
+                notification('error', 'Vẫn chưa lấy được dữ liệu sản phẩm cũ, vui lòng tải lại trang web!', 'Lỗi!', '2000');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -566,7 +604,7 @@ function getAllCategories() {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Unable to get catalog data!', 'Error');
+                notification('error', 'Không thể lấy được dữ liệu danh mục sản phẩm!', 'Lỗi!');
                 reject();
             }
         });
@@ -617,7 +655,7 @@ function createCategoryList(categories, indent = 0) {
 async function loadCategories() {
     await getAllCategories();
 
-    document.getElementById("contentCategoryContainer").appendChild(createCategoryList(categories));
+    document.getElementById("contentCategory").appendChild(createCategoryList(categories));
 
     const selectElement = document.getElementById('selectNewCategory');
     selectElement.innerHTML = `<option value="">&mdash; Parent category &mdash;</option>` + createCategoryOptions(categories);
@@ -665,7 +703,7 @@ function createNewCategoryByAjax(name, parent_id) {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Can not create category!', 'Error');
+                notification('error', 'Không thể tạo mới danh mục, vui lòng thử lại!', 'Lỗi!');
                 reject();
             }
         });
@@ -682,7 +720,7 @@ function createNewCategoryByAjax(name, parent_id) {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Can not create category!', 'Error');
+                notification('error', 'Không thể tạo mới danh mục, vui lòng thử lại!', 'Lỗi!');
                 reject();
             }
         });
@@ -696,7 +734,7 @@ $(document).on('click', '#addNewCategoryBtn', async function () {
             $('.container-spinner').removeClass('hidden');
             try {
                 await createNewCategoryByAjax(categoryName, parentCategoryId);
-                $('#contentCategoryContainer').find('.listCategories')[0].remove();
+                $('#contentCategory').find('.listCategories')[0].remove();
                 $('#selectNewCategory').html('');
                 loadCategories();
                 $('.categoryName').val('');
@@ -704,13 +742,13 @@ $(document).on('click', '#addNewCategoryBtn', async function () {
                 console.error('Error:', error);
             } finally {
                 $('.container-spinner').addClass('hidden');
-                notification('success', 'Create new category successfully!', 'Successfully!', '1000');
+                notification('success', 'Tạo mới danh mục thành côngcông!', 'Thành công!', '1000');
             }
         } else {
             $('.container-spinner').removeClass('hidden');
             try {
                 await createNewCategoryByAjax(categoryName, '');
-                $('#contentCategoryContainer').find('.listCategories')[0].remove();
+                $('#contentCategory').find('.listCategories')[0].remove();
                 $('#selectNewCategory').html('');
                 loadCategories();
                 $('.categoryName').val('');
@@ -718,11 +756,11 @@ $(document).on('click', '#addNewCategoryBtn', async function () {
                 console.error('Error:', error);
             } finally {
                 $('.container-spinner').addClass('hidden');
-                notification('success', 'Create new category successfully!', 'Successfully!', '1000');
+                notification('success', 'Tạo mới danh mục thành côngcông!', 'Thành công!', '1000');
             }
         }
     } else {
-        notification('warning', 'You need enter category name!', 'Warning!', '3000');
+        notification('warning', 'Bạn cần nhập tên danh mục!', 'Cảnh báo!', '3000');
     }
 })
 //----------------------------------------------------Check category by ajax-----------------------------------------------------
@@ -739,13 +777,13 @@ function checkCategoryByAjax(categoryId) {
                 if (response.status == 200) {
                     resolve(true);
                 } else {
-                    notification('error', response.message, 'Error!', '3000');
+                    notification('error', response.message, 'Lỗi!', '3000');
                     resolve(false);
                 }
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
-                notification('error', 'Unable check category by id!', 'Error!', '3000');
+                notification('error', 'Không thể kiểm tra danh mục bằng ID!', 'Lỗi!', '3000');
                 reject();
             }
         })
@@ -773,7 +811,7 @@ function getAllBrands() {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Unable to get catalog data!', 'Error');
+                notification('error', 'Không thể lấy được dữ liệu thương hiệu!', 'Lỗi!');
                 reject();
             }
         });
@@ -807,7 +845,7 @@ async function loadAllBrands() {
             item.appendChild(label);
             container.appendChild(item);
         })
-        document.getElementById("contentBrandContainer").appendChild(container);
+        document.getElementById("contentBrand").appendChild(container);
     }
 }
 loadAllBrands();
@@ -825,19 +863,19 @@ function createNewBrandByAjax(brandName) {
             success: function (response) {
                 if (response.status == 409) {
                     checkNewBrandName = false;
-                    notification('error', response.message, 'Error!', '3000');
+                    notification('error', response.message, 'Lỗi!', '3000');
                     resolve(false);
                 } else if (response.status == 200) {
                     checkNewBrandName = true;
                     resolve(true);
                 } else {
-                    notification('error', 'Something went wrong!', 'Error!', '3000');
+                    notification('error', 'Có lỗi xảy ra khi tạo mới thương hiệu, vui lòng thử lại!', 'Lỗi!', '3000');
                     resolve(false);
                 }
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Cannot create brand!', 'Error');
+                notification('error', 'Không thể tạo mới thương hiệu, vui lòng thử lại!', 'Lỗi!');
                 reject(new Error('Ajax request failed'));
             }
         });
@@ -857,13 +895,13 @@ function checkBrandByAjax(brandId) {
                 if (response.status == 200) {
                     resolve(true);
                 } else {
-                    notification('error', response.message, 'Error!', '3000');
+                    notification('error', response.message, 'Lỗi!', '3000');
                     resolve(false);
                 }
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
-                notification('error', 'Unable check brand by id!', 'Error!', '3000');
+                notification('error', 'Không thể kiểm tra thương hiệu bằng ID!', 'Lỗi!', '3000');
                 reject();
             }
         })
@@ -878,13 +916,13 @@ $(document).on('click', '#addNewBrandBtn', async function () {
         try {
             const result = await createNewBrandByAjax(brandName);
             if (result && checkNewBrandName) {  // Chỉ thực hiện nếu `result` là true
-                var listBrands = $('#contentBrandContainer').find('.listBrands')[0];
+                var listBrands = $('#contentBrand').find('.listBrands')[0];
                 if (listBrands) {
                     listBrands.remove();
                 }
                 loadAllBrands();
                 $('.brandName').val('');
-                notification('success', 'Create new brand successfully!', 'Successfully!', '1000');
+                notification('success', 'Tạo mới thương hiệu thành công!', 'Thành công!', '1000');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -892,7 +930,7 @@ $(document).on('click', '#addNewBrandBtn', async function () {
             $('.container-spinner').addClass('hidden');
         }
     } else {
-        notification('warning', 'You need to enter a brand name!', 'Warning!', '3000');
+        notification('warning', 'Bạn cần nhập tên thương hiệu!', 'Cảnh báo!', '3000');
     }
 });
 
@@ -945,7 +983,7 @@ function previewImage(input) {
         const file = input.files[0];
         mainImageFile = file;
         if (file.size > maxSizeBytes) {
-            notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error');
+            notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn.`, 'Lỗi!');
             input.value = ''; // Reset input nếu ảnh quá lớn
             return;
         }
@@ -982,9 +1020,9 @@ function previewImage(input) {
                         previewContainer.appendChild(divBlock);
                     }
                     reader.readAsDataURL(file);
-                    notification('success', 'Image uploaded successfully', 'Successfully');
+                    notification('success', 'Ảnh đã được tải lên thành công!', 'Thành công');
                 } else {
-                    notification('warning', 'Image already exists', 'Warning');
+                    notification('warning', 'Ảnh đã tồn tại', 'Cảnh báo');
                 };
             } else {
                 $('#mainImagePreview').find('.divImg').remove();
@@ -1016,7 +1054,7 @@ function previewImage(input) {
                     previewContainer.appendChild(divBlock);
                 }
                 reader.readAsDataURL(file);
-                notification('success', 'Image uploaded successfully', 'Successfully');
+                notification('success', 'Ảnh đã được tải lên thành công!', 'Thành công');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -1073,7 +1111,7 @@ function previewImages(input) {
         if (input.files) {
             Array.from(input.files).forEach(file => {
                 if (file.size > maxSizeBytes) {
-                    notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error');
+                    notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn.`, 'Lỗi!');
                     input.value = ''; // Reset input nếu ảnh quá lớn
                     return;
                 }
@@ -1107,9 +1145,9 @@ function previewImages(input) {
                         previewContainer.appendChild(divBlock);
                     }
                     reader.readAsDataURL(file);
-                    notification('success', 'Image uploaded successfully', 'Successfully', '2000');
+                    notification('success', 'Ảnh đã được tải lên thành công!', 'Thành công', 2000);
                 } else {
-                    notification('warning', 'Image already exists', 'Warning', '2000');
+                    notification('warning', 'Ảnh đã tồn tại', 'Cảnh báo', 2000);
                 };
             });
             // Reset lại giá trị của thẻ input sau khi xử lý
@@ -1142,7 +1180,7 @@ $(document).on('click', '#removeMainImgBtn', function () {
         //Xóa thẻ div bao bọc thẻ img được click xóa
         imgElm.closest('.divImg').remove();
         mainImageFile = null;
-        notification('success', 'Image removed successfully', 'Successfully', '2000');
+        notification('success', 'Ảnh đã được xóa thành công!', 'Thành công', 2000);
     } catch (error) {
         console.error('Error:', error);
     } finally {
@@ -1179,7 +1217,7 @@ $(document).on('click', '#removeImgBtn', function () {
         }
         //Xóa thẻ div bao bọc thẻ img được click xóa
         imgElm.closest('.divImgs').remove();
-        notification('success', 'Image removed successfully', 'Successfully');
+        notification('success', 'Ảnh đã được xóa thành công!', 'Thành công', 2000);
         console.log(productPhotoGalleryIds);
 
     } catch (error) {
@@ -1250,7 +1288,7 @@ function previewVideos(input) {
         if (input.files) {
             Array.from(input.files).forEach(file => {
                 if (file.size > maxSizeBytes) {
-                    notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error');
+                    notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn.`, 'Lỗi!');
                     input.value = ''; // Reset input nếu video quá lớn
                     return;
                 }
@@ -1285,9 +1323,9 @@ function previewVideos(input) {
                         previewContainer.appendChild(divBlock);
                     }
                     reader.readAsDataURL(file);
-                    notification('success', 'Video uploaded successfully', 'Successfully', '1000');
+                    notification('success', 'Video đã được tải lên thành công!', 'Thành công', 2000);
                 } else {
-                    notification('warning', 'Video already exists', 'Warning', '2000');
+                    notification('warning', 'Video đã tồn tại', 'Cảnh báo');
                 };
             });
             // Reset lại giá trị của thẻ input sau khi xử lý
@@ -1333,7 +1371,7 @@ $(document).on('click', '#removeVideoBtn', function () {
         }
         //Xóa thẻ div bao bọc thẻ video được click xóa
         videoElm.closest('.divVideo').remove();
-        notification('success', 'Video removed successfully', 'Successfully!', '1000');
+        notification('success', 'Video đã được xóa thành công!', 'Thành công', 2000);
     } catch (error) {
         console.error('Error:', error);
     } finally {
@@ -1391,7 +1429,7 @@ function getAttributeData() {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Unable to get attribute data!', 'Error');
+                notification('error', 'Không thể lấy được dữ liệu thuộc tính, vui lòng thử lại!', 'Lỗi!');
                 reject();
             }
         })
@@ -1518,29 +1556,29 @@ $('#selectAddExisting').off('change').on('change', function () {
                                     <div class="d-flex justify-content-between cspt border-bottom align-items-center p-1 attributeItemTittle no-select">
                                         <span class="d-flex align-items-center font-weight-bold text-dark commonTitle">${optionText}</span>
                                         <div class="d-flex align-items-center">
-                                            <span class="text-danger cspt no-select mr-2" id="removeAttributeItem" style="font-size:14px">Remove</span>
+                                            <span class="text-danger cspt no-select mr-2" id="removeAttributeItem" style="font-size:14px">Xóa</span>
                                             <i class="fas fa-chevron-up fa-md p-2 hoverTextBlack" id="chevronAttributeItem"></i>
                                         </div>
                                     </div>
-                                    <div class="attributeItemContent pb-3">
+                                    <div class="attributeItemContent pb-3" data-status="show">
                                         <div class="d-flex flex-row">
                                             <div class="w-25 mr-2">
-                                                <label for="" class="small">Name:</label>
+                                                <label for="" class="small">Tên:</label>
                                                 <input type="text" class="form-control" id="attributeNameInput" name="attributeItem[]" placeholder="f.e. size or color" value="${optionText}" disabled>
                                             </div>
                                             <div class="d-flex flex-column w-75" style="margin-top:3.2px">
-                                                <label for="" class="small">Value(s):</label>
+                                                <label for="" class="small">Giá trị:</label>
                                                 <div class="customSelectExistingAttributeValues">
                                                     <select class="selectExistingAttributeValues" name="selectExistingAttributeValues" id="selectExistingAttributeValues${id}" data-slimselectinitialized="false" multiple>
                                                         <option data-placeholder="true"></option>
                                                     </select>
-                                                </div>
+                                                </div> 
                                                 <div class="d-flex flex-row justify-content-between mt-2">
                                                     <div class="d-flex flex-row">
-                                                        <span class="btn btn-outline-info btn-sm selectAllAttributeValuesBtn">Select all</span>
-                                                        <span class="btn btn-outline-dark btn-sm ml-2 selectNoneAttributeValuesBtn">Select none</span>
+                                                        <span class="btn btn-outline-info btn-sm selectAllAttributeValuesBtn">Chọn tất cả</span>
+                                                        <span class="btn btn-outline-dark btn-sm ml-2 selectNoneAttributeValuesBtn">Bỏ chọn tất cả</span>
                                                     </div>
-                                                    <span class="btn btn-success btn-sm btnToCreateNewAttributeValue">Create value</span>
+                                                    <span class="btn btn-success btn-sm btnToCreateNewAttributeValue">Thêm mới giá trị</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1561,7 +1599,8 @@ $('#selectAddExisting').off('change').on('change', function () {
                         var slimSelectInstance = new SlimSelect({
                             select: '#' + selectId,
                             settings: {
-                                placeholderText: 'Select values',
+                                placeholderText: 'Chọn giá trị',
+                                maxSelected: 6,
                             },
                         });
                         // Lưu SlimSelect vào selectStorage
@@ -1701,9 +1740,9 @@ $('#selectAddExisting').off('change').on('change', function () {
     }
 })
 //Show/Hidden attribute form content
-$('.attributeItemTittle').each(function () {
-    switchShowHidden($(this).next('.attributeItemContent'), 'status', $(this).find('#chevronAttributeItem'));
-})
+// $('.attributeItemTittle').each(function () {
+//     switchShowHidden($(this).next('.attributeItemContent'), 'status', $(this).find('#chevronAttributeItem'));
+// })
 $(document).on('click', '.attributeItemTittle', function () {
     switchShowHidden($(this).next('.attributeItemContent'), 'status', $(this).find('#chevronAttributeItem'));
 });
@@ -1759,7 +1798,7 @@ $(document).on('click', '#removeAttributeItem', function () {
                         }
                     } else {
                         // Nếu attributeId không nằm trong selectedValues, hiển thị thông báo lỗi
-                        notification('error', "selectedValues don't include attributeId", 'Error');
+                        notification('error', "Có lỗi xảy ra, vui lòng thử lại!", 'Lỗi!');
                     }
                 }
             }
@@ -1768,7 +1807,7 @@ $(document).on('click', '#removeAttributeItem', function () {
                 attributeItem.remove();
             } else {
                 // Nếu không tìm thấy thẻ, thông báo lỗi
-                notification('error', 'Something went wrong', 'Error');
+                notification('error', "Có lỗi xảy ra, vui lòng thử lại!", 'Lỗi!');
             }
             var check = true;
             $('.selectExistingAttributeValues').each(function () {
@@ -1871,21 +1910,21 @@ $(document).on('click', '#addNewAttribute', function () {
         // Tạo giao diện mới cho thuộc tính
         var newElement = `<div class="border-bottom attributeItem" data-id="" data-status="show">
                                 <div class="d-flex justify-content-between cspt border-bottom align-items-center p-1 attributeItemTittle no-select">
-                                    <span class="d-flex align-items-center attributeTitle commonTitle">New attribute</span>
+                                    <span class="d-flex align-items-center attributeTitle commonTitle">Thuộc tính mới</span>
                                     <div class="d-flex align-items-center">
-                                        <span class="text-danger cspt no-select mr-2" id="removeAttributeItem" style="font-size:14px">Remove</span>
+                                        <span class="text-danger cspt no-select mr-2" id="removeAttributeItem" style="font-size:14px">Xóa</span>
                                         <i class="fas fa-chevron-up fa-md p-2 hoverTextBlack" id="chevronAttributeItem"></i>
                                     </div>
                                 </div>
-                                <div class="attributeItemContent pb-3">
+                                <div class="attributeItemContent pb-3" data-status="show">
                                     <div class="d-flex flex-row">
                                         <div class="w-25 mr-2">
-                                            <label for="" class="small">Name:</label>
+                                            <label for="" class="small">Tên:</label>
                                             <input type="text" class="form-control attributeNameInput" id="" name="attributeItem" placeholder="f.e. size or color">
                                         </div>
                                         <div class="d-flex flex-column w-75" style="margin-top:3.2px">
-                                            <label for="" class="small">Value(s):</label>
-                                            <textarea name="" id="" class="form-control attributeValuesTextarea" rows="3" placeholder="Enter options for customers to choose from, f.e. “Blue” or “Large”. Use “|” to separate different options."></textarea>
+                                            <label for="" class="small">Giá trịtrị:</label>
+                                            <textarea name="" id="" class="form-control attributeValuesTextarea" rows="3" placeholder="Nhập các tùy chọn để khách hàng lựa chọn, ví dụ: “Green” hoặc “XL”. Sử dụng “|” để phân tách các tùy chọn khác nhau."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -1975,7 +2014,7 @@ $(document).on('change', '.attributeNameInput', function (event) {
             resetValue = true;
             attributeTitle.text('New attribute');
             attributeTitle.removeClass('font-weight-bold text-dark');
-            notification('error', 'Attribute name already exist', 'Error');
+            notification('error', 'Tên thuộc tính đã tồn tại, vui lòng nhập tên khác hoặc chọn thuộc tính có sẵn!', 'Lỗi!');
         }
     });
 
@@ -1983,7 +2022,7 @@ $(document).on('change', '.attributeNameInput', function (event) {
     attributeDataOptions.forEach(function (item) {
         if (item.name == name) {
             resetValue = true;
-            notification('warning', 'Attribute name is already exist, please select in "Add existing" form! Thank you', 'Warning');
+            notification('warning', 'Tên thuộc tính đã tồn tại, vui lòng nhập tên khác hoặc chọn thuộc tính có sẵn!', 'Cảnh báo');
             attributeTitle.text('New attribute');
             attributeTitle.removeClass('font-weight-bold text-dark');
             // Nếu tên hoặc giá trị không hợp lệ, tắt nút lưu
@@ -2080,7 +2119,7 @@ function getAttributeValueData(attributeId) {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Không thể lấy được dữ liệu giá trị thuộc tính!', 'Error');
+                notification('error', 'Không thể lấy được dữ liệu giá trị thuộc tính!', 'Lỗi!');
                 //reject(): Được gọi khi tác vụ bất đồng bộ gặp lỗi hoặc thất bại. Khi bạn gọi reject(), 
                 //promise chuyển sang trạng thái rejected, và bất kỳ logic nào được đính kèm với .catch() sẽ được thực thi.
                 reject();
@@ -2129,13 +2168,16 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
                         var option = document.createElement('option');
                         option.value = item['id'];
                         option.text = item['name'];
+                        option.style.color = item['value'];
+                        option.style.fontWeight = "bold";
                         option.className = 'optionSelectAttributeValueAddExisting';
+                        option.setAttribute('data-color', item['value']);
                         selectExistingAttributeValues.appendChild(option);
                     }
                 });
             } else {
                 // Nếu không có dữ liệu nào cho thuộc tính này trong attributeValueDataOptionsMap, hiển thị thông báo cảnh báo
-                notification('warning', 'No data available for this attribute.', 'Warning');
+                notification('warning', 'Không có dữ liệu nào có sẵn cho thuộc tính này.', 'Cảnh báo');
             }
         } else {
             // Nếu thẻ select chưa có option nào, thêm tất cả các option từ attributeValueDataOptionsMap
@@ -2144,12 +2186,15 @@ $(document).on('click', '.customSelectExistingAttributeValues', async function (
                     var option = document.createElement('option');
                     option.value = item['id'];
                     option.text = item['name'];
+                    option.style.color = item['value'];
+                    option.style.fontWeight = "bold";
                     option.className = 'optionSelectAttributeValueAddExisting';
+                    option.setAttribute('data-color', item['value']);
                     selectExistingAttributeValues.appendChild(option);
                 });
             } else {
                 // Nếu không có dữ liệu nào cho thuộc tính này trong attributeValueDataOptionsMap, hiển thị thông báo cảnh báo
-                notification('warning', 'No data available for this attribute.', 'Warning');
+                notification('warning', 'Không có dữ liệu nào có sẵn cho thuộc tính này.', 'Cảnh báo');
             }
         }
     } catch (error) {
@@ -2230,52 +2275,57 @@ $(document).on('click', '.selectAllAttributeValuesBtn', async function () {
                     var option = document.createElement('option');
                     option.value = item['id'];
                     option.text = item['name'];
+                    option.style.color = item['value'];
+                    option.style.fontWeight = "bold";
                     option.className = 'optionSelectAttributeValueAddExisting';
+                    option.setAttribute('data-color', item['value']);
                     selectExistingAttributeValues.appendChild(option);
                 }
             });
         } else {
             // Nếu không có dữ liệu nào cho thuộc tính này trong attributeValueDataOptionsMap, hiển thị thông báo cảnh báo
-            notification('warning', 'No data available for this attribute.', 'Warning');
+            notification('warning', 'No data available for this attribute.', 'Cảnh báo!');
         }
     } else {
         // Nếu thẻ select chưa có option nào, thêm tất cả các option từ attributeValueDataOptionsMap
         if (attributeValueDataOptionsMap[attributeId.toString()]) {
-            attributeValueDataOptionsMap[attributeId].forEach(function (item) {
+            // Xóa SlimSelect hiện tại
+            if (selectStorage[selectElementId]) {
+                selectStorage[selectElementId].instance.destroy();
+            }
+            for (item of attributeValueDataOptionsMap[attributeId]) {
                 var option = document.createElement('option');
                 option.value = item['id'];
                 option.text = item['name'];
+                option.style.color = item['value'];
+                option.style.fontWeight = "bold";
                 option.className = 'optionSelectAttributeValueAddExisting';
+                option.setAttribute('data-color', item['value']);
                 selectExistingAttributeValues.appendChild(option);
+            }
+            // Khởi tạo lại SlimSelect
+            selectStorage[selectElementId].instance = new SlimSelect({
+                select: '#' + selectElementId,
+                settings: {
+                    placeholderText: 'Select values',
+                },
             });
-            // Kiểm tra thẻ select sau khi thêm
-            console.log('Current options in select:', $(selectExistingAttributeValues).find('option'));
         } else {
             // Nếu không có dữ liệu nào cho thuộc tính này trong attributeValueDataOptionsMap, hiển thị thông báo cảnh báo
-            notification('warning', 'No data available for this attribute.', 'Warning');
+            notification('warning', 'No data available for this attribute.', 'Cảnh báo!');
         }
     }
-
-    // Xóa SlimSelect hiện tại
-    if (selectStorage[selectElementId]) {
-        selectStorage[selectElementId].instance.destroy(); // Xóa SlimSelect hiện tại
-    }
-
-    // Khởi tạo lại SlimSelect
-    selectStorage[selectElementId].instance = new SlimSelect({
-        select: '#' + selectElementId,
-        settings: {
-            placeholderText: 'Select values',
-        },
-    });
     // Tạo danh sách dữ liệu option mới cho SlimSelect
     var newSelectedOptionData = [];
-    attributeValueDataOptionsMap[attributeId].forEach(function (item) {
+    for (let item of attributeValueDataOptionsMap[attributeId]) {
         newSelectedOptionData.push({
             text: item.name,
             value: item.id
         });
-    })
+        if (newSelectedOptionData.length >= 6) {
+            break; // Dừng vòng lặp khi đạt 6 phần tử
+        }
+    }
     // // Cập nhật lại giá trị đã chọn trong SlimSelect
     selectStorage[selectElementId].instance.setSelected(newSelectedOptionData.map(option => option.value));
 })
@@ -2298,19 +2348,19 @@ function addNewAttributeValue(attributeId, newAttributeValue) {
             },
             success: function (response) {
                 if (response.status == 400) {
-                    notification('error', response.message, 'Error');
+                    notification('error', response.message, 'Lỗi!');
                 } else {
                     if (!attributeValueDataOptionsMap[attributeId]) {
                         attributeValueDataOptionsMap[attributeId] = [];
                     }
                     attributeValueDataOptionsMap[attributeId].push(response.data);
-                    notification('success', response.message, 'Successfully');
+                    notification('success', response.message, 'Thành công!');
                 }
                 resolve();
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'The attribute value already exists!', 'Error');
+                notification('error', 'Giá trị thuộc tính đã tồn tại!', 'Lỗi!');
                 reject();
             }
         })
@@ -2362,7 +2412,8 @@ $('#saveAttributesBtn').click(function () {
                             if ($(this).text() != '' && $(this).val() == item) {
                                 var attributeValue = {
                                     attributeValueId: item,
-                                    attributeValueName: $(this).text()
+                                    attributeValueName: $(this).text(),
+                                    attributeValueColor: $(this).data('color')
                                 };
                                 attribute.attributeValues.push(attributeValue);
                             }
@@ -2396,14 +2447,17 @@ $('#saveAttributesBtn').click(function () {
                             getSelectIdOrNameOfVariation.push(selectIdOrName);
                         })
                         if (!getSelectIdOrNameOfVariation.includes(attributeIdOrName.toString())) {
-                            var newSelect = $('<select>').addClass('form-control mr-2');
+                            var newSelect = $('<select>').addClass('form-control mr-2 selectAttributeValues');
                             attributeItem['attributeId'] ? newSelect.attr('id', attributeItem['attributeId']) : newSelect.attr('name', attributeItem['attributeName']);
-                            var newOption = $('<option>').text("Select " + attributeItem['attributeName']);
+                            var newOption = $('<option>').text("Select " + attributeItem['attributeName']).css('color', '#a8a8a8').css('font-style', 'italic');;
                             newSelect.append(newOption);
                             attributeItem['attributeValues'].forEach(function (attributeValueItem) {
                                 var attributeValueIdOrName = attributeValueItem['attributeValueId'] ? attributeValueItem['attributeValueId'] : attributeValueItem;
                                 var attributeValueName = attributeValueItem['attributeValueName'] ? attributeValueItem['attributeValueName'] : attributeValueItem;
-                                newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName);
+                                newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName).css('font-weight', 'bold');
+                                if (attributeValueItem['attributeValueColor']) {
+                                    newOption = newOption.css('color', attributeValueItem['attributeValueColor']);
+                                }
                                 newSelect.append(newOption);
                             })
                             listSelects.append(newSelect);
@@ -2422,7 +2476,10 @@ $('#saveAttributesBtn').click(function () {
                                         var attributeValueIdOrName = attributeValueItem['attributeValueId'] ? attributeValueItem['attributeValueId'] : attributeValueItem;
                                         var attributeValueName = attributeValueItem['attributeValueName'] ? attributeValueItem['attributeValueName'] : attributeValueItem;
                                         if (!optionIdOrName.includes(attributeValueIdOrName)) {
-                                            var newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName);
+                                            var newOption = $('<option>').val(attributeValueIdOrName).text(attributeValueName).css('font-weight', 'bold');
+                                            if (attributeValueItem['attributeValueColor']) {
+                                                newOption = newOption.css('color', attributeValueItem['attributeValueColor']);
+                                            }
                                             selectItem.append(newOption);
                                         }
                                     })
@@ -2441,12 +2498,12 @@ $('#saveAttributesBtn').click(function () {
                 generateVariationData = attributeData;
                 document.getElementById('generateVariations').classList.remove('disabledButton');
                 document.getElementById('addManually').classList.remove('disabledButton');
-                notification('success', 'Save attributes successfully!', 'Successfully!', '1000');
+                notification('success', 'Lưu thuộc tính thành công!', 'Thành công!', '1000');
                 console.log(generateVariationData);
             }
         }
     } else {
-        notification('error', 'An error occurred when save attribute(s). Please try again!', 'Error!', '3000');
+        notification('error', 'Thuộc tính chưa hợp lệ, vui lòng chọn đầy đủ!', 'Lỗi!', '3000');
     }
 })
 //------------------------------------------Handle generate variations------------------------------------------
@@ -2490,7 +2547,7 @@ function funcNotificationQuantityVariations() {
 }
 $('#generateVariations').click(function () {
     if (generateVariationData.length > 0) {
-        var confirmGenerateVariation = confirm('Do you want to generate all variations? This will create a new variation for each and every possible combination of variation attributes!');
+        var confirmGenerateVariation = confirm('Bạn có muốn tạo tất cả các biến thể không? Thao tác này sẽ tạo ra một biến thể mới cho mọi tổ hợp có thể có của các thuộc tính biến thể!');
         if (confirmGenerateVariation) {
             $('.container-spinner').removeClass('hidden');
             try {
@@ -2538,7 +2595,7 @@ $('#generateVariations').click(function () {
 
                     generateVariationData.forEach(function (item) {
                         var select = document.createElement('select');
-                        select.className = 'form-control mr-2';
+                        select.className = 'form-control mr-2 selectAttributeValues';
                         if (item.attributeId) {
                             select.id = item.attributeId;
                         } else {
@@ -2546,14 +2603,20 @@ $('#generateVariations').click(function () {
                         }
 
                         var optionDefault = document.createElement('option');
-                        optionDefault.textContent = 'Select ' + item.attributeName;
+                        optionDefault.textContent = 'Chọn ' + item.attributeName;
                         optionDefault.value = '';
+                        optionDefault.style.color = "#a8a8a8";
+                        optionDefault.style.fontStyle = "italic";
                         select.appendChild(optionDefault);
 
                         item.attributeValues.forEach(function (attributeValueItem) {
                             var option = document.createElement('option');
                             option.value = attributeValueItem.attributeValueId || attributeValueItem;
                             option.text = attributeValueItem.attributeValueName || attributeValueItem;
+                            if (attributeValueItem.attributeValueColor) {
+                                option.style.color = attributeValueItem.attributeValueColor;
+                            }
+                            option.style.fontWeight = "bold";
                             if (attributeValueItem.attributeValueId) {
                                 variationItem.forEach(function (item) {
                                     if (item == attributeValueItem.attributeValueId) {
@@ -2589,14 +2652,14 @@ $('#generateVariations').click(function () {
                     var spanRemoveButton = document.createElement('span');
                     spanRemoveButton.className = 'text-danger cspt no-select mr-2 removeVariationItemBtn';
                     spanRemoveButton.style.fontSize = '14px';
-                    spanRemoveButton.textContent = 'Remove';
+                    spanRemoveButton.textContent = 'Xóa';
 
                     divActionButton.appendChild(spanRemoveButton);
 
                     var spanEditButton = document.createElement('span');
                     spanEditButton.className = 'text-primary cspt no-select mr-2';
                     spanEditButton.style.fontSize = '14px';
-                    spanEditButton.textContent = 'Edit';
+                    spanEditButton.textContent = 'Sửa';
 
                     divActionButton.appendChild(spanEditButton);
 
@@ -2634,7 +2697,7 @@ $('#generateVariations').click(function () {
 
                     var divClickToUploadText = document.createElement('div');
                     divClickToUploadText.className = 'mt-2';
-                    divClickToUploadText.textContent = 'Click to upload';
+                    divClickToUploadText.textContent = 'Bấm để tải lên!';
                     labelImage.appendChild(divIconUpload);
                     labelImage.appendChild(divClickToUploadText);
 
@@ -2790,12 +2853,17 @@ $('#generateVariations').click(function () {
                     divVariations.appendChild(divVariationItem);
 
                 })
-                //Ẩn chữ thông báo
+
+                updateDisabledOptions();
                 variationItems = $('#variations').find('.variationItem');
                 if (variationItems.length > 0) {
+                    //Ẩn chữ thông báo
                     $('.notificationNoVariationsYet').addClass('hidden');
-                    notification('success', 'Generate variations successfully!', 'Successfully!', '1000');
+
+                    notification('success', 'Tạo biến thể tự động thành công!', 'Thành công!', '1000');
                 }
+
+                //Ẩn chữ thông báo
                 funcNotificationQuantityVariations();
 
                 controlVariationsSelect.removeClass('hidden');
@@ -2812,7 +2880,7 @@ $('#generateVariations').click(function () {
             }
         }
     } else {
-        notification('warning', 'Bạn cần thêm ít nhất một thuộc tính!', 'Warning!', '3000');
+        notification('warning', 'Bạn cần thêm ít nhất một thuộc tính!', 'Cảnh báo!', '3000');
         // notification('warning', 'You need to add attribute(s)!', 'Warning!','3000');
     }
 })
@@ -2931,7 +2999,7 @@ $(document).on('click', '.variationItem .removeVariationItemBtn', function (even
 });
 //------------------------------Open/close variation item when click------------------------------
 $(document).on('click', '.variationItemTitle', function () {
-    switchShowHidden($(this).next('.variationItemContent'), 'status', '');
+    switchShowHidden($(this).next('.variationItemContent'), '', '');
 })
 //--------------------------------------------Add 1 variation--------------------------------------
 $(document).on('click', '#addManually', function () {
@@ -2960,21 +3028,27 @@ $(document).on('click', '#addManually', function () {
 
             generateVariationData.forEach(function (item) {
                 var select = document.createElement('select');
-                select.className = 'form-control mr-2';
+                select.className = 'form-control mr-2 selectAttributeValues';
                 if (item.attributeId) {
                     select.id = item.attributeId;
                 } else {
                     select.name = item.attributeName;
                 }
                 var optionDefault = document.createElement('option');
-                optionDefault.textContent = 'Select ' + item.attributeName;
+                optionDefault.textContent = 'Chọn ' + item.attributeName;
                 optionDefault.value = '';
+                optionDefault.style.color = "#a8a8a8";
+                optionDefault.style.fontStyle = "italic";
                 select.appendChild(optionDefault);
 
                 item.attributeValues.forEach(function (attributeValueItem) {
                     var option = document.createElement('option');
                     option.value = attributeValueItem.attributeValueId || attributeValueItem;
                     option.text = attributeValueItem.attributeValueName || attributeValueItem;
+                    if (attributeValueItem.attributeValueColor) {
+                        option.style.color = attributeValueItem.attributeValueColor;
+                    }
+                    option.style.fontWeight = "bold";
                     select.appendChild(option);
                 })
                 divSelects.appendChild(select);
@@ -2993,14 +3067,14 @@ $(document).on('click', '#addManually', function () {
             var spanRemoveButton = document.createElement('span');
             spanRemoveButton.className = 'text-danger cspt no-select mr-2 removeVariationItemBtn';
             spanRemoveButton.style.fontSize = '14px';
-            spanRemoveButton.textContent = 'Remove';
+            spanRemoveButton.textContent = 'Xóa';
 
             divActionButton.appendChild(spanRemoveButton);
 
             var spanEditButton = document.createElement('span');
             spanEditButton.className = 'text-primary cspt no-select mr-2';
             spanEditButton.style.fontSize = '14px';
-            spanEditButton.textContent = 'Edit';
+            spanEditButton.textContent = 'Sửa';
 
             divActionButton.appendChild(spanEditButton);
 
@@ -3038,7 +3112,7 @@ $(document).on('click', '#addManually', function () {
 
             var divClickToUploadText = document.createElement('div');
             divClickToUploadText.className = 'mt-2';
-            divClickToUploadText.textContent = 'Click to upload';
+            divClickToUploadText.textContent = 'Bấm để tải lên!';
             labelImage.appendChild(divIconUpload);
             labelImage.appendChild(divClickToUploadText);
 
@@ -3193,6 +3267,9 @@ $(document).on('click', '#addManually', function () {
 
             divVariations.appendChild(divVariationItem);
             pagination();
+
+            updateDisabledOptions();
+
             $('.notificationNoVariationsYet').addClass('hidden');
 
             funcNotificationQuantityVariations();
@@ -3203,10 +3280,7 @@ $(document).on('click', '#addManually', function () {
             saveVariations.removeClass('hidden');
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
-            // } else {
-            //     notification('warning', 'Đã đạt đến số lượng biến thể tối đa có thể tạo ra!', 'Has reached its maximum!')
-            //     // notification('warning', 'Maximum number of variants that can be created has been reached!', 'Has reached its maximum!')
-            // }
+
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -3219,7 +3293,7 @@ $(document).on('click', '#addManually', function () {
 })
 //-------------------------------------------Delete all variations-------------------------------------------
 $(document).on('click', '.deleteAllVariations', function () {
-    var confirmDeleteAllVariations = confirm('Do you want to delete all variations?');
+    var confirmDeleteAllVariations = confirm('Bạn có muốn xóa tất cả các biến thể không?');
     $('.container-spinner').removeClass('hidden');
     try {
         if (confirmDeleteAllVariations) {
@@ -3235,8 +3309,8 @@ $(document).on('click', '.deleteAllVariations', function () {
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
             pagination();
-            notification('success', 'Đã xóa tất cả biến thể thành công!', 'Successfully!', '1000');
-            // notification('success', 'Remove all variations successfully!', 'Successfully!','1000');
+            notification('success', 'Đã xóa tất cả biến thể thành công!', 'Thành công!', '1000');
+            // notification('success', 'Remove all variations successfully!', 'Thành công!','1000');
         }
     } catch (error) {
         console.error('Error:', error);
@@ -3257,8 +3331,8 @@ function previewVariationImage(input) {
             const file = input.files[0];
 
             if (file.size > maxSizeBytes) {
-                notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn!`, 'Error', '2000');
-                // notification('error', `File size exceeds ${maxSizeMB}MB. Please choose a smaller file.`, 'Error', '2000');
+                notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn!`, 'Lỗi!', '2000');
+                // notification('error', `Kích thước tệp vượt quá ${maxSizeMB}MB. Vui lòng chọn tệp nhỏ hơn.`, 'Lỗi!', '2000');
                 input.value = ''; // Reset input nếu ảnh quá lớn
                 return;
             }
@@ -3290,11 +3364,11 @@ function previewVariationImage(input) {
                         divPreviewVariationImage.appendChild(iRemoveVariationImage);
                     }
                     reader.readAsDataURL(file);
-                    notification('success', 'Đã tải ảnh lên thành công!', 'Successfully', '2000');
-                    // notification('success', 'Image uploaded successfully', 'Successfully', '2000');
+                    notification('success', 'Đã tải ảnh lên thành công!', 'Thành công!', '2000');
+                    // notification('success', 'Image uploaded successfully', 'Thành công!', '2000');
                 } else {
-                    notification('warning', 'Ảnh đã tồn tại (đã được tải lên)', 'Warning', '2000');
-                    // notification('warning', 'Image already exists', 'Warning', '2000');
+                    notification('warning', 'Ảnh đã tồn tại (đã được tải lên)', 'Cảnh báo!', '2000');
+                    // notification('warning', 'Image already exists', 'Cảnh báo!', '2000');
                 }
             } else {
                 variationItem.find('.previewVariationImage').html('');
@@ -3319,8 +3393,8 @@ function previewVariationImage(input) {
                     divPreviewVariationImage.appendChild(iRemoveVariationImage);
                 }
                 reader.readAsDataURL(file);
-                notification('success', 'Đã tải ảnh lên thành công!', 'Successfully', '2000');
-                // notification('success', 'Image uploaded successfully', 'Successfully', '2000');
+                notification('success', 'Đã tải ảnh lên thành công!', 'Thành công!', '2000');
+                // notification('success', 'Image uploaded successfully', 'Thành công!', '2000');
             }
         } else {
             variationItem.find('.previewVariationImage').html('');
@@ -3347,7 +3421,81 @@ $(document).on('click', '#removeVariationImage', function () {
         $('.container-spinner').addClass('hidden');
     }
 })
+//---------------------------------------Xử lý thay đổi giá trị thuộc tính trong thẻ select của biến thể-------------------------------------
+var existingVariations = [];
+$(document).on('change', '.selectAttributeValues', function () {
+    updateDisabledOptions();
+})
+function arraysAreEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    return arr1.every(value => arr2.includes(value)) && arr2.every(value => arr1.includes(value));
+}
 
+function updateDisabledOptions() {
+    existingVariations = [];
+    if ($('.variationItem').length > 0) {
+        $('.variationItem').each(function () {
+            var thisVariation = $(this);
+            var selectAttributeValues = [];
+
+            thisVariation.find('.selectAttributeValues').each(function () {
+                var thisSelect = $(this);
+                thisSelect.find('option').each(function () {
+                    var thisOption = $(this);
+                    if (thisOption.attr('disabled')) {
+                        thisOption.attr('disabled', false);
+                        thisOption.css('background-color', '');
+                    }
+                })
+                selectAttributeValues.push(thisSelect.val());
+            })
+            existingVariations.push(selectAttributeValues);
+        })
+        $('.variationItem').each(function () {
+            var thisVariation = $(this);
+            thisVariation.find('.selectAttributeValues').each(function (index1) {
+                var ortherSelects = [];
+                var thisSelect = $(this);
+                var valueOfSelect1 = thisSelect.val();
+                thisVariation.find('.selectAttributeValues').each(function (index2) {
+                    var thisSelect2 = $(this);
+                    if (index1 != index2) {
+                        ortherSelects.push(thisSelect2.val());
+                    }
+                })
+                // console.log("Mảng ortherSelects sau khi được thêm dữ liệu: " + ortherSelects);
+
+                thisSelect.find('option').each(function () {
+                    var thisOption = $(this);
+                    // console.log("Giá trị của option hiện tại: " + thisOption.val());
+                    // console.log("Giá trị của thẻ select: " + valueOfSelect1);
+
+                    if (thisOption.val() != valueOfSelect1) {
+                        ortherSelects.push(thisOption.val());
+                        // console.log("Mảng ortherSelects sau khi được cập nhật dữ liệu: " + ortherSelects);
+                        for (const item of existingVariations) {
+                            if (arraysAreEqual(item, ortherSelects)) {
+                                // console.log("Giá trị của item: " + item);
+                                // console.log("Giá trị của ortherSelects: " + ortherSelects);
+                                // console.log("Đã bị trùng lặp -> vô hiệu hóa!");
+
+                                thisOption.attr('disabled', true);
+                                thisOption.css('background-color', '#b4b4bf');
+                                break;
+                            }
+                        }
+                        ortherSelects = ortherSelects.filter(function (item) {
+                            return item != thisOption.val();
+                        })
+                        // console.log("Mảng ortherSelects sau khi được xóa dữ liệu: " + ortherSelects);
+                    }
+                })
+            })
+        })
+    }
+    console.log(existingVariations);
+
+}
 //--------------------------------------Check for data type of input---------------------------------------
 function checkNumberInput(input, typeInput = null) {
     saveVariations.addClass('disabledButton');
@@ -3516,7 +3664,8 @@ $(document).on('change', '.skuInput', function () {
     saveVariations.addClass('disabledButton');
     saveVariationsStatus = false;
     var thisElement = $(this);
-    var valueInput = $(this).val();
+    var valueInput = thisElement.val();
+    thisElement.val(convertToSlug(thisElement.val()));
     $('.skuInput').each(function () {
         if ($(this).val() == valueInput && thisElement[0] !== this) {
             var index = $(this).closest('.variationItem').find('strong').text();
@@ -3535,8 +3684,8 @@ function addValues(messageInput, classInput, message, forAll) {
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
             if (!Number(value)) {
-                notification('error', 'Vui lòng nhập số!', 'Error!', '3000');
-                // notification('error', 'Please enter number!', 'Error!','3000');
+                notification('error', 'Vui lòng nhập số!', 'Lỗi!', '3000');
+                // notification('error', 'Please enter number!', 'Lỗi!','3000');
             } else {
                 $(classInput).each(function () {
                     if (forAll == false) {
@@ -3569,7 +3718,7 @@ function addValues(messageInput, classInput, message, forAll) {
                         $('.notificationQuantityVariations').addClass('hidden');
                     }
                 }
-                notification('success', message, 'Successfully!', '1000');
+                notification('success', message, 'Thành công!', '1000');
             }
         }
     } catch (error) {
@@ -3631,6 +3780,7 @@ $(document).on('click', '.checkVariationsStatus', function () {
     var checkImportAndSalePrice = true;
     var importSaleVariationsIndex = [];
 
+    var failedVariations = [];
     $('.container-spinner').removeClass('hidden');
     try {
         $('.variationItem').each(function () {
@@ -3644,6 +3794,9 @@ $(document).on('click', '.checkVariationsStatus', function () {
             })
             if (!checkSelectAttribute) {
                 check = false;
+                if ($.inArray($(this), failedVariations) === -1) {
+                    failedVariations.push($(this));
+                }
                 return false;
             }
             var index = $(this).find('strong').text();
@@ -3656,44 +3809,78 @@ $(document).on('click', '.checkVariationsStatus', function () {
             if (!Number(importPriceInput) && importPriceInput != '') {
                 notification('error', 'Giá nhập của biến thể ' + index + ' phải là số!');
                 check = false;
+                if ($.inArray($(this), failedVariations) === -1) {
+                    failedVariations.push($(this));
+                }
                 return false;
             }
             if (!Number(regularPriceInput) && regularPriceInput != '') {
                 notification('error', 'Giá bán thông thường của biến thể ' + index + ' phải là số!');
                 check = false;
+                if ($.inArray($(this), failedVariations) === -1) {
+                    failedVariations.push($(this));
+                }
                 return false;
             }
             if (!Number(salePriceInput) && salePriceInput != '') {
                 notification('error', 'Giá bán đã giảm của biến thể ' + index + ' phải là số!');
                 check = false;
+                if ($.inArray($(this), failedVariations) === -1) {
+                    failedVariations.push($(this));
+                }
                 return false;
             }
             if (salePriceInput != '' && parseFloat(salePriceInput) >= parseFloat(regularPriceInput)) {
                 checkRegularAndSalePrice = false;
+                if ($.inArray($(this), failedVariations) === -1) {
+                    failedVariations.push($(this));
+                }
                 regularAndSalePriceVariationsIndex.push(index);
             }
             if (salePriceInput != '' && parseFloat(salePriceInput) <= parseFloat(importPriceInput)) {
                 checkImportAndSalePrice = false;
+                if ($.inArray($(this), failedVariations) === -1) {
+                    failedVariations.push($(this));
+                }
                 importSaleVariationsIndex.push(index);
             }
 
-            if (imageInput.length == 0 || !regularPriceInput || !stockInput || !importPriceInput) {
+            if (!regularPriceInput || !stockInput || !importPriceInput) {
                 check = false;
                 variationsIndex.push(index);
+                if ($.inArray($(this), failedVariations) === -1) {
+                    failedVariations.push($(this));
+                }
+            } else {
+                switchShowHidden($(this).find('.variationItemContent'), '', '', 'hidden');
             }
         })
         if (!checkSelectAttribute) {
-            notification('warning', 'Vui lòng chọn ít nhất 1 thuộc tính từ thẻ select của biến thể', 'Warning!', '3000');
-            // notification('warning', 'Please select attribute from select of variations!', 'Warning!','3000');
+            notification('warning', 'Vui lòng chọn ít nhất 1 thuộc tính từ thẻ select của biến thể', 'Cảnh báo!', '3000');
+            failedVariations.forEach(function (item) {
+                switchShowHidden(item.find('.variationItemContent'), '', '', 'show');
+                $('#variations').prepend(item);
+            })
         } else if (!check && variationsIndex.length > 0) {
             saveVariations.addClass('disabledButton');
             saveVariationsStatus = false;
-            notification('warning', 'Biến thể ' + variationsIndex.join(', ') + ' không được để trống thông tin!', 'Warning!', '3000');
-            // notification('warning', 'Variations ' + variationsIndex.join(', ') + ' cannot be left blank!', 'Warning!','3000');
+            notification('warning', 'Biến thể ' + variationsIndex.join(', ') + ' không được để trống thông tin!', 'Cảnh báo!', '3000');
+            failedVariations.forEach(function (item) {
+                switchShowHidden(item.find('.variationItemContent'), '', '', 'show');
+                $('#variations').prepend(item);
+            })
         } else if (!checkRegularAndSalePrice) {
             notification('error', 'Giá bán thông thường của biến thể ' + regularAndSalePriceVariationsIndex.join(', ') + ' phải lớn hơn giá bán đã giảm!');
+            failedVariations.forEach(function (item) {
+                switchShowHidden(item.find('.variationItemContent'), '', '', 'show');
+                $('#variations').prepend(item);
+            })
         } else if (!checkImportAndSalePrice) {
             notification('error', 'Giá nhập của biến thể ' + importSaleVariationsIndex.join(', ') + ' phải nhỏ hơn giá bán đã giảm!');
+            failedVariations.forEach(function (item) {
+                switchShowHidden(item.find('.variationItemContent'), '', '', 'show');
+                $('#variations').prepend(item);
+            })
         }
         if (check && checkRegularAndSalePrice && checkImportAndSalePrice) {
             saveVariations.removeClass('disabledButton');
@@ -3746,7 +3933,7 @@ $(document).on('click', '.saveVariations', function () {
                     variationData.name = name;
 
                     const image = $(this).find('.variationImageInput')[0];
-                    variationData.image_data = image.files[0];
+                    variationData.image_data = image.files[0] ? image.files[0] : null;
 
                     var sku = $(this).find('.skuInput');
                     sku = sku.val() ? sku.val() : '';
@@ -3756,7 +3943,7 @@ $(document).on('click', '.saveVariations', function () {
 
                     const image = $(this).find('.variationImageInput')[0];
                     if (image.files[0]) {
-                        variationData.image_data = image.files[0];
+                        variationData.image_data = image.files[0] ? image.files[0] : null;
                     }
                 }
                 const index = $(this).find('strong').text();
@@ -3783,10 +3970,10 @@ $(document).on('click', '.saveVariations', function () {
                 }
                 variationDataHasBeenSaved.push(variationData);
             })
-            notification('success', 'Save variations successfully!.', 'Successfully!', '1000');
+            notification('success', 'Lưu biến thể thành công!.', 'Thành công!', '1000');
             console.log(variationDataHasBeenSaved);
         } else {
-            notification('error', 'An error occurred.', 'Error!', '3000');
+            notification('error', 'Có lỗi xảy ra khi lưu biến thể, vui lòng kiểm tra lại dữ liệu của các biến thể.', 'Lỗi!', '3000');
         }
     } catch (error) {
         console.error('Error:', error);
@@ -3888,9 +4075,9 @@ function updateProduct(productData) {
             contentType: false, // Không đặt `Content-Type`
             success: function (response) {
                 if (response.status == 400) {
-                    notification('error', response.message, 'Error');
+                    notification('error', response.message, 'Lỗi!');
                 } else {
-                    notification('success', response.message, 'Successfully');
+                    notification('success', response.message, 'Thành công!');
                     console.log(response.data);
                     setTimeout(function () {
                         location.reload();
@@ -3900,7 +4087,7 @@ function updateProduct(productData) {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Something went wrong!', 'Error');
+                notification('error', 'Có lỗi xảy ra, vui lòng thử lại!', 'Lỗi!');
                 reject();
             }
         });
@@ -3930,7 +4117,7 @@ function checkProductSku(input) {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Unable to get catalog data!', 'Error');
+                notification('error', 'Không thể lấy được dữ liệu để kiểm tra mã sản phẩm!', 'Lỗi!');
                 reject();
             }
         });
@@ -3939,7 +4126,7 @@ function checkProductSku(input) {
 $(document).on('change', '.oldProductSku', async function () {
     await checkProductSku($(this).val());
     if (!statusProductSku) {
-        notification('warning', 'Sku is already exists!', 'Warning!', '3000');
+        notification('warning', 'Mã sản phẩm đã tồn tại, vui lòng thử lại!', 'Cảnh báo!', '3000');
         statusProductSku = true;
         $(this).val(productSku);
     }
@@ -3962,7 +4149,7 @@ function checkProductSkuVariation(input) {
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
-                notification('error', 'Unable to get sku data!', 'Error');
+                notification('error', 'Không thể lấy được mã sản phẩm để kiểm tra sự tồn tại!', 'Lỗi!');
                 reject();
             }
         });
@@ -3971,7 +4158,7 @@ function checkProductSkuVariation(input) {
 $(document).on('change', '.skuInput', async function () {
     await checkProductSkuVariation($(this).val());
     if (!statusProductSkuVariation) {
-        notification('warning', 'Sku is already exists!', 'Warning!', '3000');
+        notification('warning', 'Mã biến thể đã tồn tại, vui lòng thử lại!', 'Cảnh báo!', '3000');
         statusProductSkuVariation = true;
         $(this).val('');
     }
@@ -4002,22 +4189,22 @@ $(document).on('click', '#publishBtn', async function () {
     // Kiểm tra tính hợp lệ của các trường
     if (!productSku) {
         checkData = false;
-        notification('warning', 'Please enter SKU for product!', 'Warning!', '3000');
+        notification('warning', 'Vui lòng nhập SKU cho sản phẩm!', 'Cảnh báo!', '3000');
     }
     if (!productName) {
         checkData = false;
-        notification('warning', 'Please enter name for product!', 'Warning!', '3000');
+        notification('warning', 'Vui lòng nhập tên cho sản phẩm!', 'Cảnh báo!', '3000');
     }
     if (!productDescription) {
         checkData = false;
-        notification('warning', 'Please enter description for product!', 'Warning!', '3000');
+        notification('warning', 'Vui lòng nhập mô tả cho sản phẩm!', 'Cảnh báo!', '3000');
     }
 
     // Kiểm tra hình ảnh chính
     var checkMainImage = $('#mainImagePreview').find('.img');
     if (mainImageFile == null && checkMainImage.length == 0) {
         checkData = false;
-        notification('warning', 'Please upload product image!', 'Warning!', '3000');
+        notification('warning', 'Vui lòng tải ảnh lên cho sản phẩm!', 'Cảnh báo!', '3000');
     }
 
     // Lấy danh sách danh mục đã chọn
@@ -4029,7 +4216,7 @@ $(document).on('click', '#publishBtn', async function () {
                 productData.categoriesId.push(getCategoryId);
             } else {
                 checkData = false;
-                notification('error', 'Một danh mục được chọn không tồn tại trong cơ sở dữ liệu!', 'Error!', '3000');
+                notification('error', 'Một danh mục được chọn không tồn tại trong cơ sở dữ liệu!', 'Lỗi!', '3000');
                 break;
             }
         }
@@ -4042,7 +4229,7 @@ $(document).on('click', '#publishBtn', async function () {
                 productData.brandId = getBrandId;
             } else {
                 checkData = false;
-                notification('error', 'Thương hiệu được chọn không tồn tại trong cơ sở dữ liệu!', 'Error!', '3000');
+                notification('error', 'Thương hiệu được chọn không tồn tại trong cơ sở dữ liệu!', 'Lỗi!', '3000');
                 break;
             }
         }
@@ -4087,6 +4274,6 @@ $(document).on('click', '#publishBtn', async function () {
             }
         }
     } else {
-        notification('error', 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại!', 'Error!', '3000');
+        notification('error', 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại!', 'Lỗi!', '3000');
     }
 });
