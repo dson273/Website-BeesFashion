@@ -60,19 +60,21 @@
         }
 
         .barcode {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 200px;
-            box-sizing: border-box;
+            text-align: center;
+            /* Căn giữa nội dung */
+            display: inline-block;
+            /* Đảm bảo mã vạch giữ nguyên kích thước */
+            width: 100%;
+            /* Chiếm toàn bộ chiều rộng */
         }
 
-        .sku {
-            text-align: center;
-            font-weight: bold;
-            font-size: 16px;
-            margin-top: 10px;
+        .barcode img {
+            width: auto;
+            max-width: 300px;
+            /* Hoặc bất kỳ giới hạn cụ thể nào */
+            height: auto;
         }
+
 
         .customer-info,
         .order-info {
@@ -131,17 +133,16 @@
 
 <body>
     <div class="invoice-container">
-        <div class="bg-img"><img src="" alt=""></div>
         <div class="header">
-            @foreach ($order->order_details as $detail)
-                <div class="barcode">
-                    {!! $barcodes[$detail->product_variant->SKU] !!}
-                </div>
-                <div class="sku">
-                    {{ $detail->product_variant->SKU }}
-                </div>
-            @endforeach
+            <div>
+                {!! $barcode !!}
+            </div>
+            <div>
+                #{{ $order->id }}
+            </div>
+
         </div>
+
         <div class="customer-info">
             <h3>Thông Tin Khách Hàng</h3>
             <p><strong>Tên:</strong> {{ $order->full_name }}</p>
