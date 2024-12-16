@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\user;
 
+use App\Models\Cart;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Attribute;
 use App\Models\Product_file;
+use App\Models\Product_vote;
 use Illuminate\Http\Request;
 use App\Models\Attribute_value;
 use App\Models\Product_variant;
-use App\Models\Product_vote;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class FilterProductController extends Controller
 {
@@ -70,15 +72,16 @@ class FilterProductController extends Controller
         if ($request->has('brand_id')) {
             $productsQuery->where('brand_id', $request->brand_id);
         }
-        
+
         // Tính trung bình số sao
         $productsQuery->map(function ($product) {
             // Lấy dữ liệu đánh giá cho sản phẩm
             $rating = $this->getProductReviewData($product);
             $product->averageRating = $rating['average_rating']; // Gán giá trị average_rating cho sản phẩm
         });
-        // dd($productsQuery);
+
         $products = $productsQuery;
+        // dd($products);
 
         $minPriceProduct = $products->map(function ($product) {
             return priceProduct($product);
@@ -294,6 +297,12 @@ class FilterProductController extends Controller
 
             return $product;
         });
+        $products->map(function ($product) {
+            // Lấy dữ liệu đánh giá cho sản phẩm
+            $rating = $this->getProductReviewData($product);
+            $product->averageRating = $rating['average_rating']; // Gán giá trị average_rating cho sản phẩm
+        });
+
         $products = $products->map(function ($product) {
             $product->productID = route('product.detail', ['sku' => $product->SKU]);
             return $product;
@@ -337,6 +346,11 @@ class FilterProductController extends Controller
 
             return $product;
         });
+        $products->map(function ($product) {
+            // Lấy dữ liệu đánh giá cho sản phẩm
+            $rating = $this->getProductReviewData($product);
+            $product->averageRating = $rating['average_rating']; // Gán giá trị average_rating cho sản phẩm
+        });
 
         // Trả về dữ liệu JSON
         return response()->json([
@@ -377,6 +391,11 @@ class FilterProductController extends Controller
         $products = $products->map(function ($product) {
             $product->productID = route('product.detail', ['sku' => $product->SKU]);
             return $product;
+        });
+        $products->map(function ($product) {
+            // Lấy dữ liệu đánh giá cho sản phẩm
+            $rating = $this->getProductReviewData($product);
+            $product->averageRating = $rating['average_rating']; // Gán giá trị average_rating cho sản phẩm
         });
 
         return response()->json([
@@ -486,7 +505,7 @@ class FilterProductController extends Controller
         ]);
     }
 
-    public function getProductDetail($productId)
+    public function getProductDetails($productId)
     {
         // Lấy sản phẩm từ database
         $product = Product::with([
@@ -558,7 +577,67 @@ class FilterProductController extends Controller
         // Trả về dữ liệu sản phẩm dưới dạng JSON
         return response()->json($productDetails);
     }
+    public function addToCart(Request $request)
+    {
+        // Xác định các dữ liệu cần thiết từ request
+        $variant_id = $request->input('variant_id');
+        $quantity = $request->input('quantity', 1); // Mặc định số lượng là 1 nếu không có
 
+        // Kiểm tra nếu không có variant_id
+        if (!$variant_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ.',
+            ], 400); // Trả về mã lỗi 400
+        }
+
+        // Kiểm tra thông tin biến thể sản phẩm
+        $variant = Product_variant::find($variant_id);
+        if (!$variant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sản phẩm không tồn tại.',
+            ], 404); // Trả về mã lỗi 404
+        }
+
+        // Kiểm tra tồn kho
+        $cartItem = Cart::where('product_variant_id', $variant_id)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        $currentQuantityInCart = $cartItem ? $cartItem->quantity : 0;
+        $totalRequestedQuantity = $currentQuantityInCart + $quantity;
+
+        if ($totalRequestedQuantity > $variant->stock) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đơn hàng đã đạt giới hạn số lượng.',
+            ], 400); // Trả về mã lỗi 400
+        }
+
+        // Xử lý thêm vào giỏ hàng
+        if ($cartItem) {
+            // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng
+            $cartItem->quantity += $quantity;
+            $cartItem->save();
+        } else {
+            // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào giỏ hàng
+            Cart::create([
+                'product_variant_id' => $variant_id,
+                'user_id' => auth()->id(),
+                'quantity' => $quantity,
+            ]);
+        }
+
+        // Lấy tổng số sản phẩm trong giỏ hàng
+        $cartCount = Cart::where('user_id', Auth::id())->count();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sản phẩm đã được thêm vào giỏ hàng.',
+            'cartCount' => $cartCount
+        ]);
+    }
     private function getProductReviewData($product)
     {
         $variantIds = $product->product_variants->pluck('id')->toArray();

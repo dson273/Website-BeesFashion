@@ -269,12 +269,12 @@
 
     {{-- Modal add-to-cart  --}}
     <div class="modal theme-modal fade" id="addtocart" tabindex="-1" role="dialog" aria-modal="true"
-        data-product-id="" data-variant-id="">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"
-                        id="close_modal"></button>
+            data-product-id="" data-variant-id="">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"
+                            id="close_modal"></button>
                         <div class="row">
                             <div class="col-lg-5 col-xs-12">
                                 <div class="quick-view-img">
@@ -298,6 +298,9 @@
                                     <h4 id="product-name"></h4>
                                     <p id="product-sku"></p>
                                     <h4 id="product-price" style="color: #ba372a"></h4>
+                                    <div class="selected-variant d-flex">
+                                        <p id="total-stock" class="me-1" style="color: rgb(0, 181, 120)"></p> sản phẩm có sẵn
+                                    </div>
 
                                     <!-- Hiển thị danh sách thuộc tính -->
                                     <div class="blink-border attributes-container" id="attributes-container">
@@ -315,21 +318,23 @@
                                                 max="10">
                                             <button class="increment" type="button"><i
                                                     class="fa-solid fa-plus"></i></button>
+                                           
                                         </div>
                                     </div>
 
                                     <div class="product-buttons">
-                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Thêm vào giỏ hàng</a>
+                                        <a class="btn btn-solid" href="#" id="add-to-cart-btn">Thêm vào giỏ
+                                            hàng</a>
                                         <a class="btn btn-solid" href="#"
                                             id="btn_view_detail_of_quick_view_product">Xem chi tiết</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- End model add-to-cart  --}}
 @endsection
