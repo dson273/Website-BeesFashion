@@ -154,11 +154,16 @@
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -321,11 +326,16 @@
                                                 </td>
                                                 <td>{{ $item->full_name }}</td>
                                                 <td>
-                                                    @foreach ($item->order_details as $detail)
-                                                        <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                            alt="Product Image" width="50" height="50">x
-                                                        {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                    @endforeach
+                                                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                        @foreach ($item->order_details as $detail)
+                                                            <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                    alt="Product Image" width="50" height="50">
+                                                                <br>
+                                                                x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="order-status">
@@ -367,22 +377,25 @@
                                                 </td>
                                                 <td>{{ number_format($item->total_payment, 0, ',', '.') }} đ</td>
                                                 <td>
-                                                    <a href="{{ route('admin.orders.cancel', $item->id) }}"
-                                                        class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Xác nhận hủy đơn hàng này?')">
-                                                        <i class="fa fa-times"></i> Hủy
-                                                    </a>
-
-                                                    <a href="{{ route('admin.orders.success', $item->id) }}"
-                                                        class="btn btn-success btn-sm"
-                                                        onclick="return confirm('Xác nhận đơn hàng này?')">
-                                                        <i class="fa fa-check"></i> Xác nhận
-                                                    </a>
-                                                    <a href="{{ route('admin.orders.print', $item->id) }}"
-                                                        class="btn btn-primary btn-sm"
-                                                        onclick="printAndReload(event, this)">
-                                                        <i class="fa fa-print"></i> In phiếu
-                                                    </a>
+                                                    <div class="mb-1">
+                                                        <a href="{{ route('admin.orders.cancel', $item->id) }}"
+                                                            class="btn btn-danger btn-sm d-inline-block"
+                                                            onclick="return confirm('Xác nhận hủy đơn hàng này?')">
+                                                            <i class="fa fa-times"></i> Hủy
+                                                        </a>
+                                                        <a href="{{ route('admin.orders.success', $item->id) }}"
+                                                            class="btn btn-success btn-sm d-inline-block"
+                                                            onclick="return confirm('Xác nhận đơn hàng này?')">
+                                                            <i class="fa fa-check"></i> Xác nhận
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <a href="{{ route('admin.orders.print', $item->id) }}"
+                                                            class="btn btn-primary btn-sm d-inline-block"
+                                                            onclick="printAndReload(event, this)">
+                                                            <i class="fa fa-print"></i> In phiếu
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -484,11 +497,16 @@
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -636,11 +654,16 @@
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -780,11 +803,16 @@
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -924,11 +952,16 @@
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -1067,11 +1100,16 @@
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
