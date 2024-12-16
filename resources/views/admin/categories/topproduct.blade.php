@@ -27,8 +27,9 @@
             <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
 
-                <button type="button" class="btn btn-success text-white text-decoration-none btn-sm data-toggle="modal" data-target="#exampleModal"><i
-                    class="fas fa-plus"></i>
+                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal">
+                    <i
+                    class="fas fa-plus mr-2"></i>
                     Thêm sản phẩm
                 </button>
             </div>
