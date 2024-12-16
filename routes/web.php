@@ -23,7 +23,7 @@ Route::post('productDetail', [ProductDetailController::class, 'updateInformation
 Route::post('cart', [ProductDetailController::class, 'addToCart'])->name('addToCart'); //Add cart
 //Bộ sưu tập
 Route::get('product', [FilterProductController::class, 'index'])->name('product');
-Route::get('/getProductDetail/{productId}', [FilterProductController::class, 'getProductDetail']);
+Route::get('/getProductDetail/{productId}', [FilterProductController::class, 'getProductDetails']);
 Route::post('product/getMinMaxPriceProduct', [FilterProductController::class, 'getMinMaxPriceProduct'])->name('getMinMaxPriceProduct');
 //Trang bài viết
 Route::get('blog', [HomeController::class, 'blog'])->name('blog');
