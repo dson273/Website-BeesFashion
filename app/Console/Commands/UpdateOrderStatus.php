@@ -30,7 +30,7 @@ class UpdateOrderStatus extends Command
      */
     public function handle()
     {
-        $fifteenDaysAgo = Carbon::now()->subDays(15);
+        $sevenDaysAgo = Carbon::now()->subDays(7);
 
         // Lấy trạng thái "Shipping"
         $shipping_status = Status::where('name', "Shipping")->first();
@@ -42,10 +42,10 @@ class UpdateOrderStatus extends Command
         // Lấy trạng thái "Completed" hoặc tạo mới nếu không có
         $completed_status = Status::firstOrCreate(['name' => "Completed"]);
 
-        // Truy vấn các đơn hàng có trạng thái cuối cùng là "Shipping" và đã hơn 15 ngày
+        // Truy vấn các đơn hàng có trạng thái cuối cùng là "Shipping" và đã hơn 7 ngày
         $status_orders = Status_order::select('order_id', DB::raw('MAX(created_at) as last_status'))
             ->where('status_id', $shipping_status->id) // Chỉ lấy bản ghi có trạng thái "Shipping"
-            ->where('created_at', '<', $fifteenDaysAgo) // Đã quá 15 ngày
+            ->where('created_at', '<', $sevenDaysAgo) // Đã quá 7 ngày
             ->groupBy('order_id')
             ->get();
 
