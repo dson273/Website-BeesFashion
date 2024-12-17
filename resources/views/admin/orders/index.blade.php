@@ -145,23 +145,25 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -315,23 +317,25 @@
                                                         data-order-id="{{ $item->id }}">
                                                 </td>
                                                 <td>
-                                                    @foreach ($item->order_details as $detail)
-                                                        <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                            <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                        </a><br>
-                                                    @endforeach
-                                                    <br>
+                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                        <strong>#{{ $item->id }}</strong>
+                                                    </a><br>
                                                     @if ($item->order_details->isNotEmpty())
                                                         {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                     @endif
                                                 </td>
                                                 <td>{{ $item->full_name }}</td>
                                                 <td>
-                                                    @foreach ($item->order_details as $detail)
-                                                        <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                            alt="Product Image" width="50" height="50">x
-                                                        {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                    @endforeach
+                                                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                        @foreach ($item->order_details as $detail)
+                                                            <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                                <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                    alt="Product Image" width="50" height="50">
+                                                                <br>
+                                                                x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="order-status">
@@ -373,22 +377,25 @@
                                                 </td>
                                                 <td>{{ number_format($item->total_payment, 0, ',', '.') }} đ</td>
                                                 <td>
-                                                    <a href="{{ route('admin.orders.cancel', $item->id) }}"
-                                                        class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Xác nhận hủy đơn hàng này?')">
-                                                        <i class="fa fa-times"></i> Hủy
-                                                    </a>
-
-                                                    <a href="{{ route('admin.orders.success', $item->id) }}"
-                                                        class="btn btn-success btn-sm"
-                                                        onclick="return confirm('Xác nhận đơn hàng này?')">
-                                                        <i class="fa fa-check"></i> Xác nhận
-                                                    </a>
-                                                    <a href="{{ route('admin.orders.print', $item->id) }}"
-                                                        class="btn btn-primary btn-sm"
-                                                        onclick="printAndReload(event, this)">
-                                                        <i class="fa fa-print"></i> In phiếu
-                                                    </a>
+                                                    <div class="mb-1">
+                                                        <a href="{{ route('admin.orders.cancel', $item->id) }}"
+                                                            class="btn btn-danger btn-sm d-inline-block"
+                                                            onclick="return confirm('Xác nhận hủy đơn hàng này?')">
+                                                            <i class="fa fa-times"></i> Hủy
+                                                        </a>
+                                                        <a href="{{ route('admin.orders.success', $item->id) }}"
+                                                            class="btn btn-success btn-sm d-inline-block"
+                                                            onclick="return confirm('Xác nhận đơn hàng này?')">
+                                                            <i class="fa fa-check"></i> Xác nhận
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <a href="{{ route('admin.orders.print', $item->id) }}"
+                                                            class="btn btn-primary btn-sm d-inline-block"
+                                                            onclick="printAndReload(event, this)">
+                                                            <i class="fa fa-print"></i> In phiếu
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -481,23 +488,25 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -636,23 +645,25 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -783,23 +794,25 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -930,23 +943,25 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -1076,23 +1091,25 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <a href="{{ route('admin.orders.info', $item->id) }}">
-                                                        <strong>{{ $detail->product_variant->product->SKU }}</strong>
-                                                    </a><br>
-                                                @endforeach
-                                                <br>
+                                                <a href="{{ route('admin.orders.info', $item->id) }}">
+                                                    <strong>#{{ $item->id }}</strong>
+                                                </a><br>
                                                 @if ($item->order_details->isNotEmpty())
                                                     {{ \Carbon\Carbon::parse($item->order_details->first()->created_at)->translatedFormat('l, H:i:s') }}
                                                 @endif
                                             </td>
                                             <td>{{ $item->full_name }}</td>
                                             <td>
-                                                @foreach ($item->order_details as $detail)
-                                                    <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
-                                                        alt="Product Image" width="50" height="50"> x
-                                                    {{ number_format($detail->quantity, 0, ',', '.') }}
-                                                @endforeach
+                                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 110px;"> <!-- Container ảnh -->
+                                                    @foreach ($item->order_details as $detail)
+                                                        <div style="width: 50px; text-align: center;"> <!-- Container nhỏ cho mỗi ảnh -->
+                                                            <img src="{{ asset('uploads/products/images/' . $detail->product_variant->image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                            <br>
+                                                            x{{ number_format($detail->quantity, 0, ',', '.') }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="order-status">
@@ -1208,62 +1225,61 @@
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-    // Lấy checkbox "Chọn tất cả"
-    const selectAllCheckbox = document.getElementById('select-all-checkbox');
-    const orderCheckboxes = document.querySelectorAll('.order-checkbox');
-    const successActionButton = document.getElementById('success-action');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy checkbox "Chọn tất cả"
+        const selectAllCheckbox = document.getElementById('select-all-checkbox');
+        const orderCheckboxes = document.querySelectorAll('.order-checkbox');
+        const successActionButton = document.getElementById('success-action');
 
-    // Xử lý chọn/bỏ chọn tất cả
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('change', function (e) {
-            const isChecked = e.target.checked;
-            orderCheckboxes.forEach(function (checkbox) {
-                checkbox.checked = isChecked; // Đồng bộ trạng thái của tất cả checkbox
+        // Xử lý chọn/bỏ chọn tất cả
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function(e) {
+                const isChecked = e.target.checked;
+                orderCheckboxes.forEach(function(checkbox) {
+                    checkbox.checked = isChecked; // Đồng bộ trạng thái của tất cả checkbox
+                });
+            });
+        }
+
+        // Xử lý khi trạng thái của từng checkbox thay đổi
+        orderCheckboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                // Kiểm tra tất cả checkbox con
+                const allChecked = Array.from(orderCheckboxes).every(cb => cb.checked);
+                const noneChecked = Array.from(orderCheckboxes).every(cb => !cb.checked);
+
+                // Cập nhật trạng thái của checkbox "Chọn tất cả"
+                if (allChecked) {
+                    selectAllCheckbox.checked = true;
+                    selectAllCheckbox.indeterminate = false;
+                } else if (noneChecked) {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                } else {
+                    selectAllCheckbox.indeterminate = true;
+                }
             });
         });
-    }
 
-    // Xử lý khi trạng thái của từng checkbox thay đổi
-    orderCheckboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            // Kiểm tra tất cả checkbox con
-            const allChecked = Array.from(orderCheckboxes).every(cb => cb.checked);
-            const noneChecked = Array.from(orderCheckboxes).every(cb => !cb.checked);
+        // Xử lý nút "Xác nhận tất cả"
+        if (successActionButton) {
+            successActionButton.addEventListener('click', function() {
+                const selectedOrders = [];
+                document.querySelectorAll('.order-checkbox:checked').forEach(function(checkbox) {
+                    selectedOrders.push(checkbox.getAttribute('data-order-id'));
+                });
 
-            // Cập nhật trạng thái của checkbox "Chọn tất cả"
-            if (allChecked) {
-                selectAllCheckbox.checked = true;
-                selectAllCheckbox.indeterminate = false;
-            } else if (noneChecked) {
-                selectAllCheckbox.checked = false;
-                selectAllCheckbox.indeterminate = false;
-            } else {
-                selectAllCheckbox.indeterminate = true;
-            }
-        });
+                if (selectedOrders.length === 0) {
+                    notification('error', 'Bạn chưa chọn đơn hàng nào!', 'Error!', '2000');
+                    return;
+                }
+
+                if (confirm('Xác nhận các đơn hàng đã chọn?')) {
+                    document.getElementById('order-ids').value = selectedOrders.join(',');
+                    document.getElementById('bulk-action').value = 'success';
+                    document.getElementById('bulk-action-form').submit();
+                }
+            });
+        }
     });
-
-    // Xử lý nút "Xác nhận tất cả"
-    if (successActionButton) {
-        successActionButton.addEventListener('click', function () {
-            const selectedOrders = [];
-            document.querySelectorAll('.order-checkbox:checked').forEach(function (checkbox) {
-                selectedOrders.push(checkbox.getAttribute('data-order-id'));
-            });
-
-            if (selectedOrders.length === 0) {
-                notification('error', 'Bạn chưa chọn đơn hàng nào!', 'Error!', '2000');
-                return;
-            }
-
-            if (confirm('Xác nhận các đơn hàng đã chọn?')) {
-                document.getElementById('order-ids').value = selectedOrders.join(',');
-                document.getElementById('bulk-action').value = 'success';
-                document.getElementById('bulk-action-form').submit();
-            }
-        });
-    }
-});
-
 </script>

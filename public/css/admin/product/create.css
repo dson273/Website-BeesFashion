@@ -99,3 +99,23 @@
     z-index: 2;
     opacity: 1 !important;
 }
+
+/* Cuộn chuột */
+.scroll-container,
+.category-scroll-container,
+.brand-scroll-container {
+    position: relative;
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.attribute-scroll-container,
+.variation-scroll-container {
+    position: relative;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+.ps__rail-y {
+    z-index: 100;
+}

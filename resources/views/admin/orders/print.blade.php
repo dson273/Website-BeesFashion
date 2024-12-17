@@ -60,19 +60,21 @@
         }
 
         .barcode {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 200px;
-            box-sizing: border-box;
+            text-align: center;
+            /* Căn giữa nội dung */
+            display: inline-block;
+            /* Đảm bảo mã vạch giữ nguyên kích thước */
+            width: 100%;
+            /* Chiếm toàn bộ chiều rộng */
         }
 
-        .sku {
-            text-align: center;
-            font-weight: bold;
-            font-size: 16px;
-            margin-top: 10px;
+        .barcode img {
+            width: auto;
+            max-width: 300px;
+            /* Hoặc bất kỳ giới hạn cụ thể nào */
+            height: auto;
         }
+
 
         .customer-info,
         .order-info {
@@ -131,17 +133,16 @@
 
 <body>
     <div class="invoice-container">
-        <div class="bg-img"><img src="" alt=""></div>
         <div class="header">
-            @foreach ($order->order_details as $detail)
-                <div class="barcode">
-                    {!! $barcodes[$detail->product_variant->SKU] !!}
-                </div>
-                <div class="sku">
-                    {{ $detail->product_variant->SKU }}
-                </div>
-            @endforeach
+            <div>
+                {!! $barcode !!}
+            </div>
+            <div>
+                #{{ $order->id }}
+            </div>
+
         </div>
+
         <div class="customer-info">
             <h3>Thông Tin Khách Hàng</h3>
             <p><strong>Tên:</strong> {{ $order->full_name }}</p>
@@ -163,31 +164,35 @@
             <thead>
                 <tr>
                     <th>Sản Phẩm</th>
-                    <th>Mã Giảm Giá</th>
-                    <th>Phí Vận Chuyển</th>
                     <th>Số Lượng</th>
                     <th>Giá</th>
-                    <th>Thuế</th>
                     <th>Thành Tiền</th>
                 </tr>
             </thead>
             <tbody>
+                @php
+                $subTotal = 0; // Biến để tính tổng tiền hàng
+            @endphp
                 @foreach ($order->order_details as $detail)
+                @php
+                    $lineTotal = $detail->quantity * $detail->original_price; // Thành tiền của mỗi sản phẩm
+                    $subTotal += $lineTotal; // Cộng dồn vào tổng tiền hàng
+                @endphp
                     <tr>
-                        <td><strong>{{ $detail->product_variant->product->name }}</strong></td>
-                        <td>{{ number_format($detail->order->voucher, 0, ',', '.') }}</td>
-                        <td>{{ number_format($detail->order->shipping_voucher, 0, ',', '.') }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 300px;"><strong>{{ $detail->product_variant->product->name }} {{ $detail->product_variant->SKU }}</strong></td>
                         <td>x{{ $detail->quantity }}</td>
                         <td>{{ number_format($detail->original_price, 0, ',', '.') }}</td>
-                        <td>{{ number_format($detail->order->tax, 0, ',', '.') }}</td>
                         <td>{{ number_format($detail->quantity * $detail->original_price, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
         <div class="total">
-            <div class="label">Tổng Tiền:</div>
-            <div class="amount">{{ number_format($order->total_payment, 0, ',', '.') }}₫</div>
+            <p style="margin-bottom: 10px;"><strong>Tổng Tiền Hàng:</strong> {{ number_format($subTotal, 0, ',', '.') }}đ</p>
+            <p style="margin-bottom: 10px;"><strong>Giảm Giá:</strong> {{ number_format($order->voucher, 0, ',', '.') }}đ</p>
+            <p style="margin-bottom: 10px;"><strong>Phí Vận Chuyển:</strong> {{ number_format($order->shipping_voucher, 0, ',', '.') }}đ</p>
+            <p style="margin-bottom: 10px;"><strong>Thuế:</strong> {{ number_format($order->tax, 0, ',', '.') }}đ</p>
+            <p style="margin-top: 20px; font-size: 20px; color: red;"><strong>Tổng Thanh Toán:</strong> {{ number_format($order->total_payment, 0, ',', '.') }}đ</p>
         </div>
     </div>
 </body>

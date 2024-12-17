@@ -430,7 +430,7 @@ function addToCart(variantId, quantity) {
                 const response = JSON.parse(xhr.responseText);
                 notification('warning', response.message || 'Dữ liệu không hợp lệ.', 'Thông báo', 2000);
             } else {
-                notification('error', 'Đã xảy ra lỗi không xác định. Vui lòng thử lại.', 'Lỗi!', 2000);
+                notification('warning', 'Vui lòng đăng nhập để sử dụng chức năng này.', 'Cảnh báo!', 2000);
             }
         }
     });

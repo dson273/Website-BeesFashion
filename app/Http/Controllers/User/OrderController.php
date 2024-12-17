@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Order_detail;
+use App\Models\Product_variant;
 use App\Models\Status;
 use App\Models\Status_order;
 use App\Models\User_voucher;
@@ -49,7 +50,7 @@ class OrderController extends Controller
         if (Auth::check()) {
             $user_id = Auth::user()->id;
         } else {
-            return $this->returnJson(false, 'Không tìm thấy id người dùng cần đặt hàng!');
+            return $this->returnJson(false, 'Không tìm thấy id người dùng cần đặt hàng, vui lòng đăng nhập lại!');
         }
         $is_cart = $data_from_js['is_cart'];
 
@@ -66,6 +67,37 @@ class OrderController extends Controller
         $voucher = null;
         $voucher_id = null;
 
+        $product_variants = $data_from_js['product_variants'];
+        if (count($product_variants) == 0) {
+            return $this->returnJson(false, 'Không tìm thấy sản phẩm cần thanh toán!');
+        } else {
+            foreach ($product_variants as $product_variant) {
+                $get_product_variant = Product_variant::where('is_active', 1)->find($product_variant['id']);
+                if ($get_product_variant) {
+                    if ($product_variant['quantity'] > $get_product_variant->stock) {
+                        return $this->returnJson(false, 'Số lượng của sản phẩm ' . $product_variant['value_variants'] . ' trong kho không đủ để phục vụ khách hàng, vui lòng thử lại!');
+                    }
+                    $get_product_variant_in_order_details = Order_detail::select('order_details.*')
+                        ->join('orders', 'order_details.order_id', '=', 'orders.id')
+                        ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+                        ->where('product_variant_id', $product_variant['id'])
+                        ->whereIn('status_orders.status_id', [1, 2, 3])
+                        ->whereRaw('status_orders.created_at = (SELECT MAX(created_at) FROM status_orders WHERE status_orders.order_id = orders.id)')
+                        ->get();
+                    if ($get_product_variant_in_order_details) {
+                        $total_quantity = 0;
+                        foreach ($get_product_variant_in_order_details as $get_product_variant_in_order_detail) {
+                            $total_quantity += $get_product_variant_in_order_detail->quantity;
+                        }
+                        if (($get_product_variant->stock - $total_quantity) < $product_variant['quantity']) {
+                            return $this->returnJson(false, 'Số lượng của sản phẩm ' . $product_variant['value_variants'] . ' trong kho không đủ để phục vụ khách hàng, vui lòng thử lại!');
+                        }
+                    }
+                } else {
+                    return $this->returnJson(false, 'Có sản phẩm không hợp lệ, có thể đã không còn hoạt động, vui lòng thử lại!');
+                }
+            }
+        }
         if ($data_from_js['address_id'] == null) {
             $full_name = Auth::user()->full_name;
             $phone_number = Auth::user()->phone;
@@ -101,11 +133,8 @@ class OrderController extends Controller
             return $this->returnJson(false, 'Không xác định được phương thức thanh toán, vui lòng thử lại!');
         }
 
-        $product_variants = $data_from_js['product_variants'];
 
-        if (count($product_variants) == 0) {
-            return $this->returnJson(false, 'Không tìm thấy sản phẩm cần thanh toán!');
-        }
+
 
         if ($total_cost != null && $shipping_price != null && $tax != null && $total_payment != null) {
             $new_order = Order::create([

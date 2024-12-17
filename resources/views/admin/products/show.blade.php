@@ -27,14 +27,14 @@ Chi tiết sản phẩm
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Detail of
+    <h1 class="h3 mb-2 text-gray-800">Chi tiết sản phẩm
         @if ($productDetail!='')
         <b>{{$productDetail['name']}}</b>
         @endif
     </h1>
-    <p class="mb-2">Below is the product detail</p>
+    <p class="mb-2">Dưới đây là thông tin chi tiết về sản phẩm</p>
     <div class="mb-2 d-flex justify-content-start">
-        <a href="javascript:history.back()" class="btn btn-secondary text-white text-decoration-none"><i class="fas fa-arrow-left mr-1"></i>Back</a>
+        <a href="javascript:history.back()" class="btn btn-secondary text-white text-decoration-none"><i class="fas fa-arrow-left mr-1"></i>Quay lại</a>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -42,7 +42,7 @@ Chi tiết sản phẩm
             <div class="card-header py-3 d-flex flex-row justify-content-around align-items-center no-select cspt row row-cols-1 row-cols-lg-6">
                 <div class="d-flex flex-column align-items-center border p-4 rounded font-weight-bold btn-danger m-1 col importantInformationDiv">
                     <span>
-                        Revenue
+                        Lợi nhuận
                     </span>
                     <span>
                         {{ number_format($totalProfit, 0, ',', '.') }} VND
@@ -50,7 +50,7 @@ Chi tiết sản phẩm
                 </div>
                 <div class="d-flex flex-column align-items-center border p-4 rounded font-weight-bold btn-primary m-1 col importantInformationDiv">
                     <span>
-                        Views
+                        Lượt xem
                     </span>
                     <span>
                         @if ($productDetail!='')
@@ -60,7 +60,7 @@ Chi tiết sản phẩm
                 </div>
                 <div class="d-flex flex-column align-items-center border p-4 rounded font-weight-bold btn-success m-1 col importantInformationDiv">
                     <span>
-                        Purchases
+                        Lượt mua
                     </span>
                     <span>
                         @if ($productDetail!='')
@@ -70,7 +70,7 @@ Chi tiết sản phẩm
                 </div>
                 <div class="d-flex flex-column align-items-center justify-content-center border p-4 rounded font-weight-bold btn-info m-1 col importantInformationDiv">
                     <span>
-                        Votes
+                        Lượt đánh giá
                     </span>
                     <div id="productStarRating" hidden>{{$productStar}}</div>
                     <div id="productRate"></div>
@@ -78,7 +78,7 @@ Chi tiết sản phẩm
                 </div>
                 <div class="d-flex flex-column align-items-center border p-4 rounded font-weight-bold btn-dark m-1 col importantInformationDiv">
                     <span>
-                        Total variations
+                        Tổng số biến thể
                     </span>
                     <span>
                         @if ($productDetail!='')
@@ -94,13 +94,13 @@ Chi tiết sản phẩm
                         <thead class="table-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>SKU</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Created at</th>
-                                <th>Updated at</th>
-                                <th>Control</th>
+                                <th>Mã</th>
+                                <th>Ảnh</th>
+                                <th>Tên</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th>Ngày cập nhật</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,14 +125,14 @@ Chi tiết sản phẩm
                                     <div class="d-flex flex-column align-items-center">
                                         <div class="d-flex flex-row justify-content-center">
                                             @if($productDetail['is_active']==1)
-                                            <a href="{{route('admin.products.index.changestatus',$productDetail['id'])}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm mr-1"></i>Inactive</a>
+                                            <a href="{{route('admin.products.index.changestatus',$productDetail['id'])}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm mr-1"></i>Ngừng</a>
                                             @else
-                                            <a href="{{route('admin.products.index.changestatus',$productDetail['id'])}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm mr-1"></i>Active</a>
+                                            <a href="{{route('admin.products.index.changestatus',$productDetail['id'])}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm mr-1"></i>Mở</a>
                                             @endif
                                         </div>
                                         <div class="d-flex flex-row justify-content-center mt-2">
-                                            <a href="{{route('admin.products.edit',$productDetail['id'])}}" class="btn btn-warning btn-sm d-flex align-items-center mr-1"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Edit</a>
-                                            <a href="" class="btn btn-primary btn-sm d-flex align-items-center mr-1"><i class="fas fa-file-export fa-sm mr-1"></i>Export</a>
+                                            <a href="{{route('admin.products.edit',$productDetail['id'])}}" class="btn btn-warning btn-sm d-flex align-items-center mr-1"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Sửa</a>
+                                            <a href="" class="btn btn-primary btn-sm d-flex align-items-center mr-1"><i class="fas fa-file-export fa-sm mr-1"></i>Xuất</a>
                                         </div>
                                     </div>
                                 </td>
@@ -183,36 +183,36 @@ Chi tiết sản phẩm
                         <tr>
                             <th class="fs-12">#</th>
                             <th class="fs-12">ID</th>
-                            <th class="fs-12">SKU</th>
-                            <th class="fs-12">Image</th>
-                            <th class="fs-12">Name</th>
-                            <th class="fs-12">Purchases</th>
-                            <th class="fs-12">Revenue</th>
-                            <th class="fs-12">Regular price</th>
-                            <th class="fs-12">Sale price</th>
-                            <th class="fs-12">Stock</th>
-                            <th class="fs-12">Status</th>
-                            <th class="fs-12">Created at</th>
-                            <th class="fs-12">Updated at</th>
-                            <th class="fs-12">Control</th>
+                            <th class="fs-12">Mã</th>
+                            <th class="fs-12">Ảnh</th>
+                            <th class="fs-12">Tên</th>
+                            <th class="fs-12">Lượt mua</th>
+                            <th class="fs-12">Lợi nhuận</th>
+                            <th class="fs-12">Giá thông thường</th>
+                            <th class="fs-12">Giá đã giảm</th>
+                            <th class="fs-12">Số lượng</th>
+                            <th class="fs-12">Trạng thái</th>
+                            <th class="fs-12">Ngày tạo</th>
+                            <th class="fs-12">Ngày cập nhật</th>
+                            <th class="fs-12">Thao tác</th>
                         </tr>
                     </thead>
                     <tfoot class="sticky-bottom">
                         <tr>
                             <th class="fs-12">#</th>
                             <th class="fs-12">ID</th>
-                            <th class="fs-12">SKU</th>
-                            <th class="fs-12">Image</th>
-                            <th class="fs-12">Name</th>
-                            <th class="fs-12">Purchases</th>
-                            <th class="fs-12">Revenue</th>
-                            <th class="fs-12">Regular price</th>
-                            <th class="fs-12">Sale price</th>
-                            <th class="fs-12">Stock</th>
-                            <th class="fs-12">Status</th>
-                            <th class="fs-12">Created at</th>
-                            <th class="fs-12">Updated at</th>
-                            <th class="fs-12">Control</th>
+                            <th class="fs-12">Mã</th>
+                            <th class="fs-12">Ảnh</th>
+                            <th class="fs-12">Tên</th>
+                            <th class="fs-12">Lượt mua</th>
+                            <th class="fs-12">Lợi nhuận</th>
+                            <th class="fs-12">Giá thông thường</th>
+                            <th class="fs-12">Giá đã giảm</th>
+                            <th class="fs-12">Số lượng</th>
+                            <th class="fs-12">Trạng thái</th>
+                            <th class="fs-12">Ngày tạo</th>
+                            <th class="fs-12">Ngày cập nhật</th>
+                            <th class="fs-12">Thao tác</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -224,7 +224,7 @@ Chi tiết sản phẩm
                             <td class="cspt copySku">
                                 <div class="d-flex flex-column">
                                     <span class="contentSku">{{$productVariant->SKU}}</span>
-                                    <span class="text-primary">(Click to copy)</span>
+                                    <span class="text-primary">(Bấm để sao chép)</span>
                                 </div>
                             </td>
                             <td>
@@ -247,11 +247,11 @@ Chi tiết sản phẩm
                             <td>{{$productVariant->updated_at}}</td>
                             <td>
                                 <div class="d-flex flex-column align-items-center justify-content-center">
-                                    <span class="btn btn-sm btn-primary no-wrap btnImportingGoods mb-2" data-toggle="modal" data-target="#exampleModal"><i class="mr-1 fas fa-plus fa-sm"></i>Importing goods</span>
+                                    <span class="btn btn-sm btn-primary no-wrap btnImportingGoods mb-2" data-toggle="modal" data-target="#exampleModal"><i class="mr-1 fas fa-plus fa-sm"></i>Nhập hàng</span>
                                     @if($productVariant->is_active==1)
-                                    <a href="{{route('admin.products.show.changestatus',$productVariant->id)}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm mr-1"></i>Inactive</a>
+                                    <a href="{{route('admin.products.show.changestatus',$productVariant->id)}}" class="btn btn-danger btn-sm d-flex align-items-center"><i class="fas fa-lock fa-sm mr-1"></i>Ngừng</a>
                                     @else
-                                    <a href="{{route('admin.products.show.changestatus',$productVariant->id)}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm mr-1"></i>Active</a>
+                                    <a href="{{route('admin.products.show.changestatus',$productVariant->id)}}" class="btn btn-success btn-sm d-flex align-items-center"><i class="fas fa-lock-open fa-sm mr-1"></i>Mở</a>
                                     @endif
                                 </div>
                             </td>
@@ -271,24 +271,24 @@ Chi tiết sản phẩm
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Importing goods (Nhập hàng)</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Nhập hàng</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex flex-column">
-                        <label for="">Quantity</label>
-                        <input type="number" class="form-control quantityImportPrice" placeholder="Enter quantity">
+                        <label for="">Số lượng</label>
+                        <input type="number" class="form-control quantityImportPrice" min="0" placeholder="Enter quantity">
                     </div>
                     <div class="d-flex flex-column mt-2">
-                        <label for="">Import price</label>
-                        <input type="number" class="form-control importPrice" placeholder="Enter import price">
+                        <label for="">Giá nhập</label>
+                        <input type="number" class="form-control importPrice" min="0" placeholder="Enter import price">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancle</button>
-                    <button type="button" class="btn btn-primary" id="doneImportingGoods">Done</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="doneImportingGoods">Xong</button>
                 </div>
             </div>
         </div>

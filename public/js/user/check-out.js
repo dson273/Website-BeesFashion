@@ -46,7 +46,7 @@ async function loadListAddresses() {
 
     if (dataListAddresses != null) {
         const colDiv = document.createElement("div");
-        colDiv.classList.add("col-xxl-6", "addressItem", "position-relative");
+        colDiv.classList.add("addressItem", "position-relative", "swiper-slide");
 
         const label = document.createElement("label");
         label.setAttribute("for", "address-billing-1");
@@ -148,7 +148,7 @@ async function loadListAddresses() {
                 "text-white"
             );
             spanElement.style.backgroundColor = "#cca270";
-            spanElement.style.right = "12.1px";
+            spanElement.style.right = "0px";
             spanElement.textContent = "Default";
 
             colDiv.appendChild(spanElement);
@@ -162,7 +162,7 @@ async function loadListAddresses() {
 
             dataListAddresses['list_address_others'].forEach(function (addressOrtherItem, index) {
                 const colDiv = document.createElement("div");
-                colDiv.classList.add("col-xxl-6", "addressItem", "position-relative");
+                colDiv.classList.add("swiper-slide", "addressItem", "position-relative");
 
                 const label = document.createElement("label");
                 label.setAttribute("for", "address-billing-" + index + 2);
@@ -261,7 +261,7 @@ async function loadListAddresses() {
                         "text-white"
                     );
                     spanElement.style.backgroundColor = "#cca270";
-                    spanElement.style.right = "12.1px";
+                    spanElement.style.right = "0px";
                     spanElement.textContent = "Default";
 
                     colDiv.appendChild(spanElement);
@@ -943,7 +943,7 @@ function storeOrder(data) {
             },
             success: function (response) {
                 if (response.success) {
-                    // console.log(response.data);
+                    console.log(response);
                     // return;
                     if (response.data['payment_method'] == "cod") {
                         $('#form_cod').attr('action', 'order-success/' + response.data['order_id']);
@@ -959,6 +959,7 @@ function storeOrder(data) {
                     }
                 } else {
                     notification('error', response.message, 'Error!', 3000);
+                    console.log(response);
                 }
                 resolve();
             },
@@ -1031,6 +1032,8 @@ $('#place_order').on('click', async function () {
         }
         //Nếu tất cả dữ liệu đều hợp lệ thì chạy tiếp
         if (check) {
+            console.log(data_to_place_order);
+
             await storeOrder(data_to_place_order);
         }
     } catch (error) {

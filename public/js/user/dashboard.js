@@ -34,7 +34,7 @@ function formatDate(dateString) {
     const date = new Date(dateString); // Chuyển chuỗi thành đối tượng Date
 
     // Sử dụng Intl.DateTimeFormat để định dạng
-    return new Intl.DateTimeFormat('en-US', options).format(date);
+    return new Intl.DateTimeFormat('vi-VN', options).format(date);
 }
 $(document).ready(function () {
     // Validation utilities
@@ -352,31 +352,31 @@ function load_orders(list_orders, status_order = 0) {
 
             if (status_order != 0) {
                 if (status_order == 1) {
-                    orderTitle.textContent = 'Waiting for payment...';
+                    orderTitle.textContent = 'Chờ thanh toán...';
                 } else if (status_order == 2) {
-                    orderTitle.textContent = 'Awaiting confirmation...';
+                    orderTitle.textContent = 'Chờ xác nhận...';
                 } else if (status_order == 3) {
-                    orderTitle.textContent = 'In transit...';
+                    orderTitle.textContent = 'Đang giao hàng...';
                 } else if (status_order == 4) {
-                    orderTitle.textContent = 'Delivered';
+                    orderTitle.textContent = 'Đã nhận hàng';
                 } else if (status_order == 5) {
-                    orderTitle.textContent = 'Cancelled';
+                    orderTitle.textContent = 'Bị hủy';
                 } else {
-                    orderTitle.textContent = 'Return';
+                    orderTitle.textContent = 'Trả hàng';
                 }
             } else {
                 if (order_item['latest_status_id'] == 1) {
-                    orderTitle.textContent = 'Waiting for payment...';
+                    orderTitle.textContent = 'Chờ thanh toán...';
                 } else if (order_item['latest_status_id'] == 2) {
-                    orderTitle.textContent = 'Awaiting confirmation...';
+                    orderTitle.textContent = 'Chờ xác nhận...';
                 } else if (order_item['latest_status_id'] == 3) {
-                    orderTitle.textContent = 'In transit...';
+                    orderTitle.textContent = 'Đang giao hàng...';
                 } else if (order_item['latest_status_id'] == 4) {
-                    orderTitle.textContent = 'Delivered';
+                    orderTitle.textContent = 'Đã nhận hàng';
                 } else if (order_item['latest_status_id'] == 5) {
-                    orderTitle.textContent = 'Cancelled';
+                    orderTitle.textContent = 'Bị hủy';
                 } else {
-                    orderTitle.textContent = 'Return';
+                    orderTitle.textContent = 'Trả hàng';
                 }
             }
 
@@ -385,10 +385,10 @@ function load_orders(list_orders, status_order = 0) {
 
             // Định dạng ngày
             const options = { weekday: 'short', day: 'numeric', month: 'short' };
-            const formattedDate = date.toLocaleDateString('en-US', options);
+            const formattedDate = date.toLocaleDateString('vi-VN', options);
 
             let orderDate = document.createElement('p');
-            orderDate.textContent = 'on ' + formattedDate;
+            orderDate.textContent = 'vào ' + formattedDate;
             orderDetail.appendChild(orderTitle);
             orderDetail.appendChild(orderDate);
 
@@ -505,7 +505,7 @@ function load_orders(list_orders, status_order = 0) {
                 detailText.setAttribute('data-status_id', order_item['latest_status_id']);
             }
             detailText.setAttribute('data-id', order_item['id']);
-            detailText.textContent = 'Detail';
+            detailText.textContent = 'Chi tiết';
             controlList.appendChild(detailText);
 
 
@@ -513,82 +513,92 @@ function load_orders(list_orders, status_order = 0) {
                 if (status_order == 1) {
                     let continuePayment = document.createElement('span');
                     continuePayment.classList.add('me-3', 'btn_continue_payment_order', 'no-select');
-                    continuePayment.setAttribute('title', 'Continue Payment');
+                    continuePayment.setAttribute('title', 'Tiếp tục thanh toán');
                     continuePayment.setAttribute('data-id', order_item['id']);
                     continuePayment.setAttribute('data-amount', order_item['total_payment']);
                     continuePayment.setAttribute('data-payment-method', order_item['payment_method']);
-                    continuePayment.textContent = 'Continue Payment';
+                    continuePayment.textContent = 'Tiếp tục thanh toán';
                     controlList.appendChild(continuePayment);
 
                     let cancelOrder = document.createElement('span');
                     cancelOrder.classList.add('text-danger', 'btn_cancel_order', 'no-select');
                     cancelOrder.setAttribute('data-bs-toggle', 'modal');
                     cancelOrder.setAttribute('data-bs-target', '#cancel-order-modal');
-                    cancelOrder.setAttribute('title', 'Cancel');
+                    cancelOrder.setAttribute('title', 'Hủy');
                     cancelOrder.setAttribute('tabindex', '0');
                     cancelOrder.setAttribute('data-id', order_item['id']);
-                    cancelOrder.textContent = 'Cancel';
+                    cancelOrder.textContent = 'Hủy';
                     controlList.appendChild(cancelOrder);
                 } else if (status_order == 2) {
                     let cancelOrder = document.createElement('span');
                     cancelOrder.classList.add('text-danger', 'btn_cancel_order', 'no-select');
                     cancelOrder.setAttribute('data-bs-toggle', 'modal');
                     cancelOrder.setAttribute('data-bs-target', '#cancel-order-modal');
-                    cancelOrder.setAttribute('title', 'Cancel');
+                    cancelOrder.setAttribute('title', 'Hủy');
                     cancelOrder.setAttribute('tabindex', '0');
                     cancelOrder.setAttribute('data-id', order_item['id']);
-                    cancelOrder.textContent = 'Cancel';
+                    cancelOrder.textContent = 'Hủy';
                     controlList.appendChild(cancelOrder);
                 } else if (status_order == 3) {
                     let cancelOrder = document.createElement('span');
-                    cancelOrder.classList.add('btn_confirm_done_order', 'no-select');
+                    cancelOrder.classList.add('text-danger', 'btn_cancel_order', 'no-select');
                     cancelOrder.setAttribute('data-bs-toggle', 'modal');
-                    cancelOrder.setAttribute('data-bs-target', '#confirm-done-order-modal');
-                    cancelOrder.setAttribute('title', 'Confirm done');
+                    cancelOrder.setAttribute('data-bs-target', '#cancel-order-modal');
+                    cancelOrder.setAttribute('title', 'Hủy');
                     cancelOrder.setAttribute('tabindex', '0');
                     cancelOrder.setAttribute('data-id', order_item['id']);
-                    cancelOrder.textContent = 'Confirm done';
+                    cancelOrder.textContent = 'Hủy';
                     controlList.appendChild(cancelOrder);
+
+                    let confirmOrder = document.createElement('span');
+                    confirmOrder.classList.add('btn_confirm_done_order', 'no-select');
+                    confirmOrder.setAttribute('data-bs-toggle', 'modal');
+                    confirmOrder.setAttribute('data-bs-target', '#confirm-done-order-modal');
+                    confirmOrder.setAttribute('title', 'Xác nhận đã nhận hàng');
+                    confirmOrder.setAttribute('tabindex', '0');
+                    confirmOrder.setAttribute('data-id', order_item['id']);
+                    confirmOrder.textContent = 'Xác nhận đã nhận hàng';
+                    controlList.appendChild(confirmOrder);
                 }
             } else {
                 if (order_item['latest_status_id'] == 1) {
                     let continuePayment = document.createElement('span');
                     continuePayment.classList.add('me-3', 'btn_continue_payment_order', 'no-select');
-                    continuePayment.setAttribute('title', 'Continue Payment');
+                    continuePayment.setAttribute('title', 'Tiếp tục thanh toán');
                     continuePayment.setAttribute('data-id', order_item['id']);
                     continuePayment.setAttribute('data-amount', order_item['total_payment']);
                     continuePayment.setAttribute('data-payment-method', order_item['payment_method']);
-                    continuePayment.textContent = 'Continue Payment';
+                    continuePayment.textContent = 'Tiếp tục thanh toán';
                     controlList.appendChild(continuePayment);
 
                     let cancelOrder = document.createElement('span');
                     cancelOrder.classList.add('text-danger', 'btn_cancel_order', 'no-select');
                     cancelOrder.setAttribute('data-bs-toggle', 'modal');
                     cancelOrder.setAttribute('data-bs-target', '#cancel-order-modal');
-                    cancelOrder.setAttribute('title', 'Cancel');
+                    cancelOrder.setAttribute('title', 'Hủy');
                     cancelOrder.setAttribute('tabindex', '0');
                     cancelOrder.setAttribute('data-id', order_item['id']);
-                    cancelOrder.textContent = 'Cancel';
+                    cancelOrder.textContent = 'Hủy';
                     controlList.appendChild(cancelOrder);
                 } else if (order_item['latest_status_id'] == 2) {
                     let cancelOrder = document.createElement('span');
                     cancelOrder.classList.add('text-danger', 'btn_cancel_order', 'no-select');
                     cancelOrder.setAttribute('data-bs-toggle', 'modal');
                     cancelOrder.setAttribute('data-bs-target', '#cancel-order-modal');
-                    cancelOrder.setAttribute('title', 'Cancel');
+                    cancelOrder.setAttribute('title', 'Hủy');
                     cancelOrder.setAttribute('tabindex', '0');
                     cancelOrder.setAttribute('data-id', order_item['id']);
-                    cancelOrder.textContent = 'Cancel';
+                    cancelOrder.textContent = 'Hủy';
                     controlList.appendChild(cancelOrder);
                 } else if (order_item['latest_status_id'] == 3) {
                     let confirmOrder = document.createElement('span');
                     confirmOrder.classList.add('btn_confirm_done_order', 'no-select');
                     confirmOrder.setAttribute('data-bs-toggle', 'modal');
                     confirmOrder.setAttribute('data-bs-target', '#confirm-done-order-modal');
-                    confirmOrder.setAttribute('title', 'Confirm done');
+                    confirmOrder.setAttribute('title', 'Xác nhận đã nhận hàng');
                     confirmOrder.setAttribute('tabindex', '0');
                     confirmOrder.setAttribute('data-id', order_item['id']);
-                    confirmOrder.textContent = 'Confirm done';
+                    confirmOrder.textContent = 'Xác nhận đã nhận hàng';
                     controlList.appendChild(confirmOrder);
                 }
             }
@@ -597,7 +607,7 @@ function load_orders(list_orders, status_order = 0) {
 
 
             let exchangeText = document.createElement('h6');
-            exchangeText.textContent = '* Exchange/Return window closed on 20 Dec';
+            exchangeText.textContent = '* Cửa sổ đổi/trả hàng đã đóng vào ngày 20 tháng 12';
 
             returnBox.appendChild(reviewBox);
             returnBox.appendChild(exchangeText);
@@ -708,10 +718,13 @@ $(document).on('click', '#btn_confirm_cancel_order', async function () {
                     list_orders = Object.values(list_orders);
                 }
                 console.log(list_orders);
-
                 load_orders(list_orders, order_status_selected);
+                $('#order_details').removeClass('show active');
+                $('#order').addClass('show active');
             } else {
                 load_orders(list_orders, order_status_selected);
+                $('#order_details').removeClass('show active');
+                $('#order').addClass('show active');
             }
 
         } catch (error) {
@@ -829,28 +842,33 @@ $(document).on('click', '.btn_view_order_detail', async function () {
             var data_order_detail_by_id = await getOrderDetail(order_id);
             data_order_detail_by_id = convertObjectToArray(data_order_detail_by_id);
             console.log(status_id_of_this_order);
+            console.log(data_order_detail_by_id);
 
 
             $('#span_order_code').text(data_order_detail_by_id[0]['id']);
+            $('#btn_continue_payment_order_2').addClass('hidden');
+            $('#btn_confirm_done_order_2').addClass('hidden');
+            $('#btn_cancel_order_2').addClass('hidden');
+
             if (status_id_of_this_order == 1) {
-                $('#span_order_status').text("WAITING FOR PAYMENT");
+                $('#span_order_status').text("Chờ thanh toán");
+                $('#btn_continue_payment_order_2').data('id', order_id).data('amount', data_order_detail_by_id[0]['total_payment']).data('payment-method', data_order_detail_by_id[0]['payment_method']).removeClass('hidden');
+                $('#btn_cancel_order_2').data('id', order_id).removeClass('hidden');
             } else if (status_id_of_this_order == 2) {
-                $('#span_order_status').text("Awaiting confirmation".toUpperCase());
+                $('#span_order_status').text("Chờ xác nhận".toUpperCase());
+                $('#btn_cancel_order_2').data('id', order_id).removeClass('hidden');
             } else if (status_id_of_this_order == 3) {
                 console.log(status_id_of_this_order);
                 $('#btn_confirm_done_order_2').data('id', order_id).removeClass('hidden');
-                $('#span_order_status').text("On Delivery".toUpperCase());
+                $('#span_order_status').text("Đang vận chuyển".toUpperCase());
             } else if (status_id_of_this_order == 4) {
-                $('#span_order_status').text("Delivered".toUpperCase());
+                $('#span_order_status').text("Đã nhận hàng".toUpperCase());
             } else if (status_id_of_this_order == 5) {
-                $('#span_order_status').text("Cancelled".toUpperCase());
+                $('#span_order_status').text("Bị hủy".toUpperCase());
             } else {
-                $('#span_order_status').text("Return".toUpperCase());
+                $('#span_order_status').text("Trả hàng".toUpperCase());
             }
 
-            if (status_id_of_this_order != 3) {
-                $('#btn_confirm_done_order_2').addClass('hidden');
-            }
             //--------Hiển thị vòng đời của đơn hàng---------
             var progress_container = document.getElementById("progress-container");
             progress_container.innerHTML = "";
@@ -936,6 +954,33 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                         elements.forEach(function (element) {
                             progress_container.appendChild(element);
                         })
+                    } else if (get_all_status_of_order.includes(1) && get_all_status_of_order.includes(2) && get_all_status_of_order.includes(3) && !get_all_status_of_order.includes(4)) {
+                        //-----1-----
+                        var time = returnTimeOfStatusOrder(1);
+
+                        var elements = createProgressOrder(true, true, '💳', 'Đã Xác Nhận TTTT & Đặt Hàng', time, true);
+                        elements.forEach(function (element) {
+                            progress_container.appendChild(element);
+                        })
+
+                        //-----2-----
+                        time = returnTimeOfStatusOrder(2);
+                        elements = createProgressOrder(true, true, '✅', 'Đã Kiểm Tra Đơn Hàng', time, true);
+                        elements.forEach(function (element) {
+                            progress_container.appendChild(element);
+                        })
+                        time = returnTimeOfStatusOrder(3);
+                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVVC', time, true);
+                        elements.forEach(function (element) {
+                            progress_container.appendChild(element);
+                        })
+
+                        time = returnTimeOfStatusOrder(5);
+
+                        elements = createProgressOrder(false, true, '❌', 'Đã Hủy', time, false);
+                        elements.forEach(function (element) {
+                            progress_container.appendChild(element);
+                        })
                     }
                 } else if (!get_all_status_of_order.includes(4)) {
                     if (get_all_status_of_order.includes(1) && !get_all_status_of_order.includes(2)) {
@@ -949,7 +994,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                             progress_container.appendChild(element);
                         })
 
-                        elements = createProgressOrder(false, false, '🚚', 'Đã Giao Cho DVC', "", true);
+                        elements = createProgressOrder(false, false, '🚚', 'Đã Giao Cho DVVC', "", true);
                         elements.forEach(function (element) {
                             progress_container.appendChild(element);
                         })
@@ -964,7 +1009,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                             progress_container.appendChild(element);
                         })
 
-                        elements = createProgressOrder(false, false, '🚚', 'Đã Giao Cho DVC', "", true);
+                        elements = createProgressOrder(false, false, '🚚', 'Đã Giao Cho DVVC', "", true);
                         elements.forEach(function (element) {
                             progress_container.appendChild(element);
                         })
@@ -985,7 +1030,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                             progress_container.appendChild(element);
                         })
 
-                        elements = createProgressOrder(false, false, '🚚', 'Đã Giao Cho DVC', "", true);
+                        elements = createProgressOrder(false, false, '🚚', 'Đã Giao Cho DVVC', "", true);
                         elements.forEach(function (element) {
                             progress_container.appendChild(element);
                         })
@@ -1008,7 +1053,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                         })
 
                         time = returnTimeOfStatusOrder(3);
-                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVC', time, true);
+                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVVC', time, true);
                         elements.forEach(function (element) {
                             progress_container.appendChild(element);
                         })
@@ -1025,7 +1070,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                         })
 
                         time = returnTimeOfStatusOrder(3);
-                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVC', time, true);
+                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVVC', time, true);
                         elements.forEach(function (element) {
                             progress_container.appendChild(element);
                         })
@@ -1050,7 +1095,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                         })
 
                         time = returnTimeOfStatusOrder(3);
-                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVC', time, true);
+                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVVC', time, true);
                         elements.forEach(function (element) {
                             progress_container.appendChild(element);
                         })
@@ -1068,7 +1113,7 @@ $(document).on('click', '.btn_view_order_detail', async function () {
                         })
 
                         time = returnTimeOfStatusOrder(3);
-                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVC', time, true);
+                        elements = createProgressOrder(true, true, '🚚', 'Đã Giao Cho DVVC', time, true);
                         elements.forEach(function (element) {
                             progress_container.appendChild(element);
                         })
@@ -1084,7 +1129,9 @@ $(document).on('click', '.btn_view_order_detail', async function () {
 
             // ================Đổ dữ liệu sản phẩm ra list sp==================
             var body_of_list_product = document.getElementById("body_of_list_product");
+            var tfoot_of_list_product = document.getElementById("tfoot_of_list_product");
             body_of_list_product.innerHTML = "";
+            tfoot_of_list_product.innerHTML = "";
 
             var amounts = {
                 original_amount: 0,
@@ -1092,12 +1139,15 @@ $(document).on('click', '.btn_view_order_detail', async function () {
             }
 
             if (data_order_detail_by_id[0]['order_details'].length > 0) {
+                var index = 1;
                 for (const order_detail_item of data_order_detail_by_id[0]['order_details']) {
-                    await loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product);
+                    await loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product, index);
+                    index++;
                 }
-                loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product);
+                loadSubTotalUnderListProductInOrderDetail(amounts, tfoot_of_list_product);
             } else {
                 let notHaveProductRow = document.createElement('tr');
+
 
                 // Tạo phần tử <td> và thiết lập thuộc tính colspan, class
                 let notHaveProductCell = document.createElement('td');
@@ -1181,13 +1231,19 @@ function createProgressOrder(line_active, active, icon_status, content_status, t
     return elements;
 }
 //============================================Hiển thị danh sách sản phẩm trong chi tiết đơn hàng============================================
-async function loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product) {
+async function loadListProductInOrderDetail(get_all_status_of_order, order_detail_item, amounts, body_of_list_product, index) {
     amounts.original_amount += order_detail_item['original_price'] * order_detail_item['quantity'];
     amounts.discounted_amount += order_detail_item['amount_reduced'];
 
     const row = document.createElement("tr");
 
-    // Cột 1: Cart Box
+    //Cột 1: Index
+    const indexCell = document.createElement("td");
+    const spanIndexCell = document.createElement("span");
+    spanIndexCell.textContent = index;
+    indexCell.appendChild(spanIndexCell);
+    row.appendChild(indexCell);
+    // Cột 2: Cart Box
     const cartBoxCell = document.createElement("td");
     const cartBoxDiv = document.createElement("div");
     cartBoxDiv.classList.add("cart-box");
@@ -1316,7 +1372,7 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
     } else {
         const buttonSpan = document.createElement("span");
         buttonSpan.classList.add("fs-12", "color-of-theme", "no-select");
-        buttonSpan.textContent = "Cannot be rated yet";
+        buttonSpan.textContent = "Chưa thể đánh giá";
         buttonCell.appendChild(buttonSpan);
     }
     row.appendChild(buttonCell);
@@ -1336,21 +1392,22 @@ async function loadListProductInOrderDetail(get_all_status_of_order, order_detai
 //===========================================Xử lý tải dòng hiển thị tổng sp phụ===========================================
 function loadSubTotalUnderListProductInOrderDetail(amounts, body_of_list_product) {
     let toSumUpRow = document.createElement('tr');
-
+    toSumUpRow.style.height = "50px";
     // Tạo các phần tử <td> rỗng
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
         let cell = document.createElement('td');
+        cell.classList.add("bg-light");
         toSumUpRow.appendChild(cell);
     }
 
     // Tạo phần tử <td> với class "total fw-bold" cho tổng
     let totalCell = document.createElement('td');
-    totalCell.classList.add('total', 'fw-bold');
+    totalCell.classList.add('total', 'fw-bold', 'bg-light');
     totalCell.textContent = 'Total :';
 
     // Tạo phần tử <td> cho giá trị tổng với flex container
     let valueCell = document.createElement('td');
-    valueCell.classList.add('total', 'fw-bold');
+    valueCell.classList.add('total', 'fw-bold', 'bg-light');
 
     // Tạo phần tử d-flex chứa các giá trị
     let flexContainer = document.createElement('div');
@@ -1409,7 +1466,6 @@ function getVoteOrder(order_detail_id) {
         })
     })
 }
-
 //=====================================XỬ LÝ ĐÁNH GIÁ ĐƠN HÀNG==========================================
 var order_detail_id_of_order_detail_voting = null;
 var voted = false;
@@ -1622,7 +1678,7 @@ $(document).on('click', '.btn_view_rated', function () {
         $('.container-spinner').addClass('hidden');
     }
 })
-//)===========================================Xử lý khi modal review ẩn)===========================================
+//)===========================================Xử lý khi modal review ẩn===========================================
 $('#review-vote-order-detail-modal').on('hidden.bs.modal', function (e) {
     $('#btn_edit_vote_order_detail').removeClass('hidden');
     $('#div_btn_confirm_edit_done_and_btn_cancel_edit').addClass('hidden');

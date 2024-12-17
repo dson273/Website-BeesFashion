@@ -105,52 +105,47 @@ class ProductDetailController extends Controller
             },
             'attribute_type'
         ])->whereIn('id', $attribute_ids)
-        ->get()
-        ->mapWithKeys(function ($attribute) {
-            return [
-                $attribute->id => [
-                    'id' => $attribute->id,
-                    'name' => $attribute->name,
-                    'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null,
-                    'attribute_values' => $attribute->attribute_values
-                        ->sortBy(function ($value) {
-                            $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
-                            return $sizes[$value->name] ?? $value->name;
-                        })
-                        ->values()
-                        ->map(function ($value) {
-                            return [
-                                'id' => $value->id,
-                                'name' => $value->name,
-                                'value' => $value->value
-                            ];
-                        })->toArray()
-                ]
-            ];
-        })->toArray();
+            ->get()
+            ->mapWithKeys(function ($attribute) {
+                return [
+                    $attribute->id => [
+                        'id' => $attribute->id,
+                        'name' => $attribute->name,
+                        'type' => $attribute->attribute_type ? $attribute->attribute_type->type_name : null,
+                        'attribute_values' => $attribute->attribute_values
+                            ->sortBy(function ($value) {
+                                $sizes = ['S' => 1, 'M' => 2, 'L' => 3, 'XL' => 4, 'XXL' => 5];
+                                return $sizes[$value->name] ?? $value->name;
+                            })
+                            ->values()
+                            ->map(function ($value) {
+                                return [
+                                    'id' => $value->id,
+                                    'name' => $value->name,
+                                    'value' => $value->value
+                                ];
+                            })->toArray()
+                    ]
+                ];
+            })->toArray();
     }
 
     private function calculateRealStock($variantId, $originalStock)
     {
-        // Trừ số lượng cho các đơn hàng đang xử lý
-        $reduceQuantity = DB::table('orders')
-            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+        $get_product_variant_in_order_details = Order_detail::select('order_details.*')
+            ->join('orders', 'order_details.order_id', '=', 'orders.id')
             ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-            ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
-            ->where('order_details.product_variant_id', $variantId)
-            ->whereIn('statuses.name', ['Processing', 'Pending', 'Shipping', 'Completed'])
-            ->sum('order_details.quantity');
-
-        // Cộng lại số lượng cho đơn hàng hoàn/trả
-        $addQuantity = DB::table('orders')
-            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
-            ->join('statuses', 'status_orders.status_id', '=', 'statuses.id')
-            ->where('order_details.product_variant_id', $variantId)
-            ->whereIn('statuses.name', ['Cancelled', 'Returned'])
-            ->sum('order_details.quantity');
-
-        return $originalStock - $reduceQuantity + $addQuantity;
+            ->where('product_variant_id', $variantId)
+            ->whereIn('status_orders.status_id', [1, 2, 3])
+            ->whereRaw('status_orders.created_at = (SELECT MAX(created_at) FROM status_orders WHERE status_orders.order_id = orders.id)')
+            ->get();
+        $reduceQuantity = 0;
+        if ($get_product_variant_in_order_details) {
+            foreach ($get_product_variant_in_order_details as $get_product_variant_in_order_detail) {
+                $reduceQuantity += $get_product_variant_in_order_detail->quantity;
+            }
+        }
+        return $originalStock - $reduceQuantity;
     }
 
     private function calculateTotalRealStock($productVariants)
@@ -166,12 +161,12 @@ class ProductDetailController extends Controller
             $query->whereIn('category_id', $product->categories->pluck('id'))
                 ->where('categories.fixed', 1);
         })
-        ->where('id', '!=', $product->id)
-        ->take(8)
-        ->get()
-        ->map(function ($relatedProduct) {
-            return $this->formatProductForDisplay($relatedProduct);
-        });
+            ->where('id', '!=', $product->id)
+            ->take(8)
+            ->get()
+            ->map(function ($relatedProduct) {
+                return $this->formatProductForDisplay($relatedProduct);
+            });
     }
 
     private function getBestProducts($product)
@@ -181,13 +176,13 @@ class ProductDetailController extends Controller
         return Product::whereHas('categories', function ($query) use ($firstCategory) {
             $query->where('categories.id', $firstCategory->id);
         })
-        ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
-        ->where('id', '!=', $product->id)
-        ->take(8)
-        ->get()
-        ->map(function ($bestProduct) {
-            return $this->formatProductForDisplay($bestProduct);
-        });
+            ->with(['product_files', 'product_variants', 'product_variants.product_votes.user'])
+            ->where('id', '!=', $product->id)
+            ->take(8)
+            ->get()
+            ->map(function ($bestProduct) {
+                return $this->formatProductForDisplay($bestProduct);
+            });
     }
 
     private function formatProductForDisplay($product)
