@@ -122,8 +122,8 @@ function renderProducts(products) {
 
     if (!Array.isArray(products) || products.length === 0) {
         productGrid.html(`
-            <div class=" justify-content-center ">
-                <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/search/a60759ad1dabe909c46a.png" alt="timmm">
+            <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+                <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/search/a60759ad1dabe909c46a.png" alt="timmm" width="300px">
                 <p>Hic. Không có sản phẩm nào. Bạn thử tắt điều kiện lọc và tìm lại nhé?</p>
             </div>
         `);
