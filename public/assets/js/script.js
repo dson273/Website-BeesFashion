@@ -58,7 +58,8 @@ window.addEventListener("load", () => {
 /*=====================
 02.Tap to Top
 ==========================*/
-
+var lastScrollTop = 0;
+const header = document.querySelector('header');
 window.addEventListener('scroll', function () {
     var tapTopElement = document.querySelector('.tap-top');
     if (window.scrollY > 600) {
@@ -66,6 +67,15 @@ window.addEventListener('scroll', function () {
     } else {
         tapTopElement.classList.remove('top');
     }
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    if (scrollTop > lastScrollTop) {
+        // Lăn chuột xuống
+        header.style.top = '-85px';
+    } else {
+        // Lăn chuột lên
+        header.style.top = '0';
+    }
+    lastScrollTop = scrollTop;
 });
 
 var tapTopElement = document.querySelector('.tap-top');

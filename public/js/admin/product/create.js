@@ -1092,7 +1092,7 @@ $(document).on('click', '#removeAttributeItem', function () {
     $('.container-spinner').removeClass('hidden');
     try {
         // Hiển thị xác nhận để người dùng đồng ý hoặc hủy việc xóa
-        var isConfirmed = confirm('If you remove this attribute, customers will no longer be able to purchase some variations of this product.');
+        var isConfirmed = confirm('Bạn có chắc chắn muốn xóa thuộc tính này không?.');
         if (isConfirmed) {
             // Lấy thẻ chứa thuộc tính cần xóa
             var $attributeItem = $(this).closest('.attributeItem');
@@ -2046,7 +2046,7 @@ $('#generateVariations').click(function () {
                     var inputSku = document.createElement('input');
                     inputSku.type = 'text';
                     inputSku.className = 'form-control skuInput';
-                    inputSku.placeholder = "Enter variation's SKU...";
+                    inputSku.placeholder = "Nhập mã biến thể...";
 
                     divSkuInputElements.appendChild(labelSku);
                     divSkuInputElements.appendChild(inputSku);
@@ -2062,13 +2062,13 @@ $('#generateVariations').click(function () {
 
                     var labelImportPrice = document.createElement('label');
                     labelImportPrice.className = 'badge text-left d-flex flex-row';
-                    labelImportPrice.textContent = 'Import price (đ)';
+                    labelImportPrice.textContent = 'Giá nhập (đ)';
                     labelImportPrice.appendChild(createRequiredMark());
 
                     var inputImportPrice = document.createElement('input');
                     inputImportPrice.type = 'number';
                     inputImportPrice.className = 'form-control importPriceInput';
-                    inputImportPrice.placeholder = "Enter variation's import price...";
+                    inputImportPrice.placeholder = "Nhập giá nhập...";
 
                     divImportPrice.appendChild(labelImportPrice);
                     divImportPrice.appendChild(inputImportPrice);
@@ -2081,13 +2081,13 @@ $('#generateVariations').click(function () {
 
                     var labelRegularPrice = document.createElement('label');
                     labelRegularPrice.className = 'badge text-left d-flex flex-row';
-                    labelRegularPrice.textContent = 'Regular price (đ)';
+                    labelRegularPrice.textContent = 'Giá bán thông thường (đ)';
                     labelRegularPrice.appendChild(createRequiredMark());
 
                     var inputRegularPrice = document.createElement('input');
                     inputRegularPrice.type = 'number';
                     inputRegularPrice.className = 'form-control regularPriceInput';
-                    inputRegularPrice.placeholder = "Enter variation's regular price...";
+                    inputRegularPrice.placeholder = "Nhập giá bán thông thường...";
 
                     divRegularPrice.appendChild(labelRegularPrice);
                     divRegularPrice.appendChild(inputRegularPrice);
@@ -2097,12 +2097,12 @@ $('#generateVariations').click(function () {
 
                     var labelSalePrice = document.createElement('label');
                     labelSalePrice.className = 'badge text-left';
-                    labelSalePrice.textContent = 'Sale price (đ)';
+                    labelSalePrice.textContent = 'Giá bán đã giảm (đ)';
 
                     var inputSalePrice = document.createElement('input');
                     inputSalePrice.type = 'number';
                     inputSalePrice.className = 'form-control salePriceInput';
-                    inputSalePrice.placeholder = "Enter variation's sale price...";
+                    inputSalePrice.placeholder = "Nhập giá bán đã giảm...";
 
                     divSalePrice.appendChild(labelSalePrice);
                     divSalePrice.appendChild(inputSalePrice);
@@ -2121,7 +2121,7 @@ $('#generateVariations').click(function () {
                     var inputStock = document.createElement('input');
                     inputStock.type = 'number';
                     inputStock.className = 'form-control stockInput';
-                    inputStock.placeholder = "Enter variation's stock price...";
+                    inputStock.placeholder = "Nhập số lượng tồn kho...";
 
                     divStock.appendChild(labelStock);
                     divStock.appendChild(inputStock);
@@ -2131,7 +2131,7 @@ $('#generateVariations').click(function () {
 
                     var labelActive = document.createElement('label');
                     labelActive.className = 'badge text-left';
-                    labelActive.textContent = 'Active';
+                    labelActive.textContent = 'Hoạt động';
 
                     var selectActive = document.createElement('select');
                     selectActive.className = 'form-control activeSelect';
@@ -2139,11 +2139,11 @@ $('#generateVariations').click(function () {
                     var optionYes = document.createElement('option');
                     optionYes.value = 'true';
                     optionYes.setAttribute('selected', '');
-                    optionYes.textContent = 'Yes';
+                    optionYes.textContent = 'Có';;
 
                     var optionNo = document.createElement('option');
                     optionNo.value = 'false';
-                    optionNo.textContent = 'No';
+                    optionNo.textContent = 'Không';
 
                     selectActive.appendChild(optionYes);
                     selectActive.appendChild(optionNo);
@@ -2476,7 +2476,7 @@ $(document).on('click', '#addManually', function () {
                 var inputSku = document.createElement('input');
                 inputSku.type = 'text';
                 inputSku.className = 'form-control skuInput';
-                inputSku.placeholder = "Enter variation's SKU...";
+                inputSku.placeholder = "Nhập mã biến thể...";
 
                 divSkuInputElements.appendChild(labelSku);
                 divSkuInputElements.appendChild(inputSku);
@@ -2492,13 +2492,13 @@ $(document).on('click', '#addManually', function () {
 
                 var labelImportPrice = document.createElement('label');
                 labelImportPrice.className = 'badge text-left d-flex flex-row';
-                labelImportPrice.textContent = 'Import price (đ)';
+                labelImportPrice.textContent = 'Giá nhập (đ)';
                 labelImportPrice.appendChild(createRequiredMark());
 
                 var inputImportPrice = document.createElement('input');
                 inputImportPrice.type = 'number';
                 inputImportPrice.className = 'form-control importPriceInput';
-                inputImportPrice.placeholder = "Enter variation's import price...";
+                inputImportPrice.placeholder = "Nhập giá nhập...";
 
                 divImportPrice.appendChild(labelImportPrice);
                 divImportPrice.appendChild(inputImportPrice);
@@ -2511,13 +2511,13 @@ $(document).on('click', '#addManually', function () {
 
                 var labelRegularPrice = document.createElement('label');
                 labelRegularPrice.className = 'badge text-left d-flex flex-row';
-                labelRegularPrice.textContent = 'Regular price (đ)';
+                labelRegularPrice.textContent = 'Giá bán thông thường (đ)';
                 labelRegularPrice.appendChild(createRequiredMark());
 
                 var inputRegularPrice = document.createElement('input');
                 inputRegularPrice.type = 'number';
                 inputRegularPrice.className = 'form-control regularPriceInput';
-                inputRegularPrice.placeholder = "Enter variation's regular price...";
+                inputRegularPrice.placeholder = "Nhập giá bán thông thường...";
 
                 divRegularPrice.appendChild(labelRegularPrice);
                 divRegularPrice.appendChild(inputRegularPrice);
@@ -2527,12 +2527,12 @@ $(document).on('click', '#addManually', function () {
 
                 var labelSalePrice = document.createElement('label');
                 labelSalePrice.className = 'badge text-left';
-                labelSalePrice.textContent = 'Sale price (đ)';
+                labelSalePrice.textContent = 'Giá bán đã giảm (đ)';
 
                 var inputSalePrice = document.createElement('input');
                 inputSalePrice.type = 'number';
                 inputSalePrice.className = 'form-control salePriceInput';
-                inputSalePrice.placeholder = "Enter variation's sale price...";
+                inputSalePrice.placeholder = "Nhập giá bán đã giảm...";
 
                 divSalePrice.appendChild(labelSalePrice);
                 divSalePrice.appendChild(inputSalePrice);
@@ -2545,13 +2545,13 @@ $(document).on('click', '#addManually', function () {
 
                 var labelStock = document.createElement('label');
                 labelStock.className = 'badge text-left d-flex flex-row';
-                labelStock.textContent = 'Stock';
+                labelStock.textContent = 'Tồn kho';
                 labelStock.appendChild(createRequiredMark());
 
                 var inputStock = document.createElement('input');
                 inputStock.type = 'number';
                 inputStock.className = 'form-control stockInput';
-                inputStock.placeholder = "Enter variation's stock price...";
+                inputStock.placeholder = "Nhập số lượng tồn kho...";
 
                 divStock.appendChild(labelStock);
                 divStock.appendChild(inputStock);
@@ -2561,7 +2561,7 @@ $(document).on('click', '#addManually', function () {
 
                 var labelActive = document.createElement('label');
                 labelActive.className = 'badge text-left';
-                labelActive.textContent = 'Active';
+                labelActive.textContent = 'Hoạt động';
 
                 var selectActive = document.createElement('select');
                 selectActive.className = 'form-control activeSelect';
@@ -2569,11 +2569,11 @@ $(document).on('click', '#addManually', function () {
                 var optionYes = document.createElement('option');
                 optionYes.value = 'true';
                 optionYes.setAttribute('selected', '');
-                optionYes.textContent = 'Yes';
+                optionYes.textContent = 'Có';;
 
                 var optionNo = document.createElement('option');
                 optionNo.value = 'false';
-                optionNo.textContent = 'No';
+                optionNo.textContent = 'Không';
 
                 selectActive.appendChild(optionYes);
                 selectActive.appendChild(optionNo);

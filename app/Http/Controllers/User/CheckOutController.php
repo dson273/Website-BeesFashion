@@ -807,7 +807,7 @@ class CheckOutController extends Controller
                                                         foreach ($check_out_data['product_variants'] as $product_variant) {
                                                             $check_product_variant = Product_variant::where('id', $product_variant['id'])
                                                                 ->where('is_active', 1)
-                                                                ->where('stock', '>', $product_variant['quantity'])
+                                                                ->where('stock', '>=', $product_variant['quantity'])
                                                                 ->first();
                                                             if ($check_product_variant) {
                                                                 $total_valid_variants[] = $check_product_variant->id;

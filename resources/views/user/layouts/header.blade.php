@@ -1,8 +1,8 @@
 <!-- Start header -->
-<header>
+<header class="position-sticky top-0" style="z-index: 1000;transition: top 0.3s;">
     {{-- <div class="top_header">
         <p>Free Coupe Code: Summer Sale On Selected items Use:<span>NEW 26</span><a href="{{ route('product') }}">SHOP
-                NOW</a></p>
+    NOW</a></p>
     </div> --}}
     <div class="box-header">
         <div class="custom-container container header-1">
@@ -54,20 +54,20 @@
                                 </li>
                                 {{-- <li>
                                     <a class="nav-link" href="product-select.html">{{ $cate->name }}</a>
-                                    </li> --}}
+                                </li> --}}
                                 <li>
                                     <a class="nav-link fw-semibold" href="{{ route('product') }}">Bộ sưu tập</a>
                                     <ul class="nav-submenu">
                                         @foreach ($categoryLimit as $parentCategory)
-                                            <li class="has-submenu">
-                                                <a href="{{ route('product', ['category' => $parentCategory->id]) }}">{{ $parentCategory->name }}
-                                                </a>
-                                                <ul class="nav-childmenu">
-                                                    @include('user.layouts.child_menu', [
-                                                        'parentCategory' => $parentCategory,
-                                                    ])
-                                                </ul>
-                                            </li>
+                                        <li class="has-submenu">
+                                            <a href="{{ route('product', ['category' => $parentCategory->id]) }}">{{ $parentCategory->name }}
+                                            </a>
+                                            <ul class="nav-childmenu">
+                                                @include('user.layouts.child_menu', [
+                                                'parentCategory' => $parentCategory,
+                                                ])
+                                            </ul>
+                                        </li>
                                         @endforeach
                                     </ul>
                                 </li>
@@ -129,45 +129,45 @@
                                             data-icon="heart"></i><span
                                             class="cart_qty_cls">{{ $wishCount ?? 0 }}</span></a></li>
                                 @guest
-                                    <li class="onhover-div">
-                                        <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
-                                        <div class="login-register-box">
-                                            <h2>CHÀO MỪNG QUÝ KHÁCH<br>ĐẾN VỚI BEESFASHION</h2>
-                                            <p class="title-login">Đăng nhập tài khoản của Quý Khách</p>
-                                            @if (Route::has('login'))
-                                                <a class="btn-login" href="{{ route('login') }}">ĐĂNG NHẬP</a>
-                                            @endif
-                                            <hr>
-                                            <h5 class="title-register mt-3">ĐĂNG KÍ THÀNH VIÊN</h5>
-                                            @if (Route::has('register'))
-                                                <a class="btn-register" href="{{ route('register') }}">ĐĂNG KÝ</a>
-                                            @endif
-                                        </div>
-                                    </li>
+                                <li class="onhover-div">
+                                    <a href="#"><i class="iconsax" data-icon="user-2"></i></a>
+                                    <div class="login-register-box">
+                                        <h2>CHÀO MỪNG QUÝ KHÁCH<br>ĐẾN VỚI BEESFASHION</h2>
+                                        <p class="title-login">Đăng nhập tài khoản của Quý Khách</p>
+                                        @if (Route::has('login'))
+                                        <a class="btn-login" href="{{ route('login') }}">ĐĂNG NHẬP</a>
+                                        @endif
+                                        <hr>
+                                        <h5 class="title-register mt-3">ĐĂNG KÍ THÀNH VIÊN</h5>
+                                        @if (Route::has('register'))
+                                        <a class="btn-register" href="{{ route('register') }}">ĐĂNG KÝ</a>
+                                        @endif
+                                    </div>
+                                </li>
                                 @else
-                                    <li class="onhover-div">
-                                        <a href="{{ route('dashboard') }}"><i class="iconsax" data-icon="user-2"></i></a>
-                                        <div class="user-box">
-                                            <div class="user-info">
-                                                <img src="{{ asset('assets/images/user/user-icon.jpg') }}" alt="Avatar"
-                                                    class="user-avatar" />
-                                                <h3>{{ Auth::user()->full_name ? Auth::user()->full_name : Auth::user()->username }}
-                                                </h3>
+                                <li class="onhover-div">
+                                    <a href="{{ route('dashboard') }}"><i class="iconsax" data-icon="user-2"></i></a>
+                                    <div class="user-box">
+                                        <div class="user-info">
+                                            <img src="{{ asset('assets/images/user/user-icon.jpg') }}" alt="Avatar"
+                                                class="user-avatar" />
+                                            <h3>{{ Auth::user()->full_name ? Auth::user()->full_name : Auth::user()->username }}
+                                            </h3>
+                                        </div>
+                                        <hr>
+                                        <div class="user-actions">
+                                            <div>
+                                                <a class="act-dash" href="{{ route('dashboard') }}"><i
+                                                        class="fa-solid fa-house-user"></i>Tài khoản của tôi</a>
                                             </div>
-                                            <hr>
-                                            <div class="user-actions">
-                                                <div>
-                                                    <a class="act-dash" href="{{ route('dashboard') }}"><i
-                                                            class="fa-solid fa-house-user"></i>Tài khoản của tôi</a>
-                                                </div>
-                                                <div>
-                                                    <a class="act-logout" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#modal-logout" title="Logout" tabindex="0">
-                                                        <i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
-                                                </div>
+                                            <div>
+                                                <a class="act-logout" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#modal-logout" title="Logout" tabindex="0">
+                                                    <i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
+                                </li>
                                 @endguest
 
                                 <li class="onhover-div shopping-cart">
