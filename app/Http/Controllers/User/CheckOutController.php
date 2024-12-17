@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Order_detail;
 use App\Models\Product;
 use App\Models\Product_variant;
 use App\Models\Product_voucher;
@@ -42,6 +43,22 @@ class CheckOutController extends Controller
                 if ($get_cart_by_cart_id) {
                     $get_product_variant_by_variant_id = Product_variant::find($get_cart_by_cart_id->product_variant_id);
                     if ($get_product_variant_by_variant_id) {
+                        $get_product_variant_in_order_details = Order_detail::select('order_details.*')
+                            ->join('orders', 'order_details.order_id', '=', 'orders.id')
+                            ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+                            ->where('product_variant_id', $get_product_variant_by_variant_id->id)
+                            ->whereIn('status_orders.status_id', [1, 2, 3])
+                            ->whereRaw('status_orders.created_at = (SELECT MAX(created_at) FROM status_orders WHERE status_orders.order_id = orders.id)')
+                            ->get();
+                        if ($get_product_variant_in_order_details) {
+                            $total_quantity = 0;
+                            foreach ($get_product_variant_in_order_details as $get_product_variant_in_order_detail) {
+                                $total_quantity += $get_product_variant_in_order_detail->quantity;
+                            }
+                            if (($get_product_variant_by_variant_id->stock - $total_quantity) < $get_cart_by_cart_id->quantity) {
+                                return redirect()->route('cart')->with('statusWarning', 'Số lượng của sản phẩm ' . $get_product_variant_by_variant_id->name . ' trong kho không đủ để phục vụ khách hàng, vui lòng thử lại!');
+                            }
+                        }
                         $get_product_name = Product::find($get_product_variant_by_variant_id->product->id)->name;
                         $product_variant_data = [];
                         $product_variant_price = $get_product_variant_by_variant_id->sale_price != null ? $get_product_variant_by_variant_id->sale_price : $get_product_variant_by_variant_id->regular_price;
@@ -54,6 +71,8 @@ class CheckOutController extends Controller
                         $check_out_data['product_variant_data'][] = $product_variant_data;
 
                         $total_price += $product_variant_price * $get_cart_by_cart_id->quantity;
+                    } else {
+                        return redirect()->route('cart')->with('statusWarning', 'Một số sản phẩm không hợp lệ, vui lòng thử lại! ID sản phẩm là: ' . $get_cart_by_cart_id->product_variant_id);
                     }
                 }
             }
@@ -62,6 +81,22 @@ class CheckOutController extends Controller
             $quantity = $request->input('quantity');
             $get_product_variant_by_variant_id = Product_variant::find($product_variant_id);
             if ($get_product_variant_by_variant_id) {
+                $get_product_variant_in_order_details = Order_detail::select('order_details.*')
+                    ->join('orders', 'order_details.order_id', '=', 'orders.id')
+                    ->join('status_orders', 'orders.id', '=', 'status_orders.order_id')
+                    ->where('product_variant_id', $get_product_variant_by_variant_id->id)
+                    ->whereIn('status_orders.status_id', [1, 2, 3])
+                    ->whereRaw('status_orders.created_at = (SELECT MAX(created_at) FROM status_orders WHERE status_orders.order_id = orders.id)')
+                    ->get();
+                if ($get_product_variant_in_order_details) {
+                    $total_quantity = 0;
+                    foreach ($get_product_variant_in_order_details as $get_product_variant_in_order_detail) {
+                        $total_quantity += $get_product_variant_in_order_detail->quantity;
+                    }
+                    if (($get_product_variant_by_variant_id->stock - $total_quantity) < $quantity) {
+                        return redirect()->route('cart')->with('statusWarning', 'Số lượng của sản phẩm ' . $get_product_variant_by_variant_id->name . ' trong kho không đủ để phục vụ khách hàng, vui lòng thử lại!');
+                    }
+                }
                 $get_product_name = Product::find($get_product_variant_by_variant_id->product->id)->name;
                 $product_variant_data = [];
                 $product_variant_price = $get_product_variant_by_variant_id->sale_price != null ? $get_product_variant_by_variant_id->sale_price : $get_product_variant_by_variant_id->regular_price;

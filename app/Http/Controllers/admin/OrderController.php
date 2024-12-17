@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\PDF;
 use App\Http\Controllers\Controller;
+use App\Models\Product_variant;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 
 class OrderController extends Controller
@@ -102,17 +103,17 @@ class OrderController extends Controller
         try {
             // Tìm đơn hàng và load các quan hệ liên quan
             $order = Order::with('order_details.product_variant.product')->findOrFail($id);
-    
+
             // Khởi tạo generator và tạo mã vạch cho SKU
             $generator = new BarcodeGeneratorHTML();
             $barcode = $generator->getBarcode($order->id, $generator::TYPE_CODE_128);
-    
+
             // Tạo file PDF từ view và truyền dữ liệu
             $pdf = PDF::loadView('admin.orders.print', [
                 'order' => $order,
                 'barcode' => $barcode, // Truyền mã vạch trực tiếp
             ]);
-    
+
             // Xuất file PDF dưới dạng stream
             return $pdf->stream('order_' . $id . '.pdf');
         } catch (\Exception $e) {
@@ -120,7 +121,7 @@ class OrderController extends Controller
             return response()->json(['error' => 'Không thể tạo hóa đơn. Vui lòng thử lại.'], 500);
         }
     }
-    
+
     //TAB 
     public function onActive(Request $request, string $id)
     {
@@ -129,14 +130,21 @@ class OrderController extends Controller
             $shippingStatus = $order->status_orders()->where('status_id', 4)->first();
 
             if (!$shippingStatus) {
-                $order->status_orders()->create(['status_id' => 4]);
-
+                $order->status_orders()->create(attributes: ['status_id' => 4]);
+                foreach ($order->order_details as $order_detail) {
+                    $get_product_variant_by_id = Product_variant::find($order_detail->product_variant_id);
+                    if ($get_product_variant_by_id) {
+                        $get_product_variant_by_id->stock -= $order_detail->quantity;
+                        $get_product_variant_by_id->save();
+                    } else {
+                        return redirect()->route('admin.orders.index')->with('statusError', 'Có một số sản phẩm trong đơn hàng không hợp lệ, vui lòng thử lại!.');
+                    }
+                }
                 return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được giao thành công');
             }
 
             return redirect()->route('admin.orders.index')->with('statusWarning', 'Đơn hàng này đang trong trạng thái hoàn thành.');
         }
-
     }
 
     // TAB Chờ xác nhận
@@ -161,27 +169,27 @@ class OrderController extends Controller
     public function cancelOrder(Request $request, string $id)
     {
         $order = Order::with('order_details.product_variant')->findOrFail($id);
-    
+
         if ($order) {
             // Kiểm tra xem đơn hàng đã có trạng thái Cancelled (status_id = 5) chưa
             $existingCancelledStatus = $order->status_orders()->where('status_id', 5)->first();
-    
+
             // Nếu đã có trạng thái Cancelled, hiển thị thông báo "Đơn hàng này đang trong trạng thái hủy"
             if ($existingCancelledStatus) {
                 return redirect()->route('admin.orders.index')->with('statusError', 'Đơn hàng này đang trong trạng thái hủy');
             }
-    
+
             // Nếu chưa có trạng thái Cancelled, tạo bản ghi mới
             $order->status_orders()->create(['status_id' => 5]);
-    
+
             // Hiển thị thông báo "Đơn hàng đã được hủy thành công"
             return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được hủy thành công');
         }
-    
+
         // Nếu không tìm thấy đơn hàng
         return redirect()->route('admin.orders.index')->with('statusError', 'Không tìm thấy đơn hàng');
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -205,7 +213,7 @@ class OrderController extends Controller
     {
         $action = $request->input('action');
         $orderIds = explode(',', $request->input('order_ids'));
-    
+
         if ($action == 'success') {
             foreach ($orderIds as $orderId) {
                 $order = Order::find($orderId);
@@ -216,11 +224,11 @@ class OrderController extends Controller
             }
             return redirect()->route('admin.orders.index')->with('statusSuccess', 'Đơn hàng đã được xác nhận.');
         }
-    
+
         return redirect()->route('admin.orders.index')->with('statusError', 'Hành động không hợp lệ.');
     }
-    
-    
+
+
 
     /**
      * Update the specified resource in storage.

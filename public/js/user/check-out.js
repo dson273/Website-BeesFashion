@@ -943,7 +943,7 @@ function storeOrder(data) {
             },
             success: function (response) {
                 if (response.success) {
-                    // console.log(response.data);
+                    console.log(response);
                     // return;
                     if (response.data['payment_method'] == "cod") {
                         $('#form_cod').attr('action', 'order-success/' + response.data['order_id']);
@@ -959,6 +959,7 @@ function storeOrder(data) {
                     }
                 } else {
                     notification('error', response.message, 'Error!', 3000);
+                    console.log(response);
                 }
                 resolve();
             },
@@ -1031,6 +1032,8 @@ $('#place_order').on('click', async function () {
         }
         //Nếu tất cả dữ liệu đều hợp lệ thì chạy tiếp
         if (check) {
+            console.log(data_to_place_order);
+
             await storeOrder(data_to_place_order);
         }
     } catch (error) {
