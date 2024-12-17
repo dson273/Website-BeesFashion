@@ -154,7 +154,7 @@
                                                         <div class="card-body">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <div>
-                                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Chi phí</div>
+                                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Chi phí nhập</div>
                                                                     <div class="h5 mb-0 font-weight-bold">{{ number_format($brandStat['total_cost']) }} đ</div>
                                                                 </div>
                                                                 <div class="fa-2x text-warning">
@@ -230,7 +230,7 @@
                                                                             <div class="card-body">
                                                                                 <div class="d-flex justify-content-between align-items-center">
                                                                                     <div>
-                                                                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Chi phí</div>
+                                                                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Chi phí nhập</div>
                                                                                         <div class="h5 mb-0 font-weight-bold">{{ number_format($product['total_cost']) }} đ</div>
                                                                                     </div>
                                                                                     <div class="fa-2x text-warning">
@@ -268,7 +268,7 @@
                                                                                         <th>Đơn hàng</th>
                                                                                         <th>Số lượng</th>
                                                                                         <th>Doanh thu</th>
-                                                                                        <th>Chi phí</th>
+                                                                                        <th>Chi phí nhập</th>
                                                                                         <th>Lợi nhuận</th>
                                                                                     </tr>
                                                                                 </thead>

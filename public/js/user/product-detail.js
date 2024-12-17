@@ -272,3 +272,46 @@ $(document).ready(function () {
         }
     })
 })
+
+$(document).on('click', '.wishlistIcon', function () {
+    const $this = $(this);
+    const productId = $this.data('id'); // Lấy ID sản phẩm
+    const csrfToken = $('meta[name="csrf-token"]').attr('content'); // Lấy CSRF token từ thẻ meta
+
+    if (!productId) {
+        console.error('ID sản phẩm không hợp lệ.');
+        return;
+    }
+
+    $.ajax({
+        url: '/wishlist/add',
+        method: 'POST',
+        data: {
+            _token: csrfToken,
+            product_id: productId
+        },
+        success: function (response) {
+            if (response.status === 'success') {
+                // Cập nhật số lượng sản phẩm yêu thích
+                $('.cart_qty_cls').text(response.wishCount);
+
+                // Hiển thị thông báo thành công
+                notification('success', response.message, 'Thành công!');
+
+                // Cập nhật giao diện (ví dụ: đổi biểu tượng trái tim thành đã thích)
+                // $this.find('i').removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart').attr('title', 'Đã thêm vào yêu thích');
+            } else if (response.status === 'error') {
+                // Hiển thị cảnh báo nếu có lỗi
+                notification('warning', response.message, 'Thông báo!');
+            }
+        },
+        error: function (xhr) {
+            // Hiển thị thông báo lỗi nếu không thành công
+            Toastify({
+                text: "Không thể thêm sản phẩm vào yêu thích. Vui lòng thử lại.",
+                duration: 2500,
+                close: true,
+            }).showToast();
+        }
+    });
+});

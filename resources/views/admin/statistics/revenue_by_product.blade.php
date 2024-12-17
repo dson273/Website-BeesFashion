@@ -61,7 +61,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Tổng chi phí</div>
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Tổng giá nhập</div>
                                 <div class="h5 mb-0 font-weight-bold total-cost">{{ number_format($statistics['totals']['total_cost']) }} đ</div>
                             </div>
                             <div class="fa-2x text-warning">

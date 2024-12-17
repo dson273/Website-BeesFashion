@@ -111,9 +111,11 @@
                                 </div>
                                 <div class="buy-box border-buttom mb-3">
                                     <ul>
-                                        <li> <span data-bs-toggle="modal" data-bs-target="#size-chart" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Biểu đồ kích cỡ</span>
+                                        <li> <span data-bs-toggle="modal" data-bs-target="#size-chart" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="ruler"></i>Biểu đồ kích
+                                                cỡ</span>
                                         </li>
-                                        <li> <span data-bs-toggle="modal" data-bs-target="#terms-conditions-modal" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="truck"></i>Giao hàng & hoàn trả</span></li>
+                                        <li> <span data-bs-toggle="modal" data-bs-target="#terms-conditions-modal" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="truck"></i>Giao hàng
+                                                & hoàn trả</span></li>
                                         {{-- <li> <span data-bs-toggle="modal" data-bs-target="#question-box" title="Quick View" tabindex="0"><i class="iconsax me-2" data-icon="question-message"></i>Đặt câu hỏi</span></li> --}}
                                     </ul>
                                 </div>
@@ -195,10 +197,10 @@
                                 </div>
                                 <div class="buy-box">
                                     <ul>
-                                        <li> <a href="#"> <i class="fa-regular fa-heart me-2"></i>Thêm vào yêu thích</a></li>
+                                        <li> <a class="wishlistIcon" href="#" data-id="{{ $product->id }}"> <i class="fa-regular fa-heart me-2"></i>Thêm vào yêu thích</a></li>
                                         <li> <a href="#"> <i class="fa-solid fa-arrows-rotate me-2"></i>So sánh</a></li>
-                                        <li> <a href="#" data-bs-toggle="modal" data-bs-target="#social-box" title="Quick View" tabindex="0"><i
-                                                    class="fa-solid fa-share-nodes me-2"></i>Chia sẻ</a></li>
+                                        <li> <a href="#" data-bs-toggle="modal" data-bs-target="#social-box" title="Quick View" tabindex="0"><i class="fa-solid fa-share-nodes me-2"></i>Chia
+                                                sẻ</a></li>
                                     </ul>
                                 </div>
                                 <div class="sale-box">
@@ -501,8 +503,8 @@
                                 <div class="swiper-slide">
                                     <div class="product-box-3">
                                         <div class="img-wrapper">
-                                            <div class="label-block"><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i class="iconsax" data-icon="heart"
-                                                        aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
+                                            <div class="label-block"><a class="label-2 wishlist-icon wishlistIcon" data-id="{{ $relatedProduct->id }}"><i class="iconsax"
+                                                        data-icon="heart" title="Thêm vào yêu thích"></i></a></div>
                                             <div class="product-image">
                                                 <a class="pro-first" href="{{ route('product.detail', $relatedProduct->SKU) }}">
                                                     <img class="bg-img" src="{{ asset('uploads/products/images/' . $relatedProduct->active_image) }}" alt="product"></a>
@@ -567,8 +569,8 @@
                                 <div class="swiper-slide">
                                     <div class="product-box-3">
                                         <div class="img-wrapper">
-                                            <div class="label-block"><span class="info-ticket seller">Best Seller</span><a class="label-2 wishlist-icon" href="javascript:void(0)" tabindex="0"><i
-                                                        class="iconsax" data-icon="heart" aria-hidden="true" data-bs-toggle="tooltip" data-bs-title="Add to Wishlist"></i></a></div>
+                                            <div class="label-block"><span class="info-ticket seller">Best Seller</span><a class="label-2 wishlist-icon wishlistIcon"
+                                                    data-id="{{ $bestProduct->id }}"><i class="iconsax" data-icon="heart" title="Thêm vào yêu thích"></i></a></div>
                                             <div class="product-image">
                                                 <a class="pro-first" href="{{ route('product.detail', $bestProduct->SKU) }}">
                                                     <img class="bg-img" src="{{ asset('uploads/products/images/' . $bestProduct->active_image) }}" alt="product"></a>
@@ -667,7 +669,11 @@
                     </div>
                     <div class="modal-body pt-0">
                         <ul class="returns-policy">
-                            <li> <b>Chính sách trả hàng: </b>Hầu hết các mặt hàng chưa mở có thể được trả lại trong vòng 30 ngày kể từ ngày giao hàng để được hoàn lại toàn bộ tiền. Chúng tôi chi trả chi phí vận chuyển trả lại cho các lỗi của chúng tôi (ví dụ: các mặt hàng không đúng hoặc bị lỗi). Việc hoàn tiền thường được xử lý trong vòng bốn tuần, mặc dù thường nhanh hơn. Điều này bao gồm thời gian vận chuyển trả lại (5-10 ngày làm việc), xử lý khi nhận được (3-5 ngày làm việc) và xử lý hoàn tiền của ngân hàng của bạn (5-10 ngày làm việc). Để trả lại một mặt hàng, hãy đăng nhập, truy cập đơn hàng của bạn và nhấp vào "Trả lại mặt hàng". Chúng tôi sẽ gửi email cho bạn sau khi việc trả lại của bạn được xử lý.</li>
+                            <li> <b>Chính sách trả hàng: </b>Hầu hết các mặt hàng chưa mở có thể được trả lại trong vòng 30 ngày kể từ ngày giao hàng để được hoàn lại toàn bộ tiền. Chúng tôi chi trả chi
+                                phí vận chuyển trả lại cho các lỗi của chúng tôi (ví dụ: các mặt hàng không đúng hoặc bị lỗi). Việc hoàn tiền thường được xử lý trong vòng bốn tuần, mặc dù thường nhanh
+                                hơn. Điều này bao gồm thời gian vận chuyển trả lại (5-10 ngày làm việc), xử lý khi nhận được (3-5 ngày làm việc) và xử lý hoàn tiền của ngân hàng của bạn (5-10 ngày làm
+                                việc). Để trả lại một mặt hàng, hãy đăng nhập, truy cập đơn hàng của bạn và nhấp vào "Trả lại mặt hàng". Chúng tôi sẽ gửi email cho bạn sau khi việc trả lại của bạn được xử
+                                lý.</li>
                             <li>– Miễn phí vận chuyển cho các đơn hàng trên 200.000đ.</li>
                             <li>– Chấp nhận trả lại trong vòng 10 ngày kể từ ngày nhận đối với các mặt hàng chưa mặc. </li>
                             <li>– Vui lòng tham khảo Điều khoản & Điều kiện giao hàng của chúng tôi để biết thêm chi tiết.</li>

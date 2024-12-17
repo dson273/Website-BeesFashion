@@ -42,7 +42,7 @@
                                         <tr>
                                             <td style="white-space: normal; word-wrap: break-word; max-width: 310px;">
                                                 <div class="cart-box">
-                                                    <a href="{{route('product.detail',$order_detail->product_variant->product->id)}}">
+                                                    <a href="{{route('product.detail',$order_detail->product_variant->product->SKU)}}">
                                                         @if ($order_detail->product_variant->image)
                                                         <img src="{{asset('uploads/products/images/'.$order_detail->product_variant->image)}}" alt="" width="100px" height="110px">
                                                         @else
@@ -50,7 +50,7 @@
                                                         @endif
                                                     </a>
                                                     <div class="d-flex flex-column">
-                                                        <a href="{{route('product.detail',$order_detail->product_variant->product->id)}}">
+                                                        <a href="{{route('product.detail',$order_detail->product_variant->product->SKU)}}">
                                                             <h5 class="text-truncate mb-1" style="max-width: 100%; white-space: normal;">{{Str::limit($order_detail->product_variant->product->name,30,'...')}}</h5>
                                                         </a>
                                                         <span>{{$order_detail->value_variants}}</span>
