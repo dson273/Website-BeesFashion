@@ -187,7 +187,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Tổng chi phí
+                                    Tổng giá nhập
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="total_cost"></div>
                             </div>

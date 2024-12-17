@@ -13,10 +13,10 @@
 
         <!-- Page Heading -->
         <!--<h1 class="h3 mb-2 text-gray-800">Danh sách khách hàng</h1>
-         <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                                            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                                                DataTables documentation</a>.</p>
-        <p class="mb-2">Dưới đây là danh sách khách hàng</p>-->
+             <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                                                For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
+                                                    DataTables documentation</a>.</p>
+            <p class="mb-2">Dưới đây là danh sách khách hàng</p>-->
         <!-- DataTales Example -->
         <div class="card shadow mb-2 ">
             <div class="card-header py-3">
@@ -33,7 +33,7 @@
                                 <th>Email</th>
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
-                                <th>Số đơn hàng đã đặt</th>
+                                <th>Đơn đã đặt</th>
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
@@ -46,7 +46,7 @@
                                 <th>Email</th>
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
-                                <th>Số đơn hàng đã đặt</th>
+                                <th>Đơn đã đặt</th>
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
@@ -88,29 +88,22 @@
                                         {{-- <a class="btn btn-warning btn-sm mt-1"
                                             href="{{ route('admin.customers.edit', $customer->id) }}" title="Sửa"><i
                                                 class="fas fa-pen-to-square fa-sm mr-1"></i>Sửa</a> --}}
-                                        <a class="btn btn-info btn-sm mt-1"
-                                            href="{{ route('admin.customers.history', $customer->id) }}"
-                                            title="Lịch sử ban/unban"><i class="fas fa-history fa-sm mr-1"></i>Lịch sử</a>
-                                        <div class="d-flex mt-1">
-                                            @if ($customer->status === 'active')
-                                                <!-- Nút Ban -->
-                                                <button class="btn btn-danger btn-sm mr-1" type="button"
-                                                    onclick="openBanModal('{{ route('admin.customers.ban', $customer->id) }}')"
-                                                    title="Ban">
-                                                    <i class="fa-solid fa-ban fa-sm mr-1"></i>Khóa
+                                        <a class="btn btn-info btn-sm mb-1" href="{{ route('admin.customers.history', $customer->id) }}" title="Lịch sử ban/unban"><i
+                                                class="fas fa-history fa-sm mr-1"></i>Lịch sử</a>
+                                        @if ($customer->status === 'active')
+                                            <!-- Nút Ban -->
+                                            <button class="btn btn-danger btn-sm mr-1" type="button" onclick="openBanModal('{{ route('admin.customers.ban', $customer->id) }}')" title="Ban">
+                                                <i class="fa-solid fa-ban fa-sm mr-1"></i>Khóa
+                                            </button>
+                                        @elseif ($customer->status === 'banned')
+                                            <!-- Nút Unban -->
+                                            <form action="{{ route('admin.customers.unban', $customer->id) }}" method="POST">
+                                                @csrf
+                                                <button class="btn btn-success btn-sm mr-1" type="submit" title="Unban">
+                                                    <i class="fas fa-user-check fa-sm mr-1"></i>Mở khóa
                                                 </button>
-                                            @elseif ($customer->status === 'banned')
-                                                <!-- Nút Unban -->
-                                                <form action="{{ route('admin.customers.unban', $customer->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <button class="btn btn-success btn-sm mr-1" type="submit"
-                                                        title="Unban">
-                                                        <i class="fas fa-user-check fa-sm mr-1"></i>Mở khóa
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

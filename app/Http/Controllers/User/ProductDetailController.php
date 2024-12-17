@@ -63,7 +63,7 @@ class ProductDetailController extends Controller
             ));
         }
 
-        return redirect()->route('home')->with('error', 'Sản phẩm không tồn tại');
+        return redirect()->route('/')->with('statusError', 'Sản phẩm không tồn tại');
     }
 
     private function getFormattedVariants($product)

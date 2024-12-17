@@ -54,12 +54,11 @@
                                     <td>{{ $staff->address ?? 'Đang cập nhật' }}</td>
                                     <td>{!! $staff->status === 'active' ? '<span class="badge text-light bg-success">Hoạt động</span>' : '<span class="badge bg-danger text-light">Ngưng hoạt động</span>' !!}</td>
 
-                                    <td>
+                                    <td style="white-space: normal; word-wrap: break-word; max-width: 200px;">
                                         <a class="btn btn-warning btn-sm" href="{{ route('admin.staffs.edit', $staff->id) }}" title="Sửa"><i class="fas fa-pen-to-square fa-sm mr-1"></i>Sửa</a>
                                         <a class="btn btn-primary btn-sm" href="{{ route('admin.staffs.permission', $staff->id) }}" title="Phân quyền"><i class="fas fa-key fa-sm mr-1"></i>Phân quyền</a>
-                                        <a class="btn btn-info btn-sm" href="{{ route('admin.staffs.history', $staff->id) }}" title="Lịch sử ban/unban"><i
-                                                class="fas fa-history fa-sm mr-1"></i>Lịch sử</a>
                                         <div class="d-flex mt-1">
+                                            <a class="btn btn-info btn-sm mr-1" href="{{ route('admin.staffs.history', $staff->id) }}" title="Lịch sử ban/unban"><i class="fas fa-history fa-sm mr-1"></i>Lịch sử</a>
                                             @if ($staff->status === 'active')
                                                 <!-- Nút Ban với mở modal -->
                                                 <button class="btn btn-danger btn-sm mr-1" type="button" onclick="openBanModal('{{ route('admin.staffs.ban', $staff->id) }}')" title="Khoá"><i
